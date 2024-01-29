@@ -24,13 +24,35 @@ const theme = extendTheme({
     MuiTextField: {
       styleOverrides: {
         root: ({ theme }) => ({
-          borderRadius: 8,
           '& .MuiOutlinedInput-root': {
             '& fieldset': { borderColor: theme.palette.primary.main },
             '&:hover fieldset': { borderColor: theme.palette.primary.main },
             '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main }
           }
         })
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontWeight: 600
+        })
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          textTransform: 'none'
+        }
       }
     }
   }
