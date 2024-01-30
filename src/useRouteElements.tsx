@@ -3,10 +3,12 @@ import { Suspense, lazy, useContext } from 'react'
 import { AppContext } from './contexts/app.context'
 import MainLayout from './layouts/MainLayout'
 import path from './constants/path.constant'
+import AccountLayout from './pages/Account/layouts/AccountLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const Profile = lazy(() => import('./pages/Account/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function ProtectedRoute() {
@@ -40,6 +42,24 @@ export default function useRouteElements() {
               <Register />
             </Suspense>
           )
+        },
+        {
+          path: path.account,
+          element: (
+            <MainLayout>
+              <AccountLayout />
+            </MainLayout>
+          ),
+          children: [
+            {
+              path: path.profile,
+              element: (
+                <Suspense>
+                  <Profile />
+                </Suspense>
+              )
+            }
+          ]
         }
       ]
     },

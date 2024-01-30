@@ -24,4 +24,16 @@ export const schema = yup.object({
   confirm_password: handleConfirmPasswordYup('password')
 })
 
+export const userSchema = yup.object({
+  username: yup.string().trim().max(160, 'Maximum length is 160 characters'),
+  phone: yup.string().trim().max(20, 'Maximum length is 20 characters'),
+  address: yup.string().trim().max(160, 'Maximum length is 160 characters'),
+  date_of_birth: yup.date().max(new Date(), 'Please select a date in the past'),
+  password: schema.fields['password'],
+  new_password: schema.fields['password'],
+  confirm_password: handleConfirmPasswordYup('new_password')
+})
+
 export type Schema = yup.InferType<typeof schema>
+
+export type UserSchema = yup.InferType<typeof userSchema>

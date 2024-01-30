@@ -21,17 +21,6 @@ const theme = extendTheme({
     fontFamily: 'GT Eesti, sans-serif'
   },
   components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': { borderColor: theme.palette.primary.main },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main }
-          }
-        })
-      }
-    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
