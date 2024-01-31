@@ -1,112 +1,91 @@
-import { Link } from 'react-router-dom'
-import { SvgIcon } from '@mui/material'
-import { styled, alpha } from '@mui/material/styles'
-import SearchIcon from '@mui/icons-material/Search'
-import InputBase from '@mui/material/InputBase'
-import Button from '@mui/material/Button'
-import { ReactComponent as MainLogoIcon } from 'src/assets/logo.svg'
-import { ReactComponent as WhiteLogoIcon } from 'src/assets/logo-white.svg'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import Box from '@mui/material/Box'
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import SearchIcon from '@mui/icons-material/Search'
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import SvgIcon from '@mui/material/SvgIcon'
+import Button from '@mui/material/Button'
+import InputBase from '@mui/material/InputBase'
+import { Box } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { ReactComponent as WhiteLogoIcon } from 'src/assets/logo-white.svg'
+import { ReactComponent as MainLogoIcon } from 'src/assets/logo.svg'
 
 interface Props {
-  theme: any
-  bgColor: string
-  textColor: string
+  bgColor?: string
+  textColor?: string
   logoColor?: 'main' | 'white'
 }
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.primary.main, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.25)
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto'
-  }
-}))
+const NavLink = ({ to, icon, text }) => (
+  <Link
+    to={to}
+    className={`relative ml-2 flex cursor-pointer flex-col items-center text-base 
+    hover:after:w-full md:ml-4 md:after:absolute md:after:bottom-[-4px] md:after:left-0 md:after:h-[2px] 
+    md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:ml-8`}
+  >
+    {icon}
+    <span className='hidden pt-1 md:block md:text-sm'>{text}</span>
+  </Link>
+)
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    height: '2.5rem',
-    fontSize: '1rem',
-    [theme.breakpoints.up('md')]: {
-      width: '28ch'
-    }
-  }
-}))
-
-export default function Header({ bgColor, textColor, logoColor = 'main' }: Props) {
+export default function Header({
+  bgColor = 'white',
+  textColor = (theme) => theme.palette.primary.main,
+  logoColor = 'main'
+}: Props) {
   return (
-    <Box className='pb-2 pt-1' sx={{ bgcolor: bgColor }}>
-      <div className='mx-auto py-1'>
+    <Box className='header__container w-full' sx={{ bgcolor: `${bgColor}` }}>
+      <Box className='header__content xl: block min-w-80 px-4 py-2 md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>
         <div className='grid grid-cols-6'>
-          <Link to='/' className='col-span-1 flex items-center justify-center'>
+          <Link to='/' className='col-span-1 flex items-center'>
             <SvgIcon
               component={logoColor === 'main' ? MainLogoIcon : WhiteLogoIcon}
               inheritViewBox
               className='h-10 w-10 md:h-14 md:w-14'
             />
           </Link>
-          <div className='col-span-3 flex items-center'>
-            <Search className='flex max-w-full items-center rounded-full'>
-              <div className='pointer-events-none absolute flex h-full items-center justify-center p-4'>
+          <div className='search-bar col-span-3 flex items-center'>
+            <Box className='relative flex w-auto items-center rounded-full border-2 border-solid border-[var(--border-primary)] bg-white focus:border-2 focus:border-solid focus:border-blue-500 sm:w-full'>
+              <div className='search-icon pointer-events-none absolute flex h-full items-center justify-center p-4'>
                 <SearchIcon sx={{ fontSize: 24, color: textColor }} />
               </div>
-              <StyledInputBase placeholder='Where are you going?' inputProps={{ 'aria-label': 'search' }} />
+              <InputBase
+                sx={{
+                  color: 'inherit',
+                  '& .MuiInputBase-input': {
+                    padding: (theme) => theme.spacing(1, 1, 1, 0),
+                    paddingLeft: (theme) => `calc(1em + ${theme.spacing(4)})`,
+                    transition: (theme) => theme.transitions.create('width'),
+                    width: '100%',
+                    height: '1.5rem',
+                    fontSize: '1rem',
+                    '@media (min-width:768px)': {
+                      height: '2.5rem'
+                    }
+                  }
+                }}
+                className='w-full font-semibold'
+                placeholder='Where are you going?'
+                inputProps={{ 'aria-label': 'search' }}
+              />
               <Button
-                className='mr-2 hidden rounded-full uppercase md:inline-block'
+                className='mr-2 hidden rounded-full pr-7 font-semibold md:inline-block'
                 variant='contained'
                 size='large'
-                sx={{ height: '2.5rem', width: '6rem' }}
               >
                 Search
               </Button>
-            </Search>
+            </Box>
           </div>
-          <Box
-            className='col-span-2 flex items-center justify-end'
-            // sx={{ color: (theme) => theme.palette.primary.main }}
-            sx={{ color: textColor }}
-          >
-            <Link to='' className='nav md:hidden'>
-              <SearchOutlinedIcon sx={{ fontSize: 24 }} />
-            </Link>
-            <Link to='' className='nav'>
-              <FavoriteBorderIcon sx={{ fontSize: 24 }} />
-              <span className='hidden pt-1 md:block md:text-sm'>Wishlist</span>
-            </Link>
-            <Link to='' className='nav'>
-              <ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />
-              <span className='hidden pt-1 md:block md:text-sm'>Cart</span>
-            </Link>
-            <Link to='' className='nav'>
-              <ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />
-              <span className='hidden pt-1 md:block md:text-sm'>Bookings</span>
-            </Link>
-            <Link to='' className='nav pr-2 md:pr-4'>
-              <AccountCircleOutlinedIcon sx={{ fontSize: 24 }} />
-              <span className='hidden pt-1 md:block md:text-sm'>Username</span>
-            </Link>
+          <Box className='col-span-2 flex items-center justify-end' sx={{ color: textColor }}>
+            <NavLink to='/' icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
+            <NavLink to='/' icon={<ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />} text='Cart' />
+            <NavLink to='/' icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />} text='Bookings' />
+            <NavLink to='/' icon={<AccountCircleOutlinedIcon sx={{ fontSize: 24 }} />} text='Username' />
           </Box>
         </div>
-      </div>
+      </Box>
     </Box>
   )
 }

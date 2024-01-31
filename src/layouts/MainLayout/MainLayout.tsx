@@ -10,10 +10,7 @@ interface Props {
 export default function MainLayout({ children }: Props) {
   return (
     <div>
-      <Box>
-        <Header bgColor={(theme) => theme.palette.divider} textColor={(theme) => theme.palette.primary.main} />
-      </Box>
-
+      <Header />
       {children}
       <Footer />
     </div>
