@@ -10,6 +10,7 @@ const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const Profile = lazy(() => import('./pages/Account/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -56,6 +57,14 @@ export default function useRouteElements() {
               element: (
                 <Suspense>
                   <Profile />
+                </Suspense>
+              )
+            },
+            {
+              path: path.password,
+              element: (
+                <Suspense>
+                  <ChangePassword />
                 </Suspense>
               )
             }
