@@ -1,4 +1,40 @@
 @tailwind base;
+
+@layer base {
+  h1 {
+    @apply text-2xl;
+    @apply font-bold;
+  }
+  h2 {
+    @apply text-xl;
+    @apply font-semibold;
+  }
+  h3 {
+    @apply text-lg;
+    @apply font-semibold;
+  }
+  h4 {
+    @apply text-base;
+    @apply font-semibold;
+  }
+  h5 {
+    @apply text-sm;
+    @apply font-semibold;
+  }
+  h6 {
+    @apply text-xs;
+    @apply font-semibold;
+  }
+
+  p,
+  span,
+  li,
+  div {
+    @apply text-base;
+    @apply font-normal;
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -10,6 +46,8 @@
 :root[data-theme='light'] {
   --border-primary: #dcdfe4;
   --decorative-midnight-blue: #1a2b49;
+  --label-primary: #1a2b49;
+  --label-secondary: #63687a;
 }
 
 html {
@@ -18,103 +56,58 @@ html {
 }
 
 body {
-  font-weight: 400;
-}
-
-/* Reset CSS */
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  vertical-align: baseline;
-  background: transparent;
-  text-decoration: none;
-}
-
-body {
   line-height: 1;
 }
 
-ol,
-ul {
-  list-style: none;
+.container {
+  display: block;
+  min-width: 320px;
+  padding: 0 16px;
 }
 
-blockquote,
-q {
-  quotes: none;
+@media (min-width: 768px) {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 }
 
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: '';
-  content: none;
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1400px;
+    padding-left: 32px;
+    padding-right: 32px;
+    width: 100%;
+  }
 }
 
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+@media (min-width: 1200px) {
+  .container {
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding-left: 96px;
+    padding-right: 96px;
+  }
+}
+
+.collection-container {
+  position: relative;
+  margin-top: 40px;
+  margin-bottom: 56px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black !important;
+}
+
+.slick-slide div {
+  margin: 0 2px;
 }

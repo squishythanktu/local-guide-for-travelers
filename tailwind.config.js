@@ -9,21 +9,8 @@ export default {
     extend: {}
   },
   plugins: [
-    plugin(function ({ addComponents, theme }) {
-      addComponents({
-        '.nav': {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingLeft: theme('spacing.1'),
-          paddingRight: theme('spacing.1'),
-          '@screen md': {
-            paddingLeft: theme('spacing.2'),
-            paddingRight: theme('spacing.2')
-          }
-        }
-      })
+    plugin(function ({ addComponents }) {
+      addComponents({})
     })
   ],
   corePlugins: {

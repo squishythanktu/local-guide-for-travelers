@@ -4,6 +4,7 @@ import { AppContext } from './contexts/app.context'
 import MainLayout from './layouts/MainLayout'
 import path from './constants/path.constant'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
+import HomeLayout from './layouts/HomeLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -90,11 +91,11 @@ export default function useRouteElements() {
       path: '',
       index: true,
       element: (
-        <MainLayout>
+        <HomeLayout>
           <Suspense>
             <Home />
           </Suspense>
-        </MainLayout>
+        </HomeLayout>
       )
     },
     {

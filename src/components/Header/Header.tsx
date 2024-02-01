@@ -10,6 +10,7 @@ import { Box } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { ReactComponent as WhiteLogoIcon } from 'src/assets/logo-white.svg'
 import { ReactComponent as MainLogoIcon } from 'src/assets/logo.svg'
+import { headerHeight } from 'src/constants/height.constant'
 
 interface Props {
   bgColor?: string
@@ -30,12 +31,23 @@ const NavLink = ({ to, icon, text }) => (
 )
 
 export default function Header({
-  bgColor = 'white',
+  bgColor = 'linear-gradient(180deg,#0000001c  0,rgba(0,0,0,0))',
   textColor = (theme) => theme.palette.primary.main,
   logoColor = 'main'
 }: Props) {
   return (
-    <Box className='header__container w-full' sx={{ bgcolor: `${bgColor}` }}>
+    <Box
+      className='header__container'
+      sx={{
+        height: headerHeight.base,
+        width: '100%',
+        background: `${bgColor}`,
+        '@media (min-width: 768px)': {
+          height: headerHeight.md
+        }
+      }}
+    >
+      {' '}
       <Box className='header__content xl: block min-w-80 px-4 py-2 md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>
         <div className='grid grid-cols-6'>
           <Link to='/' className='col-span-1 flex items-center'>
@@ -48,7 +60,7 @@ export default function Header({
           <div className='search-bar col-span-3 flex items-center'>
             <Box className='relative flex w-auto items-center rounded-full border-2 border-solid border-[var(--border-primary)] bg-white focus:border-2 focus:border-solid focus:border-blue-500 sm:w-full'>
               <div className='search-icon pointer-events-none absolute flex h-full items-center justify-center p-4'>
-                <SearchIcon sx={{ fontSize: 24, color: textColor }} />
+                <SearchIcon sx={{ fontSize: 24, color: (theme) => theme.palette.primary.main }} />
               </div>
               <InputBase
                 sx={{

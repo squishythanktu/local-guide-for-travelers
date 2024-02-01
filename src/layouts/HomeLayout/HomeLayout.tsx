@@ -5,10 +5,10 @@ interface Props {
   children?: React.ReactNode
 }
 
-export default function MainLayout({ children }: Props) {
+export default function HomeLayout({ children }: Props) {
   return (
     <div>
-      <Header />
+      <Header textColor='white' logoColor='white' />
       {children}
       <Footer />
     </div>

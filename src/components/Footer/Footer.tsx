@@ -10,10 +10,10 @@ import { ReactComponent as Instagram } from 'src/assets/instagram.svg'
 export default function Footer() {
   return (
     <Box
-      className='pb-2 pt-3 text-lg'
+      className='py-8 text-lg'
       sx={{ color: (theme) => theme.palette.grey[50], backgroundColor: (theme) => theme.palette.grey[900] }}
     >
-      <div className='mx-4 py-1 text-sm md:mx-10'>
+      <div className='block min-w-80 px-4 py-0 md:mx-auto md:px-8 lg:w-full lg:max-w-[1400px] xl:px-24'>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-5'>
           <div className='col-span-1 mb-4 flex flex-col gap-3 md:col-span-2 md:mb-10'>
             <div className='text-lg font-bold uppercase'>Contact Information</div>
