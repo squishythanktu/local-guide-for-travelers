@@ -5,6 +5,7 @@ import useRouteElements from './useRouteElements'
 import { useContext, useEffect } from 'react'
 import { LocalStorageEventTarget } from './utils/auth'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -6,11 +6,19 @@ import path from 'src/constants/path.constant'
 import { Schema, schema } from 'src/utils/rules'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import authApi from 'src/apis/auth.api'
+import { omit } from 'lodash'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
+import { toast } from 'react-toastify'
 
 type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
 const signUpSchema = schema.pick(['email', 'password', 'confirm_password'])
 
-export default function Login() {
+export default function Register() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+
   const {
     control,
     trigger,
@@ -24,11 +32,27 @@ export default function Login() {
     },
     resolver: yupResolver(signUpSchema)
   })
-  const onSubmit = (data) => {}
+
+  const registerAccountMutation: any = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ['confirm_password'])
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
+      },
+      onError: (data) => {
+        toast.error(data.message)
+      }
+    })
+  })
 
   return (
     <AuthLayout>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
+      <form onSubmit={onSubmit} className='flex flex-col gap-4'>
         <div className='form__header flex items-center'>
           <div className='form flex flex-col gap-2 bg-white'>
             <h2>SIGN UP</h2>
@@ -93,7 +117,7 @@ export default function Login() {
             render={({ field }) => (
               <TextField
                 id='confirm_password'
-                type='confirm_password'
+                type='password'
                 label='Confirm password'
                 variant='outlined'
                 className='min-h-20'
