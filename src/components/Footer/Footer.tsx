@@ -3,9 +3,12 @@ import SvgIcon from '@mui/material/SvgIcon'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import { ReactComponent as GoogleIcon } from 'src/assets/google.svg'
-import { ReactComponent as FacebookIcon } from 'src/assets/facebook.svg'
-import { ReactComponent as Instagram } from 'src/assets/instagram.svg'
+// import { ReactComponent as GoogleIcon } from 'src/assets/google.svg'
+import GoogleIcon from 'src/assets/google.svg'
+// import { ReactComponent as FacebookIcon } from 'src/assets/facebook.svg'
+import FacebookIcon from 'src/assets/facebook.svg'
+// import { ReactComponent as Instagram } from 'src/assets/instagram.svg'
+import Instagram from 'src/assets/instagram.svg'
 
 export default function Footer() {
   return (

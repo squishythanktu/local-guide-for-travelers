@@ -36,7 +36,11 @@ export default function DateSelect({ onChange, errorMessage, value }: Props) {
       [name]: Number(valueFromSelect)
     }
     setDate(newDate)
-    onChange && onChange(new Date(newDate.year, newDate.month, newDate.date))
+    if (newDate.year !== undefined && newDate.month !== undefined && newDate.date !== undefined) {
+      const createdDate = new Date(newDate.year, newDate.month, newDate.date)
+      onChange && onChange(createdDate)
+    }
+    // onChange && onChange(new Date(newDate.year, newDate.month, newDate.date))
   }
 
   return (

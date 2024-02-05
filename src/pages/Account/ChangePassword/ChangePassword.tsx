@@ -22,7 +22,7 @@ export default function ChangePassword() {
     resolver: yupResolver(accountSchema)
   })
 
-  const onSubmit = (data) => {}
+  const onSubmit = () => {}
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1 text-xl'>

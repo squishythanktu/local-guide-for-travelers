@@ -33,7 +33,7 @@ export default function Register() {
     resolver: yupResolver(signUpSchema)
   })
 
-  const registerAccountMutation: any = useMutation({
+  const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
@@ -42,7 +42,7 @@ export default function Register() {
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
         setIsAuthenticated(true)
-        setProfile(data.data.data.user)
+        setProfile(data.data.data?.user || null)
       },
       onError: (data) => {
         toast.error(data.message)

@@ -20,7 +20,7 @@ export default function ResetPassword() {
     },
     resolver: yupResolver(resetPasswordSchema)
   })
-  const onSubmit = (data) => {}
+  const onSubmit = () => {}
 
   return (
     <AuthLayout>

@@ -8,9 +8,13 @@ import Button from '@mui/material/Button'
 import InputBase from '@mui/material/InputBase'
 import { Box } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { ReactComponent as WhiteLogoIcon } from 'src/assets/logo-white.svg'
-import { ReactComponent as MainLogoIcon } from 'src/assets/logo.svg'
+// import { ReactComponent as WhiteLogoIcon } from 'src/assets/logo-white.svg'
+import WhiteLogoIcon from 'src/assets/logo-white.svg'
+import MainLogoIcon from 'src/assets/logo.svg'
+// import { ReactComponent as MainLogoIcon } from 'src/assets/logo.svg'
 import { headerHeight } from 'src/constants/height.constant'
+import { ReactElement } from 'react'
+import { CssVarsTheme, Theme } from '@mui/material/styles'
 
 interface Props {
   bgColor?: string
@@ -18,7 +22,13 @@ interface Props {
   logoColor?: 'main' | 'white'
 }
 
-const NavLink = ({ to, icon, text }) => (
+interface NavProps {
+  to: string
+  icon: ReactElement
+  text: string
+}
+
+const NavLink = ({ to, icon, text }: NavProps) => (
   <Link
     to={to}
     className={`relative ml-2 flex cursor-pointer flex-col items-center text-base 
@@ -32,7 +42,7 @@ const NavLink = ({ to, icon, text }) => (
 
 export default function Header({
   bgColor = 'linear-gradient(180deg,#0000001c  0,rgba(0,0,0,0))',
-  textColor = (theme) => theme.palette.primary.main,
+  textColor = ((theme: Omit<Theme, 'palette'> & CssVarsTheme) => theme.palette.primary.main).toString(),
   logoColor = 'main'
 }: Props) {
   return (

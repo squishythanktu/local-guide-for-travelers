@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { ReactComponent as LogoIcon } from 'src/assets/logo.svg'
+import LogoIcon from 'src/assets/logo.svg'
+// import { ReactComponent as LogoIcon } from 'src/assets/logo.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 
 interface Props {
@@ -25,7 +26,7 @@ export default function AuthLayout({ children }: Props) {
           className='image hidden bg-cover bg-center lg:col-span-3 lg:col-start-3 lg:block'
           sx={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
-            url('src/assets/images/auth-cover.jpg')`
+            url('/assets/images/auth-cover.jpg')`
           }}
         >
           <div className='flex h-full items-center justify-center text-center text-5xl font-bold text-white'>

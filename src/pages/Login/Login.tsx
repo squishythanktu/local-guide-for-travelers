@@ -3,8 +3,10 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import AuthLayout from 'src/layouts/AuthLayout'
 import path from 'src/constants/path.constant'
-import { ReactComponent as GoogleIcon } from 'src/assets/google.svg'
-import { ReactComponent as FacebookIcon } from 'src/assets/facebook.svg'
+import GoogleIcon from 'src/assets/google.svg'
+// import { ReactComponent as GoogleIcon } from 'src/assets/google.svg'
+// import { ReactComponent as FacebookIcon } from 'src/assets/facebook.svg'
+import FacebookIcon from 'src/assets/facebook.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 import { Controller, useForm } from 'react-hook-form'
 import { Schema, schema } from 'src/utils/rules'
@@ -26,7 +28,7 @@ export default function Login() {
     },
     resolver: yupResolver(signInSchema)
   })
-  const onSubmit = (data) => {}
+  const onSubmit = () => {}
 
   return (
     <AuthLayout>

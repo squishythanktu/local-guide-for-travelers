@@ -24,7 +24,7 @@ export default function Profile() {
     resolver: yupResolver(accountSchema)
   })
 
-  const onSubmit = (data) => {}
+  const onSubmit = () => {}
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='account-profile-form'>

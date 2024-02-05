@@ -54,7 +54,7 @@ export default function Home() {
         }}
       >
         <Box className='hero-section__image-container absolute left-0 top-0 z-[-1] h-[600px] w-full'>
-          <img src='src/assets/images/homepage-cover.jpg' alt='Homepage cover' className='h-full w-full object-cover' />
+          <img src='/assets/images/homepage-cover.jpg' alt='Homepage cover' className='h-full w-full object-cover' />
         </Box>
         <Box className='hero-section__content m-auto flex max-w-[1400px] flex-col items-center justify-start px-4 py-4 md:py-8 lg:px-24 '>
           <h1 className='hero-section__header mb-10 mt-32 w-1/2 self-start text-4xl leading-none text-white drop-shadow-2xl md:text-5xl lg:text-6xl'>
