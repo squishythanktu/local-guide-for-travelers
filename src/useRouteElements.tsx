@@ -13,6 +13,7 @@ const Profile = lazy(() => import('./pages/Account/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
+const Search = lazy(() => import('./pages/Search'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -61,6 +62,7 @@ export default function useRouteElements() {
       element: <ProtectedRoute />,
       children: [
         {
+          // Will be move into ProtectedRoute once handle login api is successful
           path: path.account,
           element: (
             <MainLayout>
@@ -97,6 +99,17 @@ export default function useRouteElements() {
             <Home />
           </Suspense>
         </HomeLayout>
+      )
+    },
+    {
+      path: '/search',
+      index: true,
+      element: (
+        <MainLayout>
+          <Suspense>
+            <Search />
+          </Suspense>
+        </MainLayout>
       )
     },
     {

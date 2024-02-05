@@ -20,12 +20,12 @@ export default function AccountSideNav() {
         <h1 className='account__header-name mb-1 text-2xl font-bold'>Tu</h1>
         <h4 className='account__header-subheading font-bold tracking-wide'>Account</h4>
         <img
-          src='/assets/top-line.svg'
+          src='/assets/svg/top-line.svg'
           className='absolute right-[-130px] top-[-10px]'
           alt='account__header__top-line'
         />
         <img
-          src='/assets/bottom-line.svg'
+          src='/assets/svg/bottom-line.svg'
           className='absolute bottom-[5px] left-[-120px]'
           alt='account__header__bottom-line'
         />

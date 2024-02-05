@@ -5,7 +5,8 @@ const path = {
   account: '/account',
   profile: '/account/profile',
   password: '/account/password',
-  reset: '/reset'
+  reset: '/reset',
+  search: '/search'
 }
 
 export default path

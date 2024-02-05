@@ -18,7 +18,6 @@ const signUpSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
-
   const {
     control,
     trigger,
@@ -39,10 +38,11 @@ export default function Register() {
 
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
+
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
         setIsAuthenticated(true)
-        setProfile(data.data.data?.user || null)
+        setProfile(data.data.data?.user)
       },
       onError: () => {
         toast.error('Account registration unsuccessful. Please try again later.')

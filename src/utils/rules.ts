@@ -21,7 +21,8 @@ export const schema = yup.object({
     .required('Password is required')
     .min(6, 'Password length from 6 - 160 characters')
     .max(160, 'Password length from 6 - 160 characters'),
-  confirm_password: handleConfirmPasswordYup('password')
+  confirm_password: handleConfirmPasswordYup('password'),
+  search_name: yup.string().trim().required()
 })
 
 export const userSchema = yup.object({

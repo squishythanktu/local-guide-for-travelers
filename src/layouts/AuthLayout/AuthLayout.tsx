@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Box } from '@mui/material'
-import LogoIcon from 'src/assets/logo.svg'
-// import { ReactComponent as LogoIcon } from 'src/assets/logo.svg'
+import LogoIcon from 'src/assets/svg/logo.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 
 interface Props {

@@ -5,6 +5,8 @@ import useRouteElements from './useRouteElements'
 import { useContext, useEffect } from 'react'
 import { LocalStorageEventTarget } from './utils/auth'
 import { ToastContainer } from 'react-toastify'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'react-toastify/dist/ReactToastify.css'
 
 const queryClient = new QueryClient({
@@ -30,7 +32,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        {routeElements}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>{routeElements}</LocalizationProvider>
         <ToastContainer />
       </AppProvider>
       <ReactQueryDevtools initialIsOpen={false} />

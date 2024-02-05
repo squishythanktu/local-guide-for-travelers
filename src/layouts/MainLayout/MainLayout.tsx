@@ -8,7 +8,7 @@ interface Props {
 export default function MainLayout({ children }: Props) {
   return (
     <div>
-      <Header />
+      <Header bgColor='white' />
       {children}
       <Footer />
     </div>
