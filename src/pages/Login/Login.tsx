@@ -34,12 +34,12 @@ export default function Login() {
     resolver: yupResolver(signInSchema)
   })
 
-  const registerAccountMutation = useMutation({
+  const loginMutation = useMutation({
     mutationFn: (body: FormData) => authApi.login(body)
   })
 
   const onSubmit = handleSubmit((body) => {
-    registerAccountMutation.mutate(body, {
+    loginMutation.mutate(body, {
       onSuccess: (data) => {
         setIsAuthenticated(true)
         setProfile(data.data.data.user)
