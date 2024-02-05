@@ -53,7 +53,13 @@ export default function useRouteElements() {
               <ResetPassword />
             </Suspense>
           )
-        },
+        }
+      ]
+    },
+    {
+      path: '/',
+      element: <ProtectedRoute />,
+      children: [
         {
           path: path.account,
           element: (
@@ -81,11 +87,6 @@ export default function useRouteElements() {
           ]
         }
       ]
-    },
-    {
-      path: '/',
-      element: <ProtectedRoute />,
-      children: []
     },
     {
       path: '',

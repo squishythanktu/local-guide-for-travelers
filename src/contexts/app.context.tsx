@@ -11,7 +11,7 @@ interface AppContextInterface {
 }
 
 const initialAppContext: AppContextInterface = {
-  isAuthenticated: !!getAccessTokenFromLocalStorage(),
+  isAuthenticated: Boolean(getAccessTokenFromLocalStorage()),
   setIsAuthenticated: () => null,
   profile: getProfileFromLS(),
   setProfile: () => null,

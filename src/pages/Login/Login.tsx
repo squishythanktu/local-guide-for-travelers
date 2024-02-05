@@ -4,18 +4,23 @@ import Button from '@mui/material/Button'
 import AuthLayout from 'src/layouts/AuthLayout'
 import path from 'src/constants/path.constant'
 import GoogleIcon from 'src/assets/google.svg'
-// import { ReactComponent as GoogleIcon } from 'src/assets/google.svg'
-// import { ReactComponent as FacebookIcon } from 'src/assets/facebook.svg'
 import FacebookIcon from 'src/assets/facebook.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 import { Controller, useForm } from 'react-hook-form'
 import { Schema, schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
+import authApi from 'src/apis/auth.api'
+import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
+import { toast } from 'react-toastify'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+
   const {
     control,
     trigger,
@@ -28,11 +33,26 @@ export default function Login() {
     },
     resolver: yupResolver(signInSchema)
   })
-  const onSubmit = () => {}
+
+  const registerAccountMutation: any = useMutation({
+    mutationFn: (body: FormData) => authApi.login(body)
+  })
+
+  const onSubmit = handleSubmit((body) => {
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
+      },
+      onError: () => {
+        toast.error('Login unsuccessful. Please check your login credentials.')
+      }
+    })
+  })
 
   return (
     <AuthLayout>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
+      <form onSubmit={onSubmit} className='flex flex-col gap-4'>
         <div className='form__header flex items-center'>
           <div className='form flex flex-col gap-2 bg-white'>
             <h2>SIGN IN</h2>

@@ -1,12 +1,16 @@
-import { AuthResponse } from 'src/types/auth.type'
+import { AuthSuccessResponse } from 'src/types/auth.type'
 import http from 'src/utils/http'
 
-const URL_AUTH = 'auth/'
-const URL_REGISTER = 'register'
+export const URL_REGISTER = 'auth/register'
+export const URL_LOGIN = 'auth/login'
+export const URL_LOGOUT = 'auth/logout'
 
 const authApi = {
   registerAccount(body: { email: string; password: string }) {
-    return http.post<AuthResponse>(URL_AUTH + URL_REGISTER, body)
+    return http.post<AuthSuccessResponse>(URL_REGISTER, body)
+  },
+  login(body: { email: string; password: string }) {
+    return http.post<AuthSuccessResponse>(URL_LOGIN, body)
   }
 }
 

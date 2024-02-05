@@ -44,8 +44,8 @@ export default function Register() {
         setIsAuthenticated(true)
         setProfile(data.data.data?.user || null)
       },
-      onError: (data) => {
-        toast.error(data.message)
+      onError: () => {
+        toast.error('Account registration unsuccessful. Please try again later.')
       }
     })
   })
