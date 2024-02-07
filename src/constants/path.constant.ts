@@ -5,9 +5,10 @@ const path = {
   account: '/account',
   profile: '/account/profile',
   password: '/account/password',
-  tour: '/account/tour',
+  tour: 'account/my-tours',
   reset: '/reset',
-  search: '/search'
+  search: '/search',
+  tourDetail: 'tours/:id'
 }
 
 export default path

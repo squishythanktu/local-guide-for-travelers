@@ -5,6 +5,7 @@ import MainLayout from './layouts/MainLayout'
 import path from './constants/path.constant'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import HomeLayout from './layouts/HomeLayout'
+import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -54,6 +55,14 @@ export default function useRouteElements() {
             <Suspense>
               <ResetPassword />
             </Suspense>
+          )
+        },
+        {
+          path: path.tourDetail,
+          element: (
+            <MainLayout>
+              <TourDetailLayout />
+            </MainLayout>
           )
         }
       ]
