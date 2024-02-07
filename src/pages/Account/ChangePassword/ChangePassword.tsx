@@ -25,9 +25,9 @@ export default function ChangePassword() {
   const onSubmit = () => {}
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1 text-xl'>
-        Change password
-      </div>
+      <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
+        Change Password
+      </h2>
       <div className='mb-4 grid grid-cols-1 gap-10 md:grid-cols-2'>
         <Controller
           control={control}

@@ -5,6 +5,7 @@ const path = {
   account: '/account',
   profile: '/account/profile',
   password: '/account/password',
+  tour: '/account/tour',
   reset: '/reset',
   search: '/search'
 }

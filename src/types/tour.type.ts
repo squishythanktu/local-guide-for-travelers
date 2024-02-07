@@ -1,3 +1,20 @@
+export type Tour = {
+  id: number
+  name: string
+  description: string
+  transportation: string
+  includeService: string
+  duration: number
+  unit: string
+  estimatedLocalCashNeeded: string
+  pricePerTraveler: number
+  limitTraveler: number
+  extraPrice: number
+  province: string
+  itinerary: string
+  categories: string[]
+}
+
 export interface TourListConfig {
   page?: number | string
   limit?: number | string

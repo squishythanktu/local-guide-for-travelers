@@ -114,7 +114,7 @@ export default function Login() {
         </div>
         <div className='form__actions flex flex-col gap-4'>
           <div className='flex justify-end'>
-            <Link className='ml-1 font-bold text-orange-500' to=''>
+            <Link className='ml-1 font-bold text-orange-500' to='/reset'>
               Forget password?
             </Link>
           </div>

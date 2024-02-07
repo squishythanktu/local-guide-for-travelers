@@ -12,6 +12,7 @@ import NavLink from '../NavLink'
 import { AppContext } from 'src/contexts/app.context'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import LogoutIcon from '@mui/icons-material/Logout'
+import { clearLS } from 'src/utils/auth'
 
 interface Props {
   textColor: string
@@ -41,7 +42,7 @@ export default function ProfileMenu({ textColor }: Props) {
             <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor }} />
           </IconButton>
         }
-        text={isAuthenticated && profile ? (profile.username as string) : 'Profile'}
+        text={isAuthenticated && profile && profile.username ? profile.username : 'Profile'}
       />
       {!isAuthenticated && (
         <Menu
@@ -112,14 +113,14 @@ export default function ProfileMenu({ textColor }: Props) {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem component={Link} to='/}'>
+          <MenuItem component={Link} to='/'>
             <ListItemIcon>
               <LightModeOutlinedIcon fontSize='small' />
             </ListItemIcon>
             Appearance
           </MenuItem>
           <Divider />
-          <MenuItem>
+          <MenuItem onClick={clearLS}>
             <ListItemIcon>
               <LogoutIcon fontSize='small' />
             </ListItemIcon>

@@ -35,6 +35,28 @@ export const userSchema = yup.object({
   confirm_password: handleConfirmPasswordYup('new_password')
 })
 
+export const tourSchema = yup.object({
+  name: yup.string().trim().required().max(100, 'Maximum length is 100 characters'),
+  description: yup.string().trim(),
+  transportation: yup.string().trim().required(),
+  includeService: yup.string().trim(),
+  duration: yup.number().positive().required().typeError('Duration must be positive a number'),
+  unit: yup.string().trim().required(),
+  estimatedLocalCashNeeded: yup
+    .number()
+    .positive()
+    .required()
+    .typeError('Estimated local cash needed must be positive a number'),
+  pricePerTraveler: yup.number().positive().required().typeError('Price per traveler must be positive a number'),
+  limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
+  extraPrice: yup.number().positive().required().typeError('Extra price must be positive a number'),
+  itinerary: yup.string().trim().required(),
+  province: yup.string().trim().required().max(50, 'Maximum length is 50 characters'),
+  categories: yup.array().of(yup.string())
+})
+
 export type Schema = yup.InferType<typeof schema>
 
 export type UserSchema = yup.InferType<typeof userSchema>
+
+export type TourSchema = yup.InferType<typeof tourSchema>

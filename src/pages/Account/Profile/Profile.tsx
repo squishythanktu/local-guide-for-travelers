@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
-import { UserSchema, userSchema } from 'src/utils/rules'
-import TextField from '@mui/material/TextField'
-import DateSelect from '../components/DateSelect'
 import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import { Controller, useForm } from 'react-hook-form'
+import { UserSchema, userSchema } from 'src/utils/rules'
+import DateSelect from '../components/DateSelect'
 
 type FormData = Pick<UserSchema, 'username' | 'address' | 'phone' | 'date_of_birth'>
 const accountSchema = userSchema.pick(['username', 'address', 'phone', 'date_of_birth'])
@@ -32,7 +32,7 @@ export default function Profile() {
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
           Profile Details
         </h2>
-        <div className='account-profile__field-group mb-4 flex flex-col md:flex-row md:justify-between'>
+        <div className='account-profile__field-group mb-4 flex flex-col md:flex-row'>
           <Controller
             control={control}
             name='username'
@@ -41,7 +41,7 @@ export default function Profile() {
                 id='username'
                 variant='outlined'
                 label='Username'
-                className='min-h-20 '
+                className='min-h-20'
                 style={{ flexBasis: 'calc(33.33% - 2%)' }}
                 error={!!errors.username?.message}
                 helperText={errors.username?.message}

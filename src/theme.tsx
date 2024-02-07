@@ -17,9 +17,6 @@ const theme = extendTheme({
       palette: {}
     }
   },
-  typography: {
-    fontFamily: 'GT Eesti, sans-serif'
-  },
   components: {
     MuiOutlinedInput: {
       styleOverrides: {
@@ -41,6 +38,17 @@ const theme = extendTheme({
         root: {
           borderRadius: 8,
           textTransform: 'none'
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          '&+.MuiDialogContent-root': {
+            paddingTop: '20px !important'
+          },
+          fontWeight: 600,
+          borderBottom: '0.5px solid var(--border-primary)'
         }
       }
     }

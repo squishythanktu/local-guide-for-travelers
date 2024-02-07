@@ -1,24 +1,27 @@
-import { Box } from '@mui/material'
+import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import PersonIcon from '@mui/icons-material/Person'
+import { Box, Typography } from '@mui/material'
+import Divider from '@mui/material/Divider'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
-import PersonIcon from '@mui/icons-material/Person'
-import Divider from '@mui/material/Divider'
 import Paper from '@mui/material/Paper'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function AccountSideNav() {
+  const { profile } = useContext(AppContext)
   return (
-    <div className='account__container flex-auto md:m-0 md:pr-4'>
+    <div className='account__container flex-auto md:m-0'>
       <Box
         className='account__header relative flex h-32 flex-col justify-center overflow-hidden text-center text-white'
         sx={{ backgroundColor: `var(--decorative-midnight-blue)` }}
       >
-        <h1 className='account__header-name mb-1 text-2xl font-bold'>Tu</h1>
-        <h4 className='account__header-subheading font-bold tracking-wide'>Account</h4>
+        <h1 className='account__header-name mb-1 text-2xl font-bold'>{profile?.username || 'username'}</h1>
+        <h4 className='account__header-subheading font-bold tracking-wide'>{profile?.roles?.join(' | ')}</h4>
         <img
           src='/assets/svg/top-line.svg'
           className='absolute right-[-130px] top-[-10px]'
@@ -35,16 +38,29 @@ export default function AccountSideNav() {
           <MenuList>
             <MenuItem component={Link} to={path.profile}>
               <ListItemIcon>
-                <PersonIcon fontSize='medium' />
+                <PersonIcon fontSize='small' />
               </ListItemIcon>
-              <ListItemText>Profile</ListItemText>
+              <Typography variant='inherit' noWrap>
+                Profile
+              </Typography>
             </MenuItem>
             <Divider />
             <MenuItem component={Link} to={path.password}>
               <ListItemIcon>
-                <LockOutlinedIcon fontSize='medium' />
+                <LockOutlinedIcon fontSize='small' />
               </ListItemIcon>
-              <ListItemText>Password</ListItemText>
+              <Typography variant='inherit' noWrap>
+                Password
+              </Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem component={Link} to={path.tour}>
+              <ListItemIcon>
+                <AddLocationAltOutlinedIcon fontSize='small' />
+              </ListItemIcon>
+              <Typography variant='inherit' noWrap>
+                Tour Management
+              </Typography>
             </MenuItem>
           </MenuList>
         </Paper>
