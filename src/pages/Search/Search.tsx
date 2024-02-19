@@ -8,24 +8,21 @@ import DotsIcon from 'src/assets/svg/dots.svg'
 import NoodleIcon from 'src/assets/svg/noodle.svg'
 import CurrencyInput from 'src/components/CurrencyInput/CurrencyInput'
 import DateRangePicker from 'src/components/DateRangePicker/DateRangePicker'
-import path from 'src/constants/path.constant'
+import TourCard from 'src/components/TourCard'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 
 export default function Search() {
   const queryConfig: QueryConfig = useQueryConfig()
   const navigate = useNavigate()
-
   const getInitialSortingValue = () => {
     if (queryConfig.sort_by && queryConfig.order) {
       return `${queryConfig.sort_by}-${queryConfig.order}`
     }
     return ''
   }
-
   const getInitialPrice = (name: 'min_price' | 'max_price') => {
     return queryConfig[name] || ''
   }
-
   const [sortingValue, setSortingValue] = useState<string>(getInitialSortingValue())
   const [minPrice, setMinPrice] = useState<string>(getInitialPrice('min_price'))
   const [maxPrice, setMaxPrice] = useState<string>(getInitialPrice('max_price'))
@@ -35,7 +32,6 @@ export default function Search() {
     setSortingValue(selectedValue)
     const [sortBy, order] = selectedValue.split('-')
     navigate({
-      pathname: path.search,
       search: createSearchParams({
         ...queryConfig,
         sort_by: sortBy,
@@ -61,14 +57,12 @@ export default function Search() {
     if (newMinPrice !== minPrice || newMaxPrice !== maxPrice) {
       setMinPrice(newMinPrice)
       setMaxPrice(newMaxPrice)
-
       navigateToSearch(newMinPrice, newMaxPrice)
     }
   }
 
   const navigateToSearch = (newMinPrice: string, newMaxPrice: string) => {
     navigate({
-      pathname: path.search,
       search: createSearchParams(
         omitBy(
           {

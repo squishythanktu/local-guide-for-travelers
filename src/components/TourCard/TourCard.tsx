@@ -11,15 +11,14 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
           <div className='tour-card__top relative'>
             <div className='tour-card__photo h-64 overflow-hidden'>
               <img
-                // TODO: Replace by tour img for API
-                src='https://cdn.getyourguide.com/img/tour/6493cf7d1fe21.png/132.webp'
+                src={tourData.images[0].imageLink}
                 alt='Tour img'
                 className='h-full w-full object-cover transition duration-700 hover:scale-125'
               />
             </div>
             <div className='tour-card__header mb-2 mt-1 px-3'>
               <span className='activity-type mb-1 text-sm font-semibold uppercase leading-5 text-[var(--label-secondary)]'>
-                {tourData?.categories[0].name}
+                {tourData?.categories[0]?.name}
               </span>
               <h3 className='title capitalize text-[var(--label-primary)] lg:max-h-20 lg:overflow-hidden'>
                 {tourData?.name}
@@ -33,6 +32,10 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
                 <li className='relative flex items-center whitespace-nowrap text-sm font-semibold'>
                   <span className='absolute left-[-10px] top-1/2 -translate-y-1/2 transform'>•</span>
                   {tourData?.transportation}
+                </li>
+                <li className='relative flex items-center whitespace-nowrap text-sm font-semibold'>
+                  <span className='absolute left-[-10px] top-1/2 -translate-y-1/2 transform'>|</span>
+                  by {tourData?.guide?.username || tourData?.guide?.email || 'N/A'}
                 </li>
               </ul>
             </div>

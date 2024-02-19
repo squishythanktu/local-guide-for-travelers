@@ -5,21 +5,25 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import omit from 'lodash/omit'
 import path from 'src/constants/path.constant'
+import { SearchCategory } from 'src/enums/search-category.enum'
 
-type FormData = Pick<Schema, 'search_name'>
-const searchNameSchema = schema.pick(['search_name'])
+type FormData = Pick<Schema, 'search_name' | 'search_category'>
+const searchNameSchema = schema.pick(['search_name', 'search_category'])
 
 export default function useSearchToursGuides() {
   const queryConfig = useQueryConfig()
   const navigate = useNavigate()
-  const { control, handleSubmit, trigger } = useForm<FormData>({
+  const { control, handleSubmit, trigger, register } = useForm<FormData>({
     defaultValues: {
-      search_name: ''
+      search_name: '',
+      search_category: undefined
     },
     resolver: yupResolver(searchNameSchema)
   })
 
-  const onSubmitSearch = handleSubmit((data) => {
+  const onSubmitSearch = handleSubmit((data: FormData) => {
+    console.log(data)
+
     const config = queryConfig.order
       ? omit(
           {
@@ -32,11 +36,12 @@ export default function useSearchToursGuides() {
           ...queryConfig,
           search_name: data.search_name
         }
-    navigate({
-      pathname: path.search,
-      search: createSearchParams(config).toString()
+    const searchPath = `../${data.search_category === SearchCategory.TOURS ? path.searchTour : path.searchGuide}`
+    const searchQuery = createSearchParams(config).toString()
+    navigate(`${searchPath}?${searchQuery}`, {
+      replace: true
     })
   })
 
-  return { onSubmitSearch, control, trigger }
+  return { onSubmitSearch, control, trigger, register }
 }

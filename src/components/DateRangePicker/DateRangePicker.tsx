@@ -6,7 +6,6 @@ import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { useCallback, useEffect, useState } from 'react'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import path from 'src/constants/path.constant'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
@@ -30,7 +29,6 @@ export default function DateRangePicker({ className, queryConfig }: Props) {
 
   const updateSearchQuery = useCallback((startDate: Dayjs | null, endDate: Dayjs | null) => {
     navigate({
-      pathname: path.search,
       search: createSearchParams(
         omitBy(
           {

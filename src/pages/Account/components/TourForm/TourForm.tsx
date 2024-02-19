@@ -68,7 +68,6 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
             control={control}
             name={'limitTraveler'}
             label={'Limit traveler *'}
-            prefix='$'
           />
           <ControlledTextField
             className='min-h-[100px] grow lg:w-1/4'

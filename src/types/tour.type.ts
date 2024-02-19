@@ -6,6 +6,11 @@ export type TourCategory = {
   name: string
 }
 
+type ImageWithLink = {
+  id: number
+  imageLink: string
+}
+
 export type Tour = {
   id: number
   name: string
@@ -22,8 +27,8 @@ export type Tour = {
   province: string
   itinerary: string
   categories: TourCategory[]
-  images: { id: string; imageLink: string }[]
   guide: User
+  images: ImageWithLink[]
 }
 
 export interface TourListConfig {

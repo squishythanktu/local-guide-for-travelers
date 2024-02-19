@@ -119,8 +119,17 @@ export default function useRouteElements() {
       )
     },
     {
-      path: '/search',
-      index: true,
+      path: 'tours/search',
+      element: (
+        <MainLayout>
+          <Suspense>
+            <Search />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    {
+      path: 'guides/search',
       element: (
         <MainLayout>
           <Suspense>

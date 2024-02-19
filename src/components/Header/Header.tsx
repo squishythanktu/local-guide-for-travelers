@@ -2,13 +2,18 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import { Box } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import FormControl from '@mui/material/FormControl'
 import InputBase from '@mui/material/InputBase'
+import IconButton from '@mui/material/IconButton'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 import SvgIcon from '@mui/material/SvgIcon'
 import { CssVarsTheme, Theme } from '@mui/material/styles'
 import { Controller } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import WhiteLogoIcon from 'src/assets/svg/logo-white.svg'
 import MainLogoIcon from 'src/assets/svg/logo.svg'
 import { headerHeight } from 'src/constants/height.constant'
@@ -16,6 +21,9 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 import useSearchToursGuides from 'src/hooks/useSearchToursGuides'
 import NavLink from './NavLink'
 import ProfileMenu from './ProfileMenu'
+import { useState } from 'react'
+import theme from 'src/theme'
+import { SearchCategory } from 'src/enums/search-category.enum'
 
 interface Props {
   bgColor?: string
@@ -24,12 +32,22 @@ interface Props {
 }
 
 export default function Header({
-  bgColor = 'linear-gradient(180deg,#0000001c  0,rgba(0,0,0,0))',
+  bgColor = 'linear-gradient(180deg,#392a2a1c  0,rgba(0,0,0,0))',
   textColor = ((theme: Omit<Theme, 'palette'> & CssVarsTheme) => theme.palette.primary.main).toString(),
   logoColor = 'main'
 }: Props) {
-  const { onSubmitSearch, control, trigger } = useSearchToursGuides()
+  const location = useLocation()
+  const getInitialSearchCategoryValue = () => {
+    return location.pathname.includes(SearchCategory.GUIDES) ? SearchCategory.GUIDES : SearchCategory.TOURS
+  }
+  const { onSubmitSearch, control, trigger, register } = useSearchToursGuides()
   const queryConfig = useQueryConfig()
+  const [searchCategory, setSearchCategory] = useState<string>(getInitialSearchCategoryValue())
+  const isMdBreakpoint = useMediaQuery(theme.breakpoints.up('md'))
+
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    setSearchCategory(event.target.value)
+  }
 
   return (
     <Box
@@ -54,8 +72,32 @@ export default function Header({
           </Link>
           <form className='search-bar col-span-3 flex items-center' onSubmit={onSubmitSearch}>
             <Box className='relative flex w-auto items-center rounded-full border-2 border-solid border-[var(--border-primary)] bg-white focus:border-2 focus:border-solid focus:border-blue-500 sm:w-full'>
-              <div className='search-icon pointer-events-none absolute flex h-full items-center justify-center p-4'>
-                <SearchIcon sx={{ fontSize: 24, color: (theme) => theme.palette.primary.main }} />
+              <div className='search-icon flex h-full w-auto items-center justify-center border-r-2 border-solid border-[var(--border-primary)]'>
+                <FormControl size='small'>
+                  <Select
+                    displayEmpty
+                    id='search-category'
+                    value={searchCategory}
+                    label='Categories'
+                    {...register('search_category')}
+                    onChange={handleChange}
+                    className='h-full w-12 overflow-auto md:w-[100px]'
+                    sx={{
+                      boxShadow: 'none',
+                      '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                      '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                        border: 0
+                      },
+                      '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        border: 0
+                      }
+                    }}
+                    MenuProps={{ disableScrollLock: true }}
+                  >
+                    <MenuItem value={SearchCategory.TOURS}>Tours</MenuItem>
+                    <MenuItem value={SearchCategory.GUIDES}>Guides</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <Controller
                 control={control}
@@ -65,19 +107,15 @@ export default function Header({
                     sx={{
                       color: 'inherit',
                       '& .MuiInputBase-input': {
-                        padding: (theme) => theme.spacing(1, 1, 1, 0),
-                        paddingLeft: (theme) => `calc(1em + ${theme.spacing(4)})`,
+                        padding: (theme) => theme.spacing(1, 1, 1, 1.5),
                         transition: (theme) => theme.transitions.create('width'),
                         width: '100%',
-                        height: '1.5rem',
-                        fontSize: '1rem',
-                        '@media (min-width:768px)': {
-                          height: '2.5rem'
-                        }
+                        height: isMdBreakpoint ? '2.5rem' : '1.5rem',
+                        fontSize: '1rem'
                       }
                     }}
                     className='w-full font-semibold'
-                    placeholder='Where are you going?'
+                    placeholder='Search tours, guides'
                     inputProps={{ 'aria-label': 'search' }}
                     onChange={(event) => {
                       field.onChange(event)
@@ -87,14 +125,20 @@ export default function Header({
                   />
                 )}
               />
-              <Button
-                type='submit'
-                className='mr-2 hidden rounded-full pr-7 font-semibold md:inline-block'
-                variant='contained'
-                size='large'
-              >
-                Search
-              </Button>
+              {isMdBreakpoint ? (
+                <Button
+                  type='submit'
+                  className='mr-2 rounded-full font-semibold md:inline-block'
+                  variant='contained'
+                  size={'large'}
+                >
+                  <SearchIcon />
+                </Button>
+              ) : (
+                <IconButton type='submit' color='primary' aria-label='search' className='mr-2'>
+                  <SearchIcon />
+                </IconButton>
+              )}
             </Box>
           </form>
           <Box className='col-span-2 flex items-center justify-end' sx={{ color: textColor }}>

@@ -1,3 +1,4 @@
+import { SearchCategory } from 'src/enums/search-category.enum'
 import * as yup from 'yup'
 
 const handleConfirmPasswordYup = (refString: string) => {
@@ -22,7 +23,8 @@ export const schema = yup.object({
     .min(6, 'Password length from 6 - 160 characters')
     .max(160, 'Password length from 6 - 160 characters'),
   confirm_password: handleConfirmPasswordYup('password'),
-  search_name: yup.string().trim().required()
+  search_name: yup.string().trim().required(),
+  search_category: yup.string().oneOf(Object.values(SearchCategory)).trim().required()
 })
 
 export const userSchema = yup.object({

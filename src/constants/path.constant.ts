@@ -7,7 +7,8 @@ const path = {
   password: '/account/password',
   tour: 'account/my-tours',
   reset: '/reset',
-  search: '/search',
+  searchTour: 'tours/search',
+  searchGuide: 'guides/search',
   tourDetail: 'tours/:id'
 }
 
