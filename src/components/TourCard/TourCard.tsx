@@ -5,7 +5,7 @@ import { Tour } from 'src/types/tour.type'
 
 export default function TourCard({ tourData }: { tourData: Tour }) {
   return (
-    <Link to='/' className='relative'>
+    <Link to={`/tours/${tourData.id}`} className='relative'>
       <div className='tour-card__wrapper flex h-full flex-col justify-between overflow-hidden rounded border border-solid border-[var(--border-primary)]'>
         <div className='tour-card__top-wrapper'>
           <div className='tour-card__top relative'>
