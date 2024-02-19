@@ -6,11 +6,11 @@ import { Unit } from 'src/enums/unit.enum'
 import { TourSchema, tourSchema } from 'src/utils/rules'
 
 interface Props {
-  onSubmit: (data: FormData) => void
+  onSubmit: (data: TourFormData) => void
   onCancel: () => void
 }
 
-type FormData = TourSchema
+type TourFormData = TourSchema
 
 export default function TourForm({ onCancel, onSubmit }: Props) {
   const {
@@ -18,7 +18,7 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>({
+  } = useForm<TourFormData>({
     defaultValues: {
       name: '',
       description: '',

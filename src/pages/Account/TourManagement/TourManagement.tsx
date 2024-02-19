@@ -3,22 +3,40 @@
 import AddIcon from '@mui/icons-material/Add'
 import Button from '@mui/material/Button'
 import { lighten } from '@mui/material/styles'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { useMemo, useState } from 'react'
 import { Tour } from 'src/types/tour.type'
 import http from 'src/utils/http'
 import TourForm from '../components/TourForm'
+import tourApi from 'src/apis/tour.api'
+import { TourSchema } from 'src/utils/rules'
+import { toast } from 'react-toastify'
+
+type TourFormData = TourSchema
 
 export default function TourManagement() {
   const [createMode, setCreateMode] = useState<boolean>(false)
   const { data: guideToursData, isLoading } = useQuery({
     queryKey: ['guideTours'],
+    //TODO: Handle API get tours of guide
     queryFn: () => http.get<any>('https://mocki.io/v1/0559052a-e5a4-41e4-8859-19d0d65917a3')
   })
+  const createTourMutation = useMutation({
+    mutationFn: (body: TourFormData) => tourApi.createTour(body)
+  })
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleSubmitTourForm = (_: any) => {}
+  const handleSubmitTourForm = (body: TourFormData) => {
+    createTourMutation.mutate(body, {
+      onSuccess: () => {
+        setCreateMode(false)
+        toast.success('Create the tour successfully.')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
 
   const columns = useMemo<MRT_ColumnDef<Tour>[]>(
     () => [

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from 'react-router-dom'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -14,6 +15,8 @@ import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { toast } from 'react-toastify'
+import { AxiosResponse } from 'axios'
+import { AuthSuccessResponse } from 'src/types/auth.type'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
@@ -39,7 +42,7 @@ export default function Login() {
 
   const onSubmit = handleSubmit((body) => {
     loginMutation.mutate(body, {
-      onSuccess: (data) => {
+      onSuccess: (data: AxiosResponse<AuthSuccessResponse, any>) => {
         setIsAuthenticated(true)
         setProfile(data.data.data.user)
       },
