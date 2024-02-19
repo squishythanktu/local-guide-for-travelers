@@ -1,8 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, MenuItem, TextField } from '@mui/material'
+import { Autocomplete, Box, Button, MenuItem, TextField, Chip } from '@mui/material'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
+import categoryApi from 'src/apis/category.api'
 import ControlledTextField from 'src/components/ControlledTextField'
 import { Unit } from 'src/enums/unit.enum'
+import { TourCategory } from 'src/types/tour.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
 
 interface Props {
@@ -13,6 +16,12 @@ interface Props {
 type TourFormData = TourSchema
 
 export default function TourForm({ onCancel, onSubmit }: Props) {
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => categoryApi.getCategories(),
+    placeholderData: keepPreviousData,
+    staleTime: 1 * 60 * 1000
+  })
   const {
     trigger,
     control,
@@ -87,31 +96,63 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
           />
         </div>
         <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
-          {/* TODO: Handle once having get categories API */}
-          {/*<Controller
-            control={control}
-            name='categories'
-            render={({ field }) => (
-              <TextField
-                select
-                id='categories'
-                label='Categories'
-                variant='outlined'
-                error={!!errors.categories?.message}
-                className='h-fit grow lg:w-1/3'
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('categories')
-                }}
-              >
-                <MenuItem>None</MenuItem>
-              </TextField>
-            )}
-          />*/}
+          {categoriesData?.data.data && (
+            <Controller
+              control={control}
+              name='categories'
+              render={({ field }) => {
+                const handleChange = (event, value) => {
+                  const isValidValue = value.every((selectedCategory: TourCategory) =>
+                    categoriesData?.data.data.some((category) => category.id === selectedCategory.id)
+                  )
+                  if (isValidValue) {
+                    field.onChange(value)
+                    trigger('categories')
+                  } else {
+                    field.onChange([])
+                    trigger('categories')
+                  }
+                }
+
+                return (
+                  <Autocomplete
+                    multiple
+                    id='categories'
+                    options={categoriesData.data.data}
+                    getOptionLabel={(option) => (option.name ? option.name : '')}
+                    isOptionEqualToValue={(option, value) => option && option.id === value.id}
+                    value={Array.isArray(field.value) ? field.value : []}
+                    className='h-fit grow lg:w-1/3'
+                    onChange={handleChange}
+                    renderTags={(value, getTagProps) => {
+                      const numTags = value.length
+                      const limitTags = 1
+                      return (
+                        <>
+                          {value.slice(0, limitTags).map((option, index) => (
+                            <Chip {...getTagProps({ index })} key={index} label={option.name ? option.name : ''} />
+                          ))}
+
+                          {numTags > limitTags && ` +${numTags - limitTags}`}
+                        </>
+                      )
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant='outlined'
+                        label='Categories'
+                        error={!!errors.categories?.message}
+                        InputLabelProps={{
+                          shrink: true
+                        }}
+                      />
+                    )}
+                  />
+                )
+              }}
+            />
+          )}
           <ControlledTextField
             className='min-h-[100px] w-full grow lg:w-1/3'
             control={control}

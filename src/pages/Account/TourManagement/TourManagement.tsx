@@ -5,17 +5,19 @@ import Button from '@mui/material/Button'
 import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Tour } from 'src/types/tour.type'
 import http from 'src/utils/http'
 import TourForm from '../components/TourForm'
 import tourApi from 'src/apis/tour.api'
 import { TourSchema } from 'src/utils/rules'
 import { toast } from 'react-toastify'
+import { AppContext } from 'src/contexts/app.context'
 
 type TourFormData = TourSchema
 
 export default function TourManagement() {
+  const { profile } = useContext(AppContext)
   const [createMode, setCreateMode] = useState<boolean>(false)
   const { data: guideToursData, isLoading } = useQuery({
     queryKey: ['guideTours'],
@@ -27,7 +29,13 @@ export default function TourManagement() {
   })
 
   const handleSubmitTourForm = (body: TourFormData) => {
-    createTourMutation.mutate(body, {
+    const formattedBody = {
+      ...body,
+      guide: {
+        id: profile!.id
+      }
+    }
+    createTourMutation.mutate(formattedBody, {
       onSuccess: () => {
         setCreateMode(false)
         toast.success('Create the tour successfully.')

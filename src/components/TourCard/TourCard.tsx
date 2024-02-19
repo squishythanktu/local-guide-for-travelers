@@ -23,6 +23,9 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
               <h3 className='title capitalize text-[var(--label-primary)] lg:max-h-20 lg:overflow-hidden'>
                 {tourData?.name}
               </h3>
+              <h5 className='text-[var(--label-secondary)]'>
+                by {tourData?.guide?.username || tourData?.guide?.email || 'N/A'}
+              </h5>
             </div>
             <div className='tour-card__body mb-2 px-2 py-0 text-sm text-[var(--label-primary)] sm:px-3'>
               <ul className='flex flex-wrap gap-4'>
@@ -32,10 +35,6 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
                 <li className='relative flex items-center whitespace-nowrap text-sm font-semibold'>
                   <span className='absolute left-[-10px] top-1/2 -translate-y-1/2 transform'>•</span>
                   {tourData?.transportation}
-                </li>
-                <li className='relative flex items-center whitespace-nowrap text-sm font-semibold'>
-                  <span className='absolute left-[-10px] top-1/2 -translate-y-1/2 transform'>|</span>
-                  by {tourData?.guide?.username || tourData?.guide?.email || 'N/A'}
                 </li>
               </ul>
             </div>
