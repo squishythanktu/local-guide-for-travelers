@@ -1,13 +1,11 @@
-import SimpleSlider from '../../components/SimpleSlider'
-import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined'
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined'
+import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import AboutActivity from '../../components/AboutActivity'
-import Experience from '../../components/Experience'
-import TourHeader from '../../components/TourHeader'
 import BookingAssistant from '../../components/BookingAssistant'
-import TourCard from 'src/components/TourCard'
-import { Divider } from '@mui/material'
+import Experience from '../../components/Experience'
+import SimpleSlider from '../../components/SimpleSlider'
+import TourHeader from '../../components/TourHeader'
 
 const itemsData = [
   'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
@@ -120,11 +118,12 @@ export default function TourDetail() {
         <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
           <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
           <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+            {/* TODO: Handle tour detail API 
             <TourCard />
             <TourCard />
             <TourCard />
             <TourCard />
-            <TourCard />
+            <TourCard /> */}
           </div>
         </div>
         <div className='activity__customer-review'></div>

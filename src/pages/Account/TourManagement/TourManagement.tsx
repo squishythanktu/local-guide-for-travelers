@@ -17,7 +17,8 @@ export default function TourManagement() {
     queryFn: () => http.get<any>('https://mocki.io/v1/0559052a-e5a4-41e4-8859-19d0d65917a3')
   })
 
-  const handleSubmitTourForm = (result) => {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleSubmitTourForm = (_: any) => {}
 
   const columns = useMemo<MRT_ColumnDef<Tour>[]>(
     () => [

@@ -8,7 +8,6 @@ import DotsIcon from 'src/assets/svg/dots.svg'
 import NoodleIcon from 'src/assets/svg/noodle.svg'
 import CurrencyInput from 'src/components/CurrencyInput/CurrencyInput'
 import DateRangePicker from 'src/components/DateRangePicker/DateRangePicker'
-import TourCard from 'src/components/TourCard'
 import path from 'src/constants/path.constant'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 
@@ -146,10 +145,11 @@ export default function Search() {
           </div>
           <div className='my-4 text-sm font-semibold  text-[var(--label-secondary)]'>46 tours found.</div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+            {/* TODO: Handle Search API 
             <TourCard />
             <TourCard />
             <TourCard />
-            <TourCard />
+            <TourCard /> */}
           </div>
         </div>
       </div>

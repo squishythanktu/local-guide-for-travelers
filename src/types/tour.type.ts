@@ -1,3 +1,8 @@
+type TourCategory = {
+  id: number
+  name: string
+}
+
 export type Tour = {
   id: number
   name: string
@@ -6,13 +11,14 @@ export type Tour = {
   includeService: string
   duration: number
   unit: string
+  overallRating: number
   estimatedLocalCashNeeded: string
   pricePerTraveler: number
   limitTraveler: number
   extraPrice: number
   province: string
   itinerary: string
-  categories: string[]
+  categories: TourCategory[]
 }
 
 export interface TourListConfig {

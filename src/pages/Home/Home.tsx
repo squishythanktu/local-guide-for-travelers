@@ -1,12 +1,22 @@
 import { Box } from '@mui/material'
-import TourCard from 'src/components/TourCard'
+import TourCard from '../../components/TourCard/TourCard'
 import { headerHeight } from 'src/constants/height.constant'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import LocationCard from 'src/components/LocationCard'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import tourApi from 'src/apis/tour.api'
+import { Tour } from 'src/types/tour.type'
+import Skeleton from '@mui/material/Skeleton'
 
 export default function Home() {
+  const { data: toursData, isPending } = useQuery({
+    queryKey: ['tours'],
+    queryFn: () => tourApi.getTours(),
+    placeholderData: keepPreviousData,
+    staleTime: 3 * 60 * 1000
+  })
   const carouselSettings = {
     dots: true,
     infinite: false,
@@ -68,11 +78,11 @@ export default function Home() {
           <h2 className='text-4xl	leading-10'>Unforgettable experiences around the world</h2>
         </div>
         <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-          <TourCard />
-          <TourCard />
-          <TourCard />
-          <TourCard />
-          <TourCard />
+          {isPending
+            ? Array(8)
+                .fill(0)
+                .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
+            : toursData?.data.data.map((tourData: Tour) => <TourCard key={tourData.id} tourData={tourData} />)}
         </div>
       </div>
       {/* Locations */}

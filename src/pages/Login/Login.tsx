@@ -20,7 +20,6 @@ const signInSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
-
   const {
     control,
     trigger,
