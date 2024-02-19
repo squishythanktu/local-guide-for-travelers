@@ -1,4 +1,7 @@
-type TourCategory = {
+import { User } from './user.type'
+import { SuccessResponse } from './utils.type'
+
+export type TourCategory = {
   id: number
   name: string
 }
@@ -19,6 +22,8 @@ export type Tour = {
   province: string
   itinerary: string
   categories: TourCategory[]
+  images: { id: string; imageLink: string }[]
+  guide: User
 }
 
 export interface TourListConfig {
@@ -34,3 +39,5 @@ export interface TourListConfig {
   start_date?: string
   end_date?: string
 }
+
+export type TourSuccessResponse = SuccessResponse<Tour>

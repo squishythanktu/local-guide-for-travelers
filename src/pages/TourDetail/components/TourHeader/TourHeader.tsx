@@ -1,9 +1,10 @@
 import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import { Link } from 'react-router-dom'
+import { TourCategory } from 'src/types/tour.type'
 
 interface TourHeaderProps {
-  categories: string[]
+  categories: TourCategory[]
   title: string
   rating: number
   numberOfReviews: number
@@ -19,7 +20,7 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
       >
         {categories.map((category, index) => (
           <div className='text-[10px] font-bold leading-4 md:text-[12px]' key={index}>
-            {category}
+            {category.name}
           </div>
         ))}
       </Box>
@@ -27,7 +28,7 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
         <h1 className='activity__title text-left text-2xl font-bold md:pb-2 md:text-3xl lg:font-extrabold'>{title}</h1>
         <div className='activity__basic-info flex flex-col sm:flex-row sm:items-center sm:gap-4'>
           <div className='activity-rating flex items-center gap-4'>
-            <Rating name='read-only' max={5} value={rating} readOnly size='large' />
+            <Rating name='read-only' max={5} precision={0.1} value={rating} readOnly size='large' />
             <div className='text-sm font-medium md:text-[16px]'>{rating}/5</div>
             <Link to='' className='text-sm underline md:text-[16px]'>
               {numberOfReviews} reviews

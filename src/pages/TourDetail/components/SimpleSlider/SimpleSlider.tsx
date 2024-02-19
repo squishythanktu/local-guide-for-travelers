@@ -3,7 +3,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 interface CustomPagingProps {
-  itemsData: string[]
+  itemsData: { id: string; imageLink: string }[]
 }
 
 function SimpleSlider(props: CustomPagingProps) {
@@ -58,7 +58,7 @@ function SimpleSlider(props: CustomPagingProps) {
           <div key={index} className=''>
             <img
               className='h-52 scale-75 rounded-md object-cover opacity-85 duration-300 hover:scale-125 hover:touch-pinch-zoom hover:opacity-100'
-              src={`${item}`}
+              src={`${item.imageLink}`}
               alt=''
             />
           </div>
