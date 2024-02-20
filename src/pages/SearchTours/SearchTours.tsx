@@ -8,15 +8,14 @@ import DotsIcon from 'src/assets/svg/dots.svg'
 import NoodleIcon from 'src/assets/svg/noodle.svg'
 import CurrencyInput from 'src/components/CurrencyInput/CurrencyInput'
 import DateRangePicker from 'src/components/DateRangePicker/DateRangePicker'
-import TourCard from 'src/components/TourCard'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 
-export default function Search() {
+export default function SearchTours() {
   const queryConfig: QueryConfig = useQueryConfig()
   const navigate = useNavigate()
   const getInitialSortingValue = () => {
-    if (queryConfig.sort_by && queryConfig.order) {
-      return `${queryConfig.sort_by}-${queryConfig.order}`
+    if (queryConfig.sortBy && queryConfig.order) {
+      return `${queryConfig.sortBy}-${queryConfig.order}`
     }
     return ''
   }
@@ -41,15 +40,13 @@ export default function Search() {
   }
 
   const handleCurrencyInputChange = (name: string, value: string) => {
-    if (parseFloat(value) <= 0 || value === '') return
-
     let newMinPrice = minPrice
     let newMaxPrice = maxPrice
+    if (parseFloat(value) <= 0 || value === '') return
 
     if (name === 'min_price' && value !== minPrice) {
       newMinPrice = value
     }
-
     if (name === 'max_price' && value !== maxPrice) {
       newMaxPrice = value
     }
@@ -82,11 +79,11 @@ export default function Search() {
         <div className='header-title flex w-full'>
           <SvgIcon component={DotsIcon} inheritViewBox className=' mr-2 mt-0 h-20 w-full max-w-12 lg:mt-3' />
           <div className='search-container__header-content flex w-full flex-col'>
-            <span className='text-base font-semibold sm:text-xl'>Things to do in</span>
+            <span className='sm:2text-xl text-base font-semibold'>Things to do in</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
                 <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[5rem] lg:leading-[5.25rem]'>
-                  {queryConfig.search_name}
+                  {queryConfig.searchName}
                 </h1>
                 <SvgIcon
                   component={NoodleIcon}

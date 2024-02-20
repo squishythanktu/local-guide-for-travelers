@@ -24,6 +24,7 @@ export default function ProfileMenu({ textColor }: Props) {
   const { isAuthenticated, profile } = useContext(AppContext)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -31,7 +32,6 @@ export default function ProfileMenu({ textColor }: Props) {
   return (
     <>
       <NavLink
-        to=''
         icon={
           <IconButton
             onClick={handleClick}

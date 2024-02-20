@@ -7,36 +7,34 @@ import omit from 'lodash/omit'
 import path from 'src/constants/path.constant'
 import { SearchCategory } from 'src/enums/search-category.enum'
 
-type FormData = Pick<Schema, 'search_name' | 'search_category'>
-const searchNameSchema = schema.pick(['search_name', 'search_category'])
+type FormData = Pick<Schema, 'searchName' | 'searchCategory'>
+const searchNameSchema = schema.pick(['searchName', 'searchCategory'])
 
 export default function useSearchToursGuides() {
   const queryConfig = useQueryConfig()
   const navigate = useNavigate()
   const { control, handleSubmit, trigger, register } = useForm<FormData>({
     defaultValues: {
-      search_name: '',
-      search_category: undefined
+      searchName: '',
+      searchCategory: undefined
     },
     resolver: yupResolver(searchNameSchema)
   })
 
   const onSubmitSearch = handleSubmit((data: FormData) => {
-    console.log(data)
-
     const config = queryConfig.order
       ? omit(
           {
             ...queryConfig,
-            search_name: data.search_name
+            searchName: data.searchName
           },
           ['order', 'sort_by']
         )
       : {
           ...queryConfig,
-          search_name: data.search_name
+          searchName: data.searchName
         }
-    const searchPath = `../${data.search_category === SearchCategory.TOURS ? path.searchTour : path.searchGuide}`
+    const searchPath = `../${data.searchCategory === SearchCategory.TOURS ? path.searchTour : path.searchGuide}`
     const searchQuery = createSearchParams(config).toString()
     navigate(`${searchPath}?${searchQuery}`, {
       replace: true

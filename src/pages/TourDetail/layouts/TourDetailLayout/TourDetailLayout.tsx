@@ -28,7 +28,7 @@ const initTour: Tour = {
   province: '',
   itinerary: '',
   categories: [{ id: 0, name: '' }],
-  images: [{ id: '', imageLink: '' }],
+  images: [{ id: 0, imageLink: '' }],
   guide: { id: '', email: '' }
 }
 

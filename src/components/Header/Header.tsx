@@ -76,10 +76,10 @@ export default function Header({
                 <FormControl size='small'>
                   <Select
                     displayEmpty
-                    id='search-category'
+                    id='searchCategory'
                     value={searchCategory}
                     label='Categories'
-                    {...register('search_category')}
+                    {...register('searchCategory')}
                     onChange={handleChange}
                     className='h-full w-12 overflow-auto md:w-[100px]'
                     sx={{
@@ -101,7 +101,7 @@ export default function Header({
               </div>
               <Controller
                 control={control}
-                name='search_name'
+                name='searchName'
                 render={({ field }) => (
                   <InputBase
                     sx={{
@@ -115,13 +115,13 @@ export default function Header({
                       }
                     }}
                     className='w-full font-semibold'
-                    placeholder='Search tours, guides'
+                    placeholder={searchCategory === SearchCategory.TOURS ? 'Search tours' : 'Search guides'}
                     inputProps={{ 'aria-label': 'search' }}
                     onChange={(event) => {
                       field.onChange(event)
-                      trigger('search_name')
+                      trigger('searchName')
                     }}
-                    defaultValue={queryConfig.search_name ? queryConfig.search_name : field.value || ''}
+                    defaultValue={queryConfig.searchName ? queryConfig.searchName : field.value || ''}
                   />
                 )}
               />

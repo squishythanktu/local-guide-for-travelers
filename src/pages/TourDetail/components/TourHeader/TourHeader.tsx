@@ -28,7 +28,7 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
         <h1 className='activity__title text-left text-2xl font-bold md:pb-2 md:text-3xl lg:font-extrabold'>{title}</h1>
         <div className='activity__basic-info flex flex-col sm:flex-row sm:items-center sm:gap-4'>
           <div className='activity-rating flex items-center gap-4'>
-            <Rating name='read-only' max={5} precision={0.1} value={rating} readOnly size='large' />
+            <Rating max={5} precision={0.1} value={rating} size='large' readOnly />
             <div className='text-sm font-medium md:text-[16px]'>{rating}/5</div>
             <Link to='' className='text-sm underline md:text-[16px]'>
               {numberOfReviews} reviews

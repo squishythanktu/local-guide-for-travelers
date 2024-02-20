@@ -1,4 +1,5 @@
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import { Link } from 'react-router-dom'
 import { Tour } from 'src/types/tour.type'
@@ -6,7 +7,12 @@ import { Tour } from 'src/types/tour.type'
 export default function TourCard({ tourData }: { tourData: Tour }) {
   return (
     <Link to={`/tours/${tourData.id}`} className='relative'>
-      <div className='tour-card__wrapper flex h-full flex-col justify-between overflow-hidden rounded border border-solid border-[var(--border-primary)]'>
+      <Box
+        sx={{
+          boxShadow: 'rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px'
+        }}
+        className='tour-card__wrapper flex h-full flex-col justify-between overflow-hidden rounded'
+      >
         <div className='tour-card__top-wrapper'>
           <div className='tour-card__top relative'>
             <div className='tour-card__photo h-64 overflow-hidden'>
@@ -42,7 +48,7 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
         </div>
         <div className='tour-card__details  float-left mb-2 px-3 lg:max-h-40 lg:overflow-hidden'>
           <div className='rating-overall-container flex items-center gap-1'>
-            <Rating name='half-rating' defaultValue={tourData?.overallRating} precision={0.1} size='small' />
+            <Rating defaultValue={tourData?.overallRating} precision={0.1} size='small' readOnly />
             <span className='rating-overall__number text-sm font-semibold'>{tourData?.overallRating}</span>
             <span className='rating-overall__reviews text-sm font-semibold  text-[var(--label-secondary)]'>
               {/* TODO: Replace by tour total reviews from API */}
@@ -53,7 +59,7 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
             From $ {tourData?.pricePerTraveler.toLocaleString()} per person
           </div>
         </div>
-      </div>
+      </Box>
       <div className='wishlist-icon absolute right-1 top-1 z-[4] cursor-pointer'>
         <FavoriteBorderIcon style={{ color: 'var(--border-primary)' }} />
       </div>

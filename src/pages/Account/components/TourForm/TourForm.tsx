@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Autocomplete, Box, Button, MenuItem, TextField, Chip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { SyntheticEvent } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import categoryApi from 'src/apis/category.api'
 import ControlledTextField from 'src/components/ControlledTextField'
@@ -101,8 +102,8 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
               control={control}
               name='categories'
               render={({ field }) => {
-                const handleChange = (event, value) => {
-                  const isValidValue = value.every((selectedCategory: TourCategory) =>
+                const handleChange = (_event: SyntheticEvent<Element, Event>, value: TourCategory[] | unknown) => {
+                  const isValidValue = (value as TourCategory[]).every((selectedCategory: TourCategory) =>
                     categoriesData?.data.data.some((category) => category.id === selectedCategory.id)
                   )
                   if (isValidValue) {

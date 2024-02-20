@@ -1,0 +1,126 @@
+import MenuItem from '@mui/material/MenuItem'
+import Pagination from '@mui/material/Pagination'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Skeleton from '@mui/material/Skeleton'
+import SvgIcon from '@mui/material/SvgIcon'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { ChangeEvent, useState } from 'react'
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import guideApi from 'src/apis/guide.api'
+import DotsIcon from 'src/assets/svg/dots.svg'
+import NoodleIcon from 'src/assets/svg/noodle.svg'
+import GuideCard from 'src/components/GuideCard'
+import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
+import { Guide } from 'src/types/guide.type'
+
+export default function SearchGuides() {
+  const queryConfig: QueryConfig = useQueryConfig()
+  const { data: guidesData, isPending } = useQuery({
+    queryKey: ['guidesSearch', queryConfig],
+    queryFn: () => guideApi.searchGuides(queryConfig),
+    placeholderData: keepPreviousData,
+    staleTime: 1 * 60 * 1000
+  })
+
+  const navigate = useNavigate()
+  const getInitialSortingValue = () => {
+    if (queryConfig.sortBy && queryConfig.order) {
+      return `${queryConfig.sortBy}-${queryConfig.order}`
+    }
+    return ''
+  }
+  const [sortingValue, setSortingValue] = useState<string>(getInitialSortingValue())
+
+  const handleSortChange = (event: SelectChangeEvent<string>) => {
+    const selectedValue = event.target.value
+    setSortingValue(selectedValue)
+    const [sortBy, order] = selectedValue.split('-')
+    navigate({
+      search: createSearchParams({
+        ...queryConfig,
+        sortBy: sortBy,
+        order
+      }).toString()
+    })
+  }
+
+  const handlePaginationChange = (_event: ChangeEvent<unknown>, value: number) => {
+    navigate({
+      search: createSearchParams({
+        ...queryConfig,
+        page: (value - 1).toString()
+      }).toString()
+    })
+  }
+
+  return (
+    <>
+      <div className='search-container__header container mt-4 flex min-w-80 flex-col items-start justify-between gap-4 md:flex-row'>
+        <div className='header-title flex w-full'>
+          <SvgIcon component={DotsIcon} inheritViewBox className=' mr-2 mt-0 h-20 w-full max-w-12 lg:mt-3' />
+          <div className='search-container__header-content flex w-full flex-col'>
+            <span className='text-base font-semibold sm:text-2xl'>Local guides match</span>
+            <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
+              <div className='flex pt-2'>
+                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[5rem] lg:leading-[5.25rem]'>
+                  {queryConfig.searchName}
+                </h1>
+                <SvgIcon
+                  component={NoodleIcon}
+                  inheritViewBox
+                  className='mt-[-20px] hidden h-[10rem] w-full max-w-[14em] lg:block'
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='search-container__actions mt-4'>
+        <div className='actions-container container'>
+          <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All guides</h2>
+          <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 pb-3 md:flex-row md:items-center'>
+            <div className='sort-container flex items-center'>
+              <Select
+                name='sortBy'
+                value={sortingValue}
+                onChange={handleSortChange}
+                displayEmpty
+                inputProps={{ 'aria-label': 'Without label' }}
+                className='h-14 min-w-48'
+                MenuProps={{ disableScrollLock: true }}
+              >
+                <MenuItem disabled value=''>
+                  <em>Sort</em>
+                </MenuItem>
+                <MenuItem value='overallRating-asc'>Rating - Low to high</MenuItem>
+                <MenuItem value='overallRating-desc'>Rating - High to low</MenuItem>
+              </Select>
+            </div>
+          </div>
+          <div className='my-4 text-sm font-semibold text-[var(--label-secondary)]'>
+            {guidesData?.data.data.guides.length} guides found.
+          </div>
+          <div className='collection-body mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+            {isPending
+              ? Array(8)
+                  .fill(0)
+                  .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
+              : guidesData?.data.data.guides.map((guideData: Guide) => (
+                  <GuideCard key={guideData.id} guideData={guideData} />
+                ))}
+          </div>
+        </div>
+      </div>
+      {guidesData && (
+        <Pagination
+          onChange={handlePaginationChange}
+          count={guidesData.data.data.totalOfPage as unknown as number}
+          className='my-6 flex justify-center'
+          size='large'
+          variant='outlined'
+          color='primary'
+        />
+      )}
+    </>
+  )
+}

@@ -6,7 +6,7 @@ export type TourCategory = {
   name: string
 }
 
-type ImageWithLink = {
+export type ImageWithLink = {
   id: number
   imageLink: string
 }
@@ -34,12 +34,12 @@ export type Tour = {
 export interface TourListConfig {
   page?: number | string
   limit?: number | string
-  sort_by?: 'rating' | 'price'
+  sortBy?: 'rating' | 'price'
   order?: 'asc' | 'desc'
-  rating_filter?: number | string
+  overallRating?: number | string
   min_price?: number | string
   max_price?: number | string
-  search_name?: string
+  searchName?: string
   category?: string
   start_date?: string
   end_date?: string

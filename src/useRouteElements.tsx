@@ -14,7 +14,8 @@ const Profile = lazy(() => import('./pages/Account/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
-const Search = lazy(() => import('./pages/Search'))
+const SearchTours = lazy(() => import('./pages/SearchTours'))
+const SearchGuides = lazy(() => import('./pages/SearchGuides'))
 const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
 
 function ProtectedRoute() {
@@ -55,14 +56,6 @@ export default function useRouteElements() {
             <Suspense>
               <ResetPassword />
             </Suspense>
-          )
-        },
-        {
-          path: path.tourDetail,
-          element: (
-            <MainLayout>
-              <TourDetailLayout />
-            </MainLayout>
           )
         }
       ]
@@ -119,11 +112,19 @@ export default function useRouteElements() {
       )
     },
     {
+      path: path.tourDetail,
+      element: (
+        <MainLayout>
+          <TourDetailLayout />
+        </MainLayout>
+      )
+    },
+    {
       path: 'tours/search',
       element: (
         <MainLayout>
           <Suspense>
-            <Search />
+            <SearchTours />
           </Suspense>
         </MainLayout>
       )
@@ -133,7 +134,7 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <Suspense>
-            <Search />
+            <SearchGuides />
           </Suspense>
         </MainLayout>
       )
