@@ -1,4 +1,4 @@
 export enum Unit {
-  DAYS = 'day(s)',
-  HOURS = 'hour(s)'
+  DAYS = 'days',
+  HOURS = 'hours'
 }

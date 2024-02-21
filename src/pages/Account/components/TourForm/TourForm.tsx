@@ -1,22 +1,24 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Autocomplete, Box, Button, MenuItem, TextField, Chip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { SyntheticEvent } from 'react'
+import { SyntheticEvent, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import categoryApi from 'src/apis/category.api'
 import ControlledTextField from 'src/components/ControlledTextField'
 import { Unit } from 'src/enums/unit.enum'
-import { TourCategory } from 'src/types/tour.type'
+import { TourCategory, Tour } from 'src/types/tour.type'
+import { User } from 'src/types/user.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
 
 interface Props {
   onSubmit: (data: TourFormData) => void
   onCancel: () => void
+  defaultValue?: Tour | User
 }
 
-type TourFormData = TourSchema
+export type TourFormData = TourSchema
 
-export default function TourForm({ onCancel, onSubmit }: Props) {
+export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoryApi.getCategories(),
@@ -27,12 +29,13 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
     trigger,
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<TourFormData>({
     defaultValues: {
       name: '',
       description: '',
-      province: '',
+      // province: '',
       transportation: '',
       duration: 0,
       unit: '',
@@ -41,10 +44,18 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
       pricePerTraveler: 0,
       limitTraveler: 0,
       extraPrice: 0,
-      estimatedLocalCashNeeded: 0
+      estimatedLocalCashNeeded: ''
     },
     resolver: yupResolver(tourSchema)
   })
+
+  useEffect(() => {
+    if (defaultValue) {
+      Object.entries(defaultValue).forEach(([key, value]) => {
+        setValue(key as keyof TourFormData, value)
+      })
+    }
+  }, [defaultValue, setValue])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,12 +67,12 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
             name={'name'}
             label={'Name *'}
           />
-          <ControlledTextField
+          {/* <ControlledTextField
             className='min-h-[100px] grow lg:w-1/2'
             control={control}
             name={'province'}
             label={'Province * '}
-          />
+          /> */}
         </div>
         <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
           <ControlledTextField
@@ -89,11 +100,11 @@ export default function TourForm({ onCancel, onSubmit }: Props) {
           />
           <ControlledTextField
             className='min-h-[100px] grow lg:w-1/4'
-            type='number'
+            // type='number'
             control={control}
             name={'estimatedLocalCashNeeded'}
             label={'Estimated local cash needed *'}
-            prefix='$'
+            // prefix='$'
           />
         </div>
         <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>

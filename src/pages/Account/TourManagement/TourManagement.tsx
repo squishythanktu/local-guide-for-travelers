@@ -7,22 +7,28 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { useContext, useMemo, useState } from 'react'
 import { Tour } from 'src/types/tour.type'
-import http from 'src/utils/http'
 import TourForm from '../components/TourForm'
 import tourApi from 'src/apis/tour.api'
 import { TourSchema } from 'src/utils/rules'
 import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
+import UpdateForm from '../components/TourForm/UpdateForm'
 
 type TourFormData = TourSchema
+export type UpdateTourFormData = TourSchema & {
+  id: number
+}
 
 export default function TourManagement() {
   const { profile } = useContext(AppContext)
   const [createMode, setCreateMode] = useState<boolean>(false)
+  const [updateMode, setUpdateMode] = useState<boolean>(false)
+  const [selectedId, setSelectedId] = useState<string>('')
   const { data: guideToursData, isLoading } = useQuery({
     queryKey: ['guideTours'],
     //TODO: Handle API get tours of guide
-    queryFn: () => http.get<any>('https://mocki.io/v1/0559052a-e5a4-41e4-8859-19d0d65917a3')
+    queryFn: () => tourApi.getTours()
   })
   const createTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createTour(body)
@@ -44,6 +50,11 @@ export default function TourManagement() {
         toast.error(error.message)
       }
     })
+  }
+
+  const handleUpdate = (id: string) => {
+    setSelectedId(id)
+    setUpdateMode(true)
   }
 
   const columns = useMemo<MRT_ColumnDef<Tour>[]>(
@@ -84,6 +95,12 @@ export default function TourManagement() {
         header: 'Price',
         size: 100,
         Cell: ({ cell }) => <span>${cell.getValue<number>().toLocaleString()}</span>
+      },
+      {
+        accessorKey: 'action',
+        header: 'Action',
+        size: 100,
+        Cell: ({ row }) => <ModeEditOutlineOutlinedIcon onClick={() => handleUpdate(row.original.id.toString())} />
       }
     ],
     []
@@ -91,7 +108,7 @@ export default function TourManagement() {
 
   const table = useMaterialReactTable<Tour>({
     columns,
-    data: guideToursData?.data ?? [],
+    data: guideToursData?.data.data ?? [],
     state: {
       isLoading
     },
@@ -128,7 +145,7 @@ export default function TourManagement() {
 
   return (
     <div className='flex h-full w-full flex-col'>
-      {!createMode && (
+      {!createMode && !updateMode && (
         <>
           <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
             Tour Management
@@ -142,6 +159,20 @@ export default function TourManagement() {
             Create Tour
           </h2>
           <TourForm onSubmit={handleSubmitTourForm} onCancel={() => setCreateMode(false)} />
+        </>
+      )}
+      {updateMode && (
+        <>
+          <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
+            Update Tour
+          </h2>
+          <UpdateForm
+            tourId={selectedId}
+            onCancel={() => {
+              setUpdateMode(false), setSelectedId('')
+            }}
+            setUpdateMode={setUpdateMode}
+          />
         </>
       )}
     </div>

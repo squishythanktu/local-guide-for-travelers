@@ -44,16 +44,12 @@ export const tourSchema = yup.object({
   includeService: yup.string().trim(),
   duration: yup.number().positive().required().typeError('Duration must be positive a number'),
   unit: yup.string().trim().required(),
-  estimatedLocalCashNeeded: yup
-    .number()
-    .positive()
-    .required()
-    .typeError('Estimated local cash needed must be positive a number'),
+  estimatedLocalCashNeeded: yup.string().required().typeError('Estimated local cash needed is required'),
   pricePerTraveler: yup.number().positive().required().typeError('Price per traveler must be positive a number'),
   limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
   extraPrice: yup.number().positive().required().typeError('Extra price must be positive a number'),
   itinerary: yup.string().trim().required(),
-  province: yup.string().trim().required().max(50, 'Maximum length is 50 characters'),
+  // province: yup.string().trim().required().max(50, 'Maximum length is 50 characters'),
   categories: yup.array().of(
     yup.object().shape({
       id: yup.number(),

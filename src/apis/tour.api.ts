@@ -1,3 +1,4 @@
+import { TourUpdateFormData } from 'src/pages/Account/components/TourForm/UpdateForm/UpdateForm'
 import { Tour, TourSuccessResponse } from 'src/types/tour.type'
 import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
@@ -7,6 +8,7 @@ type TourFormData = TourSchema
 const URL_CREATE_TOURS = 'tour-management/add'
 const URL_GET_TOURS = 'tour-management/tours'
 const URL_TOUR_DETAILS = 'tour-management/tour-detail'
+const URL_UPDATE_TOURS = 'tour-management/update'
 
 const tourApi = {
   getTours() {
@@ -17,6 +19,9 @@ const tourApi = {
   },
   createTour(body: TourFormData) {
     return http.post<SuccessResponse<Tour>>(URL_CREATE_TOURS, body)
+  },
+  updateTour(body: TourUpdateFormData) {
+    return http.put<SuccessResponse<Tour>>(URL_UPDATE_TOURS, body)
   }
 }
 
