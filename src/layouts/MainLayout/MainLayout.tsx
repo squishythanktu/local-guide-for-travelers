@@ -1,8 +1,10 @@
-interface Props {
+import React from 'react'
+
+interface MainLayoutProps {
   children?: React.ReactNode
 }
 
-export default function MainLayout({ children }: Props) {
+const MainLayout: React.FC<MainLayoutProps> = ({ children }: MainLayoutProps) => {
   return (
     <div>
       {/* <Header /> */}
@@ -11,3 +13,5 @@ export default function MainLayout({ children }: Props) {
     </div>
   )
 }
+
+export default MainLayout

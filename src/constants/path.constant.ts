@@ -1,7 +1,7 @@
-const path = {
+const PATH = {
   home: '/',
   login: '/login',
   register: '/register'
 }
 
-export default path
+export default PATH
