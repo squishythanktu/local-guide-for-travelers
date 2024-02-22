@@ -14,6 +14,8 @@ import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
 import UpdateForm from '../components/TourForm/UpdateForm'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import ConfirmDialog from './components/ConfirmDialog'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -24,6 +26,7 @@ export default function TourManagement() {
   const { profile } = useContext(AppContext)
   const [createMode, setCreateMode] = useState<boolean>(false)
   const [updateMode, setUpdateMode] = useState<boolean>(false)
+  const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string>('')
   const { data: guideToursData, isLoading } = useQuery({
     queryKey: ['guideTours'],
@@ -32,6 +35,9 @@ export default function TourManagement() {
   })
   const createTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createTour(body)
+  })
+  const deleteTourMutation = useMutation({
+    mutationFn: (selectedId: string) => tourApi.deleteTour(selectedId)
   })
 
   const handleSubmitTourForm = (body: TourFormData) => {
@@ -57,6 +63,28 @@ export default function TourManagement() {
     setUpdateMode(true)
   }
 
+  const handleDelete = (id: string) => {
+    setSelectedId(id)
+    setDeleteMode(true)
+  }
+
+  const handleCloseDialog = () => {
+    setDeleteMode(false)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteTourMutation.mutate(selectedId, {
+      onSuccess: () => {
+        setDeleteMode(false)
+        toast.success('Delete the tour successfully.')
+      },
+      onError: (error) => {
+        setDeleteMode(false)
+        toast.error(error.message)
+      }
+    })
+  }
+
   const columns = useMemo<MRT_ColumnDef<Tour>[]>(
     () => [
       {
@@ -79,7 +107,6 @@ export default function TourManagement() {
         header: 'Transportation',
         size: 100
       },
-
       {
         accessorKey: 'duration',
         header: 'Duration',
@@ -100,7 +127,12 @@ export default function TourManagement() {
         accessorKey: 'action',
         header: 'Action',
         size: 100,
-        Cell: ({ row }) => <ModeEditOutlineOutlinedIcon onClick={() => handleUpdate(row.original.id.toString())} />
+        Cell: ({ row }) => (
+          <>
+            <ModeEditOutlineOutlinedIcon onClick={() => handleUpdate(row.original.id.toString())} />
+            <DeleteOutlinedIcon onClick={() => handleDelete(row.original.id.toString())} />
+          </>
+        )
       }
     ],
     []
@@ -174,6 +206,13 @@ export default function TourManagement() {
             setUpdateMode={setUpdateMode}
           />
         </>
+      )}
+      {deleteMode && (
+        <ConfirmDialog
+          title='Delete Confirm'
+          handleCloseDialog={handleCloseDialog}
+          handleConfirm={handleConfirmDelete}
+        />
       )}
     </div>
   )

@@ -5,23 +5,23 @@ import http from 'src/utils/http'
 import { TourSchema } from 'src/utils/rules'
 
 type TourFormData = TourSchema
-const URL_CREATE_TOURS = 'tour-management/add'
-const URL_GET_TOURS = 'tour-management/tours'
-const URL_TOUR_DETAILS = 'tour-management/tour-detail'
-const URL_UPDATE_TOURS = 'tour-management/update'
+const URL_TOURS = 'tours'
 
 const tourApi = {
   getTours() {
-    return http.get<SuccessResponse<Tour[]>>(URL_GET_TOURS)
+    return http.get<SuccessResponse<Tour[]>>(URL_TOURS)
   },
   getTourById(id: string) {
-    return http.get<TourSuccessResponse>(`${URL_TOUR_DETAILS}/${id}`)
+    return http.get<TourSuccessResponse>(`${URL_TOURS}/${id}`)
   },
   createTour(body: TourFormData) {
-    return http.post<SuccessResponse<Tour>>(URL_CREATE_TOURS, body)
+    return http.post<SuccessResponse<Tour>>(URL_TOURS, body)
   },
   updateTour(body: TourUpdateFormData) {
-    return http.put<SuccessResponse<Tour>>(URL_UPDATE_TOURS, body)
+    return http.put<SuccessResponse<Tour>>(URL_TOURS, body)
+  },
+  deleteTour(id: string) {
+    return http.delete<SuccessResponse<void>>(`${URL_TOURS}/${id}`)
   }
 }
 
