@@ -22,6 +22,9 @@ const tourApi = {
   },
   deleteTour(id: string) {
     return http.delete<SuccessResponse<void>>(`${URL_TOURS}/${id}`)
+  },
+  getToursOfGuide() {
+    return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/guide`)
   }
 }
 

@@ -29,9 +29,8 @@ export default function TourManagement() {
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string>('')
   const { data: guideToursData, isLoading } = useQuery({
-    queryKey: ['guideTours'],
-    //TODO: Handle API get tours of guide
-    queryFn: () => tourApi.getTours()
+    queryKey: ['guideToursOfGuide'],
+    queryFn: () => tourApi.getToursOfGuide()
   })
   const createTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createTour(body)
