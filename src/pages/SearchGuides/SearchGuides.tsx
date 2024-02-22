@@ -78,7 +78,7 @@ export default function SearchGuides() {
       <div className='search-container__actions mt-4'>
         <div className='actions-container container'>
           <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All guides</h2>
-          <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 pb-3 md:flex-row md:items-center'>
+          <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 pb-2 md:flex-row md:items-center'>
             <div className='sort-container flex items-center'>
               <Select
                 name='sortBy'
@@ -98,7 +98,7 @@ export default function SearchGuides() {
             </div>
           </div>
           <div className='my-4 text-sm font-semibold text-[var(--label-secondary)]'>
-            {guidesData?.data.data.guides.length} guides found.
+            {`${guidesData?.data.data.totalOfResult} guides found.`}
           </div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
             {isPending

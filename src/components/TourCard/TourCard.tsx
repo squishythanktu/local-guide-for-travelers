@@ -1,10 +1,14 @@
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Tour } from 'src/types/tour.type'
+import classNames from 'classnames'
 
 export default function TourCard({ tourData }: { tourData: Tour }) {
+  const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
+
   return (
     <Link to={`/tours/${tourData.id}`} className='relative'>
       <Box
@@ -12,6 +16,8 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
           boxShadow: 'rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px'
         }}
         className='tour-card__wrapper flex h-full flex-col justify-between overflow-hidden rounded'
+        onMouseEnter={() => setIsCardHovered(true)}
+        onMouseLeave={() => setIsCardHovered(false)}
       >
         <div className='tour-card__top-wrapper'>
           <div className='tour-card__top relative'>
@@ -19,7 +25,9 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
               <img
                 src={tourData.images[0].imageLink}
                 alt='Tour img'
-                className='h-full w-full object-cover transition duration-700 hover:scale-125'
+                className={classNames('h-full w-full object-cover transition duration-700', {
+                  'scale-125': isCardHovered
+                })}
               />
             </div>
             <div className='tour-card__header mb-2 mt-1 px-3'>

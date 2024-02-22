@@ -18,6 +18,13 @@ const theme = extendTheme({
     }
   },
   components: {
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          height: '100%'
+        }
+      }
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {

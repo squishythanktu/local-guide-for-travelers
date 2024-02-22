@@ -10,7 +10,6 @@ export interface SuccessResponseWithPagination<Data> {
   data: {
     [key: string]: Data
   }
-  totalOfPages: number
 }
 export interface ErrorResponse<Data> {
   statusCode: string

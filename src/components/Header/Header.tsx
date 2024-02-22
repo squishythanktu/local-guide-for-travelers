@@ -2,28 +2,28 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
-import InputBase from '@mui/material/InputBase'
 import IconButton from '@mui/material/IconButton'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import InputBase from '@mui/material/InputBase'
 import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import SvgIcon from '@mui/material/SvgIcon'
 import { CssVarsTheme, Theme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { Link, useLocation } from 'react-router-dom'
 import WhiteLogoIcon from 'src/assets/svg/logo-white.svg'
 import MainLogoIcon from 'src/assets/svg/logo.svg'
 import { headerHeight } from 'src/constants/height.constant'
+import { SearchCategory } from 'src/enums/search-category.enum'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import useSearchToursGuides from 'src/hooks/useSearchToursGuides'
+import theme from 'src/theme'
 import NavLink from './NavLink'
 import ProfileMenu from './ProfileMenu'
-import { useState } from 'react'
-import theme from 'src/theme'
-import { SearchCategory } from 'src/enums/search-category.enum'
 
 interface Props {
   bgColor?: string
@@ -44,10 +44,6 @@ export default function Header({
   const queryConfig = useQueryConfig()
   const [searchCategory, setSearchCategory] = useState<string>(getInitialSearchCategoryValue())
   const isMdBreakpoint = useMediaQuery(theme.breakpoints.up('md'))
-
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    setSearchCategory(event.target.value)
-  }
 
   return (
     <Box
@@ -80,7 +76,10 @@ export default function Header({
                     value={searchCategory}
                     label='Categories'
                     {...register('searchCategory')}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      setSearchCategory(event.target.value)
+                      trigger('searchCategory')
+                    }}
                     className='h-full w-12 overflow-auto md:w-[100px]'
                     sx={{
                       boxShadow: 'none',

@@ -37,10 +37,10 @@ export interface TourListConfig {
   sortBy?: 'rating' | 'price'
   order?: 'asc' | 'desc'
   overallRating?: number | string
-  min_price?: number | string
-  max_price?: number | string
+  minPrice?: number | string
+  maxPrice?: number | string
   searchName?: string
-  category?: string
+  categoryId?: number[]
   start_date?: string
   end_date?: string
 }

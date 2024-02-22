@@ -67,7 +67,7 @@ export default function TourDetail() {
           title={tour.name}
           rating={tour.overallRating}
           numberOfReviews={numberOfReviews}
-          provider={tour.guide.username || ''}
+          provider={tour.guide?.username || ''}
         />
         <div className='activity__photo-gallery pb-2 pt-2'>
           <SimpleSlider itemsData={tour.images} />

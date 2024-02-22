@@ -1,8 +1,9 @@
 import { TourUpdateFormData } from 'src/pages/Account/components/TourForm/UpdateForm/UpdateForm'
 import { Tour, TourSuccessResponse } from 'src/types/tour.type'
-import { SuccessResponse } from 'src/types/utils.type'
+import { SuccessResponse, SuccessResponseWithPagination } from 'src/types/utils.type'
 import http from 'src/utils/http'
 import { TourSchema } from 'src/utils/rules'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 type TourFormData = TourSchema
 const URL_TOURS = 'tours'
@@ -22,6 +23,9 @@ const tourApi = {
   },
   deleteTour(id: string) {
     return http.delete<SuccessResponse<void>>(`${URL_TOURS}/${id}`)
+  },
+  searchTours(params: QueryConfig) {
+    return http.get<SuccessResponseWithPagination<Tour[]>>(URL_TOURS + '/search', { params })
   },
   getToursOfGuide() {
     return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/guide`)

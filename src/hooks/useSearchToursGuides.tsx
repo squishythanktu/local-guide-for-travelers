@@ -28,7 +28,7 @@ export default function useSearchToursGuides() {
             ...queryConfig,
             searchName: data.searchName
           },
-          ['order', 'sort_by']
+          ['order', 'sortBy']
         )
       : {
           ...queryConfig,

@@ -16,16 +16,16 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
     <>
       <Box
         sx={{ color: (theme) => theme.palette.secondary.main }}
-        className='activity__category-label  uppercase sm:flex sm:gap-4'
+        className='activity__category-label uppercase sm:flex sm:gap-4'
       >
         {categories.map((category, index) => (
-          <div className='text-[10px] font-bold leading-4 md:text-[12px]' key={index}>
+          <div className='text-md font-bold leading-4 md:text-lg' key={index}>
             {category.name}
           </div>
         ))}
       </Box>
       <div className='activity__header w-full'>
-        <h1 className='activity__title text-left text-2xl font-bold md:pb-2 md:text-3xl lg:font-extrabold'>{title}</h1>
+        <h1 className='activity__title text-left text-3xl font-bold md:pb-2 md:text-4xl lg:font-extrabold'>{title}</h1>
         <div className='activity__basic-info flex flex-col sm:flex-row sm:items-center sm:gap-4'>
           <div className='activity-rating flex items-center gap-4'>
             <Rating max={5} precision={0.1} value={rating} size='large' readOnly />

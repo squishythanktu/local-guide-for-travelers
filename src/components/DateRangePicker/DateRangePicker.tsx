@@ -66,7 +66,14 @@ export default function DateRangePicker({ className, queryConfig }: Props) {
   }
 
   return (
-    <Box className={`flex gap-4 ${className}`}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1
+      }}
+      className={`${className}`}
+    >
       <DatePicker
         disablePast
         label='Start date'
@@ -75,8 +82,9 @@ export default function DateRangePicker({ className, queryConfig }: Props) {
         slotProps={{
           field: { clearable: true, onClear: handleClearStartDate }
         }}
-        className='w-1/2'
+        sx={{ width: '50%' }}
       />
+      -
       <DatePicker
         minDate={startDate || undefined}
         disabled={!startDate}
@@ -86,7 +94,7 @@ export default function DateRangePicker({ className, queryConfig }: Props) {
         slotProps={{
           field: { clearable: true, onClear: () => setEndDate(null) }
         }}
-        className='w-1/2'
+        sx={{ width: '50%' }}
       />
     </Box>
   )

@@ -12,14 +12,14 @@ export default function useQueryConfig() {
   const queryConfig: QueryConfig = omitBy(
     {
       page: queryParams.page || '0',
-      limit: queryParams.limit || '8',
+      limit: queryParams.limit || '16',
       sortBy: queryParams.sortBy,
       order: queryParams.order,
       overallRating: queryParams.overallRating,
-      max_price: queryParams.max_price,
-      min_price: queryParams.min_price,
+      maxPrice: queryParams.maxPrice,
+      minPrice: queryParams.minPrice,
       searchName: queryParams.searchName,
-      category: queryParams.category,
+      categoryId: queryParams.categoryId,
       start_date: queryParams.start_date,
       end_date: queryParams.end_date
     },

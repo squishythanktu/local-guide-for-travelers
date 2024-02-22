@@ -1,12 +1,13 @@
 import { Guide } from 'src/types/guide.type'
 import { SuccessResponseWithPagination } from 'src/types/utils.type'
 import http from 'src/utils/http'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
-const URL_GET_GUIDES = 'guides/search'
+const URL_SEARCH_GUIDES = 'guides/search'
 
 const guideApi = {
-  searchGuides(params: any) {
-    return http.get<SuccessResponseWithPagination<Guide[]>>(URL_GET_GUIDES, { params })
+  searchGuides(params: QueryConfig) {
+    return http.get<SuccessResponseWithPagination<Guide[]>>(URL_SEARCH_GUIDES, { params })
   }
 }
 
