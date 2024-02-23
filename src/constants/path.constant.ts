@@ -10,7 +10,8 @@ const path = {
   reset: '/reset',
   searchTour: 'tours/search',
   searchGuide: 'guides/search',
-  tourDetail: 'tours/:id'
+  tourDetail: 'tours/:id',
+  cart: '/cart'
 }
 
 export default path

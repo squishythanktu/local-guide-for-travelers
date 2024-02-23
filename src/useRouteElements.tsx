@@ -6,6 +6,7 @@ import path from './constants/path.constant'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import HomeLayout from './layouts/HomeLayout'
 import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
+import CartLayout from './pages/Cart/layout/CartLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -126,6 +127,14 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <TourDetailLayout />
+        </MainLayout>
+      )
+    },
+    {
+      path: path.cart,
+      element: (
+        <MainLayout>
+          <CartLayout />
         </MainLayout>
       )
     },

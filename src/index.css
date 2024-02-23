@@ -63,6 +63,8 @@ body {
 
 .container {
   display: block;
+  margin-left: auto;
+  margin-right: auto;
   min-width: 320px;
   padding: 0 16px;
 }

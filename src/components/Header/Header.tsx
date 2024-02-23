@@ -24,6 +24,7 @@ import useSearchToursGuides from 'src/hooks/useSearchToursGuides'
 import theme from 'src/theme'
 import NavLink from './NavLink'
 import ProfileMenu from './ProfileMenu'
+import path from 'src/constants/path.constant'
 
 interface Props {
   bgColor?: string
@@ -142,7 +143,7 @@ export default function Header({
           </form>
           <Box className='col-span-2 flex items-center justify-end' sx={{ color: textColor }}>
             <NavLink to='/' icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
-            <NavLink to='/' icon={<ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />} text='Cart' />
+            <NavLink to={path.cart} icon={<ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />} text='Cart' />
             <NavLink to='/' icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />} text='Bookings' />
             <ProfileMenu textColor={textColor} />
           </Box>
