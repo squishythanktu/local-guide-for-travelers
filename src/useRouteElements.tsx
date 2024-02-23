@@ -17,6 +17,7 @@ const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const SearchTours = lazy(() => import('./pages/SearchTours'))
 const SearchGuides = lazy(() => import('./pages/SearchGuides'))
 const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
+const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement/ScheduleManagement'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -89,10 +90,19 @@ export default function useRouteElements() {
               )
             },
             {
-              path: path.tour,
+              path: path.tours,
               element: (
                 <Suspense>
                   <TourManagement />
+                </Suspense>
+              )
+            },
+
+            {
+              path: path.schedule,
+              element: (
+                <Suspense>
+                  <ScheduleManagement />
                 </Suspense>
               )
             }
@@ -120,7 +130,7 @@ export default function useRouteElements() {
       )
     },
     {
-      path: 'tours/search',
+      path: path.searchTour,
       element: (
         <MainLayout>
           <Suspense>
@@ -130,7 +140,7 @@ export default function useRouteElements() {
       )
     },
     {
-      path: 'guides/search',
+      path: path.searchGuide,
       element: (
         <MainLayout>
           <Suspense>

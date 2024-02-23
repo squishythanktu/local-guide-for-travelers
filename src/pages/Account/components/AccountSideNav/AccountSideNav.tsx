@@ -11,6 +11,7 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
 export default function AccountSideNav() {
   const { profile } = useContext(AppContext)
@@ -54,12 +55,22 @@ export default function AccountSideNav() {
               </Typography>
             </MenuItem>
             <Divider />
-            <MenuItem component={Link} to={path.tour}>
+            <MenuItem component={Link} to={path.tours}>
               <ListItemIcon>
                 <AddLocationAltOutlinedIcon fontSize='small' />
               </ListItemIcon>
               <Typography variant='inherit' noWrap>
                 Tour Management
+              </Typography>
+            </MenuItem>
+            <Divider />
+
+            <MenuItem component={Link} to={path.schedule}>
+              <ListItemIcon>
+                <CalendarMonthIcon fontSize='small' />
+              </ListItemIcon>
+              <Typography variant='inherit' noWrap>
+                Schedule Management
               </Typography>
             </MenuItem>
           </MenuList>
