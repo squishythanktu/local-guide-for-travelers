@@ -3,8 +3,9 @@ import TextField, { TextFieldVariants } from '@mui/material/TextField'
 import { HTMLInputTypeAttribute } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import InputAdornment from '@mui/material/InputAdornment'
+import Typography from '@mui/material/Typography'
 
-interface FormInputProps {
+interface ControlledTextFieldProps {
   name: string
   control: Control<any>
   label: string
@@ -15,6 +16,7 @@ interface FormInputProps {
   fullWidth?: boolean
   type?: HTMLInputTypeAttribute | undefined
   prefix?: string
+  required?: boolean
 }
 
 export default function ControlledTextField({
@@ -27,8 +29,9 @@ export default function ControlledTextField({
   rows,
   fullWidth = false,
   type = 'text',
-  prefix
-}: FormInputProps) {
+  prefix,
+  required = false
+}: ControlledTextFieldProps) {
   return (
     <Controller
       name={name}
@@ -36,7 +39,17 @@ export default function ControlledTextField({
       render={({ field, fieldState: { error } }) => (
         <TextField
           id={name}
-          label={label}
+          label={
+            <Typography sx={{ fontWeight: 600 }}>
+              {label}
+              {required && (
+                <Typography component='span' sx={{ color: 'red' }}>
+                  {' '}
+                  *
+                </Typography>
+              )}
+            </Typography>
+          }
           type={type}
           variant={variant}
           error={!!error}

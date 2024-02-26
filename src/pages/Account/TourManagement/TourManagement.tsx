@@ -46,6 +46,7 @@ export default function TourManagement() {
         id: profile!.id
       }
     }
+
     createTourMutation.mutate(formattedBody, {
       onSuccess: () => {
         setCreateMode(false)

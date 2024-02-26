@@ -9,8 +9,12 @@ import { Unit } from 'src/enums/unit.enum'
 import { TourCategory, Tour } from 'src/types/tour.type'
 import { User } from 'src/types/user.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
+import AddressSelects from './AddressSelects/AddressSelects'
+import Typography from '@mui/material/Typography'
+import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
+import { useState } from 'react'
 
-interface Props {
+interface TourFormProps {
   onSubmit: (data: TourFormData) => void
   onCancel: () => void
   defaultValue?: Tour | User
@@ -18,13 +22,7 @@ interface Props {
 
 export type TourFormData = TourSchema
 
-export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
-  const { data: categoriesData } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => categoryApi.getCategories(),
-    placeholderData: keepPreviousData,
-    staleTime: 1 * 60 * 1000
-  })
+export default function TourForm({ onCancel, onSubmit, defaultValue }: TourFormProps) {
   const {
     trigger,
     control,
@@ -35,7 +33,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
     defaultValues: {
       name: '',
       description: '',
-      // province: '',
+      address: '',
       transportation: '',
       duration: 0,
       unit: '',
@@ -44,10 +42,18 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
       pricePerTraveler: 0,
       limitTraveler: 0,
       extraPrice: 0,
-      estimatedLocalCashNeeded: ''
+      estimatedLocalCashNeeded: '',
+      images: []
     },
     resolver: yupResolver(tourSchema)
   })
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => categoryApi.getCategories(),
+    placeholderData: keepPreviousData,
+    staleTime: 5 * 1000
+  })
+  const [images, setImages] = useState<string[]>([])
 
   useEffect(() => {
     if (defaultValue) {
@@ -55,56 +61,63 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
         setValue(key as keyof TourFormData, value)
       })
     }
-  }, [defaultValue, setValue])
+    setValue('images', images)
+  }, [defaultValue, setValue, images])
+
+  const handleAddressSelectsChange = (province: string, district: string, ward: string) => {
+    console.log(`${ward}, ${district}, ${province}`)
+
+    setValue('address', `${ward}, ${district}, ${province}`)
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box className='flex flex-col gap-2'>
         <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
           <ControlledTextField
-            className='min-h-[100px] grow lg:w-1/2'
+            required
+            className='min-h-[80px] grow lg:w-1/2'
             control={control}
             name={'name'}
-            label={'Name *'}
+            label={'Name'}
           />
-          {/* <ControlledTextField
-            className='min-h-[100px] grow lg:w-1/2'
-            control={control}
-            name={'province'}
-            label={'Province * '}
-          /> */}
+        </div>
+        <div className='tour-form__field-group mb-4 flex min-h-[80px] flex-col gap-6 lg:flex-row'>
+          <AddressSelects onChange={handleAddressSelectsChange} />
         </div>
         <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
           <ControlledTextField
-            className='min-h-[100px] grow lg:w-1/4'
+            required
+            className='min-h-[80px] grow lg:w-1/4'
             type='number'
             control={control}
             name={'pricePerTraveler'}
-            label={'Price per traveler *'}
+            label={'Price per traveler'}
             prefix='$'
           />
           <ControlledTextField
-            className='min-h-[100px] grow lg:w-1/4'
+            required
+            className='min-h-[80px] grow lg:w-1/4'
             type='number'
             control={control}
             name={'limitTraveler'}
-            label={'Limit traveler *'}
+            label={'Limit traveler'}
           />
           <ControlledTextField
-            className='min-h-[100px] grow lg:w-1/4'
+            required
+            className='min-h-[80px] grow lg:w-1/4'
             type='number'
             control={control}
             name={'extraPrice'}
-            label={'Extra price *'}
+            label={'Extra price'}
             prefix='$'
           />
           <ControlledTextField
-            className='min-h-[100px] grow lg:w-1/4'
-            // type='number'
+            required
+            className='min-h-[80px] grow lg:w-1/4'
             control={control}
             name={'estimatedLocalCashNeeded'}
-            label={'Estimated local cash needed *'}
-            // prefix='$'
+            label={'Estimated local cash needed'}
           />
         </div>
         <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
@@ -166,17 +179,19 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
             />
           )}
           <ControlledTextField
-            className='min-h-[100px] w-full grow lg:w-1/3'
+            required
+            className='min-h-[80px] w-full grow lg:w-1/3'
             control={control}
             name={'transportation'}
-            label={'Transportation *'}
+            label={'Transportation'}
           />
           <ControlledTextField
-            className='min-h-[100px] w-full grow lg:w-1/6'
+            required
+            className='min-h-[80px] w-full grow lg:w-1/6'
             type='number'
             control={control}
             name={'duration'}
-            label={'Duration *'}
+            label={'Duration'}
           />
           <Controller
             control={control}
@@ -184,10 +199,18 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
             render={({ field }) => (
               <TextField
                 select
-                label='Unit'
+                label={
+                  <Typography sx={{ fontWeight: 600 }}>
+                    Unit{' '}
+                    <Typography component='span' sx={{ color: 'red' }}>
+                      *
+                    </Typography>
+                  </Typography>
+                }
                 id='unit'
                 variant='outlined'
                 error={!!errors.unit?.message}
+                helperText={errors.unit?.message}
                 className='h-fit w-full grow lg:w-1/6'
                 {...field}
                 InputLabelProps={{
@@ -208,12 +231,13 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
           />
         </div>
         <ControlledTextField
+          required
           fullWidth={true}
           multiline={true}
           rows={3}
           control={control}
           name={'itinerary'}
-          label={'Itinerary *'}
+          label={'Itinerary'}
           className='min-h-32'
         />
         <ControlledTextField
@@ -233,6 +257,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
           name={'description'}
           label={'Description'}
         />
+        <ImagesUploader images={images} setImages={setImages}></ImagesUploader>
       </Box>
       <Box
         sx={{
@@ -242,7 +267,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: Props) {
           paddingTop: '16px'
         }}
       >
-        <Button variant='contained' className='w-fit' size='large' onClick={onCancel}>
+        <Button variant='outlined' className='w-fit' size='large' onClick={onCancel}>
           Cancel
         </Button>
         <Button variant='contained' className='w-fit' size='large' type='submit'>

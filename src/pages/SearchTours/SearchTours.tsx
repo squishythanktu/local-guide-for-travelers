@@ -19,7 +19,7 @@ export default function SearchTours() {
     queryKey: ['toursSearch', queryConfig],
     queryFn: () => tourApi.searchTours(queryConfig),
     placeholderData: keepPreviousData,
-    staleTime: 1 * 60 * 1000
+    staleTime: 2 * 1000
   })
 
   const handlePaginationChange = (_event: ChangeEvent<unknown>, value: number) => {

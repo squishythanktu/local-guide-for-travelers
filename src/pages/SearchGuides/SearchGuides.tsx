@@ -19,7 +19,7 @@ export default function SearchGuides() {
     queryKey: ['guidesSearch', queryConfig],
     queryFn: () => guideApi.searchGuides(queryConfig),
     placeholderData: keepPreviousData,
-    staleTime: 1 * 60 * 1000
+    staleTime: 2 * 1000
   })
 
   const navigate = useNavigate()

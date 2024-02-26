@@ -12,28 +12,27 @@ import NotFound from 'src/pages/NotFound'
 
 const numberOfReviews = 125
 
-const initTour: Tour = {
-  id: 0,
-  name: '',
-  description: '',
-  transportation: '',
-  includeService: '',
-  duration: 0,
-  unit: '',
-  estimatedLocalCashNeeded: '',
-  pricePerTraveler: 0,
-  limitTraveler: 0,
-  extraPrice: 0,
-  overallRating: 0,
-  province: '',
-  itinerary: '',
-  categories: [{ id: 0, name: '' }],
-  images: [{ id: 0, imageLink: '' }],
-  guide: { id: '', email: '' }
-}
-
 export default function TourDetail() {
-  const [tour, setTour] = useState<Tour>(initTour)
+  const [tour, setTour] = useState<Tour>({
+    id: 0,
+    name: '',
+    description: '',
+    transportation: '',
+    includeService: '',
+    duration: 0,
+    unit: '',
+    address: '',
+    estimatedLocalCashNeeded: '',
+    pricePerTraveler: 0,
+    limitTraveler: 0,
+    extraPrice: 0,
+    overallRating: 0,
+    province: '',
+    itinerary: '',
+    categories: [{ id: 0, name: '' }],
+    images: [{ id: 0, imageLink: '' }],
+    guide: { id: '', email: '' }
+  })
   const { id } = useParams()
 
   const {
@@ -50,6 +49,10 @@ export default function TourDetail() {
     if (tourQuery?.data) {
       setTour(tourQuery.data.data)
     }
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }, [tourQuery?.data])
 
   if (isLoadingTour) {
@@ -68,7 +71,9 @@ export default function TourDetail() {
           rating={tour.overallRating}
           numberOfReviews={numberOfReviews}
           provider={tour.guide?.username || ''}
+          address={tour.address}
         />
+
         <div className='activity__photo-gallery pb-2 pt-2'>
           <SimpleSlider itemsData={tour.images} />
         </div>

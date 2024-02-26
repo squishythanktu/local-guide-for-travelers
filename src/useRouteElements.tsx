@@ -6,6 +6,7 @@ import path from './constants/path.constant'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import HomeLayout from './layouts/HomeLayout'
 import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
+import Loading from './pages/Loading'
 import CartLayout from './pages/Cart/layout/CartLayout'
 
 const Home = lazy(() => import('./pages/Home'))
@@ -39,7 +40,7 @@ export default function useRouteElements() {
         {
           path: path.login,
           element: (
-            <Suspense>
+            <Suspense fallback={<Loading />}>
               <Login />
             </Suspense>
           )
@@ -47,7 +48,7 @@ export default function useRouteElements() {
         {
           path: path.register,
           element: (
-            <Suspense>
+            <Suspense fallback={<Loading />}>
               <Register />
             </Suspense>
           )
@@ -55,7 +56,7 @@ export default function useRouteElements() {
         {
           path: path.reset,
           element: (
-            <Suspense>
+            <Suspense fallback={<Loading />}>
               <ResetPassword />
             </Suspense>
           )
@@ -77,7 +78,7 @@ export default function useRouteElements() {
             {
               path: path.profile,
               element: (
-                <Suspense>
+                <Suspense fallback={<Loading />}>
                   <Profile />
                 </Suspense>
               )
@@ -85,7 +86,7 @@ export default function useRouteElements() {
             {
               path: path.password,
               element: (
-                <Suspense>
+                <Suspense fallback={<Loading />}>
                   <ChangePassword />
                 </Suspense>
               )
@@ -93,7 +94,7 @@ export default function useRouteElements() {
             {
               path: path.tours,
               element: (
-                <Suspense>
+                <Suspense fallback={<Loading />}>
                   <TourManagement />
                 </Suspense>
               )
@@ -102,7 +103,7 @@ export default function useRouteElements() {
             {
               path: path.schedule,
               element: (
-                <Suspense>
+                <Suspense fallback={<Loading />}>
                   <ScheduleManagement />
                 </Suspense>
               )
@@ -116,7 +117,7 @@ export default function useRouteElements() {
       index: true,
       element: (
         <HomeLayout>
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <Home />
           </Suspense>
         </HomeLayout>
@@ -126,7 +127,9 @@ export default function useRouteElements() {
       path: path.tourDetail,
       element: (
         <MainLayout>
-          <TourDetailLayout />
+          <Suspense fallback={<Loading />}>
+            <TourDetailLayout />
+          </Suspense>
         </MainLayout>
       )
     },
@@ -134,7 +137,9 @@ export default function useRouteElements() {
       path: path.cart,
       element: (
         <MainLayout>
-          <CartLayout />
+          <Suspense fallback={<Loading />}>
+            <CartLayout />
+          </Suspense>
         </MainLayout>
       )
     },
@@ -142,7 +147,7 @@ export default function useRouteElements() {
       path: path.searchTour,
       element: (
         <MainLayout>
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <SearchTours />
           </Suspense>
         </MainLayout>
@@ -152,7 +157,7 @@ export default function useRouteElements() {
       path: path.searchGuide,
       element: (
         <MainLayout>
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <SearchGuides />
           </Suspense>
         </MainLayout>
@@ -162,7 +167,7 @@ export default function useRouteElements() {
       path: '*',
       element: (
         <MainLayout>
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <NotFound />
           </Suspense>
         </MainLayout>

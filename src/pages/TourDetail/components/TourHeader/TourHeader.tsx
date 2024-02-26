@@ -2,6 +2,7 @@ import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import { Link } from 'react-router-dom'
 import { TourCategory } from 'src/types/tour.type'
+import LocationCityIcon from '@mui/icons-material/LocationCity'
 
 interface TourHeaderProps {
   categories: TourCategory[]
@@ -9,9 +10,10 @@ interface TourHeaderProps {
   rating: number
   numberOfReviews: number
   provider: string
+  address: string
 }
 
-export default function TourHeader({ categories, title, rating, numberOfReviews, provider }: TourHeaderProps) {
+export default function TourHeader({ categories, title, rating, numberOfReviews, provider, address }: TourHeaderProps) {
   return (
     <>
       <Box
@@ -25,8 +27,8 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
         ))}
       </Box>
       <div className='activity__header w-full'>
-        <h1 className='activity__title text-left text-3xl font-bold md:pb-2 md:text-4xl lg:font-extrabold'>{title}</h1>
-        <div className='activity__basic-info flex flex-col sm:flex-row sm:items-center sm:gap-4'>
+        <h1 className='activity__title my-2 text-left text-3xl font-bold md:text-4xl lg:font-extrabold'>{title}</h1>
+        <div className='activity__basic-info flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
           <div className='activity-rating flex items-center gap-4'>
             <Rating max={5} precision={0.1} value={rating} size='large' readOnly />
             <div className='text-sm font-medium md:text-[16px]'>{rating}/5</div>
@@ -39,6 +41,12 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
             <Link to='' className='text-sm italic md:text-[16px]'>
               {provider}
             </Link>
+          </div>
+          <div className='address flex items-center'>
+            <LocationCityIcon
+              sx={{ marginRight: '2px', marginBottom: '3px', color: (theme) => theme.palette.secondary.main }}
+            />
+            {address || 'N/A'}
           </div>
         </div>
       </div>

@@ -49,13 +49,14 @@ export const tourSchema = yup.object({
   limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
   extraPrice: yup.number().positive().required().typeError('Extra price must be positive a number'),
   itinerary: yup.string().trim().required(),
-  // province: yup.string().trim().required().max(50, 'Maximum length is 50 characters'),
+  address: yup.string().trim().required().max(100, 'Maximum length is 100 characters'),
   categories: yup.array().of(
     yup.object().shape({
       id: yup.number(),
       name: yup.string()
     })
-  )
+  ),
+  images: yup.array().of(yup.string())
 })
 
 export type Schema = yup.InferType<typeof schema>

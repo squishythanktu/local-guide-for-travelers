@@ -28,6 +28,7 @@ export type Tour = {
   itinerary: string
   categories: TourCategory[]
   guide: User
+  address: string
   images: ImageWithLink[]
 }
 

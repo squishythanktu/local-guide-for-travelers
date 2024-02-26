@@ -25,7 +25,7 @@ export default function SortFilterTours() {
     queryKey: ['categories'],
     queryFn: () => categoryApi.getCategories(),
     placeholderData: keepPreviousData,
-    staleTime: 1 * 60 * 1000
+    staleTime: 10 * 1000
   })
 
   const getInitialSortingValue = useCallback(

@@ -15,7 +15,7 @@ export default function Home() {
     queryKey: ['tours'],
     queryFn: () => tourApi.getTours(),
     placeholderData: keepPreviousData,
-    staleTime: 3 * 60 * 1000
+    staleTime: 5 * 1000
   })
   const carouselSettings = {
     dots: true,
