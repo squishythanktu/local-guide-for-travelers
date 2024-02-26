@@ -7,7 +7,7 @@ export type BookingsInCart = {
 
 export type Booking = {
   id: string
-  startDate: string
+  startDate: Date
   numberTraveler: number
   price: number
   status: string

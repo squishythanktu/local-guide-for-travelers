@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
@@ -11,6 +13,12 @@ import moment from 'moment'
 import BookingForm from 'src/pages/TourDetail/components/BookingAssistant/BookingForm/BookingForm'
 import Button from '@mui/material/Button'
 import DeleteIcon from 'src/assets/svg/delete.svg'
+import { BookingFormSchema } from 'src/utils/rules'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+import cartApi from 'src/apis/cart.api'
+
+export type BookingUpdateFormData = BookingFormSchema & { id: string }
 
 interface Props {
   booking: Booking
@@ -21,6 +29,41 @@ export default function ItemCard({ booking }: Props) {
   const handleUpdate = () => {
     setEditMode(true)
   }
+
+  const handleDelete = () => {
+    deleteBookingMutation.mutate(booking.id, {
+      onSuccess: () => {
+        toast.success('Delete the booking in cart successfully.')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
+
+  const updateBookingMutation = useMutation({
+    mutationFn: (body: BookingUpdateFormData) => {
+      return cartApi.updateBookingInCart(body)
+    }
+  })
+
+  const handleUpdateBookingForm = (body: BookingFormSchema) => {
+    setEditMode(false)
+    const formattedBody = { id: booking.id, ...body }
+    updateBookingMutation.mutate(formattedBody, {
+      onSuccess: () => {
+        setEditMode(false)
+        toast.success('Update the booking in cart successfully.')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
+
+  const deleteBookingMutation = useMutation({
+    mutationFn: (id: string) => cartApi.deleteBookingInCart(id)
+  })
 
   return (
     <Card className='rounded-lg border p-2 shadow-none'>
@@ -70,13 +113,16 @@ export default function ItemCard({ booking }: Props) {
                   >
                     <span className='text-sm font-medium'>Update</span>
                   </Button>
-                  <div className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-black hover:bg-red-500'>
+                  <div
+                    onClick={handleDelete}
+                    className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-black hover:bg-red-500'
+                  >
                     <DeleteIcon className='h-4 w-4' />
                   </div>
                 </div>
               </>
             )}
-            {editMode && <BookingForm setEditMode={setEditMode} />}
+            {editMode && <BookingForm onSubmit={handleUpdateBookingForm} booking={booking} setEditMode={setEditMode} />}
           </div>
         </div>
         <div className='total absolute bottom-5 right-0 pr-2 text-lg font-medium leading-5'>

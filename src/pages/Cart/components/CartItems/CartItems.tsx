@@ -6,8 +6,6 @@ interface Props {
 }
 
 export default function CartItems({ bookings }: Props) {
-  console.log('map', bookings)
-
   return (
     <div className='flex flex-col gap-6'>
       {bookings.map((booking: Booking) => (

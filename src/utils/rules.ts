@@ -59,8 +59,15 @@ export const tourSchema = yup.object({
   images: yup.array().of(yup.string())
 })
 
+export const bookingFormSchema = yup.object({
+  startDate: yup.date().required().min(new Date(), 'Please select a date in the future'),
+  numberTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number')
+})
+
 export type Schema = yup.InferType<typeof schema>
 
 export type UserSchema = yup.InferType<typeof userSchema>
 
 export type TourSchema = yup.InferType<typeof tourSchema>
+
+export type BookingFormSchema = yup.InferType<typeof bookingFormSchema>
