@@ -1,10 +1,18 @@
+import { Booking } from 'src/types/cart.type'
 import ItemCard from './ItemCard'
 
-export default function CartItems() {
+interface Props {
+  bookings: Booking[]
+}
+
+export default function CartItems({ bookings }: Props) {
+  console.log('map', bookings)
+
   return (
     <div className='flex flex-col gap-6'>
-      <ItemCard />
-      <ItemCard />
+      {bookings.map((booking: Booking) => (
+        <ItemCard key={booking.id} booking={booking} />
+      ))}
     </div>
   )
 }

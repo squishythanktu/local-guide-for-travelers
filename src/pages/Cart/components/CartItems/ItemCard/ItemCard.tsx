@@ -2,33 +2,24 @@ import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
 import Rating from '@mui/material/Rating'
-import Button from '@mui/material/Button'
-import UpdateIcon from 'src/assets/svg/update.svg'
-import DeleteIcon from 'src/assets/svg/delete.svg'
 import { useState } from 'react'
-import ParticipantInput from 'src/pages/TourDetail/components/ParticipantInput'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import MenuItem from '@mui/material/MenuItem'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
+import { Booking } from 'src/types/cart.type'
+import moment from 'moment'
+import BookingForm from 'src/pages/TourDetail/components/BookingAssistant/BookingForm/BookingForm'
+import Button from '@mui/material/Button'
+import DeleteIcon from 'src/assets/svg/delete.svg'
 
-export default function ItemCard() {
+interface Props {
+  booking: Booking
+}
+
+export default function ItemCard({ booking }: Props) {
   const [editMode, setEditMode] = useState(false)
-  const [hour, setHour] = useState<string>('')
-
-  const handleChange = (event: SelectChangeEvent<typeof hour>) => {
-    setHour(event.target.value)
-  }
-
   const handleUpdate = () => {
     setEditMode(true)
-  }
-
-  const handleCancel = () => {
-    setEditMode(false)
   }
 
   return (
@@ -39,108 +30,59 @@ export default function ItemCard() {
             className='h-24 w-24 rounded-lg object-cover'
             component='img'
             alt='Tour image'
-            image='/assets/images/homepage-cover.jpg'
+            src={booking.tour.images[1].imageLink}
           />
         }
         title={
           <>
             <div className='item-card__header'>
-              <div className='title text-lg font-medium leading-5'>London: The London Eye Entry Ticket</div>
+              <div className='title text-lg font-medium leading-5'>{booking.tour.name}</div>
               <div className='rating flex pt-1'>
                 <div className='activity-rating flex items-center gap-1 '>
-                  <div className='text-base font-medium'>{4.5}</div>
-                  <Rating max={5} precision={0.1} value={4.5} size='large' readOnly />
+                  <div className='text-base font-medium'>{booking.tour.overallRating}</div>
+                  <Rating max={5} precision={0.1} value={booking.tour.overallRating} size='large' readOnly />
                 </div>
               </div>
             </div>
           </>
         }
       />
-      <CardContent className='flex flex-col gap-2'>
+      <CardContent className='relative flex flex-col gap-2'>
         <div className='flex gap-2'>
-          <div className='flex items-center font-normal'>
-            <ClockIcon className='mb-[2px] mr-2 h-5 w-5' />
-            {!editMode && <div className='text-base font-medium'>Saturday, February 24, 2024</div>}
-            {editMode && <ParticipantInput />}
-          </div>
-        </div>
-        <div className='flex gap-2'>
-          <div className='flex items-center font-normal'>
-            <UsersIcon className='mb-[2px] mr-2 h-5 w-5' />
+          <div className='flex flex-col gap-2 font-normal'>
             {!editMode && (
               <>
-                <div className='text-base font-medium'>
-                  {'1 Adult'} - {'11:00 AM'}
+                <div className='flex '>
+                  <UsersIcon className='mb-[2px] mr-2 h-5 w-5' />
+                  <div className='text-base font-medium'>
+                    {moment(booking.startDate).format('MM/DD/YYYY')} - {moment(booking.startDate).format('HH:MM')}
+                  </div>
+                </div>
+                <div className='flex'>
+                  <ClockIcon className='mb-[2px] mr-2 h-5 w-5' />
+                  <div className='text-base font-medium'>{booking.numberTraveler}</div>
+                </div>
+                <div className='flex gap-2'>
+                  <Button
+                    onClick={handleUpdate}
+                    className='flex h-10 w-20 cursor-pointer gap-1 rounded-full border-none bg-gray-200 px-4 py-3 text-black hover:bg-gray-300'
+                    variant='contained'
+                  >
+                    <span className='text-sm font-medium'>Update</span>
+                  </Button>
+                  <div className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-black hover:bg-red-500'>
+                    <DeleteIcon className='h-4 w-4' />
+                  </div>
                 </div>
               </>
             )}
-            {editMode && (
-              <div className='flex gap-2'>
-                <DatePicker
-                  className='w-64'
-                  sx={{
-                    bgcolor: 'white',
-                    border: '8px',
-                    '.MuiOutlinedInput-notchedOutline': {
-                      border: ''
-                    },
-                    '.MuiOutlinedInput-root': {
-                      borderRadius: '4px'
-                    }
-                  }}
-                />
-                <Select
-                  onChange={handleChange}
-                  value={hour}
-                  className=''
-                  sx={{
-                    rounded: 'rounded',
-                    border: 'border',
-                    borderRadius: '4px',
-                    borderStyle: 'border-solid',
-                    borderColor: 'neutral-300',
-                    boxShadow: 'none',
-                    '&:hover': {
-                      borderColor: 'black'
-                    }
-                  }}
-                >
-                  <MenuItem value=''>
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>11:00 AM</MenuItem>
-                  <MenuItem value={20}>12:00 AM</MenuItem>
-                  <MenuItem value={5}>5:00 AM</MenuItem>
-                </Select>
-              </div>
-            )}
+            {editMode && <BookingForm setEditMode={setEditMode} />}
           </div>
         </div>
-      </CardContent>
-      <CardActions className='relative'>
-        <div className='flex gap-2'>
-          <Button
-            onClick={editMode ? handleCancel : handleUpdate}
-            className='flex h-10 w-20 cursor-pointer gap-1 rounded-full border-none bg-gray-200 px-4 py-3 text-black hover:bg-gray-300'
-            variant='contained'
-          >
-            {!editMode ? (
-              <>
-                <UpdateIcon className='h-4 w-4' />
-                <span className='text-sm font-medium'>Edit</span>
-              </>
-            ) : (
-              <span className='text-sm font-medium'>Cancel</span>
-            )}
-          </Button>
-          {!editMode && (
-            <div className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-black hover:bg-red-500'>
-              <DeleteIcon className='h-4 w-4' />
-            </div>
-          )}
+        <div className='total absolute bottom-5 right-0 pr-2 text-lg font-medium leading-5'>
+          ${booking.price.toLocaleString()}
         </div>
-        <div className='total absolute right-0 pr-2 text-lg font-medium leading-5'>$37.28</div>
-      </CardActions>
+      </CardContent>
     </Card>
   )
 }

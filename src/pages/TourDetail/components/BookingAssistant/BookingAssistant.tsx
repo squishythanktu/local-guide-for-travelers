@@ -1,5 +1,5 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import ParticipantInput from '../ParticipantInput'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import Button from '@mui/material/Button'
 
 export default function BookingAssistant() {
@@ -12,18 +12,24 @@ export default function BookingAssistant() {
     >
       <div className='font-semibold'>Select participants & date</div>
       <div className='flex flex-col gap-4'>
-        <ParticipantInput />
-        <DatePicker
-          className='rounded-[4px]'
+        <OutlinedInput
+          placeholder='Participant(s)'
+          className='rounded-sm'
+          type='number'
           sx={{
             bgcolor: 'white',
-            border: 'none',
+            '.MuiOutlinedInput-notchedOutline': {
+              border: 'none'
+            }
+          }}
+        />
+        <DatePicker
+          className='rounded-sm'
+          sx={{
+            bgcolor: 'white',
             width: '100%',
             '.MuiOutlinedInput-notchedOutline': {
               border: 'none'
-            },
-            '.MuiOutlinedInput-root': {
-              borderRadius: '4px'
             }
           }}
         />

@@ -5,8 +5,15 @@ import CardActions from '@mui/material/CardActions'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import AlertTitle from '@mui/material/AlertTitle'
+import { Booking } from 'src/types/cart.type'
 
-export default function CartTotal() {
+interface Props {
+  bookings: Booking[]
+}
+
+export default function CartTotal({ bookings }: Props) {
+  const totalBookingPrice = bookings.reduce((total, booking) => total + booking.price, 0)
+
   return (
     <div className=''>
       <Card className='rounded-lg border p-2'>
@@ -14,9 +21,11 @@ export default function CartTotal() {
           title={
             <>
               <div className='item-card__header flex justify-between'>
-                <div className='title text-xl font-bold leading-5'>Total (1 item):</div>
+                <div className='title text-xl font-bold leading-5'>
+                  Total ({bookings.length} {bookings.length > 1 ? 'items' : 'item'}):
+                </div>
                 <div className='flex flex-col items-end gap-1'>
-                  <div className='title text-xl font-bold leading-5'>$38.00</div>
+                  <div className='title text-xl font-bold leading-5'>${totalBookingPrice.toLocaleString()}</div>
                   <div className='title text-xs font-medium leading-5 text-emerald-700 lg:text-sm'>
                     All taxes and fees included
                   </div>
@@ -38,8 +47,7 @@ export default function CartTotal() {
         <CardContent>
           <Alert variant='standard' severity='success' className='text-sm'>
             <AlertTitle className='text-sm'>Free cancellation</AlertTitle>
-
-            <div className='text-sm'>Until 11:00 AM on February 23</div>
+            <div className='text-sm'>Until 24 hours before activity</div>
           </Alert>
         </CardContent>
       </Card>
