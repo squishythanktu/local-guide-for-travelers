@@ -1,5 +1,3 @@
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 import { ImageWithLink } from 'src/types/tour.type'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
@@ -17,12 +15,21 @@ function SimpleSlider({ itemsData }: Props) {
       }}
     >
       <ImageGallery
-        items={itemsData.map((item) => {
-          return {
-            original: item.imageLink,
-            thumbnail: item.imageLink
-          }
-        })}
+        items={
+          itemsData && itemsData.length > 0
+            ? itemsData.map((item) => {
+                return {
+                  original: item.imageLink,
+                  thumbnail: item.imageLink
+                }
+              })
+            : [
+                {
+                  original: '/assets/images/default-cover.jpg',
+                  thumbnail: '/assets/images/default-cover.jpg'
+                }
+              ]
+        }
         showBullets
         showIndex
         thumbnailPosition='right'

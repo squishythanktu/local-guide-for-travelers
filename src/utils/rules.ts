@@ -1,4 +1,3 @@
-import { SearchCategory } from 'src/enums/search-category.enum'
 import * as yup from 'yup'
 
 const handleConfirmPasswordYup = (refString: string) => {
@@ -22,9 +21,7 @@ export const schema = yup.object({
     .required('Password is required')
     .min(6, 'Password length from 6 - 160 characters')
     .max(160, 'Password length from 6 - 160 characters'),
-  confirm_password: handleConfirmPasswordYup('password'),
-  searchName: yup.string().trim().required(),
-  searchCategory: yup.string().oneOf(Object.values(SearchCategory)).trim().required()
+  confirm_password: handleConfirmPasswordYup('password')
 })
 
 export const userSchema = yup.object({
@@ -59,6 +56,12 @@ export const tourSchema = yup.object({
   images: yup.array().of(yup.string())
 })
 
+
+export const searchSchema = yup.object({
+  searchValue: yup.string().trim().required(),
+  searchType: yup.string().required()
+})
+
 export const bookingFormSchema = yup.object({
   startDate: yup.date().required().min(new Date(), 'Please select a date in the future'),
   numberTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number')
@@ -70,4 +73,6 @@ export type UserSchema = yup.InferType<typeof userSchema>
 
 export type TourSchema = yup.InferType<typeof tourSchema>
 
+export type SearchSchema = yup.InferType<typeof searchSchema>
+                                   
 export type BookingFormSchema = yup.InferType<typeof bookingFormSchema>

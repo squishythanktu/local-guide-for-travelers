@@ -40,8 +40,8 @@ export default function SearchTours() {
             <span className='text-base font-semibold sm:text-2xl'>Things to do in</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
-                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[5rem] lg:leading-[5.25rem]'>
-                  {queryConfig.searchName}
+                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
+                  {queryConfig.searchValue}
                 </h1>
                 <SvgIcon
                   component={NoodleIcon}

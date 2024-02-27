@@ -1,19 +1,19 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
 import LoginIcon from '@mui/icons-material/Login'
+import LogoutIcon from '@mui/icons-material/Logout'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
+import { Button } from '@mui/material'
 import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { Link } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import classNames from 'classnames'
 import React, { useContext } from 'react'
-import NavLink from '../NavLink'
+import { Link, useLocation } from 'react-router-dom'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
-import LogoutIcon from '@mui/icons-material/Logout'
 import { clearLS } from 'src/utils/auth'
 
 interface Props {
@@ -22,6 +22,7 @@ interface Props {
 
 export default function ProfileMenu({ textColor }: Props) {
   const { isAuthenticated, profile } = useContext(AppContext)
+  const location = useLocation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -31,21 +32,26 @@ export default function ProfileMenu({ textColor }: Props) {
 
   return (
     <>
-      <NavLink
-        icon={
-          <IconButton
-            onClick={handleClick}
-            size='small'
-            className='p-0'
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor }} />
-          </IconButton>
-        }
-        text={isAuthenticated && profile && profile.username ? profile.username : 'Profile'}
-      />
+      <Button
+        onClick={handleClick}
+        className={classNames(
+          'ml-2 flex flex-col items-center text-sm font-normal hover:after:w-full md:ml-4 md:after:absolute md:after:bottom-[1px] md:after:left-0 md:after:h-[2px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
+          {
+            'md:after:w-full': location.pathname.includes(path.account)
+          }
+        )}
+        sx={{
+          '&.MuiButtonBase-root:hover': {
+            bgcolor: 'transparent'
+          },
+          color: textColor
+        }}
+        disableRipple
+        disableFocusRipple
+      >
+        <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor, marginBottom: '2px' }} />
+        {isAuthenticated && profile && profile.username ? profile.username : 'Profile'}
+      </Button>
       {!isAuthenticated && (
         <Menu
           disableScrollLock
@@ -62,7 +68,7 @@ export default function ProfileMenu({ textColor }: Props) {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           sx={{
             '& .MuiPaper-root': {
-              marginTop: '24px',
+              marginTop: '4px',
               minWidth: 180
             }
           }}
@@ -104,7 +110,7 @@ export default function ProfileMenu({ textColor }: Props) {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           sx={{
             '& .MuiPaper-root': {
-              marginTop: '24px',
+              marginTop: '4px',
               minWidth: 180
             }
           }}

@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Autocomplete, Box, Button, MenuItem, TextField, Chip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { SyntheticEvent, useEffect } from 'react'
+import { SyntheticEvent, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import categoryApi from 'src/apis/category.api'
 import ControlledTextField from 'src/components/ControlledTextField'
@@ -12,7 +12,6 @@ import { TourSchema, tourSchema } from 'src/utils/rules'
 import AddressSelects from './AddressSelects/AddressSelects'
 import Typography from '@mui/material/Typography'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
-import { useState } from 'react'
 
 interface TourFormProps {
   onSubmit: (data: TourFormData) => void

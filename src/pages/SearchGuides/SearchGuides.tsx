@@ -12,6 +12,7 @@ import NoodleIcon from 'src/assets/svg/noodle.svg'
 import GuideCard from 'src/components/GuideCard'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Guide } from 'src/types/guide.type'
+import SortIcon from '@mui/icons-material/Sort'
 
 export default function SearchGuides() {
   const queryConfig: QueryConfig = useQueryConfig()
@@ -62,8 +63,8 @@ export default function SearchGuides() {
             <span className='text-base font-semibold sm:text-2xl'>Local guides match</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
-                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[5rem] lg:leading-[5.25rem]'>
-                  {queryConfig.searchName}
+                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
+                  {queryConfig.searchValue}
                 </h1>
                 <SvgIcon
                   component={NoodleIcon}
@@ -88,6 +89,7 @@ export default function SearchGuides() {
                 inputProps={{ 'aria-label': 'Without label' }}
                 className='h-14 min-w-48'
                 MenuProps={{ disableScrollLock: true }}
+                startAdornment={<SortIcon className='mr-1' />}
               >
                 <MenuItem disabled value=''>
                   <em>Sort</em>

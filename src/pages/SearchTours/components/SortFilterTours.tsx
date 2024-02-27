@@ -1,8 +1,6 @@
-import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
+import SortIcon from '@mui/icons-material/Sort'
 import { Box, Typography } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
-import Checkbox from '@mui/material/Checkbox'
 import Chip from '@mui/material/Chip'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
@@ -203,15 +201,9 @@ export default function SortFilterTours() {
               </>
             )
           }}
-          renderOption={(props, option, { selected }) => (
+          renderOption={(props, option) => (
             <li {...props}>
-              <Checkbox
-                icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
-                checkedIcon={<CheckBoxIcon fontSize='small' />}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option.name}
+              <Box sx={{ marginRight: 8 }}>{option.name}</Box>
             </li>
           )}
           sx={{
@@ -228,6 +220,7 @@ export default function SortFilterTours() {
           inputProps={{ 'aria-label': 'Without label' }}
           className='h-14 min-w-48'
           MenuProps={{ disableScrollLock: true }}
+          startAdornment={<SortIcon className='mr-1' />}
         >
           <MenuItem disabled value=''>
             <em>Sort</em>

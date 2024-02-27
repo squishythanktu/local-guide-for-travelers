@@ -40,7 +40,7 @@ export interface TourListConfig {
   overallRating?: number | string
   minPrice?: number | string
   maxPrice?: number | string
-  searchName?: string
+  searchValue?: string
   categoryId?: number[]
   start_date?: string
   end_date?: string
