@@ -12,16 +12,18 @@ import { TourSchema, tourSchema } from 'src/utils/rules'
 import AddressSelects from './AddressSelects/AddressSelects'
 import Typography from '@mui/material/Typography'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 interface TourFormProps {
   onSubmit: (data: TourFormData) => void
   onCancel: () => void
   defaultValue?: Tour | User
+  isMutation: boolean
 }
 
 export type TourFormData = TourSchema
 
-export default function TourForm({ onCancel, onSubmit, defaultValue }: TourFormProps) {
+export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation }: TourFormProps) {
   const {
     trigger,
     control,
@@ -64,8 +66,6 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: TourFormP
   }, [defaultValue, setValue, images])
 
   const handleAddressSelectsChange = (province: string, district: string, ward: string) => {
-    console.log(`${ward}, ${district}, ${province}`)
-
     setValue('address', `${ward}, ${district}, ${province}`)
   }
 
@@ -269,9 +269,9 @@ export default function TourForm({ onCancel, onSubmit, defaultValue }: TourFormP
         <Button variant='outlined' className='w-fit' size='large' onClick={onCancel}>
           Cancel
         </Button>
-        <Button variant='contained' className='w-fit' size='large' type='submit'>
-          Submit
-        </Button>
+        <LoadingButton loading={isMutation} variant='contained' size='large' type='submit'>
+          <span>Submit</span>
+        </LoadingButton>
       </Box>
     </form>
   )

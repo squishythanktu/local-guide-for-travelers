@@ -170,7 +170,6 @@ const SearchBar: React.FC = () => {
                   </Box>
                 )
               }}
-              componentsProps={{ popper: { style: { width: 'fit-content', minWidth: '300px' } } }}
             />
           )}
         />

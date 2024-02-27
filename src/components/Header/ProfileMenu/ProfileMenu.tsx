@@ -11,7 +11,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import classNames from 'classnames'
 import React, { useContext } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
@@ -22,12 +22,20 @@ interface Props {
 
 export default function ProfileMenu({ textColor }: Props) {
   const { isAuthenticated, profile } = useContext(AppContext)
-  const location = useLocation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const open = Boolean(anchorEl)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleLogout = () => {
+    clearLS()
+    navigate(path.home)
+    window.location.reload()
   }
 
   return (
@@ -128,7 +136,7 @@ export default function ProfileMenu({ textColor }: Props) {
             Appearance
           </MenuItem>
           <Divider />
-          <MenuItem onClick={clearLS}>
+          <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon fontSize='small' />
             </ListItemIcon>

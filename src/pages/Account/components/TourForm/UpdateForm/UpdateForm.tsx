@@ -38,5 +38,12 @@ export default function UpdateForm({ onCancel, tourId, setUpdateMode, refetch }:
     })
   }
 
-  return <TourForm onSubmit={handleUpdateTourForm} onCancel={onCancel} defaultValue={tourQuery?.data.data} />
+  return (
+    <TourForm
+      onSubmit={handleUpdateTourForm}
+      onCancel={onCancel}
+      defaultValue={tourQuery?.data.data}
+      isMutation={updateTourMutation.isPending}
+    />
+  )
 }

@@ -97,7 +97,7 @@ export default function TourManagement() {
       {
         accessorKey: 'id',
         header: 'id',
-        size: 20
+        size: 10
       },
       {
         accessorKey: 'name',
@@ -105,14 +105,14 @@ export default function TourManagement() {
         size: 200
       },
       {
-        accessorKey: 'province',
-        header: 'Province',
-        size: 100
+        accessorKey: 'address',
+        header: 'Address',
+        size: 200
       },
       {
         accessorKey: 'transportation',
         header: 'Transportation',
-        size: 100
+        size: 50
       },
       {
         accessorKey: 'duration',
@@ -197,7 +197,11 @@ export default function TourManagement() {
           <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
             Create Tour
           </h2>
-          <TourForm onSubmit={handleSubmitTourForm} onCancel={() => setCreateMode(false)} />
+          <TourForm
+            onSubmit={handleSubmitTourForm}
+            onCancel={() => setCreateMode(false)}
+            isMutation={createTourMutation.isPending}
+          />
         </>
       )}
       {updateMode && (

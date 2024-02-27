@@ -17,6 +17,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { toast } from 'react-toastify'
 import { AxiosResponse } from 'axios'
 import { AuthSuccessResponse } from 'src/types/auth.type'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
@@ -120,9 +121,15 @@ export default function Login() {
               Forget password?
             </Link>
           </div>
-          <Button type='submit' variant='contained' size='large' sx={{ fontWeight: 600 }}>
-            Sign In
-          </Button>
+          <LoadingButton
+            loading={loginMutation.isPending}
+            type='submit'
+            variant='contained'
+            size='large'
+            sx={{ fontWeight: 600 }}
+          >
+            <span>Sign In</span>
+          </LoadingButton>
         </div>
       </form>
 
