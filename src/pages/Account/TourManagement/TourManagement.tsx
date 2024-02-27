@@ -28,9 +28,14 @@ export default function TourManagement() {
   const [updateMode, setUpdateMode] = useState<boolean>(false)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string>('')
-  const { data: guideToursData, isLoading } = useQuery({
-    queryKey: ['guideToursOfGuide'],
-    queryFn: () => tourApi.getToursOfGuide()
+  const {
+    data: guideToursData,
+    isLoading,
+    refetch
+  } = useQuery({
+    queryKey: [`tours of guide ${profile.id}`],
+    queryFn: () => tourApi.getToursOfGuide(),
+    staleTime: 6 * 1000
   })
   const createTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createTour(body)
@@ -50,6 +55,7 @@ export default function TourManagement() {
     createTourMutation.mutate(formattedBody, {
       onSuccess: () => {
         setCreateMode(false)
+        refetch()
         toast.success('Create the tour successfully.')
       },
       onError: (error) => {
@@ -76,6 +82,7 @@ export default function TourManagement() {
     deleteTourMutation.mutate(selectedId, {
       onSuccess: () => {
         setDeleteMode(false)
+        refetch()
         toast.success('Delete the tour successfully.')
       },
       onError: (error) => {
@@ -204,6 +211,7 @@ export default function TourManagement() {
               setUpdateMode(false), setSelectedId('')
             }}
             setUpdateMode={setUpdateMode}
+            refetch={refetch}
           />
         </>
       )}

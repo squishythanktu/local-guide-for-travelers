@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { QueryObserverResult, useMutation, useQuery } from '@tanstack/react-query'
 import tourApi from 'src/apis/tour.api'
 import TourForm, { TourFormData } from '../TourForm'
 import { toast } from 'react-toastify'
@@ -9,9 +9,10 @@ interface Props {
   onCancel: () => void
   tourId: string
   setUpdateMode: React.Dispatch<React.SetStateAction<boolean>>
+  refetch: () => Promise<QueryObserverResult>
 }
 
-export default function UpdateForm({ onCancel, tourId, setUpdateMode }: Props) {
+export default function UpdateForm({ onCancel, tourId, setUpdateMode, refetch }: Props) {
   const { data: tourQuery } = useQuery({
     queryKey: [`Get tour by ${tourId}`],
     queryFn: () => tourApi.getTourById(tourId as string)
@@ -28,6 +29,7 @@ export default function UpdateForm({ onCancel, tourId, setUpdateMode }: Props) {
     updateTourMutation.mutate(formattedBody, {
       onSuccess: () => {
         setUpdateMode(false)
+        refetch()
         toast.success('Update the tour successfully.')
       },
       onError: (error) => {

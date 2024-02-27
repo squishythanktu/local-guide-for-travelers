@@ -14,17 +14,20 @@ import BookingForm from 'src/pages/TourDetail/components/BookingAssistant/Bookin
 import Button from '@mui/material/Button'
 import DeleteIcon from 'src/assets/svg/delete.svg'
 import { BookingFormSchema } from 'src/utils/rules'
-import { useMutation } from '@tanstack/react-query'
+import { QueryObserverResult, useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
+import { Box } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
 
 export type BookingUpdateFormData = BookingFormSchema & { id: string }
 
 interface Props {
   booking: Booking
+  refetch: () => Promise<QueryObserverResult>
 }
 
-export default function ItemCard({ booking }: Props) {
+export default function ItemCard({ booking, refetch }: Props) {
   const [editMode, setEditMode] = useState(false)
   const handleUpdate = () => {
     setEditMode(true)
@@ -33,6 +36,7 @@ export default function ItemCard({ booking }: Props) {
   const handleDelete = () => {
     deleteBookingMutation.mutate(booking.id, {
       onSuccess: () => {
+        refetch()
         toast.success('Delete the booking in cart successfully.')
       },
       onError: (error) => {
@@ -48,11 +52,14 @@ export default function ItemCard({ booking }: Props) {
   })
 
   const handleUpdateBookingForm = (body: BookingFormSchema) => {
+    console.log('body', body)
+
     setEditMode(false)
     const formattedBody = { id: booking.id, ...body }
     updateBookingMutation.mutate(formattedBody, {
       onSuccess: () => {
         setEditMode(false)
+        refetch()
         toast.success('Update the booking in cart successfully.')
       },
       onError: (error) => {
@@ -108,17 +115,19 @@ export default function ItemCard({ booking }: Props) {
                 <div className='flex gap-2'>
                   <Button
                     onClick={handleUpdate}
-                    className='flex h-10 w-20 cursor-pointer gap-1 rounded-full border-none bg-gray-200 px-4 py-3 text-black hover:bg-gray-300'
+                    className='flex h-10 w-20 cursor-pointer gap-1 rounded-full border-none  px-4 py-3'
                     variant='contained'
                   >
                     <span className='text-sm font-medium'>Update</span>
                   </Button>
-                  <div
+                  <Button
                     onClick={handleDelete}
-                    className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-400 text-black hover:bg-red-500'
+                    className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full'
+                    color='error'
+                    variant='outlined'
                   >
                     <DeleteIcon className='h-4 w-4' />
-                  </div>
+                  </Button>
                 </div>
               </>
             )}

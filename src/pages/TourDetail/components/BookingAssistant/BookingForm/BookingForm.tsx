@@ -98,15 +98,15 @@ export default function BookingForm({ setEditMode, booking, onSubmit }: Props) {
         <div className='flex gap-2'>
           <Button
             type='submit'
-            className='flex h-10 w-10 cursor-pointer gap-1 rounded-full border-none bg-red-400 text-black hover:bg-red-500'
+            className='flex h-10 w-10 cursor-pointer gap-1 rounded-full border-none'
             variant='contained'
           >
             <span className='text-sm font-medium'>Save</span>
           </Button>
           <Button
             onClick={handleCancel}
-            className='flex h-10 w-10 cursor-pointer gap-1 rounded-full border-none bg-red-400 text-black hover:bg-red-500'
-            variant='contained'
+            className='flex h-10 w-10 cursor-pointer gap-1 rounded-full'
+            variant='outlined'
           >
             <span className='text-sm font-medium'>Cancel</span>
           </Button>
