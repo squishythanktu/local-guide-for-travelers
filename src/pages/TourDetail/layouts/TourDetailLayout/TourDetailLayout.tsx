@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { Tour } from 'src/types/tour.type'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
+import BookingConfirmation from '../../components/BookingConfirmation'
 
 const numberOfReviews = 125
 
@@ -96,6 +97,11 @@ export default function TourDetail() {
             <div className='col-span-1'>
               <BookingAssistant />
             </div>
+          </div>
+        </div>
+        <div className='pt-5'>
+          <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
+            <BookingConfirmation />
           </div>
         </div>
         <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
