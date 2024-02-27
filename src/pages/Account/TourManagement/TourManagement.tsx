@@ -33,7 +33,7 @@ export default function TourManagement() {
     isLoading,
     refetch
   } = useQuery({
-    queryKey: [`tours of guide ${profile.id}`],
+    queryKey: [`tours of guide ${profile?.id}`],
     queryFn: () => tourApi.getToursOfGuide(),
     staleTime: 6 * 1000
   })

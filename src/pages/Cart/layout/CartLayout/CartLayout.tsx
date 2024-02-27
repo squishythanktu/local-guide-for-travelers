@@ -10,7 +10,7 @@ export default function CartLayout() {
   const { profile } = useContext(AppContext)
 
   const { data: cartData, refetch } = useQuery({
-    queryKey: [`booking in cart by ${profile.id}`],
+    queryKey: [`booking in cart by ${profile?.id}`],
     queryFn: () => cartApi.getBookingInCart(),
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
