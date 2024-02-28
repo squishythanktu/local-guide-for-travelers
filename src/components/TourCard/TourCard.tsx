@@ -23,7 +23,7 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
           <div className='tour-card__top relative'>
             <div className='tour-card__photo h-64 overflow-hidden'>
               <img
-                src={tourData.images[0].imageLink}
+                src={tourData.images[0]?.imageLink || '/assets/images/default-cover.jpg'}
                 alt='Tour img'
                 className={classNames('h-full w-full object-cover transition duration-700', {
                   'scale-125': isCardHovered

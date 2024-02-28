@@ -53,7 +53,7 @@ export default function Home() {
   }
 
   return (
-    <h1 className='homepage__container'>
+    <div className='homepage__container'>
       <Box
         className='hero-section'
         sx={{
@@ -98,6 +98,6 @@ export default function Home() {
           </Slider>
         </div>
       </div>
-    </h1>
+    </div>
   )
 }

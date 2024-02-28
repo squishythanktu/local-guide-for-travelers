@@ -11,6 +11,14 @@ export type ImageWithLink = {
   imageLink: string
 }
 
+export type Location = {
+  id: number
+  name: string
+  address: string
+  latitude: number
+  longitude: number
+}
+
 export type Tour = {
   id: number
   name: string
@@ -28,8 +36,8 @@ export type Tour = {
   itinerary: string
   categories: TourCategory[]
   guide: User
-  address: string
   images: ImageWithLink[]
+  locations: Location[]
 }
 
 export interface TourListConfig {

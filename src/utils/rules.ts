@@ -46,7 +46,8 @@ export const tourSchema = yup.object({
   limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
   extraPrice: yup.number().positive().required().typeError('Extra price must be positive a number'),
   itinerary: yup.string().trim().required(),
-  address: yup.string().trim().required().max(100, 'Maximum length is 100 characters'),
+  // address: yup.string().trim().required().max(100, 'Maximum length is 100 characters'),
+  locations: yup.array().required(),
   categories: yup.array().of(
     yup.object().shape({
       id: yup.number(),

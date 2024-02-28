@@ -31,7 +31,7 @@ export default function TourDetail() {
     includeService: '',
     duration: 0,
     unit: '',
-    address: '',
+    locations: [],
     estimatedLocalCashNeeded: '',
     pricePerTraveler: 0,
     limitTraveler: 0,
@@ -92,7 +92,7 @@ export default function TourDetail() {
           rating={tour.overallRating}
           numberOfReviews={numberOfReviews}
           provider={tour.guide?.username || ''}
-          address={tour.address}
+          address={tour.locations[0]?.address || 'N/A'}
         />
         <div className='activity__photo-gallery pb-2 pt-2'>
           <SimpleSlider itemsData={tour.images} />

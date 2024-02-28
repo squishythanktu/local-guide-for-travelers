@@ -199,7 +199,13 @@ export default function TourManagement() {
           </h2>
           <TourForm
             onSubmit={handleSubmitTourForm}
-            onCancel={() => setCreateMode(false)}
+            onCancel={() => {
+              setCreateMode(false)
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              })
+            }}
             isMutation={createTourMutation.isPending}
           />
         </>

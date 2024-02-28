@@ -18,7 +18,7 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
     <>
       <Box
         sx={{ color: (theme) => theme.palette.secondary.main }}
-        className='activity__category-label uppercase sm:flex sm:gap-4'
+        className='category-label uppercase sm:flex sm:gap-4'
       >
         {categories.map((category, index) => (
           <>
@@ -29,28 +29,26 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
           </>
         ))}
       </Box>
-      <div className='activity__header w-full'>
-        <h1 className='activity__title my-2 text-left text-3xl font-bold md:text-4xl lg:font-extrabold'>{title}</h1>
-        <div className='activity__basic-info flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
-          <div className='activity-rating flex items-center gap-4'>
+      <div className='header w-full'>
+        <h1 className='title my-2 text-left text-3xl font-bold md:text-4xl lg:font-extrabold'>{title}</h1>
+        <div className='basic-info flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
+          <div className='rating mr-2 flex items-center gap-2'>
             <Rating max={5} precision={0.1} value={rating} size='large' readOnly />
             <div className='text-sm font-medium md:text-[16px]'>{rating}/5</div>
-            <Link to='' className='text-sm underline md:text-[16px]'>
+            <Link to='' className='text-nowrap text-sm underline md:text-[16px]'>
               {numberOfReviews} reviews
             </Link>
           </div>
-          <div className='activity-author flex items-center gap-1'>
-            <div className='mr-1 text-sm font-semibold md:text-[16px]'>Activity provider:</div>
+          <div className='author mr-2 flex items-center gap-2'>
+            <div className='text-nowrap text-sm font-semibold md:text-[16px]'>Activity provider:</div>
             <Link to='' className='text-sm italic md:text-[16px]'>
               {provider}
             </Link>
           </div>
-          <div className='address flex items-center'>
-            <LocationCityIcon
-              sx={{ marginRight: '2px', marginBottom: '3px', color: (theme) => theme.palette.secondary.main }}
-            />
-            {address || 'N/A'}
-          </div>
+        </div>
+        <div className='address mt-2 flex items-center'>
+          <LocationCityIcon sx={{ marginRight: '4px', color: (theme) => theme.palette.secondary.main }} />
+          <span>{address || 'N/A'}</span>
         </div>
       </div>
     </>
