@@ -20,6 +20,8 @@ const SearchTours = lazy(() => import('./pages/SearchTours'))
 const SearchGuides = lazy(() => import('./pages/SearchGuides'))
 const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
 const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement/ScheduleManagement'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -159,6 +161,16 @@ export default function useRouteElements() {
         <MainLayout>
           <Suspense fallback={<Loading />}>
             <SearchGuides />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    {
+      path: path.checkout,
+      element: (
+        <MainLayout>
+          <Suspense fallback={<Loading />}>
+            <Checkout />
           </Suspense>
         </MainLayout>
       )
