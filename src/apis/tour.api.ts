@@ -1,3 +1,4 @@
+import { StartTimeParams } from './../types/tour.type'
 import { TourUpdateFormData } from 'src/pages/Account/components/TourForm/UpdateForm/UpdateForm'
 import { Tour, TourSuccessResponse } from 'src/types/tour.type'
 import { SuccessResponse, SuccessResponseWithPagination } from 'src/types/utils.type'
@@ -29,6 +30,9 @@ const tourApi = {
   },
   getToursOfGuide() {
     return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/guide`)
+  },
+  getStartTime(id: string, params: StartTimeParams) {
+    return http.get<SuccessResponse<string[]>>(`${URL_TOURS}/${id}/tour-start-time-available`, { params })
   }
 }
 

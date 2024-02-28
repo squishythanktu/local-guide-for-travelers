@@ -10,10 +10,19 @@ import { Tour } from 'src/types/tour.type'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
 import BookingConfirmation from '../../components/BookingConfirmation'
+import { BookingFormSchema } from 'src/utils/rules'
+import { format } from 'date-fns'
+import { Unit } from 'src/enums/unit.enum'
 
 const numberOfReviews = 125
 
 export default function TourDetail() {
+  const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
+  const [formData, setFormData] = useState<{ startDate: Date; numberTravelers: number }>({
+    startDate: new Date(),
+    numberTravelers: 0
+  })
+
   const [tour, setTour] = useState<Tour>({
     id: 0,
     name: '',
@@ -56,6 +65,17 @@ export default function TourDetail() {
     })
   }, [tourQuery?.data])
 
+  const { data: startTimeData } = useQuery({
+    queryKey: [`start time of tourId ${id} in ${formData.startDate}`, checkAvailability],
+    queryFn: () => tourApi.getStartTime(id ? id : '', { localDate: format(formData.startDate, 'yyyy-MM-dd') }),
+    enabled: tourQuery?.data.data.unit === Unit.HOURS && tourQuery?.data.data.duration < 5
+  })
+
+  const getStartTime = (body: BookingFormSchema) => {
+    setFormData(body)
+    setCheckAvailability(true)
+  }
+
   if (isLoadingTour) {
     return <Loading />
   }
@@ -74,7 +94,6 @@ export default function TourDetail() {
           provider={tour.guide?.username || ''}
           address={tour.address}
         />
-
         <div className='activity__photo-gallery pb-2 pt-2'>
           <SimpleSlider itemsData={tour.images} />
         </div>
@@ -94,16 +113,20 @@ export default function TourDetail() {
               />
               <div className='check-availability'></div>
             </div>
-            <div className='col-span-1'>
-              <BookingAssistant />
+            {!checkAvailability && (
+              <div className='col-span-1'>
+                <BookingAssistant onSubmit={getStartTime} />
+              </div>
+            )}
+          </div>
+        </div>
+        {checkAvailability && (
+          <div className='pt-5'>
+            <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
+              <BookingConfirmation options={startTimeData?.data.data} />
             </div>
           </div>
-        </div>
-        <div className='pt-5'>
-          <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
-            <BookingConfirmation />
-          </div>
-        </div>
+        )}
         <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
           <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
           <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>

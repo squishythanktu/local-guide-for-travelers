@@ -47,3 +47,7 @@ export interface TourListConfig {
 }
 
 export type TourSuccessResponse = SuccessResponse<Tour>
+
+export type StartTimeParams = {
+  localDate: string
+}

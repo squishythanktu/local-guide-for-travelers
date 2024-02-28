@@ -8,8 +8,11 @@ import Button from '@mui/material/Button'
 import { useState } from 'react'
 import CalendarCheckIcon from 'src/assets/svg/calendar-check.svg'
 
-export default function BookingConfirmation() {
-  const options = ['10:00 AM', '11:15 AM', '12:30 AM', '1:45 PM', '2:15 PM', '3:15 PM', '4:30 PM']
+interface Props {
+  options?: string[]
+}
+
+export default function BookingConfirmation({ options }: Props) {
   const [selectedOption, setSelectedOption] = useState('')
 
   const handleOptionClick = (option: string) => {
@@ -39,22 +42,26 @@ export default function BookingConfirmation() {
           </div>
         </div>
         <Divider />
-        <div className='starting-times flex flex-col gap-2'>
-          <div className='font-medium'>Select a starting time</div>
-          <div className='flex flex-wrap gap-2'>
-            {options.map((option) => (
-              <Button
-                key={option}
-                variant='outlined'
-                className={`${option === selectedOption ? 'bg-[#1a2b49] text-white' : 'border-2 border-gray-300 text-black '} `}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option}
-              </Button>
-            ))}
-          </div>
-        </div>
-        <Divider />
+        {options && (
+          <>
+            <div className='starting-times flex flex-col gap-2'>
+              <div className='font-medium'>Select a starting time</div>
+              <div className='flex flex-wrap gap-2'>
+                {options.map((option) => (
+                  <Button
+                    key={option}
+                    variant='outlined'
+                    className={`${option === selectedOption ? 'bg-[#1a2b49] text-white' : 'border-2 border-gray-300 text-black '} `}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <Divider />
+          </>
+        )}
         <div className='participants flex flex-col gap-2'>
           <div className='relative flex'>
             <div className='text-sm font-medium text-gray-500'>Person 2× $ 119</div>

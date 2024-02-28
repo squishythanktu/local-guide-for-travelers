@@ -25,6 +25,7 @@
     "@tanstack/react-query-devtools": "^5.18.0",
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
+    "date-fns": "^3.3.1",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "material-react-table": "^2.11.0",

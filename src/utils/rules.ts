@@ -56,7 +56,6 @@ export const tourSchema = yup.object({
   images: yup.array().of(yup.string())
 })
 
-
 export const searchSchema = yup.object({
   searchValue: yup.string().trim().required(),
   searchType: yup.string().required()
@@ -74,5 +73,5 @@ export type UserSchema = yup.InferType<typeof userSchema>
 export type TourSchema = yup.InferType<typeof tourSchema>
 
 export type SearchSchema = yup.InferType<typeof searchSchema>
-                                   
+
 export type BookingFormSchema = yup.InferType<typeof bookingFormSchema>
