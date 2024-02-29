@@ -22,7 +22,6 @@ const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
 const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement/ScheduleManagement'))
 const Checkout = lazy(() => import('./pages/Checkout'))
 
-
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
   return isAuthenticated ? <Outlet /> : <Navigate to='/login' />

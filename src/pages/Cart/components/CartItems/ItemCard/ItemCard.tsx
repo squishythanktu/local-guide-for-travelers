@@ -17,9 +17,6 @@ import UsersIcon from 'src/assets/svg/users.svg'
 import BookingForm from 'src/pages/TourDetail/components/BookingAssistant/BookingForm/BookingForm'
 import { Booking } from 'src/types/cart.type'
 import { BookingFormSchema } from 'src/utils/rules'
-import { QueryObserverResult, useMutation } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
-import cartApi from 'src/apis/cart.api'
 
 export type BookingUpdateFormData = BookingFormSchema & { id: string }
 

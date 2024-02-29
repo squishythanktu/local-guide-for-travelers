@@ -1,15 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { LatLngExpression, divIcon, point, LatLng } from 'leaflet'
+import { LatLng, LatLngExpression, divIcon, point } from 'leaflet'
+import { OpenStreetMapProvider } from 'leaflet-geosearch'
+import 'leaflet/dist/leaflet.css'
 import { useEffect, useState } from 'react'
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import { OpenStreetMapProvider } from 'leaflet-geosearch'
-import 'leaflet/dist/leaflet.css'
-import './react-leaflet.css'
+import { Location } from 'src/types/tour.type'
 import MapSearchControl from '../MapSearchControl/MapSearchControl'
+import './react-leaflet.css'
 
-const Map: React.FC<{ onMarkersUpdate: (markers: LatLngExpression[]) => void }> = ({ onMarkersUpdate }) => {
-  const [markers, setMarkers] = useState<LatLngExpression[]>([])
+interface Props {
+  onMarkersUpdate: (markers: LatLngExpression[]) => void
+  isSelect?: boolean
+  locations?: Location[]
+}
+
+const Map: React.FC<Props> = ({ onMarkersUpdate, isSelect, locations }: Props) => {
+  const convertLocationToLatLngExpression = (location: Location): LatLngExpression => {
+    return {
+      lat: location.latitude,
+      lng: location.longitude
+    }
+  }
+
+  const convertLocationsToLatLngExpressions = (locations: Location[]): LatLngExpression[] => {
+    return locations.map(convertLocationToLatLngExpression)
+  }
+
+  const latLngExpressions: LatLngExpression[] = convertLocationsToLatLngExpressions(locations || [])
+
+  const [markers, setMarkers] = useState<LatLngExpression[]>(latLngExpressions || [])
   const prov = new OpenStreetMapProvider()
 
   useEffect(() => {
@@ -64,7 +84,7 @@ const Map: React.FC<{ onMarkersUpdate: (markers: LatLngExpression[]) => void }> 
         keepResult={true}
       />
       <MarkerClusterGroup chunkedLoading iconCreateFunction={customClusterIcon}>
-        <AddMarkerOnClick />
+        {!isSelect && <AddMarkerOnClick />}
         {markers.map((marker, index) => (
           <Marker
             key={index}

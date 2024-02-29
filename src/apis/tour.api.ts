@@ -1,6 +1,6 @@
-import { StartTimeParams } from './../types/tour.type'
+import { StartTimeParams, Tour, TourSuccessResponse } from './../types/tour.type'
 import { TourUpdateFormData } from 'src/pages/Account/components/TourForm/UpdateForm/UpdateForm'
-import { Tour, TourSuccessResponse } from 'src/types/tour.type'
+
 import { SuccessResponse, SuccessResponseWithPagination } from 'src/types/utils.type'
 import http from 'src/utils/http'
 import { TourSchema } from 'src/utils/rules'

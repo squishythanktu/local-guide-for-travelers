@@ -1,18 +1,20 @@
-import AboutActivity from '../../components/AboutActivity'
-import BookingAssistant from '../../components/BookingAssistant'
-import TourHeader from '../../components/TourHeader'
-import SimpleSlider from '../../components/SimpleSlider'
-import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
-import tourApi from 'src/apis/tour.api'
+import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
-import { Tour } from 'src/types/tour.type'
+import { useParams } from 'react-router'
+import tourApi from 'src/apis/tour.api'
+import { Unit } from 'src/enums/unit.enum'
+import Map from 'src/pages/Account/components/Map/Map'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
-import BookingConfirmation from '../../components/BookingConfirmation'
+import { Tour } from 'src/types/tour.type'
 import { BookingFormSchema } from 'src/utils/rules'
-import { format } from 'date-fns'
-import { Unit } from 'src/enums/unit.enum'
+import AboutActivity from '../../components/AboutActivity'
+import BookingAssistant from '../../components/BookingAssistant'
+import BookingConfirmation from '../../components/BookingConfirmation'
+import MainStop from '../../components/MainStop/MainStop'
+import SimpleSlider from '../../components/SimpleSlider'
+import TourHeader from '../../components/TourHeader'
 
 const numberOfReviews = 125
 
@@ -83,6 +85,7 @@ export default function TourDetail() {
   if (errorTour) {
     return <NotFound />
   }
+
   return (
     <div className='px-4 py-2 text-sm md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>
       <div className='activity__container flex flex-col'>
@@ -127,6 +130,15 @@ export default function TourDetail() {
             </div>
           </div>
         )}
+        <div className='activity__itinerary mt-10 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-10'>
+          <div className='main-stop col-span-1'>
+            <MainStop locations={tour.locations} />
+          </div>
+          <div className='map col-span-2'>
+            <div className='text-[18px] font-semibold md:text-2xl'>Itinerary</div>
+            <Map onMarkersUpdate={() => {}} locations={tour.locations} isSelect={true} />
+          </div>
+        </div>
         <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
           <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
           <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
