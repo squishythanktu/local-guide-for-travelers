@@ -43,7 +43,7 @@ export default function ProfileMenu({ textColor }: Props) {
       <Button
         onClick={handleClick}
         className={classNames(
-          'ml-2 flex flex-col items-center text-sm font-normal hover:after:w-full md:ml-4 md:after:absolute md:after:bottom-[1px] md:after:left-0 md:after:h-[2px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
+          'ml-0 flex flex-col items-center text-sm font-normal hover:after:w-full md:ml-2 md:after:absolute md:after:bottom-[1px] md:after:left-0 md:after:h-[2px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
           {
             'md:after:w-full': location.pathname.includes(path.account)
           }
@@ -58,7 +58,9 @@ export default function ProfileMenu({ textColor }: Props) {
         disableFocusRipple
       >
         <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor, marginBottom: '2px' }} />
-        {isAuthenticated && profile && profile.username ? profile.username : 'Profile'}
+        <span className='hidden text-sm md:block'>
+          {isAuthenticated && profile && profile.username ? profile.username : 'Profile'}
+        </span>
       </Button>
       {!isAuthenticated && (
         <Menu

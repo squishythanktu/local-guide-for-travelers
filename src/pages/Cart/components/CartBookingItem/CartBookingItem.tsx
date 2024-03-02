@@ -7,25 +7,29 @@ import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import Rating from '@mui/material/Rating'
 import { QueryObserverResult, useMutation } from '@tanstack/react-query'
-import moment from 'moment'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import DeleteIcon from 'src/assets/svg/delete.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
-import BookingForm from 'src/pages/TourDetail/components/BookingAssistant/BookingForm/BookingForm'
 import { Booking } from 'src/types/cart.type'
-import { BookingFormSchema } from 'src/utils/rules'
+import { formatDate } from 'src/utils/date-time'
+import { BookingSchema } from 'src/utils/rules'
+import CartBookingForm from '../CartBookingForm'
+import utc from 'dayjs/plugin/utc'
+import dayjs from 'dayjs'
 
-export type BookingUpdateFormData = BookingFormSchema & { id: string }
+dayjs.extend(utc)
+type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate' | 'startTime'>
+export type BookingUpdateFormData = BookingFormData & { id: string }
 
 interface Props {
   booking: Booking
   refetch: () => Promise<QueryObserverResult>
 }
 
-export default function ItemCard({ booking, refetch }: Props) {
+export default function CartBookingItem({ booking, refetch }: Props) {
   const [editMode, setEditMode] = useState(false)
   const handleUpdate = () => {
     setEditMode(true)
@@ -49,16 +53,14 @@ export default function ItemCard({ booking, refetch }: Props) {
     }
   })
 
-  const handleUpdateBookingForm = (body: BookingFormSchema) => {
-    console.log('body', body)
-
+  const handleUpdateBookingForm = (body: BookingFormData) => {
     setEditMode(false)
-    const formattedBody = { id: booking.id, ...body }
+    const formattedBody = { ...body, id: booking.id, startDate: dayjs.utc(body.startDate).toDate() }
     updateBookingMutation.mutate(formattedBody, {
       onSuccess: () => {
-        setEditMode(false)
         refetch()
-        toast.success('Update the booking in cart successfully.')
+        setEditMode(false)
+        toast.success('Update booking successfully.')
       },
       onError: (error) => {
         toast.error(error.message)
@@ -71,7 +73,7 @@ export default function ItemCard({ booking, refetch }: Props) {
   })
 
   return (
-    <Card className='rounded-lg border p-2 shadow-none'>
+    <Card className='rounded-lg border p-2'>
       <CardHeader
         avatar={
           <CardMedia
@@ -103,7 +105,7 @@ export default function ItemCard({ booking, refetch }: Props) {
                 <div className='flex '>
                   <UsersIcon className='mb-[2px] mr-2 h-5 w-5' />
                   <div className='text-base font-medium'>
-                    {moment(booking.startDate).format('MM/DD/YYYY')} - {moment(booking.startDate).format('HH:MM')}
+                    {formatDate(booking.startDate, 'DD/MM/YYYY')} - {formatDate(booking.startDate, 'HH:mm')}
                   </div>
                 </div>
                 <div className='flex'>
@@ -129,10 +131,12 @@ export default function ItemCard({ booking, refetch }: Props) {
                 </div>
               </>
             )}
-            {editMode && <BookingForm onSubmit={handleUpdateBookingForm} booking={booking} setEditMode={setEditMode} />}
+            {editMode && (
+              <CartBookingForm onSubmit={handleUpdateBookingForm} booking={booking} setEditMode={setEditMode} />
+            )}
           </div>
         </div>
-        <div className='total absolute bottom-5 right-0 pr-2 text-lg font-medium leading-5'>
+        <div className='total absolute bottom-5 right-0 mb-3 pr-2 text-lg font-medium leading-5'>
           ${booking.price.toLocaleString()}
         </div>
       </CardContent>

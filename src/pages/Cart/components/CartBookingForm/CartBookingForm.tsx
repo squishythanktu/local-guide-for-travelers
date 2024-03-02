@@ -1,35 +1,57 @@
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Box } from '@mui/material'
+import Button from '@mui/material/Button'
+import FormHelperText from '@mui/material/FormHelperText'
 import MenuItem from '@mui/material/MenuItem'
-import { Dispatch, SetStateAction } from 'react'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import Select from '@mui/material/Select'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import tourApi from 'src/apis/tour.api'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
-import Button from '@mui/material/Button'
 import { Booking } from 'src/types/cart.type'
-import { Controller, useForm } from 'react-hook-form'
-import { BookingFormSchema, bookingFormSchema } from 'src/utils/rules'
-import { yupResolver } from '@hookform/resolvers/yup'
-import dayjs from 'dayjs'
+import { formatDate, formatTime } from 'src/utils/date-time'
+import { BookingSchema, bookingSchema } from 'src/utils/rules'
+
+type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate' | 'startTime'>
+const bookingFormSchema = bookingSchema.pick(['numberTravelers', 'startDate', 'startTime'])
+
 interface Props {
   setEditMode?: Dispatch<SetStateAction<boolean>>
-  onSubmit: (data: BookingFormSchema) => void
+  onSubmit: (data: BookingFormData) => void
   booking?: Booking
 }
 
-export default function BookingForm({ setEditMode, booking, onSubmit }: Props) {
+export default function CartBookingForm({ setEditMode, booking, onSubmit }: Props) {
+  const initialStartTime = formatTime(booking?.startDate.toString().split('T')[1] as string, 'HH:mm:ss', 'HH:mm')
   const {
     trigger,
     control,
     handleSubmit,
+    getValues,
+    resetField,
     formState: { errors }
-  } = useForm<BookingFormSchema>({
+  } = useForm<BookingFormData>({
     defaultValues: {
       numberTravelers: booking?.numberTraveler,
-      startDate: booking?.startDate
+      startDate: booking?.startDate,
+      startTime: initialStartTime
     },
     resolver: yupResolver(bookingFormSchema)
   })
+  const { data: startTimeData } = useQuery({
+    queryKey: ['startTimeData', getValues('startDate')],
+    queryFn: () =>
+      tourApi.getStartTime(booking?.tour.id as number, {
+        localDate: formatDate(getValues('startDate'), 'YYYY-MM-DD')
+      })
+  })
+  const [isStartDateChange, setIsStartTimeChange] = useState<boolean>(false)
+
   const handleCancel = () => {
     if (setEditMode) {
       setEditMode(false)
@@ -55,7 +77,8 @@ export default function BookingForm({ setEditMode, booking, onSubmit }: Props) {
                   trigger('numberTravelers')
                 }}
                 sx={{
-                  bgcolor: 'white'
+                  bgcolor: 'white',
+                  width: '200px'
                 }}
               />
             )}
@@ -72,24 +95,47 @@ export default function BookingForm({ setEditMode, booking, onSubmit }: Props) {
               name='startDate'
               render={({ field }) => (
                 <DatePicker
+                  disablePast
                   defaultValue={dayjs(booking?.startDate)}
-                  className='w-64'
                   onChange={(event) => {
                     field.onChange(event)
                     trigger('startDate')
+                    setIsStartTimeChange(true)
+                    resetField('startTime', { defaultValue: '' })
                   }}
                   sx={{
                     bgcolor: 'white',
-                    border: '8px'
+                    border: '8px',
+                    minWidth: '200px'
                   }}
                 />
               )}
             />
-            <Select>
-              <MenuItem value={10}>11:00 AM</MenuItem>
-              <MenuItem value={20}>12:00 AM</MenuItem>
-              <MenuItem value={5}>5:00 AM</MenuItem>
-            </Select>
+            <Controller
+              control={control}
+              name='startTime'
+              render={({ field }) => (
+                <Box className='flex flex-col'>
+                  <Select
+                    {...field}
+                    MenuProps={{ disableScrollLock: true }}
+                    sx={{ minWidth: '160px' }}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('startTime')
+                    }}
+                  >
+                    {!isStartDateChange && <MenuItem value={initialStartTime}>{initialStartTime}</MenuItem>}
+                    {startTimeData?.data.data.map((time, index) => (
+                      <MenuItem value={time} key={index}>
+                        {formatTime(time, 'HH:mm:ss', 'HH:mm')}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {!!errors.startTime && <FormHelperText error>{errors.startTime.message}</FormHelperText>}{' '}
+                </Box>
+              )}
+            />
           </div>
         </div>
         {errors.startDate && <div className='pl-7 text-xs text-red-500'>{errors.startDate.message}</div>}

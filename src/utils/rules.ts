@@ -62,9 +62,10 @@ export const searchSchema = yup.object({
   searchType: yup.string().required()
 })
 
-export const bookingFormSchema = yup.object({
-  startDate: yup.date().required().min(new Date(), 'Please select a date in the future'),
-  numberTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number')
+export const bookingSchema = yup.object({
+  startDate: yup.date().required(),
+  numberTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number'),
+  startTime: yup.string().required()
 })
 
 export type Schema = yup.InferType<typeof schema>
@@ -75,4 +76,4 @@ export type TourSchema = yup.InferType<typeof tourSchema>
 
 export type SearchSchema = yup.InferType<typeof searchSchema>
 
-export type BookingFormSchema = yup.InferType<typeof bookingFormSchema>
+export type BookingSchema = yup.InferType<typeof bookingSchema>

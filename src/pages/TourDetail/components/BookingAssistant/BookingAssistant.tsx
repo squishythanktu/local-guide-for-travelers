@@ -2,12 +2,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Button from '@mui/material/Button'
 import { Controller, useForm } from 'react-hook-form'
-import { BookingFormSchema, bookingFormSchema } from 'src/utils/rules'
+import { BookingSchema, bookingSchema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import dayjs from 'dayjs'
 
+type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
+const bookingFormSchema = bookingSchema.pick(['numberTravelers', 'startDate'])
+
 interface Props {
-  onSubmit: (data: BookingFormSchema) => void
+  onSubmit: (data: BookingFormData) => void
 }
 
 export default function BookingAssistant({ onSubmit }: Props) {
@@ -16,7 +19,7 @@ export default function BookingAssistant({ onSubmit }: Props) {
     control,
     formState: { errors },
     handleSubmit
-  } = useForm<BookingFormSchema>({
+  } = useForm<BookingFormData>({
     defaultValues: {
       numberTravelers: 0,
       startDate: new Date()

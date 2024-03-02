@@ -7,7 +7,6 @@ import AccountLayout from './pages/Account/layouts/AccountLayout'
 import HomeLayout from './layouts/HomeLayout'
 import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
 import Loading from './pages/Loading'
-import CartLayout from './pages/Cart/layout/CartLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -21,6 +20,7 @@ const SearchGuides = lazy(() => import('./pages/SearchGuides'))
 const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
 const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement/ScheduleManagement'))
 const Checkout = lazy(() => import('./pages/Checkout'))
+const Cart = lazy(() => import('./pages/Cart'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -139,7 +139,7 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <Suspense fallback={<Loading />}>
-            <CartLayout />
+            <Cart />
           </Suspense>
         </MainLayout>
       )

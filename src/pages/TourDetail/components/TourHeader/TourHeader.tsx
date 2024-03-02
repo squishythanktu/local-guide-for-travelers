@@ -21,12 +21,10 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
         className='category-label uppercase sm:flex sm:gap-4'
       >
         {categories.map((category, index) => (
-          <>
-            <div className='text-md font-bold leading-4 md:text-lg' key={index}>
-              {category.name}
-            </div>
+          <Box key={index}>
+            <div className='text-md font-bold leading-4 md:text-lg'>{category.name}</div>
             <h3>{categories.length > 1 && index < categories.length - 1 && '-'}</h3>
-          </>
+          </Box>
         ))}
       </Box>
       <div className='header w-full'>

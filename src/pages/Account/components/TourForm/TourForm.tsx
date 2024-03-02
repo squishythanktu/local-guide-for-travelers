@@ -12,7 +12,7 @@ import { TourSchema, tourSchema } from 'src/utils/rules'
 import Typography from '@mui/material/Typography'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import LoadingButton from '@mui/lab/LoadingButton'
-import Map from '../Map/Map'
+import Map from '../../../../components/Map/Map'
 import { LatLngExpression } from 'leaflet'
 
 interface TourFormProps {
@@ -68,7 +68,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
 
   const handleMarkersUpdate = useCallback(
     (markers: LatLngExpression[]) => {
-      const formattedMarkers = (markers as any[]).map((marker: number[]) => {
+      const formattedMarkers = (markers as Array<number[]>).map((marker: number[]) => {
         return {
           latitude: marker[0],
           longitude: marker[1]

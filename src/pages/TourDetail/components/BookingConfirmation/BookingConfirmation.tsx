@@ -7,12 +7,13 @@ import LocationIcon from 'src/assets/svg/location.svg'
 import Button from '@mui/material/Button'
 import { useState } from 'react'
 import CalendarCheckIcon from 'src/assets/svg/calendar-check.svg'
+import { formatTime } from 'src/utils/date-time'
 
 interface Props {
-  options?: string[]
+  timeOptions?: string[]
 }
 
-export default function BookingConfirmation({ options }: Props) {
+export default function BookingConfirmation({ timeOptions }: Props) {
   const [selectedOption, setSelectedOption] = useState('')
 
   const handleOptionClick = (option: string) => {
@@ -42,19 +43,19 @@ export default function BookingConfirmation({ options }: Props) {
           </div>
         </div>
         <Divider />
-        {options && (
+        {timeOptions && (
           <>
             <div className='starting-times flex flex-col gap-2'>
               <div className='font-medium'>Select a starting time</div>
               <div className='flex flex-wrap gap-2'>
-                {options.map((option) => (
+                {timeOptions.map((option) => (
                   <Button
                     key={option}
                     variant='outlined'
                     className={`${option === selectedOption ? 'bg-[#1a2b49] text-white' : 'border-2 border-gray-300 text-black '} `}
                     onClick={() => handleOptionClick(option)}
                   >
-                    {option}
+                    {formatTime(option, 'HH:mm:ss', 'HH:mm')}
                   </Button>
                 ))}
               </div>

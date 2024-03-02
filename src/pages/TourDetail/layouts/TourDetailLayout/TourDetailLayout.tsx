@@ -1,30 +1,31 @@
 import { useQuery } from '@tanstack/react-query'
-import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import tourApi from 'src/apis/tour.api'
 import { Unit } from 'src/enums/unit.enum'
-import Map from 'src/pages/Account/components/Map/Map'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
 import { Tour } from 'src/types/tour.type'
-import { BookingFormSchema } from 'src/utils/rules'
+import { formatDate } from 'src/utils/date-time'
+import { BookingSchema } from 'src/utils/rules'
 import AboutActivity from '../../components/AboutActivity'
 import BookingAssistant from '../../components/BookingAssistant'
 import BookingConfirmation from '../../components/BookingConfirmation'
 import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
+import Map from 'src/components/Map/Map'
 
+type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 const numberOfReviews = 125
 
 export default function TourDetail() {
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
-  const [formData, setFormData] = useState<{ startDate: Date; numberTravelers: number }>({
+  const [formData, setFormData] = useState<BookingFormData>({
     startDate: new Date(),
     numberTravelers: 0
   })
-
+  const { id } = useParams()
   const [tour, setTour] = useState<Tour>({
     id: 0,
     name: '',
@@ -45,8 +46,6 @@ export default function TourDetail() {
     images: [{ id: 0, imageLink: '' }],
     guide: { id: '', email: '' }
   })
-  const { id } = useParams()
-
   const {
     isPending: isLoadingTour,
     error: errorTour,
@@ -68,12 +67,12 @@ export default function TourDetail() {
   }, [tourQuery?.data])
 
   const { data: startTimeData } = useQuery({
-    queryKey: [`start time of tourId ${id} in ${formData.startDate}`, checkAvailability],
-    queryFn: () => tourApi.getStartTime(id ? id : '', { localDate: format(formData.startDate, 'yyyy-MM-dd') }),
-    enabled: tourQuery?.data.data.unit === Unit.HOURS && tourQuery?.data.data.duration < 5
+    queryKey: [`Start time of tourId ${id} in ${formData.startDate}`],
+    queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
+    enabled: tourQuery?.data.data.unit === Unit.HOURS && tourQuery?.data.data.duration < 5 && checkAvailability
   })
 
-  const getStartTime = (body: BookingFormSchema) => {
+  const handleSubmitBookingAssistant = (body: BookingFormData) => {
     setFormData(body)
     setCheckAvailability(true)
   }
@@ -118,7 +117,7 @@ export default function TourDetail() {
             </div>
             {!checkAvailability && (
               <div className='col-span-1'>
-                <BookingAssistant onSubmit={getStartTime} />
+                <BookingAssistant onSubmit={handleSubmitBookingAssistant} />
               </div>
             )}
           </div>
@@ -126,7 +125,7 @@ export default function TourDetail() {
         {checkAvailability && (
           <div className='pt-5'>
             <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
-              <BookingConfirmation options={startTimeData?.data.data} />
+              <BookingConfirmation timeOptions={startTimeData?.data.data} />
             </div>
           </div>
         )}

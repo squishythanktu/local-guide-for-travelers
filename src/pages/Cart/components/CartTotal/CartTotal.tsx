@@ -21,12 +21,12 @@ export default function CartTotal({ bookings }: Props) {
           title={
             <>
               <div className='item-card__header flex justify-between'>
-                <div className='title text-xl font-bold leading-5'>
+                <div className='title whitespace-nowrap text-xl font-bold leading-5'>
                   Total ({bookings.length} {bookings.length > 1 ? 'items' : 'item'}):
                 </div>
                 <div className='flex flex-col items-end gap-1'>
                   <div className='title text-xl font-bold leading-5'>${totalBookingPrice.toLocaleString()}</div>
-                  <div className='title text-xs font-medium leading-5 text-emerald-700 lg:text-sm'>
+                  <div className='title text-right text-xs font-medium leading-5 text-emerald-700 lg:text-sm'>
                     All taxes and fees included
                   </div>
                 </div>
