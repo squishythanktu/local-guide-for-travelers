@@ -8,7 +8,7 @@ interface Props {
 export default function MainLayout({ children }: Props) {
   return (
     <div>
-      <Header textColor='black' bgColor='white' />
+      <Header textColor='black' bgColor='white' isEnableScroll={false} />
       {children}
       <Footer />
     </div>

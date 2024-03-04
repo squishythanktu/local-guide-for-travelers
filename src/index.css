@@ -55,10 +55,10 @@
 
 *::-webkit-scrollbar,
 *::-webkit-scrollbar-thumb {
-  width: 28px;
-  border-radius: 16px;
+  width: 20px;
+  border-radius: 24px;
   background-clip: padding-box;
-  border: 10px solid transparent;
+  border: 6px solid transparent;
   color: var(--supportive-over-view);
 }
 

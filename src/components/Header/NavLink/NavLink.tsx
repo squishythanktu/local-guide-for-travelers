@@ -8,11 +8,9 @@ interface Props {
 
 export default function NavLink({ to, icon, text }: Props) {
   const location = useLocation()
-  const styles = `
-    relative ml-2 flex cursor-pointer flex-col items-center text-base 
+  const styles = `relative ml-2 flex cursor-pointer flex-col items-center text-base 
     hover:after:w-full md:ml-4 md:after:absolute md:after:bottom-[-4px] md:after:left-0 md:after:h-[2px] 
-    md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:ml-8 
-  `
+    md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300`
   const isActive = to && location.pathname.includes(to)
 
   return (

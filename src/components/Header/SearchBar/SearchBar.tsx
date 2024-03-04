@@ -20,7 +20,11 @@ import useSearchToursGuides from 'src/hooks/useSearchToursGuides'
 import theme from 'src/theme'
 import { SeachResult, SearchSuggestionResult } from 'src/types/search-suggestion-result.type'
 
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  className: string
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const queryConfig = useQueryConfig()
   const location = useLocation()
   const { onSubmitSearch, control, trigger, register, setValue } = useSearchToursGuides()
@@ -61,8 +65,8 @@ const SearchBar: React.FC = () => {
   }, [searchSuggestionData])
 
   return (
-    <form className='search-bar col-span-3 flex items-center' onSubmit={onSubmitSearch}>
-      <Box className='relative flex w-full items-center rounded-full border-2 border-solid border-[var(--border-primary)] bg-white focus:border-2 focus:border-solid focus:border-blue-500'>
+    <form className={className} onSubmit={onSubmitSearch}>
+      <Box className='relative flex h-full w-full items-center rounded-full border-2 border-solid border-[var(--border-primary)] bg-white focus:border-2 focus:border-solid focus:border-blue-500'>
         <div className='search-icon flex h-full w-auto items-center justify-center border-r-2 border-solid border-[var(--border-primary)]'>
           <Controller
             control={control}
@@ -79,7 +83,7 @@ const SearchBar: React.FC = () => {
                   trigger('searchType')
                   setSearch({ ...search, searchType: event.target.value })
                 }}
-                className='h-full w-12 overflow-auto md:w-[100px]'
+                className='w-[80px] overflow-auto text-sm md:w-[100px] md:text-base'
                 sx={{
                   boxShadow: 'none',
                   '.MuiOutlinedInput-notchedOutline': { border: 0 },
@@ -109,6 +113,7 @@ const SearchBar: React.FC = () => {
               value={search.searchValue}
               options={searchSuggestionResults || []}
               getOptionLabel={(option) => (typeof option === 'string' ? option : option?.resultName || '')}
+              componentsProps={{ popper: { style: { width: 'fit-content' } } }}
               renderInput={(params) => (
                 <TextField
                   {...params}
