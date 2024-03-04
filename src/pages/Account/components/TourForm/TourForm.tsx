@@ -14,6 +14,7 @@ import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Map from '../../../../components/Map/Map'
 import { LatLngExpression } from 'leaflet'
+import FormHelperText from '@mui/material/FormHelperText'
 
 interface TourFormProps {
   onSubmit: (data: TourFormData) => void
@@ -92,9 +93,6 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
               label={'Name'}
             />
           </div>
-          {/* <div className='tour-form__field-group mb-4 flex min-h-[80px] flex-col gap-6 lg:flex-row'>
-            <AddressSelects onChange={handleAddressSelectsChange} />
-          </div> */}
           <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
             <ControlledTextField
               required
@@ -159,6 +157,9 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
                       value={Array.isArray(field.value) ? field.value : []}
                       className='h-fit grow lg:w-1/3'
                       onChange={handleChange}
+                      sx={{
+                        '& .MuiInputBase-root': { height: '56px' }
+                      }}
                       renderTags={(value, getTagProps) => {
                         const numTags = value.length
                         const limitTags = 1
@@ -275,8 +276,14 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
               </Typography>
             </Typography>
             <Map onMarkersUpdate={handleMarkersUpdate} />
+            {!!errors.locations?.message && <FormHelperText error>{errors.locations.message}</FormHelperText>}
           </Box>
-          <ImagesUploader images={images} setImages={setImages}></ImagesUploader>
+          <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>
+              Select images
+            </Typography>
+            <ImagesUploader images={images} setImages={setImages}></ImagesUploader>
+          </Box>
         </Box>
         <Box
           sx={{

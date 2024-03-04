@@ -1,4 +1,4 @@
-import React from 'react'
+import { ChangeEvent } from 'react'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import CancelIcon from '@mui/icons-material/Cancel'
@@ -14,15 +14,12 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
   const maxImagesUpload = 10
   const inputId = Math.random().toString(32).substring(2)
 
-  const handleOnAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnAddImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
-    const files: File[] = []
 
-    for (const file of e.target.files) {
-      files.push(file)
-    }
-
+    const files = Array.from(e.target.files).slice(0, maxImagesUpload - props.images.length)
     const base64Array = await Promise.all(files.map((file) => convertToBase64(file)))
+
     props.setImages([...props.images, ...base64Array])
     e.target.value = ''
   }
@@ -48,9 +45,9 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
         {props.images.map((image, i) => (
           <Grid
             item
-            xs={4}
-            sm={4}
-            md={4}
+            xs={2}
+            sm={2}
+            md={2}
             key={i}
             sx={{
               display: 'flex',
@@ -61,11 +58,10 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
           >
             <IconButton
               aria-label='delete image'
-              style={{
+              sx={{
                 position: 'absolute',
-                top: 10,
-                right: 0,
-                color: '#aaa'
+                top: 20,
+                right: -5
               }}
               onClick={() => handleOnRemoveImage(i)}
             >
@@ -76,7 +72,7 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain',
+                objectFit: 'cover',
                 aspectRatio: '1 / 1'
               }}
               alt=''
@@ -84,22 +80,22 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
           </Grid>
         ))}
       </Grid>
-      <label htmlFor={inputId}>
+      <label htmlFor={inputId} className='flex items-center gap-3'>
         <Button
           variant='contained'
           disabled={props.images.length >= maxImagesUpload}
           component='span'
-          sx={{ mt: 4 }}
           startIcon={<CloudUploadIcon />}
         >
           Upload Images
         </Button>
+        <span className='text-sm'>Up to 10 images</span>
         <input
           id={inputId}
           type='file'
           multiple
           accept='image/*,.png,.jpg,.jpeg,.gif'
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnAddImage(e)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleOnAddImage(e)}
           style={{ display: 'none' }}
         />
       </label>

@@ -44,15 +44,15 @@ export default function TourManagement() {
     mutationFn: (selectedId: string) => tourApi.deleteTour(selectedId)
   })
 
-  const handleSubmitTourForm = (body: TourFormData) => {
-    const formattedBody = {
-      ...body,
+  const handleCreateTourForm = (tourForm: TourFormData) => {
+    const formattedTourForm = {
+      ...tourForm,
       guide: {
         id: profile!.id
       }
     }
 
-    createTourMutation.mutate(formattedBody, {
+    createTourMutation.mutate(formattedTourForm, {
       onSuccess: () => {
         setCreateMode(false)
         refetch()
@@ -64,7 +64,15 @@ export default function TourManagement() {
     })
   }
 
-  const handleUpdate = (id: string) => {
+  const handleCancelTourForm = () => {
+    setCreateMode(false)
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  const handleUpdateTourForm = (id: string) => {
     setSelectedId(id)
     setUpdateMode(true)
   }
@@ -136,7 +144,7 @@ export default function TourManagement() {
         size: 100,
         Cell: ({ row }) => (
           <>
-            <ModeEditOutlineOutlinedIcon onClick={() => handleUpdate(row.original.id.toString())} />
+            <ModeEditOutlineOutlinedIcon onClick={() => handleUpdateTourForm(row.original.id.toString())} />
             <DeleteOutlinedIcon onClick={() => handleDelete(row.original.id.toString())} />
           </>
         )
@@ -198,14 +206,8 @@ export default function TourManagement() {
             Create Tour
           </h2>
           <TourForm
-            onSubmit={handleSubmitTourForm}
-            onCancel={() => {
-              setCreateMode(false)
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              })
-            }}
+            onSubmit={handleCreateTourForm}
+            onCancel={handleCancelTourForm}
             isMutation={createTourMutation.isPending}
           />
         </>
