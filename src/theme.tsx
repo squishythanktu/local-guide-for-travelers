@@ -6,7 +6,8 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
-          main: '#1b6bbd'
+          main: '#1b6bbd',
+          light: '#268fff29'
         },
         secondary: {
           main: '#ff532c'

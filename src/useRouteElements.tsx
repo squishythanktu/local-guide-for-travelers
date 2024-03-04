@@ -21,6 +21,7 @@ const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
 const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement/ScheduleManagement'))
 const Checkout = lazy(() => import('./pages/Checkout'))
 const Cart = lazy(() => import('./pages/Cart'))
+const Invoice = lazy(() => import('./pages/Invoice'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -110,6 +111,16 @@ export default function useRouteElements() {
               )
             }
           ]
+        },
+        {
+          path: path.invoice,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <Invoice />
+              </Suspense>
+            </MainLayout>
+          )
         }
       ]
     },

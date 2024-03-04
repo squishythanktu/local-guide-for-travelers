@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import tourApi from 'src/apis/tour.api'
 import { Unit } from 'src/enums/unit.enum'
+import Map from 'src/components/Map/Map'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
 import { Tour } from 'src/types/tour.type'
@@ -14,7 +15,6 @@ import BookingConfirmation from '../../components/BookingConfirmation'
 import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
-import Map from 'src/components/Map/Map'
 
 type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 const numberOfReviews = 125

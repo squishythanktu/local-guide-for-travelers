@@ -12,7 +12,8 @@ const path = {
   searchGuide: 'guides/search',
   tourDetail: 'tours/:id',
   cart: '/cart',
-  checkout: '/checkout'
+  checkout: '/checkout',
+  invoice: '/payment-succeeded/:id'
 }
 
 export default path

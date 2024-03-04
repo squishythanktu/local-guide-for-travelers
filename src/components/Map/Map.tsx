@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react'
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import { Location } from 'src/types/tour.type'
-import MapSearchControl from '../MapSearchControl/MapSearchControl'
 import './react-leaflet.css'
+import MapSearchControl from '../MapSearchControl/MapSearchControl'
 
 interface Props {
   onMarkersUpdate: (markers: LatLngExpression[]) => void
@@ -29,12 +29,16 @@ const Map: React.FC<Props> = ({ onMarkersUpdate, isSelect, locations }: Props) =
 
   const latLngExpressions: LatLngExpression[] = convertLocationsToLatLngExpressions(locations || [])
 
-  const [markers, setMarkers] = useState<LatLngExpression[]>(latLngExpressions || [])
+  const [markers, setMarkers] = useState<LatLngExpression[]>([])
   const prov = new OpenStreetMapProvider()
 
   useEffect(() => {
     onMarkersUpdate(markers)
   }, [markers, onMarkersUpdate])
+
+  useEffect(() => {
+    setMarkers(latLngExpressions)
+  }, [locations])
 
   const AddMarkerOnClick = () => {
     useMapEvents({
