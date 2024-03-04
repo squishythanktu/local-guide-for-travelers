@@ -12,7 +12,7 @@ const path = {
   searchGuide: 'guides/search',
   tourDetail: 'tours/:id',
   cart: '/cart',
-  checkout: '/checkout',
+  checkout: '/cart/checkout',
   invoice: '/payment-succeeded/:id'
 }
 

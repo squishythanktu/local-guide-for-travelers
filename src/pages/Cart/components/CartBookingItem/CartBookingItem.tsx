@@ -103,13 +103,13 @@ export default function CartBookingItem({ booking, refetch }: Props) {
             {!editMode && (
               <>
                 <div className='flex '>
-                  <UsersIcon className='mb-[2px] mr-2 h-5 w-5' />
+                  <ClockIcon className='mb-[2px] mr-2 h-5 w-5' />
                   <div className='text-base font-medium'>
                     {formatDate(booking.startDate, 'DD/MM/YYYY')} - {formatDate(booking.startDate, 'HH:mm')}
                   </div>
                 </div>
                 <div className='flex'>
-                  <ClockIcon className='mb-[2px] mr-2 h-5 w-5' />
+                  <UsersIcon className='mb-[2px] mr-2 h-5 w-5' />
                   <div className='text-base font-medium'>{booking.numberTraveler}</div>
                 </div>
                 <div className='flex gap-2'>

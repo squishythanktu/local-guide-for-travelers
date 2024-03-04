@@ -25,7 +25,7 @@ const Invoice = lazy(() => import('./pages/Invoice'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
-  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
 }
 
 function RejectedRoute() {

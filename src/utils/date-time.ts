@@ -4,3 +4,6 @@ export const formatDate = (date: Date | string, format: string) => dayjs(date).f
 
 export const formatTime = (timeString: string, currentFormat: string, desiredFormat: string) =>
   dayjs(timeString, currentFormat).format(desiredFormat)
+
+export const formatDateLocaleString = (dateTime: Date | string) =>
+  dayjs(dateTime).locale('en').format('dddd, MMMM D, YYYY')
