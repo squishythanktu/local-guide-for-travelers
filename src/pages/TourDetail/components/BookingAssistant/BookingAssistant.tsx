@@ -1,19 +1,22 @@
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import Button from '@mui/material/Button'
-import { Controller, useForm } from 'react-hook-form'
-import { BookingSchema, bookingSchema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
+import Button from '@mui/material/Button'
+import OutlinedInput from '@mui/material/OutlinedInput'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
+import { Controller, useForm } from 'react-hook-form'
+import scheduleApi from 'src/apis/schedule.api'
+import { BookingSchema, bookingSchema } from 'src/utils/rules'
 
 type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 const bookingFormSchema = bookingSchema.pick(['numberTravelers', 'startDate'])
 
 interface Props {
   onSubmit: (data: BookingFormData) => void
+  id: number
 }
 
-export default function BookingAssistant({ onSubmit }: Props) {
+export default function BookingAssistant({ onSubmit, id }: Props) {
   const {
     trigger,
     control,
@@ -26,6 +29,19 @@ export default function BookingAssistant({ onSubmit }: Props) {
     },
     resolver: yupResolver(bookingFormSchema)
   })
+
+  const { data: busySchedulesQuery } = useQuery({
+    queryKey: [`Get busy schedules of tour ${id}`, id],
+    queryFn: () => scheduleApi.getBusySchedulesOfTour(id),
+    enabled: id !== 0
+  })
+
+  const checkBusyDate = (date: Date) => {
+    if (busySchedulesQuery?.data.data) {
+      return busySchedulesQuery.data.data.some((busyDate) => dayjs(date).isSame(busyDate, 'day'))
+    }
+    return false
+  }
 
   return (
     <form
@@ -63,7 +79,9 @@ export default function BookingAssistant({ onSubmit }: Props) {
           render={({ field }) => (
             <DatePicker
               className='rounded-sm'
-              defaultValue={dayjs(new Date())}
+              disablePast={true}
+              shouldDisableDate={checkBusyDate}
+              defaultValue={new Date()}
               sx={{
                 bgcolor: 'white',
                 width: '100%',

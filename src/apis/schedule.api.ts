@@ -10,6 +10,9 @@ const scheduleApi = {
   },
   updateBusyScheduleOfGuide(body: string[]) {
     return http.post<SuccessResponse<BusySchedule[]>>(URL_SCHEDULES, body)
+  },
+  getBusySchedulesOfTour(id: number) {
+    return http.get<SuccessResponse<Date[]>>(`${URL_SCHEDULES}/tour/${id}`)
   }
 }
 

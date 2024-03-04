@@ -8,12 +8,14 @@ import Button from '@mui/material/Button'
 import { useState } from 'react'
 import CalendarCheckIcon from 'src/assets/svg/calendar-check.svg'
 import { formatTime } from 'src/utils/date-time'
+import dayjs from 'dayjs'
 
 interface Props {
   timeOptions?: string[]
+  date: Date
 }
 
-export default function BookingConfirmation({ timeOptions }: Props) {
+export default function BookingConfirmation({ timeOptions, date }: Props) {
   const [selectedOption, setSelectedOption] = useState('')
 
   const handleOptionClick = (option: string) => {
@@ -46,7 +48,7 @@ export default function BookingConfirmation({ timeOptions }: Props) {
         {timeOptions && (
           <>
             <div className='starting-times flex flex-col gap-2'>
-              <div className='font-medium'>Select a starting time</div>
+              <div className='font-medium'>Select a starting time of {dayjs(date).format('MM/DD/YYYY')}</div>
               <div className='flex flex-wrap gap-2'>
                 {timeOptions.map((option) => (
                   <Button

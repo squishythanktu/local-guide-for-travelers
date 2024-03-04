@@ -67,7 +67,7 @@ export default function TourDetail() {
   }, [tourQuery?.data])
 
   const { data: startTimeData } = useQuery({
-    queryKey: [`Start time of tourId ${id} in ${formData.startDate}`],
+    queryKey: [`Start time of tourId ${id} in ${formData.startDate}`, formData],
     queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
     enabled: tourQuery?.data.data.unit === Unit.HOURS && tourQuery?.data.data.duration < 5 && checkAvailability
   })
@@ -115,17 +115,20 @@ export default function TourDetail() {
               />
               <div className='check-availability'></div>
             </div>
-            {!checkAvailability && (
+            {/* {!checkAvailability && (
               <div className='col-span-1'>
-                <BookingAssistant onSubmit={handleSubmitBookingAssistant} />
+                <BookingAssistant onSubmit={handleSubmitBookingAssistant} id={tour.id} />
               </div>
-            )}
+            )} */}
+            <div className='col-span-1'>
+              <BookingAssistant onSubmit={handleSubmitBookingAssistant} id={tour.id} />
+            </div>
           </div>
         </div>
         {checkAvailability && (
           <div className='pt-5'>
             <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
-              <BookingConfirmation timeOptions={startTimeData?.data.data} />
+              <BookingConfirmation date={formData.startDate} timeOptions={startTimeData?.data.data} />
             </div>
           </div>
         )}
