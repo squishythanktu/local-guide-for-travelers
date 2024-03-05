@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import tourApi from 'src/apis/tour.api'
-import { Unit } from 'src/enums/unit.enum'
 import Map from 'src/components/Map/Map'
+import { Unit } from 'src/enums/unit.enum'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
 import { Tour } from 'src/types/tour.type'
@@ -16,12 +16,12 @@ import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
 
-type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
+export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 const numberOfReviews = 125
 
 export default function TourDetail() {
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
-  const [formData, setFormData] = useState<BookingFormData>({
+  const [formData, setFormData] = useState<BookingAssistantFormData>({
     startDate: new Date(),
     numberTravelers: 0
   })
@@ -72,7 +72,7 @@ export default function TourDetail() {
     enabled: tourQuery?.data.data.unit === Unit.HOURS && tourQuery?.data.data.duration < 5 && checkAvailability
   })
 
-  const handleSubmitBookingAssistant = (body: BookingFormData) => {
+  const handleSubmitBookingAssistant = (body: BookingAssistantFormData) => {
     setFormData(body)
     setCheckAvailability(true)
   }
@@ -115,11 +115,6 @@ export default function TourDetail() {
               />
               <div className='check-availability'></div>
             </div>
-            {/* {!checkAvailability && (
-              <div className='col-span-1'>
-                <BookingAssistant onSubmit={handleSubmitBookingAssistant} id={tour.id} />
-              </div>
-            )} */}
             <div className='col-span-1'>
               <BookingAssistant onSubmit={handleSubmitBookingAssistant} id={tour.id} />
             </div>
@@ -128,7 +123,7 @@ export default function TourDetail() {
         {checkAvailability && (
           <div className='pt-5'>
             <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
-              <BookingConfirmation date={formData.startDate} timeOptions={startTimeData?.data.data} />
+              <BookingConfirmation tour={tour} formData={formData} timeOptions={startTimeData?.data.data} />
             </div>
           </div>
         )}

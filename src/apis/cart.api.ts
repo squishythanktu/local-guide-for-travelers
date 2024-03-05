@@ -1,7 +1,8 @@
-import { BookingUpdateFormData } from '../pages/Cart/components/CartBookingItem/CartBookingItem'
 import { BookingsInCart } from 'src/types/cart.type'
 import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
+import { BookingUpdateFormData } from '../pages/Cart/components/CartBookingItem/CartBookingItem'
+import { AddBookingForm } from './../pages/TourDetail/components/BookingConfirmation/BookingConfirmation'
 
 export const URL_CARTS = 'carts'
 
@@ -12,8 +13,11 @@ const cartApi = {
   updateBookingInCart(body: BookingUpdateFormData) {
     return http.put<SuccessResponse<BookingsInCart>>(URL_CARTS, body)
   },
-  deleteBookingInCart(id: string) {
+  deleteBookingInCart(id: number) {
     return http.delete<SuccessResponse<void>>(`${URL_CARTS}/${id}`)
+  },
+  createBookingInCart(body: AddBookingForm) {
+    return http.post<SuccessResponse<void>>(URL_CARTS, body)
   }
 }
 

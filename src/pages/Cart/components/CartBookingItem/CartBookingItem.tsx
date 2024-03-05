@@ -22,7 +22,7 @@ import dayjs from 'dayjs'
 
 dayjs.extend(utc)
 type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate' | 'startTime'>
-export type BookingUpdateFormData = BookingFormData & { id: string }
+export type BookingUpdateFormData = BookingFormData & { id: number }
 
 interface Props {
   booking: Booking
@@ -69,7 +69,7 @@ export default function CartBookingItem({ booking, refetch }: Props) {
   }
 
   const deleteBookingMutation = useMutation({
-    mutationFn: (id: string) => cartApi.deleteBookingInCart(id)
+    mutationFn: (id: number) => cartApi.deleteBookingInCart(id)
   })
 
   return (

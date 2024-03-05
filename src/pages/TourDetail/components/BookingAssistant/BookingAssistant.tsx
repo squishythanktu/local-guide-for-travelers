@@ -6,13 +6,16 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { Controller, useForm } from 'react-hook-form'
 import scheduleApi from 'src/apis/schedule.api'
-import { BookingSchema, bookingSchema } from 'src/utils/rules'
+import { bookingSchema } from 'src/utils/rules'
+import { BookingAssistantFormData } from '../../layouts/TourDetailLayout/TourDetailLayout'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 
-type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
+dayjs.extend(isSameOrBefore)
+
 const bookingFormSchema = bookingSchema.pick(['numberTravelers', 'startDate'])
 
 interface Props {
-  onSubmit: (data: BookingFormData) => void
+  onSubmit: (data: BookingAssistantFormData) => void
   id: number
 }
 
@@ -22,7 +25,7 @@ export default function BookingAssistant({ onSubmit, id }: Props) {
     control,
     formState: { errors },
     handleSubmit
-  } = useForm<BookingFormData>({
+  } = useForm<BookingAssistantFormData>({
     defaultValues: {
       numberTravelers: 0,
       startDate: new Date()
@@ -81,7 +84,7 @@ export default function BookingAssistant({ onSubmit, id }: Props) {
               className='rounded-sm'
               disablePast={true}
               shouldDisableDate={checkBusyDate}
-              defaultValue={new Date()}
+              // defaultValue={dayjs(new Date())}
               sx={{
                 bgcolor: 'white',
                 width: '100%',
