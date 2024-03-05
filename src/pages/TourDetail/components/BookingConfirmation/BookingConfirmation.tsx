@@ -39,7 +39,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
     startDate: selectedTimeOption
       ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + selectedTimeOption)
       : formData.startDate,
-    numberTraveler: formData.numberTravelers,
+    numberTravelers: formData.numberTravelers,
     price: totalPrice
   })
 
