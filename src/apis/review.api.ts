@@ -3,10 +3,14 @@ import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
 export const URL_TOUR_REVIEW = '/reviews/tour-reviews'
+export const URL_GUIDE_REVIEW = '/reviews/guide-reviews'
 
 const reviewApi = {
   getReviewsOfToaur(id: string) {
     return http.get<SuccessResponse<Review[]>>(`${URL_TOUR_REVIEW}/${id}`)
+  },
+  getReviewsOfGuide(id: string) {
+    return http.get<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/${id}`)
   }
 }
 

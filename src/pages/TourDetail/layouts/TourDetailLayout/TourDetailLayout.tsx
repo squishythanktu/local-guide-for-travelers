@@ -1,9 +1,3 @@
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Divider } from '@mui/material'
-import Grid from '@mui/material/Grid'
-import IconButton from '@mui/material/IconButton'
-import Rating from '@mui/material/Rating'
-import Tooltip from '@mui/material/Tooltip'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -18,11 +12,10 @@ import { BookingSchema } from 'src/utils/rules'
 import AboutActivity from '../../components/AboutActivity'
 import BookingAssistant from '../../components/BookingAssistant'
 import BookingConfirmation from '../../components/BookingConfirmation'
-import Comment from '../../components/Comment/Comment'
 import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
-import StarRatingFilter from '../../components/StarRatingFilter/StarRatingFilter'
+import CustomerReview from 'src/components/CustomerReview'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 const numberOfReviews = 125
@@ -144,7 +137,7 @@ export default function TourDetail() {
             <Map onMarkersUpdate={() => {}} locations={tour.locations} isSelect={true} />
           </div>
         </div>
-        <Box className='activity__customer-reviews flex flex-col pb-6'>
+        {/* <Box className='activity__customer-reviews flex flex-col pb-6'>
           <Divider className='my-4' />
           <div className='activity__customer-reviews--title flex items-center gap-2'>
             <p className='text-[18px] font-semibold md:text-2xl'>Customer reviews</p>
@@ -184,7 +177,8 @@ export default function TourDetail() {
               <Comment />
             </Grid>
           </Grid>
-        </Box>
+        </Box> */}
+        <CustomerReview />
         <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
           <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
           <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
