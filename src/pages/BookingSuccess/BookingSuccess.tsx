@@ -3,11 +3,10 @@ import CheckIcon from 'src/assets/svg/check-green.svg'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import invoiceApi from 'src/apis/invoice.api'
-import VNPayIcon from 'src/assets/svg/vnpay.svg'
 import ContentInvoice from './components/ContentInvoice'
 import PassengerInfo from './components/PassengerInfo'
 
-export default function Invoice() {
+export default function BookingSuccess() {
   const { id: invoiceId } = useParams()
   const { data: invoiceQuery } = useQuery({
     queryKey: [`Get invoice by ${invoiceId}`],
@@ -15,12 +14,15 @@ export default function Invoice() {
   })
 
   return (
-    <div className='container my-6 max-w-[640px]'>
+    <div className='container my-6 max-w-[800px]'>
       <Box className='my-3 rounded-lg' sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}>
         <div className='invoice__header relative p-4'>
           <div className='flex flex-col items-center gap-2'>
-            <CheckIcon className='h-8 w-8' />
-            <div className='text-xl font-medium'>Ticket Booked</div>
+            <CheckIcon className='h-12 w-12' />
+            <div className='text-2xl font-medium'>Booking Success</div>
+            <span className='text-center text-gray-400'>
+              For more information, please refer to confirmation email, sent to your mailbox!{' '}
+            </span>
           </div>
           <div className='absolute bottom-[-0.75rem] left-[-0.75rem] h-6 w-6 rounded-full bg-white'></div>
           <div className='absolute bottom-[-0.75rem] right-[-0.75rem]  h-6 w-6 rounded-full bg-white'></div>
@@ -50,12 +52,7 @@ export default function Invoice() {
               <div className='total'>
                 <div className='flex flex-col text-sm font-medium'>
                   Total
-                  <span className='text-xl font-light'>VND {invoiceQuery?.data.data.priceTotal.toLocaleString()}</span>
-                </div>
-              </div>
-              <div className='via'>
-                <div className='flex items-center gap-4 text-sm font-medium'>
-                  Via <VNPayIcon className='h-14 w-14' />
+                  <span className='text-xl font-light'>${invoiceQuery?.data.data.priceTotal.toLocaleString()}</span>
                 </div>
               </div>
             </div>

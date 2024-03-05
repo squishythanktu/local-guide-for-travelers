@@ -21,7 +21,7 @@ const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
 const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement/ScheduleManagement'))
 const Checkout = lazy(() => import('./pages/Checkout'))
 const Cart = lazy(() => import('./pages/Cart'))
-const Invoice = lazy(() => import('./pages/Invoice'))
+const BookingSuccess = lazy(() => import('./pages/BookingSuccess'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -113,11 +113,11 @@ export default function useRouteElements() {
           ]
         },
         {
-          path: path.invoice,
+          path: path.bookingSuccess,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
-                <Invoice />
+                <BookingSuccess />
               </Suspense>
             </MainLayout>
           )

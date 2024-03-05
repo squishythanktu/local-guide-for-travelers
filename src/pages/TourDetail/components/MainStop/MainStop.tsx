@@ -11,7 +11,7 @@ interface Props {
 export default function MainStop({ locations }: Props) {
   return (
     <Box sx={{ maxWidth: 400 }}>
-      <div className='pb-2 text-[18px] font-semibold md:text-2xl'>Main stop</div>
+      <div className='text-[18px] font-semibold md:text-2xl'>Main stop</div>
       <Stepper orientation='vertical' activeStep={-1}>
         {locations.map((location, index) => (
           <Step key={location.name}>

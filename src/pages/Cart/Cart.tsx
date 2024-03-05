@@ -11,7 +11,11 @@ import CartTotal from './components/CartTotal'
 
 export default function Cart() {
   const { profile } = useContext(AppContext)
-  const { data: cartData, refetch } = useQuery({
+  const {
+    data: cartData,
+    refetch,
+    isPending
+  } = useQuery({
     queryKey: [`booking in cart by ${profile?.id}`],
     queryFn: () => cartApi.getBookingsInCart(),
     placeholderData: keepPreviousData,
@@ -20,35 +24,35 @@ export default function Cart() {
 
   return (
     <>
-      {cartData ? (
+      {!isPending ? (
         <Box className='container flex flex-col'>
-          <div className='grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-28'>
-            <div className='py-5 lg:col-span-3'>
-              <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>
-              <div className='cart__items'>
-                <div className='flex flex-col gap-4'>
-                  {cartData && cartData.data.data.bookings.length > 0 ? (
-                    cartData.data.data.bookings.map((booking: Booking) => (
+          {cartData?.data.data.bookings ? (
+            <div className='grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-28'>
+              <div className='py-5 lg:col-span-3'>
+                <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>
+                <div className='cart__items'>
+                  <div className='flex flex-col gap-4'>
+                    {cartData.data.data.bookings.map((booking: Booking) => (
                       <CartBookingItem key={booking.id} booking={booking} refetch={refetch} />
-                    ))
-                  ) : (
-                    <div className='flex h-[450px] flex-col items-center justify-center'>
-                      <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
-                      <h3>You haven't added any tours to the cart yet.</h3>
-                    </div>
-                  )}
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-col gap-4 pb-8 pt-[60px] lg:col-span-2'>
+                <div className='cart__total'>
+                  <CartTotal bookings={cartData?.data.data.bookings} />
+                </div>
+                <div className='cart__info'>
+                  <CartInfo />
                 </div>
               </div>
             </div>
-            <div className='flex flex-col gap-4 pb-8 pt-[60px] lg:col-span-2'>
-              <div className='cart__total'>
-                <CartTotal bookings={cartData?.data.data.bookings} />
-              </div>
-              <div className='cart__info'>
-                <CartInfo />
-              </div>
+          ) : (
+            <div className='flex h-[550px] flex-col items-center justify-center'>
+              <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
+              <h3>You haven't added any tours to the cart yet.</h3>
             </div>
-          </div>
+          )}
         </Box>
       ) : (
         <Loading />
