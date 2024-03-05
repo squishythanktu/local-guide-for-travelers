@@ -33,14 +33,8 @@ export default function OrderSummary() {
   const [isProceedPaymentClicked, setIsProceedPaymentClicked] = useState<boolean>(false)
 
   const getFormattedBookingIds = useCallback(() => {
-    return bookingsCartData?.data.data.bookings
-      .map((booking, index) => {
-        return (totalBookingLength as number) > 1 && index < (totalBookingLength as number)
-          ? booking.id
-          : booking.id + ','
-      })
-      .join('') as string
-  }, [bookingsCartData?.data.data.bookings, totalBookingLength])
+    return bookingsCartData?.data.data.bookings.map((booking) => booking.id).join(',') as string
+  }, [bookingsCartData?.data.data.bookings])
 
   const { data: paymentUrl } = useQuery({
     queryKey: [`Get payment url for bookings with id ${getFormattedBookingIds}`],

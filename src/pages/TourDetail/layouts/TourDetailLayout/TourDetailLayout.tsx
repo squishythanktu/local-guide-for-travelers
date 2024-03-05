@@ -1,21 +1,29 @@
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box, Divider } from '@mui/material'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import reviewApi from 'src/apis/review.api'
 import tourApi from 'src/apis/tour.api'
+import Comment from 'src/components/Comment/Comment'
 import Map from 'src/components/Map/Map'
+import OverallRating from 'src/components/OverallRating/OverallRating'
 import { Unit } from 'src/enums/unit.enum'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound'
 import { Tour } from 'src/types/tour.type'
 import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
+import StarRatingFilter from '../../../../components/StarRatingFilter/StarRatingFilter'
 import AboutActivity from '../../components/AboutActivity'
 import BookingAssistant from '../../components/BookingAssistant'
 import BookingConfirmation from '../../components/BookingConfirmation'
 import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
-import CustomerReview from 'src/components/CustomerReview'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 const numberOfReviews = 125
@@ -50,32 +58,40 @@ export default function TourDetail() {
   const {
     isPending: isLoadingTour,
     error: errorTour,
-    data: tourQuery
+    data: tourData
   } = useQuery({
     queryKey: [`Get tour by ${id}`, id],
     queryFn: () => tourApi.getTourById(id as string),
     enabled: id !== undefined
   })
+  const { data: reviewsData } = useQuery({
+    queryKey: [`Get reviews of tour by ${id}`, id],
+    queryFn: () => reviewApi.getReviewsOfTour(Number(id)),
+    enabled: id !== undefined
+  })
+  const { data: startTimeData } = useQuery({
+    queryKey: [`Start time of tourId ${id} in ${formData.startDate}`, formData],
+    queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
+    enabled: tourData?.data.data.unit === Unit.HOURS && tourData?.data.data.duration < 5 && checkAvailability
+  })
 
   useEffect(() => {
-    if (tourQuery?.data) {
-      setTour(tourQuery.data.data)
-    }
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     })
-  }, [tourQuery?.data])
-
-  const { data: startTimeData } = useQuery({
-    queryKey: [`Start time of tourId ${id} in ${formData.startDate}`, formData],
-    queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
-    enabled: tourQuery?.data.data.unit === Unit.HOURS && tourQuery?.data.data.duration < 5 && checkAvailability
-  })
+    if (tourData?.data) {
+      setTour(tourData.data.data)
+    }
+  }, [tourData?.data])
 
   const handleSubmitBookingAssistant = (body: BookingAssistantFormData) => {
     setFormData(body)
     setCheckAvailability(true)
+  }
+
+  const getRatingReviewsAverage = () => {
+    return reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number
   }
 
   if (isLoadingTour) {
@@ -137,7 +153,7 @@ export default function TourDetail() {
             <Map onMarkersUpdate={() => {}} locations={tour.locations} isSelect={true} />
           </div>
         </div>
-        {/* <Box className='activity__customer-reviews flex flex-col pb-6'>
+        <Box className='activity__customer-reviews flex flex-col pb-6'>
           <Divider className='my-4' />
           <div className='activity__customer-reviews--title flex items-center gap-2'>
             <p className='text-[18px] font-semibold md:text-2xl'>Customer reviews</p>
@@ -147,45 +163,27 @@ export default function TourDetail() {
               </IconButton>
             </Tooltip>
           </div>
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            <Grid item xs={4} sm={8} md={12}>
-              <div className='reviews-summary__rating flex flex-col items-center'>
-                <h3 className='reviews-summary__title'>Overall rating</h3>
-                <div className='reviews-summary__content flex flex-col'>
-                  <div className='average-rating flex items-center justify-center gap-2'>
-                    <span className='current-average-rating text-3xl font-bold md:text-4xl'>4.5</span>
-                    <span className='max-rating text-xl font-bold text-slate-500 md:text-2xl'>/5</span>
-                  </div>
-                  <Rating
-                    sx={{
-                      '& .MuiRating-icon': { fontSize: '3rem' }
-                    }}
-                    max={5}
-                    precision={0.1}
-                    value={4.5}
-                    readOnly
-                  />
-                  <span className='mt-2 text-center font-semibold text-slate-500'>based on 306 reviews</span>
-                </div>
-              </div>
+          {reviewsData && (
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              <Grid item xs={4} sm={8} md={12}>
+                <OverallRating
+                  totalReviews={reviewsData.data.data.length}
+                  ratingReviewsAverage={getRatingReviewsAverage()}
+                />
+              </Grid>
+              <Grid item xs={0} sm={2} md={3}>
+                <StarRatingFilter />
+              </Grid>
+              <Grid item xs={4} sm={6} md={9}>
+                {reviewsData?.data.data.map((review, index) => <Comment key={index} comment={review} />)}
+              </Grid>
             </Grid>
-            <Grid item xs={0} sm={2} md={3}>
-              <StarRatingFilter />
-            </Grid>
-            <Grid item xs={4} sm={6} md={9}>
-              <Comment />
-              <Comment />
-            </Grid>
-          </Grid>
-        </Box> */}
-        <CustomerReview />
+          )}
+        </Box>
         <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
           <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
           <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
             {/* TODO: Handle tour detail API 
-            <TourCard />
-            <TourCard />
-            <TourCard />
             <TourCard />
             <TourCard /> */}
           </div>
