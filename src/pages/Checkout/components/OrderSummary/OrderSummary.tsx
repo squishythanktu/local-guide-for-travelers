@@ -105,7 +105,7 @@ export default function OrderSummary() {
                 </div>
                 <div className='flex items-center font-normal'>
                   <UsersIcon className='mb-[2px] mr-2 h-4 w-4' />
-                  <div className='text-sm font-medium'>{bookingCartData.numberTraveler} person(s)</div>
+                  <div className='text-sm font-medium'>{bookingCartData.numberTravelers} person(s)</div>
                 </div>
               </CardContent>
               <Divider />

@@ -110,7 +110,7 @@ export default function CartBookingItem({ booking, refetch }: Props) {
                 </div>
                 <div className='flex'>
                   <UsersIcon className='mb-[2px] mr-2 h-5 w-5' />
-                  <div className='text-base font-medium'>{booking.numberTraveler}</div>
+                  <div className='text-base font-medium'>{booking.numberTravelers}</div>
                 </div>
                 <div className='flex gap-2'>
                   <Button

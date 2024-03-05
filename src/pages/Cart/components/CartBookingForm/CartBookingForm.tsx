@@ -37,7 +37,7 @@ export default function CartBookingForm({ setEditMode, booking, onSubmit }: Prop
     formState: { errors }
   } = useForm<BookingFormData>({
     defaultValues: {
-      numberTravelers: booking?.numberTraveler,
+      numberTravelers: booking?.numberTravelers,
       startDate: booking?.startDate,
       startTime: initialStartTime
     },
