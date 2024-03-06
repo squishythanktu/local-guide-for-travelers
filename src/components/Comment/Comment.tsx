@@ -15,7 +15,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
       <div className='review-card__header flex'>
         <div className='review-card__user-photo mr-4 flex max-w-10'>
           <span className='flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-xl font-bold uppercase text-white'>
-            {comment.traveler.email[0]}
+            {comment.traveler.fullName || comment.traveler.email}
           </span>
         </div>
         <div className='review-card__user-details flex flex-col'>

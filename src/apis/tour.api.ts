@@ -27,8 +27,8 @@ const tourApi = {
   searchTours(params: QueryConfig) {
     return http.get<SuccessResponseWithPagination<Tour[]>>(URL_TOURS + '/search', { params })
   },
-  getToursOfGuide() {
-    return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/guide`)
+  getToursOfGuide(id: string) {
+    return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/guide/${id}`)
   },
   getStartTime(tourId: number, params: StartTimeParams) {
     return http.get<SuccessResponse<string[]>>(`${URL_TOURS}/${tourId}/tour-start-time-available`, { params })

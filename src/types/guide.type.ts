@@ -7,7 +7,7 @@ type LanguageSkill = {
 export type Guide = {
   id: number
   email: string
-  username: string
+  fullName: string
   dateOfBirth: Date
   phone: string
   address: string

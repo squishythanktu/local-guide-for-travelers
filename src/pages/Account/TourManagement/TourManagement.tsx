@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 import AddIcon from '@mui/icons-material/Add'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
 import Button from '@mui/material/Button'
 import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
+import { MRT_Cell, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { useContext, useMemo, useState } from 'react'
-import { Tour } from 'src/types/tour.type'
-import TourForm from '../components/TourForm'
-import tourApi from 'src/apis/tour.api'
-import { TourSchema } from 'src/utils/rules'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import tourApi from 'src/apis/tour.api'
 import { AppContext } from 'src/contexts/app.context'
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
+import { Tour } from 'src/types/tour.type'
+import { TourSchema } from 'src/utils/rules'
+import TourForm from '../components/TourForm'
 import UpdateForm from '../components/TourForm/UpdateForm'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import ConfirmDialog from './components/ConfirmDialog'
 
 type TourFormData = TourSchema
@@ -22,19 +23,25 @@ export type UpdateTourFormData = TourSchema & {
   id: number
 }
 
-export default function TourManagement() {
+interface Props {
+  guideId?: string
+}
+
+export default function TourManagement({ guideId }: Props) {
   const { profile } = useContext(AppContext)
+  const isOwner = guideId ? false : true
   const [createMode, setCreateMode] = useState<boolean>(false)
   const [updateMode, setUpdateMode] = useState<boolean>(false)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string>('')
+  const navigate = useNavigate()
   const {
     data: guideToursData,
     isLoading,
     refetch
   } = useQuery({
-    queryKey: [`tours of guide ${profile?.id}`],
-    queryFn: () => tourApi.getToursOfGuide(),
+    queryKey: [`tours of guide ${guideId ? guideId : profile?.id}`],
+    queryFn: () => tourApi.getToursOfGuide(guideId ? guideId : profile?.id ? profile.id : ''),
     staleTime: 6 * 1000
   })
   const createTourMutation = useMutation({
@@ -100,7 +107,7 @@ export default function TourManagement() {
     })
   }
 
-  const columns = useMemo<MRT_ColumnDef<Tour>[]>(
+  const baseColumns = useMemo<MRT_ColumnDef<Tour>[]>(
     () => [
       {
         accessorKey: 'id',
@@ -137,21 +144,37 @@ export default function TourManagement() {
         header: 'Price',
         size: 100,
         Cell: ({ cell }) => <span>${cell.getValue<number>().toLocaleString()}</span>
-      },
-      {
-        accessorKey: 'action',
-        header: 'Action',
-        size: 100,
-        Cell: ({ row }) => (
-          <>
-            <ModeEditOutlineOutlinedIcon onClick={() => handleUpdateTourForm(row.original.id.toString())} />
-            <DeleteOutlinedIcon onClick={() => handleDelete(row.original.id.toString())} />
-          </>
-        )
       }
     ],
     []
   )
+
+  const actionColumn = {
+    accessorKey: 'action',
+    header: 'Action',
+    size: 100,
+    Cell: ({ cell }: { cell: MRT_Cell<Tour> }) => (
+      <>
+        <ModeEditOutlineOutlinedIcon
+          onClick={(event) => {
+            event.stopPropagation(), handleUpdateTourForm(cell.row.original.id.toString())
+          }}
+        />
+        <DeleteOutlinedIcon
+          onClick={(event) => {
+            event.stopPropagation(), handleDelete(cell.row.original.id.toString())
+          }}
+        />
+      </>
+    )
+  }
+
+  const columns = useMemo<MRT_ColumnDef<Tour>[]>(() => {
+    if (isOwner) {
+      return [...baseColumns, actionColumn]
+    }
+    return baseColumns
+  }, [isOwner])
 
   const table = useMaterialReactTable<Tour>({
     columns,
@@ -183,20 +206,30 @@ export default function TourManagement() {
         }
       })
     },
-    renderTopToolbarCustomActions: () => (
-      <Button startIcon={<AddIcon />} variant='contained' className='w-fit' onClick={() => setCreateMode(true)}>
-        Create Tour
-      </Button>
-    )
+    muiTableBodyRowProps: ({ row }) => ({
+      onClick: () => {
+        navigate(`/tours/${row.original.id}`)
+      }
+    }),
+    renderTopToolbarCustomActions: () =>
+      isOwner ? (
+        <Button startIcon={<AddIcon />} variant='contained' className='w-fit' onClick={() => setCreateMode(true)}>
+          Create Tour
+        </Button>
+      ) : (
+        ''
+      )
   })
 
   return (
     <div className='flex h-full w-full flex-col'>
       {!createMode && !updateMode && (
         <>
-          <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-            Tour Management
-          </h2>
+          {isOwner && (
+            <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
+              Tour Management
+            </h2>
+          )}
           <MaterialReactTable table={table} />
         </>
       )}

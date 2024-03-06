@@ -29,9 +29,9 @@ export default function GuideCard({ guideData }: { guideData: Guide }) {
             </div>
             <div className='tour-card__header my-2 px-3 text-center'>
               <h3 className='title capitalize text-[var(--label-primary)] lg:max-h-20 lg:overflow-hidden'>
-                {guideData?.username}
+                {guideData?.fullName}
               </h3>
-              <h5 className='text-[var(--label-secondary)]'>@{guideData?.username || 'N/A username'}</h5>
+              <h5 className='text-[var(--label-secondary)]'>@{guideData?.fullName || 'N/A username'}</h5>
               <h5 className='text-[var(--decorative-orange)]'>from {guideData?.address || 'N/A address'}</h5>
             </div>
             <div className='tour-card__body px-4 py-0 text-center text-sm text-[var(--label-primary)] sm:px-3'>

@@ -23,6 +23,7 @@ const Checkout = lazy(() => import('./pages/Checkout'))
 const Cart = lazy(() => import('./pages/Cart'))
 const BookingSuccess = lazy(() => import('./pages/BookingSuccess'))
 const BookingFail = lazy(() => import('./pages/BookingFail'))
+const GuideProfile = lazy(() => import('./pages/GuideProfile'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -162,6 +163,16 @@ export default function useRouteElements() {
         <MainLayout>
           <Suspense fallback={<Loading />}>
             <Cart />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    {
+      path: path.guideProfile,
+      element: (
+        <MainLayout>
+          <Suspense fallback={<Loading />}>
+            <GuideProfile />
           </Suspense>
         </MainLayout>
       )

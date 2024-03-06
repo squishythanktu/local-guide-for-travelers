@@ -91,7 +91,7 @@ export default function TourDetail() {
   }
 
   const getRatingReviewsAverage = () => {
-    return reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number
+    return (reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews
   }
 
   if (isLoadingTour) {
@@ -153,7 +153,6 @@ export default function TourDetail() {
             <Map onMarkersUpdate={() => {}} locations={tour.locations} isSelect={true} />
           </div>
         </div>
-
         <Box className='activity__customer-reviews flex flex-col pb-6'>
           <Divider className='my-4' />
           <div className='activity__customer-reviews--title flex items-center gap-2'>
