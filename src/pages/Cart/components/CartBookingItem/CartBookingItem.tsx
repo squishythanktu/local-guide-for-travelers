@@ -80,7 +80,7 @@ export default function CartBookingItem({ booking, refetch }: Props) {
             className='h-24 w-24 rounded-lg object-cover'
             component='img'
             alt='Tour image'
-            src={booking.tour.images[1].imageLink}
+            src={booking.tour.images[0]?.imageLink || '/assets/images/default-cover.jpg'}
           />
         }
         title={

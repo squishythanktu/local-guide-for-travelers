@@ -103,7 +103,15 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemIcon>
               <AccountCircleOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary={isAuthenticated && profile && profile.username ? profile.username : 'Profile'} />
+            <ListItemText
+              primary={
+                isAuthenticated && profile && profile.fullName
+                  ? profile.fullName
+                  : profile?.email
+                    ? profile?.email.split('@')[0]
+                    : 'Profile'
+              }
+            />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>

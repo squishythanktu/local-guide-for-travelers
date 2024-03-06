@@ -22,7 +22,7 @@ const PassengerInformation: React.FC = () => {
             <span className='text-sm text-gray-400'>Full name</span>
             <Box className='flex items-center gap-2'>
               <PersonOutlineOutlinedIcon />
-              <span>Tran Van Thinh</span>
+              <span>{profile?.fullName || 'N/A'}</span>
             </Box>
           </Grid>
           <Grid item xs={4} sm={8} md={6} className='flex flex-col'>

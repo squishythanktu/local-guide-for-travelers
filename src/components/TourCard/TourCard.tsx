@@ -38,7 +38,7 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
                 {tourData?.name}
               </h3>
               <h5 className='text-[var(--label-secondary)]'>
-                by {tourData?.guide?.username || tourData?.guide?.email || 'N/A'}
+                by {tourData?.guide?.fullName || tourData?.guide?.email || 'N/A'}
               </h5>
             </div>
             <div className='tour-card__body mb-2 px-2 py-0 text-sm text-[var(--label-primary)] sm:px-3'>

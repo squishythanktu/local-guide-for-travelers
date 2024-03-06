@@ -59,8 +59,11 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
       >
         <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor, marginBottom: '4px' }} />
         <span className='hidden text-sm md:block'>
-          {/* TODO: profile.fullName || profile.email.split('@')[0] */}
-          {isAuthenticated && profile && profile.username ? profile.username : 'Profile'}
+          {isAuthenticated && profile && profile.fullName
+            ? profile.fullName
+            : profile?.email
+              ? profile?.email.split('@')[0]
+              : 'Profile'}
         </span>
       </Button>
       {!isAuthenticated && (

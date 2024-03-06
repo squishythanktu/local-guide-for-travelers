@@ -20,18 +20,17 @@ export default function PassengerInfo() {
         <div className='flex items-center gap-1'>
           <PersonOutlineOutlinedIcon />
           <span className='mr-1 text-sm font-bold'>Name: </span>
-          {/* TODO: profile?.fullname */}
-          <span>{profile?.username}</span>
+          <span>{profile?.fullName || 'N/A'}</span>
         </div>
         <div className='flex items-center gap-1'>
           <MailOutlinedIcon />
           <span className='mr-1 text-sm font-bold'>Email: </span>
-          <span>{profile?.email}</span>
+          <span>{profile?.email || 'N/A'}</span>
         </div>
         <div className='flex items-center gap-1'>
           <PhoneOutlinedIcon />
           <span className='mr-1 text-sm font-bold'>Phone number: </span>
-          <span>{profile?.phone}</span>
+          <span>{profile?.phone || 'N/A'}</span>
         </div>
       </div>
     </>

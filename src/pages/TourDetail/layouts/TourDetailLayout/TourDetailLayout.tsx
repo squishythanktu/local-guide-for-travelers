@@ -110,7 +110,7 @@ export default function TourDetail() {
           title={tour.name}
           rating={tour.overallRating}
           numberOfReviews={numberOfReviews}
-          provider={tour.guide?.username || ''}
+          provider={tour.guide?.fullName || 'N/A'}
           address={tour.locations[0]?.address || 'N/A'}
         />
         <div className='activity__photo-gallery pb-2 pt-2'>
