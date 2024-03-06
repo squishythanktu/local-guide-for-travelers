@@ -16,7 +16,7 @@ export default function Cart() {
     refetch,
     isPending
   } = useQuery({
-    queryKey: [`booking in cart by ${profile?.id}`],
+    queryKey: [`bookings in cart by ${profile?.id}`],
     queryFn: () => cartApi.getBookingsInCart(),
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
@@ -26,7 +26,7 @@ export default function Cart() {
     <>
       {!isPending ? (
         <Box className='container flex flex-col'>
-          {cartData?.data.data.bookings ? (
+          {cartData?.data.data.bookings && cartData?.data.data.bookings.length > 0 ? (
             <div className='grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-28'>
               <div className='py-5 lg:col-span-3'>
                 <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>

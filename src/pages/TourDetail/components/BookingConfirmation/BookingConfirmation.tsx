@@ -132,9 +132,9 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
         <div className='participants flex flex-col gap-2'>
           <div className='relative flex'>
             <div className='text-sm font-medium text-gray-500'>
-              Person 1x ${tour.pricePerTraveler} - Extra price ${tour.extraPrice}
+              Person 1x ${tour.pricePerTraveler.toLocaleString()} - Extra price ${tour.extraPrice.toLocaleString()}
             </div>
-            <div className='absolute right-2 text-sm font-medium text-gray-500'>$ {totalPrice}</div>
+            <div className='absolute right-2 text-sm font-medium text-gray-500'>${totalPrice.toLocaleString()}</div>
           </div>
           <div className='flex items-center font-normal'>
             <CalendarCheckIcon className='mb-[2px] mr-2 h-6 w-6' />
@@ -145,7 +145,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
       <div className='bg-slate-100 p-4 md:grid md:grid-cols-2 md:items-center'>
         <div className='md:col-span-1'>
           <div className='text-sm font-medium text-gray-600'>Total price</div>
-          <div className='text-xl font-extrabold'>$ {totalPrice}</div>
+          <div className='text-xl font-extrabold'>${totalPrice.toLocaleString()}</div>
           <div className='text-xs font-medium'>All taxes and fees included</div>
         </div>
         <div className='flex flex-col gap-2 pt-2 md:col-span-1 md:flex-row md:justify-self-end '>

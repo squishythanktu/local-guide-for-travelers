@@ -8,12 +8,12 @@ interface TourHeaderProps {
   categories: TourCategory[]
   title: string
   rating: number
-  numberOfReviews: number
+  totalReviews: number
   provider: string
   address: string
 }
 
-export default function TourHeader({ categories, title, rating, numberOfReviews, provider, address }: TourHeaderProps) {
+export default function TourHeader({ categories, title, rating, totalReviews, provider, address }: TourHeaderProps) {
   return (
     <>
       <Box
@@ -34,12 +34,12 @@ export default function TourHeader({ categories, title, rating, numberOfReviews,
             <Rating max={5} precision={0.1} value={rating} size='large' readOnly />
             <div className='text-sm font-medium md:text-[16px]'>{rating}/5</div>
             <Link to='' className='text-nowrap text-sm underline md:text-[16px]'>
-              {numberOfReviews} reviews
+              {totalReviews} reviews
             </Link>
           </div>
           <div className='author mr-2 flex items-center gap-2'>
             <div className='text-nowrap text-sm font-semibold md:text-[16px]'>Activity provider:</div>
-            <Link to='' className='text-sm italic md:text-[16px]'>
+            <Link to='' className='text-sm md:text-[16px]'>
               {provider}
             </Link>
           </div>

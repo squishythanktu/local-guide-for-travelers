@@ -58,7 +58,11 @@ export default function SearchTours() {
           <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All tours</h2>
           <SortFilterTours />
           <div className='my-4 text-sm font-semibold  text-[var(--label-secondary)]'>
-            {`${toursData?.data.data.totalOfResult} guides found.`}
+            {isPending ? (
+              <Skeleton variant='text' sx={{ fontSize: '1rem' }} width={100} />
+            ) : (
+              `${toursData?.data.data.totalOfResult} guides found.`
+            )}
           </div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
             {isPending

@@ -113,7 +113,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
               value={search.searchValue}
               options={searchSuggestionResults || []}
               getOptionLabel={(option) => (typeof option === 'string' ? option : option?.resultName || '')}
-              componentsProps={{ popper: { style: { width: 'fit-content' } } }}
+              componentsProps={{ popper: { style: { width: 'fit-content', minWidth: '350px' } } }}
               renderInput={(params) => (
                 <TextField
                   {...params}

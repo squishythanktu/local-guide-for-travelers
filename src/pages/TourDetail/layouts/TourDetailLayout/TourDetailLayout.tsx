@@ -26,7 +26,6 @@ import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
-const numberOfReviews = 125
 
 export default function TourDetail() {
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
@@ -74,6 +73,7 @@ export default function TourDetail() {
     queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
     enabled: tourData?.data.data.unit === Unit.HOURS && tourData?.data.data.duration < 5 && checkAvailability
   })
+  const totalReviews = reviewsData?.data.data.length as number
 
   useEffect(() => {
     window.scrollTo({
@@ -109,7 +109,7 @@ export default function TourDetail() {
           categories={tour.categories}
           title={tour.name}
           rating={tour.overallRating}
-          numberOfReviews={numberOfReviews}
+          totalReviews={totalReviews}
           provider={tour.guide?.fullName || 'N/A'}
           address={tour.locations[0]?.address || 'N/A'}
         />
@@ -153,6 +153,7 @@ export default function TourDetail() {
             <Map onMarkersUpdate={() => {}} locations={tour.locations} isSelect={true} />
           </div>
         </div>
+
         <Box className='activity__customer-reviews flex flex-col pb-6'>
           <Divider className='my-4' />
           <div className='activity__customer-reviews--title flex items-center gap-2'>
@@ -163,13 +164,10 @@ export default function TourDetail() {
               </IconButton>
             </Tooltip>
           </div>
-          {reviewsData && (
+          {reviewsData?.data.data && totalReviews > 0 && (
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid item xs={4} sm={8} md={12}>
-                <OverallRating
-                  totalReviews={reviewsData.data.data.length}
-                  ratingReviewsAverage={getRatingReviewsAverage()}
-                />
+                <OverallRating totalReviews={totalReviews} ratingReviewsAverage={getRatingReviewsAverage()} />
               </Grid>
               <Grid item xs={0} sm={2} md={3}>
                 <StarRatingFilter />
@@ -179,15 +177,20 @@ export default function TourDetail() {
               </Grid>
             </Grid>
           )}
+          {reviewsData?.data.data && totalReviews === 0 && (
+            <>
+              <span>This tour hasn't had any reviews yet.</span>
+            </>
+          )}
         </Box>
-        <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
+        {/* <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
           <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
           <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-            {/* TODO: Handle tour detail API 
+            TODO: Handle tour detail API 
             <TourCard />
-            <TourCard /> */}
+            <TourCard />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

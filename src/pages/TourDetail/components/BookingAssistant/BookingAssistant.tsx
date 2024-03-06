@@ -84,7 +84,6 @@ export default function BookingAssistant({ onSubmit, id }: Props) {
               className='rounded-sm'
               disablePast={true}
               shouldDisableDate={checkBusyDate}
-              // defaultValue={dayjs(new Date())}
               sx={{
                 bgcolor: 'white',
                 width: '100%',
