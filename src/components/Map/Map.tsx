@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { LatLng, LatLngExpression, LatLngTuple, divIcon, point } from 'leaflet'
+import { LatLng, LatLngExpression, divIcon, point } from 'leaflet'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import { Location } from 'src/types/tour.type'
-import './react-leaflet.css'
 import MapSearchControl from '../MapSearchControl/MapSearchControl'
+import './react-leaflet.css'
 
 interface MapProps {
   onMarkersUpdate: (markers: LatLngExpression[]) => void
@@ -15,8 +15,8 @@ interface MapProps {
   locations?: Location[]
 }
 
-const Map: React.FC<MapProps> = ({ onMarkersUpdate, isSelect, locations }: MapProps) => {
-  const [centerLocation, setCenterLocation] = useState<LatLngTuple>([16.047079, 108.20623])
+const Map: React.FC<MapProps> = ({ onMarkersUpdate, locations }: MapProps) => {
+  // const [centerLocation, setCenterLocation] = useState([16.047079, 108.20623])
   const [markers, setMarkers] = useState<LatLngExpression[]>([])
   const prov = new OpenStreetMapProvider()
 
@@ -38,19 +38,19 @@ const Map: React.FC<MapProps> = ({ onMarkersUpdate, isSelect, locations }: MapPr
 
   useEffect(() => {
     onMarkersUpdate(markers)
-    setMarkers(formattedMarkers)
+    if (formattedMarkers.length > 0) setMarkers(formattedMarkers)
 
-    if (markers && markers.length > 0) {
-      setCenterLocation([(markers[0] as LatLng).lat, (markers[0] as LatLng).lng])
-    }
+    // if (markers && markers.length > 0) {
+    //   setCenterLocation([(markers[0] as LatLng).lat, (markers[0] as LatLng).lng])
+    // }
   }, [markers, onMarkersUpdate, formattedMarkers, locations])
 
-  const ChangeMapView = ({ coords }: { coords: LatLngTuple }) => {
-    const map = useMap()
-    map.setView(coords, map.getZoom())
+  // const ChangeMapView = ({ coords }: { coords: LatLngTuple }) => {
+  //   const map = useMap()
+  //   map.setView(coords, map.getZoom())
 
-    return null
-  }
+  //   return null
+  // }
 
   const AddMarkerOnClick = () => {
     useMapEvents({
@@ -82,7 +82,7 @@ const Map: React.FC<MapProps> = ({ onMarkersUpdate, isSelect, locations }: MapPr
     })
 
   return (
-    <MapContainer center={centerLocation} zoom={13}>
+    <MapContainer center={[16.047079, 108.20623]} zoom={13}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -100,7 +100,8 @@ const Map: React.FC<MapProps> = ({ onMarkersUpdate, isSelect, locations }: MapPr
         keepResult={true}
       />
       <MarkerClusterGroup chunkedLoading iconCreateFunction={customClusterIcon}>
-        {!isSelect && <AddMarkerOnClick />}
+        {/* {!isSelect && <AddMarkerOnClick />} */}
+        <AddMarkerOnClick />
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -112,7 +113,7 @@ const Map: React.FC<MapProps> = ({ onMarkersUpdate, isSelect, locations }: MapPr
           ></Marker>
         ))}
       </MarkerClusterGroup>
-      <ChangeMapView coords={centerLocation} />
+      {/* <ChangeMapView coords={centerLocation} /> */}
     </MapContainer>
   )
 }
