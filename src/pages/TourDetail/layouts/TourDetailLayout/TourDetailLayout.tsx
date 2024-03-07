@@ -1,5 +1,6 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, Divider } from '@mui/material'
+import { Box } from '@mui/material'
+import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
@@ -9,6 +10,7 @@ import { useParams } from 'react-router'
 import reviewApi from 'src/apis/review.api'
 import tourApi from 'src/apis/tour.api'
 import Comment from 'src/components/Comment/Comment'
+import CommentBox from 'src/components/CommentBox/CommentBox'
 import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
 import { Unit } from 'src/enums/unit.enum'
@@ -76,10 +78,10 @@ export default function TourDetail() {
   const totalReviews = reviewsData?.data.data.length as number
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
+    // window.scrollTo({
+    //   top: 0,
+    //   behavior: 'smooth'
+    // })
     if (tourData?.data) {
       setTour(tourData.data.data)
     }
@@ -172,13 +174,15 @@ export default function TourDetail() {
                 <StarRatingFilter />
               </Grid>
               <Grid item xs={4} sm={6} md={9}>
+                <CommentBox />
                 {reviewsData?.data.data.map((review, index) => <Comment key={index} comment={review} />)}
               </Grid>
             </Grid>
           )}
           {reviewsData?.data.data && totalReviews === 0 && (
             <>
-              <span>This tour hasn't had any reviews yet.</span>
+              <span className='my-4'>This tour hasn't had any reviews yet.</span>
+              <CommentBox />
             </>
           )}
         </Box>
