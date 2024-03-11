@@ -16,7 +16,7 @@ import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
 import TourForm from '../components/TourForm'
 import UpdateForm from '../components/TourForm/UpdateForm'
-import ConfirmDialog from './components/ConfirmDialog'
+import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -91,7 +91,7 @@ export default function TourManagement({ guideId }: Props) {
     setDeleteMode(true)
   }
 
-  const handleCloseDialog = () => {
+  const handleCloseDelete = () => {
     setDeleteMode(false)
   }
 
@@ -264,8 +264,9 @@ export default function TourManagement({ guideId }: Props) {
       )}
       {deleteMode && (
         <ConfirmDialog
-          title='Delete Confirm'
-          handleCloseDialog={handleCloseDialog}
+          title='Confirm Delete'
+          content='Are you sure you want to delete this tour?'
+          handleClose={handleCloseDelete}
           handleConfirm={handleConfirmDelete}
         />
       )}

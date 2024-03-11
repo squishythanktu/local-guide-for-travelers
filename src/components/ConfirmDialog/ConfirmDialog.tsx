@@ -5,25 +5,33 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 
-interface Props {
-  handleCloseDialog: () => void
+interface ConfirmDialogProps {
+  handleClose: () => void
   handleConfirm: () => void
   title: string
+  content: string
 }
 
-export default function ConfirmDialog({ handleCloseDialog, handleConfirm, title }: Props) {
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+  handleClose,
+  handleConfirm,
+  title,
+  content
+}: ConfirmDialogProps) => {
   return (
     <Dialog open={true} aria-labelledby='draggable-dialog-title'>
       <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
         {title}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>Are you sure you want to delete this tour?</DialogContentText>
+        <DialogContentText>{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseDialog}>Cancel</Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleConfirm}>OK</Button>
       </DialogActions>
     </Dialog>
   )
 }
+
+export default ConfirmDialog

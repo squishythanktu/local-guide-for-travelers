@@ -73,6 +73,11 @@ export const bookingSchema = yup.object({
   startTime: yup.string().required()
 })
 
+export const commentSchema = yup.object({
+  comment: yup.string().trim().required(),
+  rating: yup.number().required().min(1).max(5)
+})
+
 export type Schema = yup.InferType<typeof schema>
 
 export type UserSchema = yup.InferType<typeof userSchema>
@@ -82,3 +87,5 @@ export type TourSchema = yup.InferType<typeof tourSchema>
 export type SearchSchema = yup.InferType<typeof searchSchema>
 
 export type BookingSchema = yup.InferType<typeof bookingSchema>
+
+export type CommentSchema = yup.InferType<typeof commentSchema>

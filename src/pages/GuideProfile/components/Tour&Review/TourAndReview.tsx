@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/react-query'
 import { SyntheticEvent, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import reviewApi from 'src/apis/review.api'
-import Comment from 'src/components/Comment/Comment'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import StarRatingFilter from 'src/components/StarRatingFilter/StarRatingFilter'
 import TourManagement from 'src/pages/Account/TourManagement'
@@ -118,7 +117,8 @@ export default function TourAndReview({ guideId }: Props) {
                 <StarRatingFilter />
               </Grid>
               <Grid item sm={6} md={9}>
-                {reviewsData?.data.data.map((review) => <Comment key={review.id} comment={review} />)}
+                {/* TODO: Handle API for comments
+                {reviewsData?.data.data.map((review) => <Comment key={review.id} comment={review} />)} */}
               </Grid>
             </Grid>
           )}

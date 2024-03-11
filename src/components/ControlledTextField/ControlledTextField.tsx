@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 interface ControlledTextFieldProps {
   name: string
   control: Control<any>
-  label: string
+  label?: string
   className?: string
   variant?: TextFieldVariants
   multiline?: boolean
@@ -17,6 +17,7 @@ interface ControlledTextFieldProps {
   type?: HTMLInputTypeAttribute | undefined
   prefix?: string
   required?: boolean
+  placeholder?: string
 }
 
 export default function ControlledTextField({
@@ -30,7 +31,8 @@ export default function ControlledTextField({
   fullWidth = false,
   type = 'text',
   prefix,
-  required = false
+  required = false,
+  placeholder
 }: ControlledTextFieldProps) {
   return (
     <Controller
@@ -40,16 +42,19 @@ export default function ControlledTextField({
         <TextField
           id={name}
           label={
-            <Typography sx={{ fontWeight: 600 }}>
-              {label}
-              {required && (
-                <Typography component='span' sx={{ color: 'red' }}>
-                  {' '}
-                  *
-                </Typography>
-              )}
-            </Typography>
+            label && (
+              <Typography sx={{ fontWeight: 600 }}>
+                {label}
+                {required && (
+                  <Typography component='span' sx={{ color: 'red' }}>
+                    {' '}
+                    *
+                  </Typography>
+                )}
+              </Typography>
+            )
           }
+          placeholder={placeholder || ''}
           type={type}
           variant={variant}
           error={!!error}

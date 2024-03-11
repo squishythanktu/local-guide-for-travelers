@@ -1,17 +1,20 @@
 import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import reviewApi from 'src/apis/review.api'
+import { toast } from 'react-toastify'
+import reviewApi, { CommentFormData } from 'src/apis/review.api'
 import tourApi from 'src/apis/tour.api'
 import Comment from 'src/components/Comment/Comment'
 import CommentBox from 'src/components/CommentBox/CommentBox'
 import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
+import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import { Unit } from 'src/enums/unit.enum'
 import Loading from 'src/pages/Loading'
+import NotFound from 'src/pages/NotFound/NotFound'
 import { Tour } from 'src/types/tour.type'
 import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
@@ -22,18 +25,10 @@ import BookingConfirmation from '../../components/BookingConfirmation'
 import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
-import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
-import NotFound from 'src/pages/NotFound/NotFound'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
 export default function TourDetail() {
-  const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
-  const [formData, setFormData] = useState<BookingAssistantFormData>({
-    startDate: new Date(),
-    numberTravelers: 0
-  })
-  const { id } = useParams()
   const [tour, setTour] = useState<Tour>({
     id: 0,
     name: '',
@@ -54,6 +49,13 @@ export default function TourDetail() {
     images: [{ id: 0, imageLink: '' }],
     guide: { id: '', email: '' }
   })
+  const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
+  const [formData, setFormData] = useState<BookingAssistantFormData>({
+    startDate: new Date(),
+    numberTravelers: 0
+  })
+  const [editReviewId, setEditReviewId] = useState<number | null>(null)
+  const { id } = useParams()
   const {
     isPending: isLoadingTour,
     error: errorTour,
@@ -63,36 +65,90 @@ export default function TourDetail() {
     queryFn: () => tourApi.getTourById(id as string),
     enabled: id !== undefined
   })
-  const { data: reviewsData } = useQuery({
+  const { data: reviewsData, refetch: refechReviewsData } = useQuery({
     queryKey: [`Get reviews of tour by ${id}`, id],
     queryFn: () => reviewApi.getReviewsOfTour(Number(id)),
     enabled: id !== undefined
   })
   const { data: startTimeData } = useQuery({
-    queryKey: [`Start time of tourId ${id} in ${formData.startDate}`, formData],
+    queryKey: [`Start time of id ${id} in ${formData.startDate}`, formData],
     queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
     enabled: tourData?.data.data.unit === Unit.HOURS && tourData?.data.data.duration < 5 && checkAvailability
   })
   const totalReviews = reviewsData?.data.data.length as number
 
   useEffect(() => {
-    // window.scrollTo({
-    //   top: 0,
-    //   behavior: 'smooth'
-    // })
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
     if (tourData?.data) {
       setTour(tourData.data.data)
     }
   }, [tourData?.data])
+
+  const addReviewOfTourMutation = useMutation({
+    mutationFn: (body: CommentFormData) => reviewApi.addReviewsOfTourById(Number(id), body)
+  })
+
+  const updateReviewOfTourMutation = useMutation({
+    mutationFn: (body: CommentFormData) => reviewApi.updateReviewsOfTourById(editReviewId as number, body)
+  })
+
+  const deleteReviewOfTourMutation = useMutation({
+    mutationFn: (id: number) => reviewApi.deleteReviewsOfTourById(id)
+  })
+
+  const handleCreateReviewOfTour = (data: CommentFormData) => {
+    addReviewOfTourMutation.mutate(data, {
+      onSuccess: () => {
+        refechReviewsData()
+        toast.success('Add review of tour successfully.')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
+
+  const handleUpdateReviewOfTour = (data: CommentFormData) => {
+    if (editReviewId) {
+      updateReviewOfTourMutation.mutate(data, {
+        onSuccess: () => {
+          setEditReviewId(null)
+          refechReviewsData()
+          toast.success('Update review of tour successfully.')
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        }
+      })
+    }
+  }
+
+  const handleDeleteReviewOfTour = (id: number) => {
+    deleteReviewOfTourMutation.mutate(id, {
+      onSuccess: () => {
+        refechReviewsData()
+        toast.success('Delete review of tour successfully.')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
 
   const handleSubmitBookingAssistant = (body: BookingAssistantFormData) => {
     setFormData(body)
     setCheckAvailability(true)
   }
 
-  const getRatingReviewsAverage = () => {
-    return (reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews
-  }
+  const getRatingReviewsAverage = () =>
+    Number(
+      ((reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews).toFixed(2)
+    )
+
+  const getReviewById = () => reviewsData?.data.data.filter((review) => review.id === editReviewId)[0]
 
   if (isLoadingTour) {
     return <Loading />
@@ -108,7 +164,7 @@ export default function TourDetail() {
         <TourHeader
           categories={tour.categories}
           title={tour.name}
-          rating={tour.overallRating}
+          rating={Number(tour.overallRating.toFixed(2))}
           totalReviews={totalReviews}
           provider={tour.guide?.fullName || 'N/A'}
           address={(tour.locations[0]?.address as string) || 'N/A'}
@@ -165,15 +221,31 @@ export default function TourDetail() {
                 <StarRatingFilter />
               </Grid>
               <Grid item xs={4} sm={6} md={9}>
-                <CommentBox />
-                {reviewsData?.data.data.map((review, index) => <Comment key={index} comment={review} />)}
+                <CommentBox
+                  review={getReviewById()}
+                  onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
+                  isMutating={updateReviewOfTourMutation.isPending || addReviewOfTourMutation.isPending}
+                />
+                {reviewsData?.data.data.map((review, index) => (
+                  <Comment
+                    key={index}
+                    index={index}
+                    comment={review}
+                    setEditReviewId={(id: number) => setEditReviewId(id)}
+                    onDelete={(id: number) => handleDeleteReviewOfTour(id)}
+                  />
+                ))}
               </Grid>
             </Grid>
           )}
           {reviewsData?.data.data && totalReviews === 0 && (
             <>
               <span className='my-4'>This tour hasn't had any reviews yet.</span>
-              <CommentBox />
+              <CommentBox
+                review={getReviewById()}
+                onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
+                isMutating={updateReviewOfTourMutation.isPending || addReviewOfTourMutation.isPending}
+              />
             </>
           )}
         </Box>
