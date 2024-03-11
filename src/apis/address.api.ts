@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
@@ -21,6 +22,9 @@ const addressApi = {
         provinceName
       }
     })
+  },
+  getLocationNameByLatLon(body: any) {
+    return http.post<SuccessResponse<string[]>>(`${URL_ADDRESS}/name`, body)
   }
 }
 

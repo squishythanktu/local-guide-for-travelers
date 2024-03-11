@@ -46,14 +46,20 @@ export const tourSchema = yup.object({
   limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
   extraPrice: yup.number().positive().required().typeError('Extra price must be positive a number'),
   itinerary: yup.string().trim().required(),
-  locations: yup.array().min(1).required(),
+  locations: yup
+    .array()
+    .test('atLeastOne', 'Locations field must have at least 1 confirmed location & be saved', function (value) {
+      return value && value.length >= 1
+    })
+    .required('Locations field must have at least 1 confirmed location & be saved'),
   categories: yup.array().of(
     yup.object().shape({
       id: yup.number(),
       name: yup.string()
     })
   ),
-  images: yup.array().of(yup.string())
+  images: yup.array().of(yup.string()),
+  startTimes: yup.array().of(yup.date())
 })
 
 export const searchSchema = yup.object({

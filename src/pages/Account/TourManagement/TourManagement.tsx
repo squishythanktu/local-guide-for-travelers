@@ -54,21 +54,23 @@ export default function TourManagement({ guideId }: Props) {
   const handleCreateTourForm = (tourForm: TourFormData) => {
     const formattedTourForm = {
       ...tourForm,
+      startTimes: tourForm.startTimes?.map((time) => time?.toLocaleTimeString('en-US', { hour12: false })),
       guide: {
         id: profile!.id
       }
     }
+    console.log('form: ', formattedTourForm)
 
-    createTourMutation.mutate(formattedTourForm, {
-      onSuccess: () => {
-        setCreateMode(false)
-        refetch()
-        toast.success('Create the tour successfully.')
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      }
-    })
+    // createTourMutation.mutate(formattedTourForm, {
+    //   onSuccess: () => {
+    //     setCreateMode(false)
+    //     refetch()
+    //     toast.success('Create the tour successfully.')
+    //   },
+    //   onError: (error) => {
+    //     toast.error(error.message)
+    //   }
+    // })
   }
 
   const handleCancelTourForm = () => {

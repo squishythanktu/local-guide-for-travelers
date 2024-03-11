@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Stepper from '@mui/material/Stepper'
-import { Location } from 'src/types/tour.type'
+import { Location } from 'src/types/location.type'
 
 interface Props {
   locations: Location[]

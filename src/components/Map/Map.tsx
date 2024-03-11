@@ -3,20 +3,28 @@ import { LatLng, LatLngExpression, divIcon, point } from 'leaflet'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
 import 'leaflet/dist/leaflet.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import { Location } from 'src/types/tour.type'
 import MapSearchControl from '../MapSearchControl/MapSearchControl'
 import './react-leaflet.css'
+import { Location } from 'src/types/location.type'
 
 interface MapProps {
   onMarkersUpdate: (markers: LatLngExpression[]) => void
-  isSelect?: boolean
+  selectMode?: boolean
   locations?: Location[]
+  changeMapViewMode?: boolean
+  removeMode?: boolean
 }
 
-const Map: React.FC<MapProps> = ({ onMarkersUpdate, locations }: MapProps) => {
-  // const [centerLocation, setCenterLocation] = useState([16.047079, 108.20623])
+const Map: React.FC<MapProps> = ({
+  onMarkersUpdate,
+  selectMode = false,
+  removeMode = true,
+  changeMapViewMode = true,
+  locations
+}: MapProps) => {
+  const [centerLocation, setCenterLocation] = useState<LatLngExpression>([16.047079, 108.20623])
   const [markers, setMarkers] = useState<LatLngExpression[]>([])
   const prov = new OpenStreetMapProvider()
 
@@ -38,19 +46,23 @@ const Map: React.FC<MapProps> = ({ onMarkersUpdate, locations }: MapProps) => {
 
   useEffect(() => {
     onMarkersUpdate(markers)
+  }, [markers, onMarkersUpdate])
+
+  useEffect(() => {
     if (formattedMarkers.length > 0) setMarkers(formattedMarkers)
+  }, [formattedMarkers])
 
-    // if (markers && markers.length > 0) {
-    //   setCenterLocation([(markers[0] as LatLng).lat, (markers[0] as LatLng).lng])
-    // }
-  }, [markers, onMarkersUpdate, formattedMarkers, locations])
+  useEffect(() => {
+    if (changeMapViewMode && markers && markers.length > 0) {
+      setCenterLocation([(markers[0] as LatLng).lat, (markers[0] as LatLng).lng])
+    }
+  }, [changeMapViewMode, markers])
 
-  // const ChangeMapView = ({ coords }: { coords: LatLngTuple }) => {
-  //   const map = useMap()
-  //   map.setView(coords, map.getZoom())
-
-  //   return null
-  // }
+  const ChangeMapView = ({ coords }: { coords: LatLngExpression }) => {
+    const map = useMap()
+    map.setView(coords, map.getZoom())
+    return null
+  }
 
   const AddMarkerOnClick = () => {
     useMapEvents({
@@ -100,20 +112,21 @@ const Map: React.FC<MapProps> = ({ onMarkersUpdate, locations }: MapProps) => {
         keepResult={true}
       />
       <MarkerClusterGroup chunkedLoading iconCreateFunction={customClusterIcon}>
-        {/* {!isSelect && <AddMarkerOnClick />} */}
-        <AddMarkerOnClick />
+        {selectMode && <AddMarkerOnClick />}
         {markers.map((marker, index) => (
           <Marker
             key={index}
             position={marker}
             eventHandlers={{
-              click: (e) => removeMarker(e.latlng)
+              click: (e) => {
+                if (removeMode) removeMarker(e.latlng)
+              }
             }}
             icon={customMarkerIcon(index)}
           ></Marker>
         ))}
       </MarkerClusterGroup>
-      {/* <ChangeMapView coords={centerLocation} /> */}
+      {changeMapViewMode && <ChangeMapView coords={centerLocation} />}
     </MapContainer>
   )
 }

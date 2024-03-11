@@ -1,20 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Autocomplete, Box, Button, MenuItem, TextField, Chip } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Autocomplete, Box, Button, Chip, MenuItem, TextField } from '@mui/material'
+import Typography from '@mui/material/Typography'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
+import { Dayjs } from 'dayjs'
+import { SyntheticEvent, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import categoryApi from 'src/apis/category.api'
 import ControlledTextField from 'src/components/ControlledTextField'
+import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import { Unit } from 'src/enums/unit.enum'
-import { TourCategory, Tour } from 'src/types/tour.type'
+import { Location } from 'src/types/location.type'
+import { Tour, TourCategory } from 'src/types/tour.type'
 import { User } from 'src/types/user.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
-import Typography from '@mui/material/Typography'
-import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
-import LoadingButton from '@mui/lab/LoadingButton'
-import Map from '../../../../components/Map/Map'
-import { LatLngExpression } from 'leaflet'
-import FormHelperText from '@mui/material/FormHelperText'
+import MapTourForm from './MapTourForm/MapTourForm'
+import StartTimePickers from './StartTimePickers/StartTimePickers'
 
 interface TourFormProps {
   onSubmit: (data: TourFormData) => void
@@ -31,6 +32,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors }
   } = useForm<TourFormData>({
     defaultValues: {
@@ -46,7 +48,9 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
       limitTraveler: 0,
       extraPrice: 0,
       estimatedLocalCashNeeded: '',
-      images: []
+      itinerary: '',
+      images: [],
+      startTimes: []
     },
     resolver: yupResolver(tourSchema)
   })
@@ -56,6 +60,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
     placeholderData: keepPreviousData,
     staleTime: 5 * 1000
   })
+  const watchUnitDuration = watch(['unit', 'duration'])
   const [images, setImages] = useState<string[]>([])
 
   useEffect(() => {
@@ -67,18 +72,14 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
     setValue('images', images)
   }, [defaultValue, setValue, images])
 
-  const handleMarkersUpdate = useCallback(
-    (markers: LatLngExpression[]) => {
-      const formattedMarkers = (markers as Array<number[]>).map((marker: number[]) => {
-        return {
-          latitude: marker[0],
-          longitude: marker[1]
-        }
-      })
-      setValue('locations', formattedMarkers)
-    },
-    [setValue]
-  )
+  const handleStartTimeChange = (startTimes: Dayjs[]) => {
+    const formarttedDate: Date[] = startTimes.map((time) => time.toDate())
+    setValue('startTimes', formarttedDate)
+  }
+
+  const handleSaveUpdatedLocations = (updatedLocations: Location[]) => {
+    setValue('locations', updatedLocations)
+  }
 
   return (
     <>
@@ -96,7 +97,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
           <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
             <ControlledTextField
               required
-              className='min-h-[80px] grow lg:w-1/4'
+              className='min-h-[80px] grow lg:w-1/2'
               type='number'
               control={control}
               name={'pricePerTraveler'}
@@ -105,7 +106,18 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
             />
             <ControlledTextField
               required
-              className='min-h-[80px] grow lg:w-1/4'
+              className='min-h-[80px] grow lg:w-1/2'
+              type='number'
+              control={control}
+              name={'extraPrice'}
+              label={'Extra price'}
+              prefix='$'
+            />
+          </div>
+          <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
+            <ControlledTextField
+              required
+              className='min-h-[80px] grow lg:w-1/2'
               type='number'
               control={control}
               name={'limitTraveler'}
@@ -113,16 +125,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
             />
             <ControlledTextField
               required
-              className='min-h-[80px] grow lg:w-1/4'
-              type='number'
-              control={control}
-              name={'extraPrice'}
-              label={'Extra price'}
-              prefix='$'
-            />
-            <ControlledTextField
-              required
-              className='min-h-[80px] grow lg:w-1/4'
+              className='min-h-[80px] grow lg:w-1/2'
               control={control}
               name={'estimatedLocalCashNeeded'}
               label={'Estimated local cash needed'}
@@ -155,7 +158,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
                       getOptionLabel={(option) => (option.name ? option.name : '')}
                       isOptionEqualToValue={(option, value) => option && option.id === value.id}
                       value={Array.isArray(field.value) ? field.value : []}
-                      className='h-fit grow lg:w-1/3'
+                      className='h-fit grow lg:w-1/2'
                       onChange={handleChange}
                       sx={{
                         '& .MuiInputBase-root': { height: '56px' }
@@ -191,19 +194,13 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
             )}
             <ControlledTextField
               required
-              className='min-h-[80px] w-full grow lg:w-1/3'
+              className='min-h-[80px] w-full grow lg:w-1/2'
               control={control}
               name={'transportation'}
               label={'Transportation'}
             />
-            <ControlledTextField
-              required
-              className='min-h-[80px] w-full grow lg:w-1/6'
-              type='number'
-              control={control}
-              name={'duration'}
-              label={'Duration'}
-            />
+          </div>
+          <div className='tour-form__field-group flex flex-col gap-6 lg:flex-row lg:justify-between'>
             <Controller
               control={control}
               name='unit'
@@ -222,7 +219,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
                   variant='outlined'
                   error={!!errors.unit?.message}
                   helperText={errors.unit?.message}
-                  className='h-fit w-full grow lg:w-1/6'
+                  className='h-fit w-full grow'
                   {...field}
                   InputLabelProps={{
                     shrink: true
@@ -240,7 +237,16 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
                 </TextField>
               )}
             />
+            <ControlledTextField
+              required
+              className='min-h-[80px] w-full grow'
+              type='number'
+              control={control}
+              name={'duration'}
+              label={'Duration'}
+            />
           </div>
+          <StartTimePickers watchUnitDuration={watchUnitDuration} onStartTimesChange={handleStartTimeChange} />
           <ControlledTextField
             required
             fullWidth={true}
@@ -269,14 +275,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
             label={'Description'}
           />
           <Box sx={{ marginTop: 2 }}>
-            <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>
-              Select sequential locations{' '}
-              <Typography component='span' sx={{ color: 'red' }}>
-                *
-              </Typography>
-            </Typography>
-            <Map onMarkersUpdate={handleMarkersUpdate} />
-            {!!errors.locations?.message && <FormHelperText error>{errors.locations.message}</FormHelperText>}
+            <MapTourForm watch={watch} errors={errors} handleSaveUpdatedLocations={handleSaveUpdatedLocations} />
           </Box>
           <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>

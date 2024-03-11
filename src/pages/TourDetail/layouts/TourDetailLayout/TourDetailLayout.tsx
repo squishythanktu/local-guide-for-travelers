@@ -111,7 +111,7 @@ export default function TourDetail() {
           rating={tour.overallRating}
           totalReviews={totalReviews}
           provider={tour.guide?.fullName || 'N/A'}
-          address={tour.locations[0]?.address || 'N/A'}
+          address={(tour.locations[0]?.address as string) || 'N/A'}
         />
         <div className='activity__photo-gallery pb-2 pt-2'>
           <SimpleSlider itemsData={tour.images} />
@@ -150,7 +150,7 @@ export default function TourDetail() {
           </div>
           <div className='map col-span-2'>
             <div className='text-[18px] font-semibold md:text-2xl'>Itinerary</div>
-            <Map onMarkersUpdate={() => {}} locations={tour.locations} isSelect={true} />
+            <Map onMarkersUpdate={() => {}} locations={tour.locations} selectMode={false} />
           </div>
         </div>
         <Box className='activity__customer-reviews flex flex-col pb-6'>

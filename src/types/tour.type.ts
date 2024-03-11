@@ -1,3 +1,4 @@
+import { Location } from './location.type'
 import { User } from './user.type'
 import { SuccessResponse } from './utils.type'
 
@@ -9,14 +10,6 @@ export type TourCategory = {
 export type ImageWithLink = {
   id: number
   imageLink: string
-}
-
-export type Location = {
-  id: number
-  name: string
-  address: string
-  latitude: number
-  longitude: number
 }
 
 export type Tour = {
