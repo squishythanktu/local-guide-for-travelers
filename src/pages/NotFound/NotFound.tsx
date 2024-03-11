@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-export default function NotFound() {
+const NotFound: React.FC = () => {
   return (
     <div className='grow'>
       <div className='page_not_found__container flex min-h-[535px] min-w-80 flex-col justify-center gap-2 px-4 py-10 text-center md:m-auto lg:w-full lg:max-w-[1400px] xl:px-[72px]'>
@@ -10,3 +10,5 @@ export default function NotFound() {
     </div>
   )
 }
+
+export default NotFound

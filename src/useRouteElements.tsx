@@ -1,18 +1,17 @@
-import { Outlet, useRoutes, Navigate } from 'react-router-dom'
 import { Suspense, lazy, useContext } from 'react'
-import { AppContext } from './contexts/app.context'
-import MainLayout from './layouts/MainLayout'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import path from './constants/path.constant'
-import AccountLayout from './pages/Account/layouts/AccountLayout'
+import { AppContext } from './contexts/app.context'
 import HomeLayout from './layouts/HomeLayout'
-import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
+import MainLayout from './layouts/MainLayout'
+import AccountLayout from './pages/Account/layouts/AccountLayout'
 import Loading from './pages/Loading'
+import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const Profile = lazy(() => import('./pages/Account/Profile'))
-const NotFound = lazy(() => import('./pages/NotFound'))
 const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const SearchTours = lazy(() => import('./pages/SearchTours'))
@@ -24,6 +23,7 @@ const Cart = lazy(() => import('./pages/Cart'))
 const BookingSuccess = lazy(() => import('./pages/BookingSuccess'))
 const BookingFail = lazy(() => import('./pages/BookingFail'))
 const GuideProfile = lazy(() => import('./pages/GuideProfile'))
+const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)

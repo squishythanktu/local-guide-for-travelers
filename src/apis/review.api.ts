@@ -9,7 +9,7 @@ const reviewApi = {
   getReviewsOfTour(id: number) {
     return http.get<SuccessResponse<Review[]>>(`${URL_TOUR_REVIEW}/${id}`)
   },
-  getReviewsOfGuide(id: string) {
+  getReviewsOfGuide(id: number) {
     return http.get<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/${id}`)
   }
 }

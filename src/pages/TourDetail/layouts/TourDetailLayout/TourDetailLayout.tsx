@@ -1,9 +1,6 @@
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -15,7 +12,6 @@ import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
 import { Unit } from 'src/enums/unit.enum'
 import Loading from 'src/pages/Loading'
-import NotFound from 'src/pages/NotFound'
 import { Tour } from 'src/types/tour.type'
 import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
@@ -26,6 +22,8 @@ import BookingConfirmation from '../../components/BookingConfirmation'
 import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from '../../components/SimpleSlider'
 import TourHeader from '../../components/TourHeader'
+import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
+import NotFound from 'src/pages/NotFound/NotFound'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
@@ -157,14 +155,7 @@ export default function TourDetail() {
         </div>
         <Box className='activity__customer-reviews flex flex-col pb-6'>
           <Divider className='my-4' />
-          <div className='activity__customer-reviews--title flex items-center gap-2'>
-            <p className='text-[18px] font-semibold md:text-2xl'>Customer reviews</p>
-            <Tooltip title='All reviews are from verified customers who purchased the activity. Reviews can only be submitted after the activity takes place.'>
-              <IconButton>
-                <InfoOutlinedIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <ReviewTitle />
           {reviewsData?.data.data && totalReviews > 0 && (
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid item xs={4} sm={8} md={12}>

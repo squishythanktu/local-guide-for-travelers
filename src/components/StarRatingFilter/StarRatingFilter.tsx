@@ -9,25 +9,25 @@ const StarRatingFilter: React.FC = () => {
     <div className='star-rating-filter'>
       <h3 className='reviews-summary__title'>By star rating</h3>
       <FormGroup>
-        <FormControlLabel control={<Checkbox defaultChecked />} label='All star ratings' />
+        <FormControlLabel control={<Checkbox defaultChecked />} label='All stars' />
         <Box className='flex items-center'>
-          <FormControlLabel control={<Checkbox />} label='5 stars' />
+          <FormControlLabel control={<Checkbox />} label='5 stars' classes={{ label: 'sm:hidden lg:block' }} />
           <Rating max={5} value={5} readOnly />
         </Box>
         <Box className='flex items-center'>
-          <FormControlLabel control={<Checkbox />} label='4 stars' />
+          <FormControlLabel control={<Checkbox />} label='4 stars' classes={{ label: 'sm:hidden lg:block' }} />
           <Rating max={5} value={4} readOnly />
         </Box>
         <Box className='flex items-center'>
-          <FormControlLabel control={<Checkbox />} label='3 stars' />
+          <FormControlLabel control={<Checkbox />} label='3 stars' classes={{ label: 'sm:hidden lg:block' }} />
           <Rating max={5} value={3} readOnly />
         </Box>
         <Box className='flex items-center'>
-          <FormControlLabel control={<Checkbox />} label='2 stars' />
+          <FormControlLabel control={<Checkbox />} label='2 stars' classes={{ label: 'sm:hidden lg:block' }} />
           <Rating max={5} value={2} readOnly />
         </Box>
         <Box className='flex items-center'>
-          <FormControlLabel control={<Checkbox />} label='1 stars' />
+          <FormControlLabel control={<Checkbox />} label='1 stars' classes={{ label: 'sm:hidden lg:block' }} />
           <Rating max={5} value={1} readOnly />
         </Box>
       </FormGroup>

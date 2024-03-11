@@ -5,8 +5,12 @@ import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
+import { useQuery } from '@tanstack/react-query'
 import { SyntheticEvent, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
+import reviewApi from 'src/apis/review.api'
+import Comment from 'src/components/Comment/Comment'
+import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import StarRatingFilter from 'src/components/StarRatingFilter/StarRatingFilter'
 import TourManagement from 'src/pages/Account/TourManagement'
 
@@ -60,6 +64,12 @@ export default function TourAndReview({ guideId }: Props) {
     setValue(index)
   }
 
+  const { data: reviewsData } = useQuery({
+    queryKey: [`Get reviews of tour by ${guideId}`, guideId],
+    queryFn: () => reviewApi.getReviewsOfGuide(Number(guideId)),
+    enabled: guideId !== undefined
+  })
+
   return (
     <Box
       sx={{
@@ -101,15 +111,22 @@ export default function TourAndReview({ guideId }: Props) {
         </TabPanel>
         <TabPanel value={2} index={2} dir={theme.direction}>
           <Divider className='mb-4' />
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            <Grid item xs={0} sm={2} md={3}>
-              <StarRatingFilter />
+          <ReviewTitle />
+          {reviewsData?.data.data && (
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              <Grid item sm={2} md={3}>
+                <StarRatingFilter />
+              </Grid>
+              <Grid item sm={6} md={9}>
+                {reviewsData?.data.data.map((review) => <Comment key={review.id} comment={review} />)}
+              </Grid>
             </Grid>
-            <Grid item xs={4} sm={6} md={9}>
-              {/* <Comment /> */}
-              {/* <Comment /> */}
-            </Grid>
-          </Grid>
+          )}
+          {!reviewsData?.data.data && (
+            <>
+              <span>This tour hasn't had any reviews yet.</span>
+            </>
+          )}
         </TabPanel>
       </SwipeableViews>
     </Box>
