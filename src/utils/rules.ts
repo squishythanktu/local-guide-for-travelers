@@ -73,6 +73,15 @@ export const bookingSchema = yup.object({
   startTime: yup.string().required()
 })
 
+export const requestTourSchema = yup.object({
+  transportation: yup.array().min(1, 'At least one transportation option must be selected'),
+  duration: yup.number().positive().required().typeError('Duration must be positive a number'),
+  unit: yup.string().trim().required(),
+  maxPrice: yup.number().positive().required().typeError('Max price must be positive a number'),
+  destination: yup.string().required(),
+  message: yup.string()
+ })
+
 export const commentSchema = yup.object({
   comment: yup.string().trim().required(),
   rating: yup.number().required().min(1).max(5)
@@ -88,4 +97,6 @@ export type SearchSchema = yup.InferType<typeof searchSchema>
 
 export type BookingSchema = yup.InferType<typeof bookingSchema>
 
+export type RequestTourSchema = yup.InferType<typeof requestTourSchema>
+                                   
 export type CommentSchema = yup.InferType<typeof commentSchema>

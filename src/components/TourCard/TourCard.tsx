@@ -1,10 +1,10 @@
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
+import classNames from 'classnames'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Tour } from 'src/types/tour.type'
-import classNames from 'classnames'
 
 export default function TourCard({ tourData }: { tourData: Tour }) {
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
@@ -13,7 +13,8 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
     <Link to={`/tours/${tourData.id}`} className='relative'>
       <Box
         sx={{
-          boxShadow: 'rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px'
+          boxShadow: 'rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px',
+          borderWidth: '1px'
         }}
         className='tour-card__wrapper flex h-full flex-col justify-between overflow-hidden rounded'
         onMouseEnter={() => setIsCardHovered(true)}

@@ -15,7 +15,8 @@ const path = {
   checkout: '/cart/checkout',
   bookingSuccess: '/booking-success/:id',
   bookingFail: '/booking-fail',
-  guideProfile: '/guides/:id'
+  guideProfile: '/guides/:id',
+  requestTour: '/request-tour'
 }
 
 export default path

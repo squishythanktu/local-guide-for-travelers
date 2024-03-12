@@ -1,12 +1,13 @@
-import { Box, Rating } from '@mui/material'
+import { Box, Button, Rating } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import guideApi from 'src/apis/guide.api'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
 
 export default function GuideProfile() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { data: guideProfileData, isPending } = useQuery({
     queryKey: [`guide profile of ${id}`],
@@ -49,6 +50,13 @@ export default function GuideProfile() {
                     (244 reviews)
                   </span>
                 </div>
+                <Button
+                  onClick={() => navigate('/request-tour', { state: { guideId: id } })}
+                  variant='contained'
+                  className=''
+                >
+                  Request a tour
+                </Button>
               </div>
             </div>
             <div className='md:col-span-3'>
