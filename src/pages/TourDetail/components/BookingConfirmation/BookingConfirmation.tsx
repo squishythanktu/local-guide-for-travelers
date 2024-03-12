@@ -15,7 +15,7 @@ import { Unit } from 'src/enums/unit.enum'
 import { Booking } from 'src/types/cart.type'
 import { Tour } from 'src/types/tour.type'
 import { formatTime } from 'src/utils/date-time'
-import { BookingAssistantFormData } from '../../layouts/TourDetailLayout/TourDetailLayout'
+import { BookingAssistantFormData } from '../../TourDetail'
 
 interface Props {
   timeOptions?: string[]

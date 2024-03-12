@@ -59,7 +59,7 @@ export const tourSchema = yup.object({
     })
   ),
   images: yup.array().of(yup.string()),
-  startTimes: yup.array().of(yup.date())
+  startTimes: yup.array().required()
 })
 
 export const searchSchema = yup.object({

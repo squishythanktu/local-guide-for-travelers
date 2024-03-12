@@ -46,7 +46,7 @@ export default function CartBookingForm({ setEditMode, booking, onSubmit }: Prop
   const { data: startTimeData } = useQuery({
     queryKey: ['startTimeData', getValues('startDate')],
     queryFn: () =>
-      tourApi.getStartTime(booking?.tour.id as number, {
+      tourApi.getStartTimeOfTour(booking?.tour.id as number, {
         localDate: formatDate(getValues('startDate'), 'YYYY-MM-DD')
       })
   })

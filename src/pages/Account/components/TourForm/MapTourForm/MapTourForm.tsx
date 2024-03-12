@@ -74,8 +74,6 @@ const MapTourForm: React.FC<MapTourFormProps> = ({ watch, errors, handleSaveUpda
 
   const handleChangeLocationName = useCallback(
     debounce((index: number, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      console.log(event.target.value)
-
       setLocations((prevLocationNames) => {
         const updatedLocationNames = [...prevLocationNames]
         updatedLocationNames[index].name = event.target.value

@@ -58,7 +58,7 @@ export default function TourCard({ tourData }: { tourData: Tour }) {
         <div className='tour-card__details  float-left mb-2 px-3 lg:max-h-40 lg:overflow-hidden'>
           <div className='rating-overall-container flex items-center gap-1'>
             <Rating defaultValue={tourData?.overallRating} precision={0.1} size='small' readOnly />
-            <span className='rating-overall__number text-sm font-semibold'>{tourData?.overallRating}</span>
+            <span className='rating-overall__number text-sm font-semibold'>{tourData?.overallRating.toFixed(2)}</span>
             <span className='rating-overall__reviews text-sm font-semibold  text-[var(--label-secondary)]'>
               {/* TODO: Replace by tour total reviews from API */}
               (244 reviews)

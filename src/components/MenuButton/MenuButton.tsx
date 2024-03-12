@@ -9,10 +9,9 @@ interface Props {
 }
 
 const MenuButton = ({ jsx, text }: Props) => {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -32,7 +31,7 @@ const MenuButton = ({ jsx, text }: Props) => {
         variant='contained'
         disableElevation
         onClick={handleClick}
-        size='medium'
+        size='large'
         endIcon={<KeyboardArrowDownIcon />}
       >
         {text}

@@ -1,10 +1,10 @@
 import useQueryParams from './useQueryParams'
 import isUndefined from 'lodash/isUndefined'
 import omitBy from 'lodash/omitBy'
-import { TourListConfig } from 'src/types/tour.type'
+import { TourGuideParams } from 'src/types/tour.type'
 
 export type QueryConfig = {
-  [key in keyof TourListConfig]: string
+  [key in keyof TourGuideParams]: string
 }
 
 export default function useQueryConfig() {

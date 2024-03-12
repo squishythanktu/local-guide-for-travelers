@@ -1,4 +1,4 @@
-export type SeachResult = {
+export type SearchResult = {
   id?: number
   resultName: string
   imageLink?: string
@@ -6,5 +6,5 @@ export type SeachResult = {
 
 export type SearchSuggestionResult = {
   addresses: string[]
-  toursOrGuiders: SeachResult[]
+  toursOrGuiders: SearchResult[]
 }

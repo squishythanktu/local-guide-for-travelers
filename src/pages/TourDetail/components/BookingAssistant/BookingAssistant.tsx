@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { Controller, useForm } from 'react-hook-form'
 import scheduleApi from 'src/apis/schedule.api'
 import { bookingSchema } from 'src/utils/rules'
-import { BookingAssistantFormData } from '../../layouts/TourDetailLayout/TourDetailLayout'
+import { BookingAssistantFormData } from '../../TourDetail'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 
 dayjs.extend(isSameOrBefore)

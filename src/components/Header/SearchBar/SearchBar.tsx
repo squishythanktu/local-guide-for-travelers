@@ -18,7 +18,7 @@ import { SearchType } from 'src/enums/search-type.enum'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import useSearchToursGuides from 'src/hooks/useSearchToursGuides'
 import theme from 'src/theme'
-import { SeachResult, SearchSuggestionResult } from 'src/types/search-suggestion-result.type'
+import { SearchResult, SearchSuggestionResult } from 'src/types/search-suggestion-result.type'
 
 interface SearchBarProps {
   className: string
@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
     searchValue: queryConfig.searchValue || ''
   })
   const [isTypingMode, setIsTypingMode] = useState<boolean>(false)
-  const [searchSuggestionResults, setSearchSuggestionResults] = useState<SeachResult[]>([])
+  const [searchSuggestionResults, setSearchSuggestionResults] = useState<SearchResult[]>([])
   const isMdBreakpoint = useMediaQuery(theme.breakpoints.up('md'))
   const { data: searchSuggestionData } = useQuery({
     queryKey: ['searchSuggestion', search.searchType, search.searchValue],

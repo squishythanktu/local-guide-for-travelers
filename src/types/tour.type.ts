@@ -33,7 +33,7 @@ export type Tour = {
   locations: Location[]
 }
 
-export interface TourListConfig {
+export interface TourGuideParams {
   page?: number | string
   limit?: number | string
   sortBy?: 'rating' | 'price'
@@ -48,7 +48,3 @@ export interface TourListConfig {
 }
 
 export type TourSuccessResponse = SuccessResponse<Tour>
-
-export type StartTimeParams = {
-  localDate: string
-}

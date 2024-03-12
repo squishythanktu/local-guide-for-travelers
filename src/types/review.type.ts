@@ -8,3 +8,7 @@ export type Review = {
   traveler: User
   childReview: Review[]
 }
+export interface ReviewParams {
+  ratings?: string
+  sortBy?: string
+}

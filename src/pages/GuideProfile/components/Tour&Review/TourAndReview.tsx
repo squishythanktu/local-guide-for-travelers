@@ -9,8 +9,8 @@ import { useQuery } from '@tanstack/react-query'
 import { SyntheticEvent, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import reviewApi from 'src/apis/review.api'
+import ReviewSortFilter from 'src/components/ReviewSortFilter/ReviewSortFilter'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
-import StarRatingFilter from 'src/components/StarRatingFilter/StarRatingFilter'
 import TourManagement from 'src/pages/Account/TourManagement'
 
 interface TabPanelProps {
@@ -114,7 +114,7 @@ export default function TourAndReview({ guideId }: Props) {
           {reviewsData?.data.data && (
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid item sm={2} md={3}>
-                <StarRatingFilter />
+                <ReviewSortFilter onChange={() => {}} />
               </Grid>
               <Grid item sm={6} md={9}>
                 {/* TODO: Handle API for comments

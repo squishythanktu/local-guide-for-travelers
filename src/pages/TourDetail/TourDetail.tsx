@@ -1,8 +1,8 @@
 import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -18,17 +18,18 @@ import NotFound from 'src/pages/NotFound/NotFound'
 import { Tour } from 'src/types/tour.type'
 import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
-import StarRatingFilter from '../../../../components/StarRatingFilter/StarRatingFilter'
-import AboutActivity from '../../components/AboutActivity'
-import BookingAssistant from '../../components/BookingAssistant'
-import BookingConfirmation from '../../components/BookingConfirmation'
-import MainStop from '../../components/MainStop/MainStop'
-import SimpleSlider from '../../components/SimpleSlider'
-import TourHeader from '../../components/TourHeader'
+import ReviewSortFilter from '../../components/ReviewSortFilter/ReviewSortFilter'
+import AboutActivity from './components/AboutActivity'
+import BookingAssistant from './components/BookingAssistant'
+import BookingConfirmation from './components/BookingConfirmation'
+import MainStop from './components/MainStop/MainStop'
+import SimpleSlider from './components/SimpleSlider'
+import TourHeader from './components/TourHeader'
+import { ReviewParams } from 'src/types/review.type'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
-export default function TourDetail() {
+const TourDetail: React.FC = () => {
   const [tour, setTour] = useState<Tour>({
     id: 0,
     name: '',
@@ -54,6 +55,7 @@ export default function TourDetail() {
     startDate: new Date(),
     numberTravelers: 0
   })
+  const [reviewParams, setReviewParams] = useState<ReviewParams>({})
   const [editReviewId, setEditReviewId] = useState<number | null>(null)
   const { id } = useParams()
   const {
@@ -66,16 +68,17 @@ export default function TourDetail() {
     enabled: id !== undefined
   })
   const { data: reviewsData, refetch: refechReviewsData } = useQuery({
-    queryKey: [`Get reviews of tour by ${id}`, id],
-    queryFn: () => reviewApi.getReviewsOfTour(Number(id)),
+    queryKey: [`Get reviews of tour by ${id}`, id, reviewParams],
+    queryFn: () => reviewApi.searchReviewsOfTour(Number(id), reviewParams),
+    placeholderData: keepPreviousData,
     enabled: id !== undefined
   })
   const { data: startTimeData } = useQuery({
     queryKey: [`Start time of id ${id} in ${formData.startDate}`, formData],
-    queryFn: () => tourApi.getStartTime(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
+    queryFn: () => tourApi.getStartTimeOfTour(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
     enabled: tourData?.data.data.unit === Unit.HOURS && tourData?.data.data.duration < 5 && checkAvailability
   })
-  const totalReviews = reviewsData?.data.data.length as number
+  const totalReviews = useMemo(() => reviewsData?.data.data.length || 0, [reviewsData?.data.data])
 
   useEffect(() => {
     window.scrollTo({
@@ -99,56 +102,77 @@ export default function TourDetail() {
     mutationFn: (id: number) => reviewApi.deleteReviewsOfTourById(id)
   })
 
-  const handleCreateReviewOfTour = (data: CommentFormData) => {
-    addReviewOfTourMutation.mutate(data, {
-      onSuccess: () => {
-        refechReviewsData()
-        toast.success('Add review of tour successfully.')
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      }
-    })
-  }
-
-  const handleUpdateReviewOfTour = (data: CommentFormData) => {
-    if (editReviewId) {
-      updateReviewOfTourMutation.mutate(data, {
+  const handleCreateReviewOfTour = useCallback(
+    (data: CommentFormData) => {
+      addReviewOfTourMutation.mutate(data, {
         onSuccess: () => {
-          setEditReviewId(null)
           refechReviewsData()
-          toast.success('Update review of tour successfully.')
+          toast.success('Add review of tour successfully.')
         },
         onError: (error) => {
           toast.error(error.message)
         }
       })
-    }
-  }
+    },
+    [addReviewOfTourMutation, refechReviewsData]
+  )
 
-  const handleDeleteReviewOfTour = (id: number) => {
-    deleteReviewOfTourMutation.mutate(id, {
-      onSuccess: () => {
-        refechReviewsData()
-        toast.success('Delete review of tour successfully.')
-      },
-      onError: (error) => {
-        toast.error(error.message)
+  const handleUpdateReviewOfTour = useCallback(
+    (data: CommentFormData) => {
+      if (editReviewId) {
+        updateReviewOfTourMutation.mutate(data, {
+          onSuccess: () => {
+            setEditReviewId(null)
+            refechReviewsData()
+            toast.success('Update review of tour successfully.')
+          },
+          onError: (error) => {
+            toast.error(error.message)
+          }
+        })
       }
-    })
-  }
+    },
+    [editReviewId, refechReviewsData, updateReviewOfTourMutation]
+  )
 
-  const handleSubmitBookingAssistant = (body: BookingAssistantFormData) => {
+  const handleDeleteReviewOfTour = useCallback(
+    (id: number) => {
+      deleteReviewOfTourMutation.mutate(id, {
+        onSuccess: () => {
+          refechReviewsData()
+          toast.success('Delete review of tour successfully.')
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        }
+      })
+    },
+    [deleteReviewOfTourMutation, refechReviewsData]
+  )
+
+  const handleSubmitBookingAssistant = useCallback((body: BookingAssistantFormData) => {
     setFormData(body)
     setCheckAvailability(true)
-  }
+  }, [])
 
-  const getRatingReviewsAverage = () =>
-    Number(
-      ((reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews).toFixed(2)
-    )
+  const getRatingReviewsAverage = useCallback(
+    () =>
+      Number(
+        ((reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews).toFixed(
+          2
+        )
+      ),
+    [reviewsData?.data.data, totalReviews]
+  )
 
-  const getReviewById = () => reviewsData?.data.data.filter((review) => review.id === editReviewId)[0]
+  const getReviewById = useCallback(
+    () => reviewsData?.data.data.filter((review) => review.id === editReviewId)[0],
+    [editReviewId, reviewsData?.data.data]
+  )
+
+  const handleSortFilterChange = useCallback((x: ReviewParams) => {
+    setReviewParams(x)
+  }, [])
 
   if (isLoadingTour) {
     return <Loading />
@@ -217,10 +241,10 @@ export default function TourDetail() {
               <Grid item xs={4} sm={8} md={12}>
                 <OverallRating totalReviews={totalReviews} ratingReviewsAverage={getRatingReviewsAverage()} />
               </Grid>
-              <Grid item xs={0} sm={2} md={3}>
-                <StarRatingFilter />
+              <Grid item xs={4} sm={8} md={3}>
+                <ReviewSortFilter onChange={handleSortFilterChange} />
               </Grid>
-              <Grid item xs={4} sm={6} md={9}>
+              <Grid item xs={4} sm={8} md={9}>
                 <CommentBox
                   review={getReviewById()}
                   onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
@@ -240,7 +264,7 @@ export default function TourDetail() {
           )}
           {reviewsData?.data.data && totalReviews === 0 && (
             <>
-              <span className='my-4'>This tour hasn't had any reviews yet.</span>
+              <span className='my-4'>This tour has not had any reviews yet.</span>
               <CommentBox
                 review={getReviewById()}
                 onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
@@ -261,3 +285,5 @@ export default function TourDetail() {
     </div>
   )
 }
+
+export default TourDetail

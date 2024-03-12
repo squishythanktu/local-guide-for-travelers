@@ -6,12 +6,12 @@ import HomeLayout from './layouts/HomeLayout'
 import MainLayout from './layouts/MainLayout'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import Loading from './pages/Loading'
-import TourDetailLayout from './pages/TourDetail/layouts/TourDetailLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const Profile = lazy(() => import('./pages/Account/Profile'))
+const TourDetail = lazy(() => import('./pages/TourDetail/TourDetail'))
 const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const SearchTours = lazy(() => import('./pages/SearchTours'))
@@ -163,7 +163,7 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <Suspense fallback={<Loading />}>
-            <TourDetailLayout />
+            <TourDetail />
           </Suspense>
         </MainLayout>
       )
