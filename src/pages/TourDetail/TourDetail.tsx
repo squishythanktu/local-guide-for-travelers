@@ -15,17 +15,17 @@ import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import { Unit } from 'src/enums/unit.enum'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound/NotFound'
+import { ReviewParams } from 'src/types/review.type'
 import { Tour } from 'src/types/tour.type'
 import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
+import MainStop from '../../components/MainStop/MainStop'
 import ReviewSortFilter from '../../components/ReviewSortFilter/ReviewSortFilter'
 import AboutActivity from './components/AboutActivity'
 import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
-import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
-import { ReviewParams } from 'src/types/review.type'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
@@ -189,14 +189,7 @@ const TourDetail: React.FC = () => {
   return (
     <div className='px-4 py-2 text-sm md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>
       <div className='activity__container flex flex-col'>
-        <TourHeader
-          categories={tour.categories}
-          title={tour.name}
-          rating={Number(tour.overallRating.toFixed(2))}
-          totalReviews={totalReviews}
-          provider={tour.guide?.fullName || 'N/A'}
-          address={(tour.locations[0]?.address as string) || 'N/A'}
-        />
+        <TourHeader totalReviews={totalReviews} tour={tour} />
         <div className='activity__photo-gallery pb-2 pt-2'>
           <SimpleSlider itemsData={tour.images} />
         </div>

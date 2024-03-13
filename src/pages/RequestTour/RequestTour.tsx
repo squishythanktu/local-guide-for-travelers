@@ -16,6 +16,7 @@ import requestApi from 'src/apis/request.api'
 import tourApi from 'src/apis/tour.api'
 import ControlledTextField from 'src/components/ControlledTextField'
 import TourCard from 'src/components/TourCard'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { Transportation } from 'src/enums/transportation.enum'
 import { Unit } from 'src/enums/unit.enum'
@@ -76,7 +77,7 @@ const RequestTour: React.FC = () => {
       createRequestTourMutation.mutate(formattedData, {
         onSuccess: () => {
           toast.success('Your request has been sent.')
-          navigate('/')
+          navigate(path.request)
         },
         onError: (error) => {
           toast.error(error.message)

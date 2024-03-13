@@ -2,6 +2,7 @@ import { Box, Button, Rating } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import guideApi from 'src/apis/guide.api'
+import path from 'src/constants/path.constant'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
 
@@ -51,7 +52,7 @@ export default function GuideProfile() {
                   </span>
                 </div>
                 <Button
-                  onClick={() => navigate('/request-tour', { state: { guideId: id } })}
+                  onClick={() => navigate(path.requestTour, { state: { guideId: id } })}
                   variant='contained'
                   className=''
                 >
@@ -83,9 +84,6 @@ export default function GuideProfile() {
                   <div className='text-sm font-bold'>
                     Address: <span className='text-sm'>{guideProfileData?.data.data.address || 'N/A'}</span>
                   </div>
-                  {/* <div className='text-sm font-bold'>
-            Biography: <span className='text-sm'>{guideProfileData?.data.data.biography || 'N/A'}</span>
-          </div> */}
                 </Box>
               </div>
               <div className='skills-credentials-info flex flex-col gap-2 p-4'>
