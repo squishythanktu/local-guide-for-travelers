@@ -79,12 +79,13 @@ const ScheduleManagement: React.FC = () => {
                 }
 
               if (dateLists.busyDayByBooking.some((item) => isSameDate(new DateObject(item), date)))
-                props.style = {
+                (props.style = {
                   ...props.style,
                   color: '#ab6800',
                   backgroundColor: '#fff9eb',
                   fontWeight: 'bold'
-                }
+                }),
+                  (props.disabled = false)
 
               if (dateLists.busyDayOfGuider.some((item) => isSameDate(new DateObject(item), date)))
                 props.style = {
