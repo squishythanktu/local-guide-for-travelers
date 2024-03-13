@@ -4,6 +4,7 @@ import path from './constants/path.constant'
 import { AppContext } from './contexts/app.context'
 import HomeLayout from './layouts/HomeLayout'
 import MainLayout from './layouts/MainLayout'
+import RequestManagement from './pages/Account/RequestManagement/RequestManagement'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import Loading from './pages/Loading'
 
@@ -105,12 +106,19 @@ export default function useRouteElements() {
                 </Suspense>
               )
             },
-
             {
               path: path.schedule,
               element: (
                 <Suspense fallback={<Loading />}>
                   <ScheduleManagement />
+                </Suspense>
+              )
+            },
+            {
+              path: path.request,
+              element: (
+                <Suspense fallback={<Loading />}>
+                  <RequestManagement />
                 </Suspense>
               )
             }

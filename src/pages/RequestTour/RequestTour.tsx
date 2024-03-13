@@ -12,8 +12,8 @@ import Slider from 'react-slick'
 import { toast } from 'react-toastify'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
+import requestApi from 'src/apis/request.api'
 import tourApi from 'src/apis/tour.api'
-import travelerRequestApi from 'src/apis/travelerRequest.api'
 import ControlledTextField from 'src/components/ControlledTextField'
 import TourCard from 'src/components/TourCard'
 import { AppContext } from 'src/contexts/app.context'
@@ -56,7 +56,7 @@ const RequestTour: React.FC = () => {
   })
 
   const createRequestTourMutation = useMutation({
-    mutationFn: (body: RequestTourFormData) => travelerRequestApi.createRequest(body)
+    mutationFn: (body: RequestTourFormData) => requestApi.createRequest(body)
   })
 
   if (!location.state || !location.state.guideId) {

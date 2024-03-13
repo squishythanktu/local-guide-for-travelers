@@ -1,4 +1,6 @@
 import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import PersonIcon from '@mui/icons-material/Person'
 import { Box, Typography } from '@mui/material'
@@ -11,7 +13,6 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
 export default function AccountSideNav() {
   const { profile } = useContext(AppContext)
@@ -71,6 +72,15 @@ export default function AccountSideNav() {
               </ListItemIcon>
               <Typography variant='inherit' noWrap>
                 Schedule Management
+              </Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem component={Link} to={path.request}>
+              <ListItemIcon>
+                <ListAltOutlinedIcon fontSize='small' />
+              </ListItemIcon>
+              <Typography variant='inherit' noWrap>
+                Request Management
               </Typography>
             </MenuItem>
           </MenuList>

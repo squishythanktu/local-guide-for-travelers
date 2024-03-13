@@ -11,12 +11,12 @@ import { useContext, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
+import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import { AppContext } from 'src/contexts/app.context'
 import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
 import TourForm from '../components/TourForm'
 import UpdateForm from '../components/TourForm/UpdateForm'
-import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -143,7 +143,7 @@ export default function TourManagement({ guideId }: Props) {
         accessorKey: 'pricePerTraveler',
         header: 'Price',
         size: 100,
-        Cell: ({ cell }) => <span>${cell.getValue<number>().toLocaleString()}</span>
+        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       }
     ],
     []
