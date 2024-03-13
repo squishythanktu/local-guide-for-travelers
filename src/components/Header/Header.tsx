@@ -83,7 +83,11 @@ export default function Header({
           >
             <NavLink to='' icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
             <NavLink to={path.cart} icon={<ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />} text='Cart' />
-            <NavLink to='' icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />} text='Bookings' />
+            <NavLink
+              to={path.bookings}
+              icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
+              text='Bookings'
+            />
             <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
           <Box className='drawer col-span-1 col-start-12 flex items-center justify-end lg:hidden'>

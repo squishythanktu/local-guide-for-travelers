@@ -5,7 +5,7 @@ import CardActions from '@mui/material/CardActions'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import AlertTitle from '@mui/material/AlertTitle'
-import { Booking } from 'src/types/cart.type'
+import { Booking } from 'src/types/booking.type'
 import { useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 
@@ -36,7 +36,7 @@ export default function CartTotal({ bookings }: CartTotalProps) {
           </>
         }
       />
-      <CardActions className='relative'>
+      <CardActions className='relative mt-7'>
         <Button
           className='mr-2 w-[100%] rounded-full pr-7 font-semibold md:inline-block'
           variant='contained'

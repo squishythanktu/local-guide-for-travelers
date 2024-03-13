@@ -1,9 +1,9 @@
-import { Divider, Grid } from '@mui/material'
+import Divider from '@mui/material/Divider'
+import Grid from '@mui/material/Grid'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
-import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { SyntheticEvent, useState } from 'react'
@@ -11,47 +11,15 @@ import SwipeableViews from 'react-swipeable-views'
 import reviewApi from 'src/apis/review.api'
 import ReviewSortFilter from 'src/components/ReviewSortFilter/ReviewSortFilter'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
+import TabPanel from 'src/components/TabPanel/TabPanel'
 import TourManagement from 'src/pages/Account/TourManagement'
+import { a11yProps } from 'src/utils/tab-panel'
 
-interface TabPanelProps {
-  children?: React.ReactNode
-  dir?: string
-  index: number
-  value: number
-}
-
-const TabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ pt: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  )
-}
-
-const a11yProps = (index: number) => {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`
-  }
-}
-
-interface Props {
+interface TourAndReviewProps {
   guideId?: string
 }
 
-export default function TourAndReview({ guideId }: Props) {
+export default function TourAndReview({ guideId }: TourAndReviewProps) {
   const theme = useTheme()
   const [value, setValue] = useState(0)
 
@@ -124,7 +92,7 @@ export default function TourAndReview({ guideId }: Props) {
           )}
           {!reviewsData?.data.data && (
             <>
-              <span>This tour hasn't had any reviews yet.</span>
+              <span>This tour has not had any reviews yet.</span>
             </>
           )}
         </TabPanel>

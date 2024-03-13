@@ -22,7 +22,7 @@ import ReviewSortFilter from '../../components/ReviewSortFilter/ReviewSortFilter
 import AboutActivity from './components/AboutActivity'
 import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
-import MainStop from './components/MainStop/MainStop'
+import MainStop from '../../components/MainStop/MainStop'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
 import { ReviewParams } from 'src/types/review.type'
@@ -153,6 +153,10 @@ const TourDetail: React.FC = () => {
   const handleSubmitBookingAssistant = useCallback((body: BookingAssistantFormData) => {
     setFormData(body)
     setCheckAvailability(true)
+    window.scrollTo({
+      top: 1250,
+      behavior: 'smooth'
+    })
   }, [])
 
   const getRatingReviewsAverage = useCallback(
@@ -226,7 +230,7 @@ const TourDetail: React.FC = () => {
         )}
         <div className='activity__itinerary mt-10 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-10'>
           <div className='main-stop col-span-1'>
-            <MainStop locations={tour.locations} />
+            <MainStop locations={tour.locations} orientation='vertical' isShowAddress={false} />
           </div>
           <div className='map col-span-2'>
             <div className='text-[18px] font-semibold md:text-2xl'>Itinerary</div>

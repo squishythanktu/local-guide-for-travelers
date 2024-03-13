@@ -4,17 +4,18 @@ import Card from '@mui/material/Card'
 import { useMutation } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
 import CalendarCheckIcon from 'src/assets/svg/calendar-check.svg'
 import ClockDurationIcon from 'src/assets/svg/clock-duration.svg'
 import GuideIcon from 'src/assets/svg/guide.svg'
 import LocationIcon from 'src/assets/svg/location.svg'
+import path from 'src/constants/path.constant'
 import { Unit } from 'src/enums/unit.enum'
-import { Booking } from 'src/types/cart.type'
+import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
-import { formatTime } from 'src/utils/date-time'
+import { formatDate, formatTime } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
 
 interface Props {
@@ -71,7 +72,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
       addBookingMutation.mutate(bookingFormData, {
         onSuccess: () => {
           toast.success('Add booking in cart successfully.')
-          navigate('/cart')
+          navigate(path.cart)
         },
         onError: (error) => {
           toast.error(error.message)
@@ -84,21 +85,23 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
     <Card className='rounded-xl border-2 border-blue-500'>
       <div className='flex flex-col gap-3 p-4'>
         <div className='booking-info flex flex-col gap-2'>
-          <div className='title font-medium'>Warner Bros. Studio Tour in English</div>
+          <div className='title font-medium'>{tour.name}</div>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center text-base font-normal'>
               <ClockDurationIcon className='mb-[2px] mr-2 h-6 w-6' />
-              <div className='text-sm font-medium text-gray-500'>3 hours</div>
+              <div className='text-sm font-medium text-gray-500'>
+                {tour.duration} {tour.unit}
+              </div>
             </div>
             <div className='flex items-center font-normal'>
               <GuideIcon className='mb-[2px] mr-2 h-6 w-6' />
-              <div className='text-sm font-medium text-gray-500'>Guide: Warner Bros</div>
+              <div className='text-sm font-medium text-gray-500'>Guide: {tour.guide['fullName'] || 'N/A'}</div>
             </div>
             <div className='flex items-center font-normal'>
               <LocationIcon className='mb-[2px] mr-2 h-6 w-6' />
-              <div className='text-sm font-medium  underline'>
-                <Link to='/'>Meet at 3400 Warner Blvd, Burbank, CA 91505, USA</Link>
-              </div>
+              <p className='text-sm font-medium  underline'>
+                Meet at {tour.locations[0].name} ({tour.locations[0].address})
+              </p>
             </div>
           </div>
         </div>
@@ -107,7 +110,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           <>
             <div className='starting-times flex flex-col gap-2'>
               <div className='font-medium'>
-                Select a starting time of {dayjs(formData.startDate).format('MM/DD/YYYY')}
+                Select a starting time of {formatDate(formData.startDate, 'MM/DD/YYYY')}
               </div>
               <div className='flex flex-wrap gap-2'>
                 {timeOptions.map((option) => (

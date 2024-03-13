@@ -89,7 +89,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Cart' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem disablePadding component={Link} to={path.bookings}>
           <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlinedIcon />

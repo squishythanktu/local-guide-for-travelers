@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import MainStop from 'src/pages/TourDetail/components/MainStop/MainStop'
+import MainStop from 'src/components/MainStop/MainStop'
 import { BookingInInvoice } from 'src/types/invoice.type'
 import Grid from '@mui/material/Grid'
 
@@ -31,7 +31,7 @@ export default function ToursInfo({ booking }: Props) {
           </div>
         </Grid>
       </Grid>
-      <MainStop locations={booking.tour.locations} />
+      <MainStop locations={booking.tour.locations} orientation='vertical' isShowAddress={false} />
     </div>
   )
 }

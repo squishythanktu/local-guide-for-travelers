@@ -1,3 +1,4 @@
+import { Guide } from './guide.type'
 import { Tour } from './tour.type'
 
 export type BookingsInCart = {
@@ -12,4 +13,5 @@ export type Booking = {
   price: number
   status: string
   tour: Tour
+  guide?: Guide
 }

@@ -13,7 +13,7 @@ import { Controller, useForm } from 'react-hook-form'
 import tourApi from 'src/apis/tour.api'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
-import { Booking } from 'src/types/cart.type'
+import { Booking } from 'src/types/booking.type'
 import { formatDate, formatTime } from 'src/utils/date-time'
 import { BookingSchema, bookingSchema } from 'src/utils/rules'
 

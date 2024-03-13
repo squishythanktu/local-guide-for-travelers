@@ -1,18 +1,25 @@
-import Box from '@mui/material/Box'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Stepper from '@mui/material/Stepper'
 import { Location } from 'src/types/location.type'
 
-interface Props {
+interface MainStopProps {
   locations: Location[]
+  orientation?: 'horizontal' | 'vertical'
+  isShowAddress: boolean
+  titleClassName?: string
 }
 
-export default function MainStop({ locations }: Props) {
+const MainStop: React.FC<MainStopProps> = ({
+  locations,
+  orientation,
+  isShowAddress,
+  titleClassName = 'text-[18px] font-semibold md:text-2xl'
+}: MainStopProps) => {
   return (
-    <Box sx={{ maxWidth: 400 }}>
-      <div className='text-[18px] font-semibold md:text-2xl'>Main stop</div>
-      <Stepper orientation='vertical' activeStep={-1}>
+    <>
+      <div className={titleClassName}>Main stops</div>
+      <Stepper orientation={orientation} activeStep={-1}>
         {locations.map((location, index) => (
           <Step key={location.name}>
             <StepLabel
@@ -22,11 +29,13 @@ export default function MainStop({ locations }: Props) {
             >
               {index === 0 && <div className='font-bold'>Starting location:</div>}
               {index === locations.length - 1 && <div className='font-bold'>Finish at:</div>}
-              {location.name}
+              {location.name} {isShowAddress && `(${location.address})`}
             </StepLabel>
           </Step>
         ))}
       </Stepper>
-    </Box>
+    </>
   )
 }
+
+export default MainStop
