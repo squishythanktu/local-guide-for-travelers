@@ -7,8 +7,8 @@ import Button from '@mui/material/Button'
 import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_Cell, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
-import { useContext, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
@@ -30,11 +30,18 @@ interface Props {
 export default function TourManagement({ guideId }: Props) {
   const { profile } = useContext(AppContext)
   const isOwner = guideId ? false : true
+  const location = useLocation()
+
   const [createMode, setCreateMode] = useState<boolean>(false)
   const [updateMode, setUpdateMode] = useState<boolean>(false)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string>('')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (location.state?.requestId) setCreateMode(true)
+  }, [location.state?.requestId])
+
   const {
     data: guideToursData,
     isLoading,
@@ -46,6 +53,9 @@ export default function TourManagement({ guideId }: Props) {
   })
   const createTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createTour(body)
+  })
+  const createRequestTourMutation = useMutation({
+    mutationFn: (body: TourFormData) => tourApi.createRequestTour(location.state.requestId, body)
   })
   const deleteTourMutation = useMutation({
     mutationFn: (selectedId: string) => tourApi.deleteTour(selectedId)
@@ -59,7 +69,20 @@ export default function TourManagement({ guideId }: Props) {
         id: profile!.id
       }
     }
-    createTourMutation.mutate(formattedTourForm, {
+    if (!location.state?.requestId) {
+      createTourMutation.mutate(formattedTourForm, {
+        onSuccess: () => {
+          setCreateMode(false)
+          refetch()
+          toast.success('Create the tour successfully.')
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        }
+      })
+      return
+    }
+    createRequestTourMutation.mutate(formattedTourForm, {
       onSuccess: () => {
         setCreateMode(false)
         refetch()

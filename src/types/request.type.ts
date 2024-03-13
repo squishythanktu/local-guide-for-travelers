@@ -14,4 +14,5 @@ export type Request = {
   guide: Guide
   traveler: User
   status: StatusRequestForGuide
+  tourId: number
 }

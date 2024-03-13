@@ -80,7 +80,7 @@ export const requestTourSchema = yup.object({
   maxPrice: yup.number().positive().required().typeError('Max price must be positive a number'),
   destination: yup.string().required(),
   message: yup.string()
- })
+})
 
 export const commentSchema = yup.object({
   comment: yup.string().trim().required(),
@@ -98,5 +98,5 @@ export type SearchSchema = yup.InferType<typeof searchSchema>
 export type BookingSchema = yup.InferType<typeof bookingSchema>
 
 export type RequestTourSchema = yup.InferType<typeof requestTourSchema>
-                                   
+
 export type CommentSchema = yup.InferType<typeof commentSchema>

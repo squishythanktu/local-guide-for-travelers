@@ -33,6 +33,9 @@ const tourApi = {
   },
   getStartTimeOfTour(tourId: number, params: StartTimeParams) {
     return http.get<SuccessResponse<string[]>>(`${URL_TOURS}/${tourId}/tour-start-time-available`, { params })
+  },
+  createRequestTour(requestId: number, body: TourFormData) {
+    return http.post<SuccessResponse<Tour>>(`${URL_TOURS}/${requestId}`, body)
   }
 }
 

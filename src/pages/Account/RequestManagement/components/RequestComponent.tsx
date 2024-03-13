@@ -13,6 +13,7 @@ interface Props {
 }
 const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props) => {
   const navigate = useNavigate()
+
   const updateStatusRequestMutation = useMutation({
     mutationFn: (body: string) => requestApi.updateRequestStatus(request.id, { status: body })
   })
@@ -26,7 +27,10 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
   }
 
   return (
-    <Box className='min-h-[226px] rounded-md border py-4 text-black shadow-md'>
+    <Box
+      className='min-h-[226px] rounded-md border py-4 text-black shadow-md'
+      onClick={() => navigate(`/${path.tourDetail.replace(':id', request.tourId.toString())}`)}
+    >
       <div className='request__header flex items-center justify-between px-4'>
         <div className='flex gap-3'>
           <span className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xl font-bold uppercase text-slate-800'>
@@ -41,7 +45,10 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
           {isGuide && request.status === StatusRequestForGuide.PENDING.toUpperCase() && (
             <>
               <Button
-                onClick={handleUpdateStatusRequest(StatusRequestForGuide.ACCEPTED.toLocaleUpperCase())}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  handleUpdateStatusRequest(StatusRequestForGuide.ACCEPTED.toLocaleUpperCase())()
+                }}
                 variant='outlined'
                 className='w-fit'
                 color='success'
@@ -50,7 +57,10 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
                 Accept
               </Button>
               <Button
-                onClick={handleUpdateStatusRequest(StatusRequestForGuide.DENIED.toLocaleUpperCase())}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  handleUpdateStatusRequest(StatusRequestForGuide.DENIED.toLocaleUpperCase())()
+                }}
                 variant='outlined'
                 className='w-fit'
                 color='error'
@@ -66,7 +76,9 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
               className='w-fit'
               color='primary'
               size='small'
-              onClick={() => navigate(path.tours)}
+              onClick={(event) => {
+                event.stopPropagation(), navigate(path.tours, { state: { requestId: request.id } })
+              }}
             >
               Add tour
             </Button>
@@ -74,7 +86,10 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
           {!isGuide && request.status === StatusRequestForGuide.PENDING.toUpperCase() && (
             <Button
               variant='outlined'
-              onClick={handleUpdateStatusRequest(StatusRequestForTraveler.DELETED.toLocaleUpperCase())}
+              onClick={(event) => {
+                event.stopPropagation()
+                handleUpdateStatusRequest(StatusRequestForTraveler.DELETED.toLocaleUpperCase())()
+              }}
               className='w-fit'
               color='error'
               size='small'
