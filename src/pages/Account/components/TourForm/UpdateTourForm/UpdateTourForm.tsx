@@ -2,19 +2,25 @@ import { QueryObserverResult, useMutation, useQuery } from '@tanstack/react-quer
 import tourApi from 'src/apis/tour.api'
 import TourForm, { TourFormData } from '../TourForm'
 import { toast } from 'react-toastify'
+import Loading from 'src/pages/Loading'
 
 export type TourUpdateFormData = TourFormData & { id: string }
 
-interface Props {
+interface UpdateTourFormProps {
   onCancel: () => void
   tourId: string
   setUpdateMode: React.Dispatch<React.SetStateAction<boolean>>
   refetch: () => Promise<QueryObserverResult>
 }
 
-export default function UpdateForm({ onCancel, tourId, setUpdateMode, refetch }: Props) {
+const UpdateTourForm: React.FC<UpdateTourFormProps> = ({
+  onCancel,
+  tourId,
+  setUpdateMode,
+  refetch
+}: UpdateTourFormProps) => {
   const { data: tourQuery } = useQuery({
-    queryKey: [`Get tour by ${tourId}`],
+    queryKey: [`Get tour by id ${tourId}`],
     queryFn: () => tourApi.getTourById(tourId as string)
   })
 
@@ -26,6 +32,7 @@ export default function UpdateForm({ onCancel, tourId, setUpdateMode, refetch }:
 
   const handleUpdateTourForm = (body: TourFormData) => {
     const formattedBody = { id: tourId, ...body }
+
     updateTourMutation.mutate(formattedBody, {
       onSuccess: () => {
         setUpdateMode(false)
@@ -39,11 +46,19 @@ export default function UpdateForm({ onCancel, tourId, setUpdateMode, refetch }:
   }
 
   return (
-    <TourForm
-      onSubmit={handleUpdateTourForm}
-      onCancel={onCancel}
-      defaultValue={tourQuery?.data.data}
-      isMutation={updateTourMutation.isPending}
-    />
+    <>
+      {tourQuery?.data.data ? (
+        <TourForm
+          onSubmit={handleUpdateTourForm}
+          onCancel={onCancel}
+          defaultValue={tourQuery.data.data}
+          isMutation={updateTourMutation.isPending}
+        />
+      ) : (
+        <Loading />
+      )}
+    </>
   )
 }
+
+export default UpdateTourForm

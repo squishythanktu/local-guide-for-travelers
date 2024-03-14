@@ -6,6 +6,7 @@ import CheckIcon from 'src/assets/svg/check-green.svg'
 import NotFound from '../NotFound/NotFound'
 import ContentInvoice from './components/ContentInvoice'
 import PassengerInfo from './components/PassengerInfo'
+import Loading from '../Loading'
 
 export default function BookingSuccess() {
   const { id: invoiceId } = useParams()
@@ -16,6 +17,7 @@ export default function BookingSuccess() {
 
   return (
     <>
+      {isPending && <Loading />}
       {!isPending && invoiceData?.data.data && (
         <div className='container my-6 max-w-[800px]'>
           <Box className='my-3 rounded-lg' sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}>

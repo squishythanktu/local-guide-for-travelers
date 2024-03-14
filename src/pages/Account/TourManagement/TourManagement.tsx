@@ -11,12 +11,13 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
-import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import { AppContext } from 'src/contexts/app.context'
 import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
 import TourForm from '../components/TourForm'
-import UpdateForm from '../components/TourForm/UpdateForm'
+import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
+import IconButton from '@mui/material/IconButton'
+import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -29,13 +30,12 @@ interface Props {
 
 export default function TourManagement({ guideId }: Props) {
   const { profile } = useContext(AppContext)
-  const isOwner = guideId ? false : true
-  const location = useLocation()
-
   const [createMode, setCreateMode] = useState<boolean>(false)
   const [updateMode, setUpdateMode] = useState<boolean>(false)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const [selectedId, setSelectedId] = useState<string>('')
+  const isOwner = !guideId
+  const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -51,12 +51,15 @@ export default function TourManagement({ guideId }: Props) {
     queryFn: () => tourApi.getToursOfGuide(guideId ? guideId : profile?.id ? profile.id : ''),
     staleTime: 6 * 1000
   })
+
   const createTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createTour(body)
   })
+
   const createRequestTourMutation = useMutation({
     mutationFn: (body: TourFormData) => tourApi.createRequestTour(location.state.requestId, body)
   })
+
   const deleteTourMutation = useMutation({
     mutationFn: (selectedId: string) => tourApi.deleteTour(selectedId)
   })
@@ -69,6 +72,7 @@ export default function TourManagement({ guideId }: Props) {
         id: profile!.id
       }
     }
+
     if (!location.state?.requestId) {
       createTourMutation.mutate(formattedTourForm, {
         onSuccess: () => {
@@ -82,6 +86,7 @@ export default function TourManagement({ guideId }: Props) {
       })
       return
     }
+
     createRequestTourMutation.mutate(formattedTourForm, {
       onSuccess: () => {
         setCreateMode(false)
@@ -105,6 +110,15 @@ export default function TourManagement({ guideId }: Props) {
   const handleUpdateTourForm = (id: string) => {
     setSelectedId(id)
     setUpdateMode(true)
+  }
+
+  const handleCancelUpdateTourForm = () => {
+    setUpdateMode(false)
+    setSelectedId('')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 
   const handleDelete = (id: string) => {
@@ -143,11 +157,6 @@ export default function TourManagement({ guideId }: Props) {
         size: 200
       },
       {
-        accessorKey: 'address',
-        header: 'Address',
-        size: 200
-      },
-      {
         accessorKey: 'transportation',
         header: 'Transportation',
         size: 50
@@ -174,20 +183,30 @@ export default function TourManagement({ guideId }: Props) {
 
   const actionColumn = {
     accessorKey: 'action',
-    header: 'Action',
+    header: 'Actions',
     size: 100,
     Cell: ({ cell }: { cell: MRT_Cell<Tour> }) => (
       <>
-        <ModeEditOutlineOutlinedIcon
+        <IconButton
+          color='primary'
+          aria-label='update tour'
+          className='cursor-pointer'
           onClick={(event) => {
             event.stopPropagation(), handleUpdateTourForm(cell.row.original.id.toString())
           }}
-        />
-        <DeleteOutlinedIcon
+        >
+          <ModeEditOutlineOutlinedIcon />
+        </IconButton>
+        <IconButton
+          color='error'
+          aria-label='delete tour'
+          className='cursor-pointer'
           onClick={(event) => {
             event.stopPropagation(), handleDelete(cell.row.original.id.toString())
           }}
-        />
+        >
+          <DeleteOutlinedIcon />
+        </IconButton>
       </>
     )
   }
@@ -273,11 +292,9 @@ export default function TourManagement({ guideId }: Props) {
           <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
             Update Tour
           </h2>
-          <UpdateForm
+          <UpdateTourForm
             tourId={selectedId}
-            onCancel={() => {
-              setUpdateMode(false), setSelectedId('')
-            }}
+            onCancel={handleCancelUpdateTourForm}
             setUpdateMode={setUpdateMode}
             refetch={refetch}
           />

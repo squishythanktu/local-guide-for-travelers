@@ -1,5 +1,5 @@
 import { QueryConfig } from 'src/hooks/useQueryConfig'
-import { TourUpdateFormData } from 'src/pages/Account/components/TourForm/UpdateForm/UpdateForm'
+import { TourUpdateFormData } from 'src/pages/Account/components/TourForm/UpdateTourForm/UpdateTourForm'
 import { StartTimeParams } from 'src/types/start-time-params.type'
 import { SuccessResponse, SuccessResponseWithPagination } from 'src/types/utils.type'
 import http from 'src/utils/http'

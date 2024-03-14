@@ -6,18 +6,28 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import dayjs, { Dayjs } from 'dayjs'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Unit } from 'src/enums/unit.enum'
+import Tooltip from '@mui/material/Tooltip'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
 interface StartTimePickers {
+  times: string[]
   watchUnitDuration: any
   onStartTimesChange: (startTimes: Dayjs[]) => void
 }
 
-const StartTimePickers: React.FC<StartTimePickers> = ({ watchUnitDuration, onStartTimesChange }: StartTimePickers) => {
-  const [isMultipleStartTime, setIsMultipleStartTime] = useState<boolean>(false)
-  const [startTimes, setStartTimes] = useState<Dayjs[]>([dayjs('2022-04-17T00:00')])
-  //   const watchUnitDuration = watch(['unit', 'duration'])
+const StartTimePickers: React.FC<StartTimePickers> = ({
+  times,
+  watchUnitDuration,
+  onStartTimesChange
+}: StartTimePickers) => {
+  const [isMultipleStartTime, setIsMultipleStartTime] = useState<boolean>(true)
+  const getInitialStartTimes = useCallback(
+    () => (times ? times.map((time) => dayjs(time, 'HH:mm:ss')) : [dayjs('2022-04-17T00:00')]),
+    []
+  )
+  const [startTimes, setStartTimes] = useState<Dayjs[]>(getInitialStartTimes)
 
   useEffect(() => {
     onStartTimesChange(startTimes as any)
@@ -44,12 +54,19 @@ const StartTimePickers: React.FC<StartTimePickers> = ({ watchUnitDuration, onSta
   }
 
   useEffect(() => {
+    if (watchUnitDuration[0] === '') return
+
     if (watchUnitDuration[0] === Unit.HOURS && Number(watchUnitDuration[1]) <= 5) {
       setIsMultipleStartTime(true)
       return
     }
+
     setIsMultipleStartTime(false)
   }, [watchUnitDuration])
+
+  useEffect(() => {
+    if (!isMultipleStartTime) setStartTimes((prevStartTimes) => [prevStartTimes[0]])
+  }, [isMultipleStartTime])
 
   return (
     <Box className='flex flex-col gap-2'>
@@ -60,6 +77,11 @@ const StartTimePickers: React.FC<StartTimePickers> = ({ watchUnitDuration, onSta
             *
           </Typography>
         </Typography>
+        <Tooltip title='Tours with a duration of 5 hours or less can have multiple start times, unless there is only one start time'>
+          <IconButton>
+            <InfoOutlinedIcon />
+          </IconButton>
+        </Tooltip>
         {isMultipleStartTime && (
           <Button variant='outlined' endIcon={<MoreTimeIcon />} onClick={handleAddMoreStartTime}>
             Add

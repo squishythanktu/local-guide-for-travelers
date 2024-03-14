@@ -1,16 +1,17 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, memo } from 'react'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import CancelIcon from '@mui/icons-material/Cancel'
 import { Grid } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { ImageWithLink } from 'src/types/tour.type'
 
 type ImagesUploaderProps = {
-  images: string[]
-  setImages: (arg: string[]) => void
+  images: (string | ImageWithLink)[]
+  setImages: (arg: (string | ImageWithLink)[]) => void
 }
 
-const ImagesUploader = (props: ImagesUploaderProps) => {
+const ImagesUploader: React.FC<ImagesUploaderProps> = memo((props: ImagesUploaderProps) => {
   const maxImagesUpload = 10
   const inputId = Math.random().toString(32).substring(2)
 
@@ -37,6 +38,10 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
       reader.onload = () => resolve(reader.result as string)
       reader.onerror = (error) => reject(error)
     })
+  }
+
+  const getImagePreview = (image: string | ImageWithLink) => {
+    return image instanceof Object && 'imageLink' in image ? image.imageLink : image
   }
 
   return (
@@ -68,7 +73,7 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
               <CancelIcon />
             </IconButton>
             <img
-              src={image}
+              src={getImagePreview(image)}
               style={{
                 width: '100%',
                 height: '100%',
@@ -101,6 +106,7 @@ const ImagesUploader = (props: ImagesUploaderProps) => {
       </label>
     </>
   )
-}
+})
 
+ImagesUploader.displayName = 'ImagesUploader'
 export default ImagesUploader

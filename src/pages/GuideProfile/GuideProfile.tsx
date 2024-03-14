@@ -5,6 +5,7 @@ import guideApi from 'src/apis/guide.api'
 import path from 'src/constants/path.constant'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
+import Loading from '../Loading'
 
 export default function GuideProfile() {
   const { id } = useParams()
@@ -18,6 +19,7 @@ export default function GuideProfile() {
 
   return (
     <>
+      {isPending && <Loading />}
       {!isPending && guideProfileData?.data.data && (
         <div className='container my-6 flex flex-col gap-6 '>
           <Box

@@ -20,6 +20,7 @@ export type Tour = {
   includeService: string
   duration: number
   unit: string
+  startTimes: string[]
   overallRating: number
   estimatedLocalCashNeeded: string
   pricePerTraveler: number

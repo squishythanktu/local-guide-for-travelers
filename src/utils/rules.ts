@@ -58,7 +58,7 @@ export const tourSchema = yup.object({
       name: yup.string()
     })
   ),
-  images: yup.array().of(yup.string()),
+  images: yup.array(),
   startTimes: yup.array().required()
 })
 

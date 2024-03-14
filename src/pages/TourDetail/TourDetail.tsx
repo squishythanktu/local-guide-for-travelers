@@ -48,7 +48,8 @@ const TourDetail: React.FC = () => {
     itinerary: '',
     categories: [{ id: 0, name: '' }],
     images: [{ id: 0, imageLink: '' }],
-    guide: { id: '', email: '' }
+    guide: { id: '', email: '' },
+    startTimes: []
   })
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
   const [formData, setFormData] = useState<BookingAssistantFormData>({
@@ -194,7 +195,7 @@ const TourDetail: React.FC = () => {
           <SimpleSlider itemsData={tour.images} />
         </div>
         <div className='activity__content pt-5'>
-          <div className='grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-0 lg:grid-cols-4'>
+          <div className='grid grid-cols-1 gap-10 md:grid-cols-3 lg:grid-cols-4'>
             <div className='col-span-1 flex flex-col gap-6 md:col-span-2 lg:col-span-3'>
               <div className='overview-activity text-sm md:text-[16px]'>{tour.description}</div>
               <div className='about-activity flex flex-col gap-2'></div>

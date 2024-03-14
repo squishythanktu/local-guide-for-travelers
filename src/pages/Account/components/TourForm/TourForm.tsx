@@ -11,7 +11,7 @@ import ControlledTextField from 'src/components/ControlledTextField'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import { Unit } from 'src/enums/unit.enum'
 import { Location } from 'src/types/location.type'
-import { Tour, TourCategory } from 'src/types/tour.type'
+import { ImageWithLink, Tour, TourCategory } from 'src/types/tour.type'
 import { User } from 'src/types/user.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
 import MapTourForm from './MapTourForm/MapTourForm'
@@ -61,24 +61,28 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
     staleTime: 5 * 1000
   })
   const watchUnitDuration = watch(['unit', 'duration'])
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<(string | ImageWithLink)[]>([])
 
   useEffect(() => {
     if (defaultValue) {
       Object.entries(defaultValue).forEach(([key, value]) => {
         setValue(key as keyof TourFormData, value)
+        setImages((defaultValue as Tour).images)
       })
     }
+  }, [defaultValue, setValue])
+
+  useEffect(() => {
     setValue('images', images)
-  }, [defaultValue, setValue, images])
+  }, [images, setValue])
 
   const handleStartTimeChange = (startTimes: Dayjs[]) => {
-    const formarttedDate: Date[] = startTimes.map((time) => time.toDate())
-    setValue('startTimes', formarttedDate)
+    const formattedDate: Date[] = startTimes.map((time) => time.toDate())
+    setValue('startTimes', formattedDate)
   }
 
-  const handleSaveUpdatedLocations = (updatedLocations: Location[]) => {
-    setValue('locations', updatedLocations)
+  const handleSaveUpdatedLocations = (locations: Location[]) => {
+    setValue('locations', locations)
   }
 
   return (
@@ -144,10 +148,10 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
                     if (isValidValue) {
                       field.onChange(value)
                       trigger('categories')
-                    } else {
-                      field.onChange([])
-                      trigger('categories')
+                      return
                     }
+                    field.onChange([])
+                    trigger('categories')
                   }
 
                   return (
@@ -246,7 +250,11 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
               label={'Duration'}
             />
           </div>
-          <StartTimePickers watchUnitDuration={watchUnitDuration} onStartTimesChange={handleStartTimeChange} />
+          <StartTimePickers
+            times={(defaultValue as Tour)?.startTimes}
+            watchUnitDuration={watchUnitDuration}
+            onStartTimesChange={handleStartTimeChange}
+          />
           <ControlledTextField
             required
             fullWidth={true}
@@ -275,7 +283,11 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
             label={'Description'}
           />
           <Box sx={{ marginTop: 2 }}>
-            <MapTourForm watch={watch} errors={errors} handleSaveUpdatedLocations={handleSaveUpdatedLocations} />
+            <MapTourForm
+              defaultValue={defaultValue as Tour}
+              errors={errors}
+              handleSaveUpdatedLocations={handleSaveUpdatedLocations}
+            />
           </Box>
           <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>

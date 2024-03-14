@@ -19,8 +19,8 @@ export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
       >
         {tour.categories.map((category, index) => (
           <Box key={index}>
-            <div className='text-md font-bold leading-4 md:text-lg'>{category.name}</div>
-            <h3>{tour.categories.length > 1 && index < tour.categories.length - 1 && '-'}</h3>
+            <span className='text-md font-bold leading-4 md:text-lg'>{category.name}</span>
+            {index !== tour.categories.length - 1 && <span className='ml-4 font-bold'>-</span>}
           </Box>
         ))}
       </Box>
@@ -38,9 +38,9 @@ export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
             <div className='text-nowrap text-sm font-semibold md:text-[16px]'>Activity provider:</div>
             <Link
               to={`${path.guideProfile.replace(':id', tour.guide.id.toString())}`}
-              className='text-sm md:text-[16px]'
+              className='text-sm hover:text-orange-500 md:text-[16px]'
             >
-              {tour.guide?.fullName || 'N/A'}
+              {tour.guide?.fullName || tour.guide?.email}
             </Link>
           </div>
         </div>
