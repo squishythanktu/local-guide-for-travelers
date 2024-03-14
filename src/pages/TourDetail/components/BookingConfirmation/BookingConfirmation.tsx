@@ -15,7 +15,7 @@ import path from 'src/constants/path.constant'
 import { Unit } from 'src/enums/unit.enum'
 import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
-import { formatDate, formatTime } from 'src/utils/date-time'
+import { convertDateToUTC7, convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
 
 interface Props {
@@ -38,8 +38,8 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   const [bookingFormData, setBookingFormData] = useState<AddBookingForm>({
     id: tour.id,
     startDate: selectedTimeOption
-      ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + selectedTimeOption)
-      : formData.startDate,
+      ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + convertHourToUTC7(selectedTimeOption))
+      : convertDateToUTC7(formData.startDate),
     numberTravelers: formData.numberTravelers,
     price: totalPrice
   })
@@ -48,8 +48,8 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
     const data = {
       ...bookingFormData,
       startDate: selectedTimeOption
-        ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + selectedTimeOption)
-        : formData.startDate,
+        ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + convertHourToUTC7(selectedTimeOption))
+        : convertDateToUTC7(formData.startDate),
       price: totalPrice
     }
     setBookingFormData(data)
