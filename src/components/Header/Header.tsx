@@ -15,8 +15,9 @@ import RightDrawer from './RightDrawer/RightDrawer'
 import SearchBar from './SearchBar/SearchBar'
 import { useEffect, useState } from 'react'
 import classNames from 'classnames'
+import Notification from './Notification/Notification'
 
-interface Props {
+interface HeaderProps {
   bgColor?: string
   textColor?: string
   logoColor?: 'main' | 'white'
@@ -28,8 +29,8 @@ export default function Header({
   textColor = ((theme: Omit<Theme, 'palette'> & CssVarsTheme) => theme.palette.primary.main).toString(),
   logoColor = 'main',
   isEnableScroll = true
-}: Props) {
-  const [scroll, setScroll] = useState(false)
+}: HeaderProps) {
+  const [scroll, setScroll] = useState<boolean>(false)
 
   useEffect(() => {
     if (!isEnableScroll) return
@@ -76,7 +77,7 @@ export default function Header({
               className='h-8 w-8 sm:h-10 sm:w-10 md:h-14 md:w-14'
             />
           </Link>
-          <SearchBar className='search-bar col-span-10 col-start-2 mx-4 flex h-[48px] items-center md:col-span-8 md:col-start-3 md:h-[60px] lg:col-span-6' />
+          <SearchBar className='search-bar col-span-9 col-start-2 mx-4 flex h-[48px] items-center md:col-span-7 md:col-start-3 md:h-[60px] lg:col-span-6 lg:mr-6' />
           <Box
             className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
             sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
@@ -88,9 +89,11 @@ export default function Header({
               icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
               text='Bookings'
             />
+            <Notification textColor={textColor} />
             <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
-          <Box className='drawer col-span-1 col-start-12 flex items-center justify-end lg:hidden'>
+          <Box className='drawer col-span-2 col-start-11 flex items-center justify-end lg:col-span-1 lg:col-start-12 lg:hidden'>
+            <Notification textColor={textColor} />
             <RightDrawer textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
         </div>

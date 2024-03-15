@@ -23,6 +23,8 @@ import { SyntheticEvent, useContext, useState, KeyboardEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
+import LoginIcon from '@mui/icons-material/Login'
 
 interface RightDrawerProps {
   textColor: string
@@ -48,15 +50,12 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
       (event.type === 'keydown' || event.type === 'keyup') &&
       (event as KeyboardEvent).key &&
       ((event as KeyboardEvent).key === 'Tab' || (event as KeyboardEvent).key === 'Shift')
-    ) {
+    )
       return
-    }
 
     setState({ ...state, [anchor]: open })
 
-    if (!open) {
-      setOpen(false)
-    }
+    if (!open) setOpen(false)
   }
 
   const handleLogout = () => {
@@ -65,7 +64,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
     window.location.reload()
   }
 
-  const list = (anchor: string) => (
+  const listAuthenticated = (anchor: string) => (
     <Box
       sx={{ width: 250 }}
       role='presentation'
@@ -141,6 +140,76 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
     </Box>
   )
 
+  const listNotAuthenticated = (anchor: string) => (
+    <Box
+      sx={{ width: 250 }}
+      role='presentation'
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <FavoriteBorderIcon />
+            </ListItemIcon>
+            <ListItemText primary='Wish list' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding component={Link} to={path.cart}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ShoppingCartOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary='Cart' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding component={Link} to={path.bookings}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ConfirmationNumberOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary='Bookings' />
+          </ListItemButton>
+        </ListItem>
+        <Divider />
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <AccountCircleOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                isAuthenticated && profile && profile.fullName
+                  ? profile.fullName
+                  : profile?.email
+                    ? profile?.email.split('@')[0]
+                    : 'Profile'
+              }
+            />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+        </ListItem>
+        <Collapse in={open} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.login}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary='Sign in' />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.register}>
+              <ListItemIcon>
+                <PersonAddAlt1Icon />
+              </ListItemIcon>
+              <ListItemText primary='Sign up' />
+            </ListItemButton>
+          </List>
+        </Collapse>
+      </List>
+    </Box>
+  )
+
   return (
     <>
       <IconButton
@@ -152,7 +221,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
         <MenuIcon />
       </IconButton>
       <Drawer anchor='right' open={state.right} onClose={toggleDrawer('right', false)}>
-        {list('right')}
+        {isAuthenticated ? listAuthenticated('right') : listNotAuthenticated('right')}
       </Drawer>
     </>
   )

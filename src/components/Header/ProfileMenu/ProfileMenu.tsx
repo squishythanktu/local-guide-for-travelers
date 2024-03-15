@@ -43,7 +43,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
       <Button
         onClick={handleClick}
         className={classNames(
-          'ml-0 flex flex-col items-center text-sm font-normal hover:after:w-full md:ml-2 md:after:absolute md:after:bottom-[1.5px] md:after:left-0 md:after:h-[2.5px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
+          'ml-0 flex flex-col items-center text-sm font-normal hover:after:w-full md:after:absolute md:after:bottom-[1.5px] md:after:left-0 md:after:h-[2.5px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
           {
             'md:after:w-full': location.pathname.includes(path.account)
           }
@@ -98,13 +98,6 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
               <PersonAddAlt1Icon fontSize='small' />
             </ListItemIcon>
             Sign up
-          </MenuItem>
-          <Divider />
-          <MenuItem component={Link} to='/'>
-            <ListItemIcon>
-              <LightModeOutlinedIcon fontSize='small' />
-            </ListItemIcon>
-            Appearance
           </MenuItem>
         </Menu>
       )}
