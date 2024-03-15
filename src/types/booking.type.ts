@@ -2,8 +2,8 @@ import { Guide } from './guide.type'
 import { Tour } from './tour.type'
 
 export type BookingsInCart = {
-  id: number
-  bookings: Booking[]
+  id?: number
+  bookings?: Booking[]
 }
 
 export type Booking = {

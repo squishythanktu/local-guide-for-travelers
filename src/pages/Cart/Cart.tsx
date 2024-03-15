@@ -11,25 +11,35 @@ import CartTotal from './components/CartTotal'
 
 export default function Cart() {
   const { isAuthenticated, profile } = useContext(AppContext)
-  const { data: cartData, refetch } = useQuery({
+  const {
+    data: cartData,
+    refetch,
+    isPending
+  } = useQuery({
     queryKey: [`bookings in cart by ${profile?.id}`],
     queryFn: () => cartApi.getBookingsInCart(),
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
   })
 
+  if (!isAuthenticated)
+    return (
+      <div className='flex h-[550px] flex-col items-center justify-center'>
+        <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
+        <h3>You have to sign in first to see your cart.</h3>
+      </div>
+    )
+
   return (
     <Box className='container flex flex-col'>
-      {!isAuthenticated && (
-        <>
-          <div className='flex h-[550px] flex-col items-center justify-center'>
-            <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
-            <h3>You have to sign in first to see your cart.</h3>
-          </div>
-        </>
+      {isPending && <Loading />}
+      {!isPending && cartData && !cartData.data.data.bookings && (
+        <div className='flex h-[550px] flex-col items-center justify-center'>
+          <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
+          <h3>You have not added any tours to the cart yet.</h3>
+        </div>
       )}
-      {isAuthenticated && !cartData?.data.data.bookings && <Loading />}
-      {isAuthenticated && cartData?.data.data.bookings && cartData?.data.data.bookings.length > 0 ? (
+      {!isPending && cartData && cartData.data.data.bookings && cartData.data.data.bookings.length > 0 && (
         <div className='grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-28'>
           <div className='py-5 lg:col-span-3'>
             <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>
@@ -49,11 +59,6 @@ export default function Cart() {
               <CartInfo />
             </div>
           </div>
-        </div>
-      ) : (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
-          <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
-          <h3>You have not added any tours to the cart yet.</h3>
         </div>
       )}
     </Box>

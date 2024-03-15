@@ -100,7 +100,11 @@ export default function SearchGuides() {
             </div>
           </div>
           <div className='my-4 text-sm font-semibold text-[var(--label-secondary)]'>
-            {`${guidesData?.data.data.totalOfResult} guides found.`}
+            {isPending ? (
+              <Skeleton variant='text' sx={{ fontSize: '1rem' }} width={100} />
+            ) : (
+              `${guidesData?.data.data.totalResult} guides found.`
+            )}
           </div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
             {isPending

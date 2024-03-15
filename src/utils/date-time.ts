@@ -1,4 +1,7 @@
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 export const formatDate = (date: Date | string, format: string) => dayjs(date).format(format)
 
@@ -14,4 +17,8 @@ export const convertHourToUTC7 = (hour: string) => {
 
 export const convertDateToUTC7 = (date: Date) => {
   return new Date(date.getTime() + 25200000)
+}
+
+export const getRelativeTime = (specificTime: Date | string) => {
+  return dayjs().to(dayjs(specificTime))
 }

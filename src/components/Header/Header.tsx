@@ -13,9 +13,10 @@ import NavLink from './NavLink'
 import ProfileMenu from './ProfileMenu'
 import RightDrawer from './RightDrawer/RightDrawer'
 import SearchBar from './SearchBar/SearchBar'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import Notification from './Notification/Notification'
+import { AppContext } from 'src/contexts/app.context'
 
 interface HeaderProps {
   bgColor?: string
@@ -30,6 +31,7 @@ export default function Header({
   logoColor = 'main',
   isEnableScroll = true
 }: HeaderProps) {
+  const { isAuthenticated } = useContext(AppContext)
   const [scroll, setScroll] = useState<boolean>(false)
 
   useEffect(() => {
@@ -41,9 +43,9 @@ export default function Header({
 
       if (scrollHeight > specificHeight) {
         setScroll(true)
-      } else {
-        setScroll(false)
+        return
       }
+      setScroll(false)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -89,11 +91,11 @@ export default function Header({
               icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
               text='Bookings'
             />
-            <Notification textColor={textColor} />
+            {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
             <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
           <Box className='drawer col-span-2 col-start-11 flex items-center justify-end lg:col-span-1 lg:col-start-12 lg:hidden'>
-            <Notification textColor={textColor} />
+            {isAuthenticated && <Notification textColor={textColor} />}
             <RightDrawer textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
         </div>

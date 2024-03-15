@@ -29,14 +29,16 @@ const Bookings: React.FC = () => {
     setValue(index)
   }
 
+  if (!isAuthenticated)
+    return (
+      <div className='flex h-[550px] flex-col items-center justify-center'>
+        <img src='/assets/images/empty-booking.png' alt='Empty booking' className='h-52 w-52 object-cover' />
+        <h3>You have to sign in first to see your bookings.</h3>
+      </div>
+    )
+
   return (
     <Box className='container flex min-h-[550px] flex-col py-5'>
-      {!isAuthenticated && (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
-          <img src='/assets/images/empty-booking.png' alt='Empty booking' className='h-52 w-52 object-cover' />
-          <h3>You have to sign in first to see your bookings.</h3>
-        </div>
-      )}
       {isAuthenticated && !bookingsHistoryData?.data.data && <Loading />}
       {isAuthenticated && bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
         <>

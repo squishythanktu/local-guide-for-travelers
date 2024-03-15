@@ -20,12 +20,12 @@ export default function OrderSummary() {
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
   })
-  const totalBookingPrice = bookingsCartData?.data.data.bookings.reduce((total, booking) => total + booking.price, 0)
-  const totalBookingLength = bookingsCartData?.data.data.bookings.length
+  const totalBookingPrice = bookingsCartData?.data.data.bookings!.reduce((total, booking) => total + booking.price, 0)
+  const totalBookingLength = bookingsCartData?.data.data.bookings!.length
   const [isProceedPaymentClicked, setIsProceedPaymentClicked] = useState<boolean>(false)
 
   const getFormattedBookingIds = useCallback(() => {
-    return bookingsCartData?.data.data.bookings.map((booking) => booking.id).join(',') as string
+    return bookingsCartData?.data.data.bookings!.map((booking) => booking.id).join(',') as string
   }, [bookingsCartData?.data.data.bookings])
 
   const { data: paymentUrl } = useQuery({
@@ -49,7 +49,7 @@ export default function OrderSummary() {
       <h1 className='pb-3'>Order summary</h1>
       <Box style={{ maxHeight: 600, overflow: 'auto' }}>
         {bookingsCartData ? (
-          bookingsCartData.data.data.bookings.map((bookingCartData, index) => (
+          bookingsCartData.data.data.bookings!.map((bookingCartData, index) => (
             <BookingSummaryCard key={index} booking={bookingCartData} />
           ))
         ) : (
