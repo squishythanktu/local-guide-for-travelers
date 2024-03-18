@@ -1,36 +1,45 @@
-import { Box, Button } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, Button, IconButton } from '@mui/material'
 import List from '@mui/material/List'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import { ScheduleLists } from 'src/types/schedule.type'
-import { formatDate } from 'src/utils/date-time'
+import { DayInSchedule } from 'src/types/schedule.type'
+import { compareDate, formatDate } from 'src/utils/date-time'
 
 interface Props {
-  dateList?: ScheduleLists
+  busyByGuide: DayInSchedule[]
+  busyByDay: DayInSchedule[]
+  busyByHour: DayInSchedule[]
+  handleDeleteDay: (date: Date) => () => void
 }
 
-const DateList: React.FC<Props> = ({ dateList }: Props) => {
+const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, handleDeleteDay, busyByHour }: Props) => {
   const [pastBusyDates, setPastBusyDates] = useState<Date[]>([])
   const [futureBusyDates, setFutureBusyDates] = useState<Date[]>([])
-  const [pastBookedDates, setPastBookedDates] = useState<Date[]>([])
-  const [futureBookedDates, setFutureBookedDates] = useState<Date[]>([])
+  const [pastBookedByDay, setPastBookedByDay] = useState<Date[]>([])
+  const [futureBookedByDay, setFutureBookedByDay] = useState<Date[]>([])
+  const [pastBookedByHour, setPastBookedByHour] = useState<Date[]>([])
+  const [futureBookedByHour, setFutureBookedByHour] = useState<Date[]>([])
 
-  const [dayState, setDayState] = useState<'daysOff' | 'bookedDays'>('daysOff')
+  const [dayState, setDayState] = useState<'daysOff' | 'bookedByDay' | 'bookedByHour'>('daysOff')
   const [temporalState, setTemporalState] = useState<'upcoming' | 'past'>('upcoming')
   const [displayDates, setDisplayDates] = useState<Date[]>([])
 
-  function compareDates(a: Date, b: Date) {
-    return a.getTime() - b.getTime()
+  const formattedData = (dateArr: Date[], type: 'ASC' | 'DESC') => {
+    const data = [...new Set(dateArr)]
+    if (type === 'DESC') return data.sort((a, b) => compareDate(b, a))
+    return data.sort((a, b) => compareDate(a, b))
   }
 
   useEffect(() => {
-    const updatedPastBusyDates: Date[] = []
-    const updatedFutureBusyDates: Date[] = []
-    const updatedPastBookedDates: Date[] = []
-    const updatedFutureBookedDates: Date[] = []
-
-    dateList?.busyDayOfGuider.forEach((item) => {
-      const busyDate = new Date(item)
+    setPastBusyDates([])
+    setFutureBusyDates([])
+    setPastBookedByDay([])
+    setFutureBookedByDay([])
+    setPastBookedByHour([])
+    setFutureBookedByHour([])
+    busyByGuide.forEach((item) => {
+      const busyDate = item.busyDate
       if (busyDate < new Date()) {
         pastBusyDates.push(busyDate)
       } else {
@@ -38,37 +47,54 @@ const DateList: React.FC<Props> = ({ dateList }: Props) => {
       }
     })
 
-    dateList?.busyDayByBooking.forEach((item) => {
-      const busyDate = new Date(item)
+    busyByDay.forEach((item) => {
+      const busyDate = item.busyDate
       if (busyDate < new Date()) {
-        pastBookedDates.push(busyDate)
+        pastBookedByDay.push(busyDate)
       } else {
-        futureBookedDates.push(busyDate)
+        futureBookedByDay.push(busyDate)
       }
     })
-    setPastBusyDates(updatedPastBusyDates)
-    setFutureBusyDates(updatedFutureBusyDates)
-    setPastBookedDates(updatedPastBookedDates)
-    setFutureBookedDates(updatedFutureBookedDates)
+
+    busyByHour.forEach((item) => {
+      const busyDate = item.busyDate
+      if (busyDate < new Date()) {
+        pastBookedByHour.push(busyDate)
+      } else {
+        futureBookedByHour.push(busyDate)
+      }
+    })
 
     if (dayState.toString() === 'daysOff') {
       if (temporalState.toString() === 'upcoming') {
-        setDisplayDates(futureBusyDates.sort(compareDates))
+        setDisplayDates(formattedData(futureBusyDates, 'ASC'))
         return
       }
-      setDisplayDates(pastBusyDates.sort(compareDates))
+      setDisplayDates(formattedData(pastBusyDates, 'DESC'))
+      return
+    }
+
+    if (dayState.toString() === 'bookedByHour') {
+      if (temporalState.toString() === 'upcoming') {
+        setDisplayDates(formattedData(futureBookedByHour, 'ASC'))
+        return
+      }
+      setDisplayDates(formattedData(pastBookedByHour, 'DESC'))
       return
     }
 
     if (temporalState.toString() === 'upcoming') {
-      setDisplayDates(futureBookedDates.sort(compareDates))
+      setDisplayDates(formattedData(futureBookedByDay, 'ASC'))
       return
     }
-    setDisplayDates(pastBookedDates.sort(compareDates))
-  }, [dateList, dayState, temporalState])
+    setDisplayDates(formattedData(pastBookedByDay, 'DESC'))
+  }, [busyByGuide, busyByDay, busyByHour, temporalState, dayState])
 
-  const handleBookedDaysButton = () => {
-    setDayState('bookedDays')
+  const handleBookedByDayButton = () => {
+    setDayState('bookedByDay')
+  }
+  const handleBookedByHourButton = () => {
+    setDayState('bookedByHour')
   }
   const handleDaysOffButton = () => {
     setDayState('daysOff')
@@ -81,40 +107,71 @@ const DateList: React.FC<Props> = ({ dateList }: Props) => {
   }
 
   return (
-    <Box className='rounded-lg border shadow-2xl'>
-      <Box
-        sx={{
-          bgcolor: (theme) => theme.palette.primary.light
-        }}
-        className='flex flex-col items-center justify-center rounded-t-md'
-      >
+    <Box className='h-[332px] rounded-md border' sx={{ bgcolor: 'background.paper' }}>
+      <Box className='flex flex-col items-center justify-center rounded-t-md'>
         <Box
-          sx={{ color: (theme) => theme.palette.primary.main, borderColor: (theme) => theme.palette.common.white }}
+          sx={{
+            color: (theme) => theme.palette.primary.main,
+            borderColor: (theme) => theme.palette.common.white,
+            display: 'flex',
+            flexWrap: 'wrap'
+          }}
           className='w-full text-sm font-medium text-white'
         >
           <Button
-            className='w-[50%] rounded-none border-none font-extrabold text-red-500'
             variant='outlined'
             size='small'
             onClick={handleDaysOffButton}
+            className={classNames('w-[33.33%] rounded-none rounded-tl-md border-none', {
+              'bg-[#fff0f1]': dayState.toString() === 'daysOff'
+            })}
+            sx={{
+              flex: '1 1 auto'
+            }}
           >
             DAYS OFF
           </Button>
           <Button
-            className='w-[50%] rounded-none border-none font-extrabold text-yellow-500'
-            onClick={handleBookedDaysButton}
+            onClick={handleBookedByDayButton}
             variant='outlined'
             size='small'
+            className={classNames('w-[33.33%] rounded-none border-none ', {
+              'bg-[#fff9eb]': dayState.toString() === 'bookedByDay'
+            })}
+            sx={{
+              flex: '1 1 auto'
+            }}
           >
-            BOOKED DAYS
+            BOOKED BY DAY
+          </Button>
+          <Button
+            onClick={handleBookedByHourButton}
+            variant='outlined'
+            size='small'
+            className={classNames('w-[33.33%] rounded-none rounded-tr-md border-none', {
+              'bg-[#e9fbf0]': dayState.toString() === 'bookedByHour'
+            })}
+            sx={{
+              flex: '1 1 auto'
+            }}
+          >
+            BOOKED BY HOUR
           </Button>
         </Box>
-        <Box className='w-full'>
+        <Box
+          className={classNames('flex w-full border-y', {
+            'border-t-yellow-500': dayState.toString() === 'bookedByDay',
+            'border-t-green-500': dayState.toString() === 'bookedByHour',
+            'border-t-red-500': dayState.toString() === 'daysOff'
+          })}
+        >
           <Button
-            className={classNames('w-[50%] rounded-none border-none', {
-              'text-red-500': dayState.toString() === 'daysOff',
-              'text-yellow-500': dayState.toString() !== 'daysOff',
-              'underline decoration-2': temporalState.toString() === 'upcoming'
+            className={classNames('w-[50%] rounded-none border-none font-normal', {
+              'bg-[#fff9eb] ': dayState.toString() === 'bookedByDay',
+              'bg-transparent ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'past',
+              'bg-[#e9fbf0] ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'upcoming',
+              'bg-[#fff0f1] ': dayState.toString() === 'daysOff',
+              'bg-transparent': temporalState.toString() === 'past'
             })}
             variant='outlined'
             size='small'
@@ -124,10 +181,12 @@ const DateList: React.FC<Props> = ({ dateList }: Props) => {
           </Button>
           <Button
             onClick={handlePastButton}
-            className={classNames('w-[50%]', 'rounded-none', 'border-none', {
-              'text-red-500': dayState.toString() === 'daysOff',
-              'text-yellow-500': dayState.toString() !== 'daysOff',
-              'underline decoration-2': temporalState.toString() === 'past'
+            className={classNames('w-[50%]', 'rounded-none', 'border-none', 'font-normal', {
+              'bg-[#fff0f1] ': dayState.toString() === 'daysOff',
+              'bg-[#fff9eb] ': dayState.toString() === 'bookedByDay',
+              'bg-transparent ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'upcoming',
+              'bg-[#e9fbf0] ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'past',
+              'bg-transparent': temporalState.toString() === 'upcoming'
             })}
             variant='outlined'
             size='small'
@@ -138,7 +197,7 @@ const DateList: React.FC<Props> = ({ dateList }: Props) => {
       </Box>
       <List
         disablePadding
-        className='px-2 pt-2'
+        className='rounded-b-md px-2 pt-2'
         sx={{
           width: '100%',
           maxWidth: 360,
@@ -147,21 +206,18 @@ const DateList: React.FC<Props> = ({ dateList }: Props) => {
           overflow: 'auto',
           maxHeight: '288px',
           '@media (min-width: 346px)': {
-            maxHeight: '370px'
+            maxHeight: '230px'
           },
           '@media (min-width: 547px)': {
-            maxHeight: '390px'
+            maxHeight: '250px'
           },
           '@media (min-width: 768px)': {
-            maxHeight: '370px'
+            maxHeight: '230px'
           },
           '@media (min-width: 1124px)': {
-            maxHeight: '390px'
-          },
-          borderRadius: '8px',
-          '& ul': { padding: 0 }
+            maxHeight: '250px'
+          }
         }}
-        key={JSON.stringify(dateList)}
         subheader={<li />}
       >
         <div className=''></div>
@@ -171,8 +227,25 @@ const DateList: React.FC<Props> = ({ dateList }: Props) => {
             key={index}
             className='mx-4 my-1 rounded-md border py-1 md:mx-0 lg:mx-4'
           >
-            <Box sx={{ color: (theme) => theme.palette.primary.main }} className='flex justify-center px-3'>
-              {formatDate(item, 'MM/DD/YYYY')}
+            <Box
+              sx={{ color: (theme) => theme.palette.primary.main }}
+              className={classNames('grid items-center  px-3', {
+                'grid-flow-col justify-items-end':
+                  dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming',
+                'justify-items-center': dayState.toString() === 'bookedDays'
+              })}
+            >
+              <div className=''>{formatDate(item, 'MM/DD/YYYY')}</div>
+              {dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming' && (
+                <IconButton onClick={handleDeleteDay(item)} className='p-0'>
+                  <CloseIcon
+                    className='h-4 w-4'
+                    sx={{
+                      color: (theme) => theme.palette.primary.main
+                    }}
+                  />
+                </IconButton>
+              )}
             </Box>
           </Box>
         ))}

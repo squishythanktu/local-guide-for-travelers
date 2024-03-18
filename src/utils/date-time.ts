@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { DateObject } from 'react-multi-date-picker'
 
 dayjs.extend(relativeTime)
 
@@ -21,4 +22,12 @@ export const convertDateToUTC7 = (date: Date) => {
 
 export const getRelativeTime = (specificTime: Date | string) => {
   return dayjs().to(dayjs(specificTime))
+}
+
+export const convertNormalDate = (date: DateObject) => {
+  return new Date(date.year, date.monthIndex, date.day + 1).toISOString().replace('.000Z', '')
+}
+
+export const compareDate = (a: Date, b: Date) => {
+  return new Date(a).getTime() - new Date(b).getTime()
 }
