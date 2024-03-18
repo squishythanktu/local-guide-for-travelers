@@ -17,6 +17,7 @@ import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
 import { convertDateToUTC7, convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 interface Props {
   timeOptions?: string[]
@@ -66,19 +67,17 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   })
 
   const handleAddBooking = () => {
-    if (tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption) {
-      return
-    } else {
-      addBookingMutation.mutate(bookingFormData, {
-        onSuccess: () => {
-          toast.success('Add booking in cart successfully.')
-          navigate(path.cart)
-        },
-        onError: (error) => {
-          toast.error(error.message)
-        }
-      })
-    }
+    if (tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption) return
+
+    addBookingMutation.mutate(bookingFormData, {
+      onSuccess: () => {
+        toast.success('Add booking in cart successfully.')
+        navigate(path.cart)
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
   }
 
   return (
@@ -160,15 +159,16 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           >
             Book now
           </Button>
-          <Button
+          <LoadingButton
             type='submit'
+            loading={addBookingMutation.isPending}
             className='mr-2 rounded-full pr-7 font-semibold md:inline-block'
             variant='contained'
             size='large'
             onClick={handleAddBooking}
           >
             Add to cart
-          </Button>
+          </LoadingButton>
         </div>
       </div>
     </Card>

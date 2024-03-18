@@ -1,5 +1,6 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import PersonIcon from '@mui/icons-material/Person'
+import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined'
 import { Typography } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -10,28 +11,38 @@ import { Link } from 'react-router-dom'
 import AvatarSideNav from 'src/components/AvatarSideNav/AvatarSideNav'
 import path from 'src/constants/path.constant'
 
-export default function AccountSideNav() {
+const ManagementSideNav: React.FC = () => {
   return (
     <div className='account__container flex-auto md:m-0'>
       <AvatarSideNav />
       <div className='account__side-menu'>
         <Paper>
           <MenuList>
-            <MenuItem component={Link} to={path.profile}>
+            <MenuItem component={Link} to={path.tours}>
               <ListItemIcon>
-                <PersonIcon fontSize='small' />
+                <AddLocationAltOutlinedIcon fontSize='small' />
               </ListItemIcon>
               <Typography variant='inherit' noWrap>
-                Profile
+                Tour Management
               </Typography>
             </MenuItem>
             <Divider />
-            <MenuItem component={Link} to={path.password}>
+
+            <MenuItem component={Link} to={path.schedule}>
               <ListItemIcon>
-                <LockOutlinedIcon fontSize='small' />
+                <CalendarMonthIcon fontSize='small' />
               </ListItemIcon>
               <Typography variant='inherit' noWrap>
-                Password
+                Schedule Management
+              </Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem component={Link} to={path.request}>
+              <ListItemIcon>
+                <ListAltOutlinedIcon fontSize='small' />
+              </ListItemIcon>
+              <Typography variant='inherit' noWrap>
+                Request Management
               </Typography>
             </MenuItem>
           </MenuList>
@@ -40,3 +51,5 @@ export default function AccountSideNav() {
     </div>
   )
 }
+
+export default ManagementSideNav

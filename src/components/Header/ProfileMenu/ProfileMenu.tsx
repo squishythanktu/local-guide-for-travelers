@@ -1,11 +1,9 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
 import LoginIcon from '@mui/icons-material/Login'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import { Button } from '@mui/material'
-import Divider from '@mui/material/Divider'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -15,6 +13,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
+import ViewListIcon from '@mui/icons-material/ViewList'
 
 interface ProfileMenuProps {
   textColor: string
@@ -128,13 +127,12 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem component={Link} to='/'>
+          <MenuItem component={Link} to={path.tours}>
             <ListItemIcon>
-              <LightModeOutlinedIcon fontSize='small' />
+              <ViewListIcon fontSize='small' />
             </ListItemIcon>
-            Appearance
+            Management
           </MenuItem>
-          <Divider />
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon fontSize='small' />

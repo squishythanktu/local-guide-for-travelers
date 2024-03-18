@@ -3,11 +3,14 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
+import LoginIcon from '@mui/icons-material/Login'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import ViewListIcon from '@mui/icons-material/ViewList'
+import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
@@ -17,14 +20,11 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import path from 'src/constants/path.constant'
-import Box from '@mui/material/Box'
-import { SyntheticEvent, useContext, useState, KeyboardEvent } from 'react'
+import { KeyboardEvent, SyntheticEvent, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import LoginIcon from '@mui/icons-material/Login'
 
 interface RightDrawerProps {
   textColor: string
@@ -122,11 +122,11 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               </ListItemIcon>
               <ListItemText primary='Settings' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tours}>
               <ListItemIcon>
-                <LightModeOutlinedIcon />
+                <ViewListIcon />
               </ListItemIcon>
-              <ListItemText primary='Appearance' />
+              <ListItemText primary='Management' />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
               <ListItemIcon>

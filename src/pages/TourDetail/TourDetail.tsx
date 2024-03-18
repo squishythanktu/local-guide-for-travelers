@@ -68,7 +68,7 @@ const TourDetail: React.FC = () => {
     queryFn: () => tourApi.getTourById(id as string),
     enabled: id !== undefined
   })
-  const { data: reviewsData, refetch: refechReviewsData } = useQuery({
+  const { data: reviewsData, refetch: refetchReviewsData } = useQuery({
     queryKey: [`Get reviews of tour by ${id}`, id, reviewParams],
     queryFn: () => reviewApi.searchReviewsOfTour(Number(id), reviewParams),
     placeholderData: keepPreviousData,
@@ -107,7 +107,7 @@ const TourDetail: React.FC = () => {
     (data: CommentFormData) => {
       addReviewOfTourMutation.mutate(data, {
         onSuccess: () => {
-          refechReviewsData()
+          refetchReviewsData()
           toast.success('Add review of tour successfully.')
         },
         onError: (error) => {
@@ -115,7 +115,7 @@ const TourDetail: React.FC = () => {
         }
       })
     },
-    [addReviewOfTourMutation, refechReviewsData]
+    [addReviewOfTourMutation, refetchReviewsData]
   )
 
   const handleUpdateReviewOfTour = useCallback(
@@ -124,7 +124,7 @@ const TourDetail: React.FC = () => {
         updateReviewOfTourMutation.mutate(data, {
           onSuccess: () => {
             setEditReviewId(null)
-            refechReviewsData()
+            refetchReviewsData()
             toast.success('Update review of tour successfully.')
           },
           onError: (error) => {
@@ -133,14 +133,14 @@ const TourDetail: React.FC = () => {
         })
       }
     },
-    [editReviewId, refechReviewsData, updateReviewOfTourMutation]
+    [editReviewId, refetchReviewsData, updateReviewOfTourMutation]
   )
 
   const handleDeleteReviewOfTour = useCallback(
     (id: number) => {
       deleteReviewOfTourMutation.mutate(id, {
         onSuccess: () => {
-          refechReviewsData()
+          refetchReviewsData()
           toast.success('Delete review of tour successfully.')
         },
         onError: (error) => {
@@ -148,7 +148,7 @@ const TourDetail: React.FC = () => {
         }
       })
     },
-    [deleteReviewOfTourMutation, refechReviewsData]
+    [deleteReviewOfTourMutation, refetchReviewsData]
   )
 
   const handleSubmitBookingAssistant = useCallback((body: BookingAssistantFormData) => {
@@ -166,7 +166,7 @@ const TourDetail: React.FC = () => {
         ((reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews).toFixed(
           2
         )
-      ),
+      ) || 0,
     [reviewsData?.data.data, totalReviews]
   )
 
@@ -234,7 +234,7 @@ const TourDetail: React.FC = () => {
         <Box className='activity__customer-reviews flex flex-col pb-6'>
           <Divider className='my-4' />
           <ReviewTitle />
-          {reviewsData?.data.data && totalReviews > 0 && (
+          {reviewsData?.data.data && (
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid item xs={4} sm={8} md={12}>
                 <OverallRating totalReviews={totalReviews} ratingReviewsAverage={getRatingReviewsAverage()} />
@@ -248,27 +248,28 @@ const TourDetail: React.FC = () => {
                   onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
                   isMutating={updateReviewOfTourMutation.isPending || addReviewOfTourMutation.isPending}
                 />
-                {reviewsData?.data.data.map((review, index) => (
-                  <Comment
-                    key={index}
-                    index={index}
-                    comment={review}
-                    setEditReviewId={(id: number) => setEditReviewId(id)}
-                    onDelete={(id: number) => handleDeleteReviewOfTour(id)}
-                  />
-                ))}
+                {totalReviews > 0 &&
+                  reviewsData?.data.data.map((review, index) => (
+                    <Comment
+                      key={index}
+                      index={index}
+                      comment={review}
+                      setEditReviewId={(id: number) => setEditReviewId(id)}
+                      onDelete={(id: number) => handleDeleteReviewOfTour(id)}
+                    />
+                  ))}
+                {totalReviews === 0 && (
+                  <>
+                    <img
+                      src='/assets/images/not-found.png'
+                      alt='Not Found Page'
+                      className='mx-auto h-36 w-36 object-cover'
+                    />
+                    <h2 className='my-4 text-center'>No tour reviews available.</h2>
+                  </>
+                )}
               </Grid>
             </Grid>
-          )}
-          {reviewsData?.data.data && totalReviews === 0 && (
-            <>
-              <span className='my-4'>This tour has not had any reviews yet.</span>
-              <CommentBox
-                review={getReviewById()}
-                onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
-                isMutating={updateReviewOfTourMutation.isPending || addReviewOfTourMutation.isPending}
-              />
-            </>
           )}
         </Box>
         {/* <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>

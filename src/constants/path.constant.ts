@@ -5,20 +5,21 @@ const path = {
   account: '/account',
   profile: '/account/profile',
   password: '/account/password',
-  tours: '/account/my-tours',
-  schedule: '/account/schedules',
+  management: '/management',
+  tours: '/management/my-tours',
+  schedule: '/management/schedules',
+  request: '/management/requests',
   reset: '/reset',
   searchTour: 'tours/search',
   searchGuide: 'guides/search',
   tourDetail: 'tours/:id',
+  guideProfile: '/guides/:id',
   cart: '/cart',
   checkout: '/cart/checkout',
+  bookings: '/bookings',
   bookingSuccess: '/booking-success/:id',
   bookingFail: '/booking-fail',
-  guideProfile: '/guides/:id',
-  requestTour: '/request-add-tour',
-  request: '/account/requests',
-  bookings: '/bookings'
+  requestTour: '/request-add-tour'
 }
 
 export default path

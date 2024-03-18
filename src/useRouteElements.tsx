@@ -7,6 +7,7 @@ import MainLayout from './layouts/MainLayout'
 import RequestManagement from './pages/Account/RequestManagement/RequestManagement'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import Loading from './pages/Loading'
+import ManagementLayout from './pages/Account/layouts/ManagementLayout/ManagementLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -97,7 +98,17 @@ export default function useRouteElements() {
                   <ChangePassword />
                 </Suspense>
               )
-            },
+            }
+          ]
+        },
+        {
+          path: path.management,
+          element: (
+            <MainLayout>
+              <ManagementLayout />
+            </MainLayout>
+          ),
+          children: [
             {
               path: path.tours,
               element: (
