@@ -57,9 +57,9 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
         disableFocusRipple
       >
         <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor, marginBottom: '4px' }} />
-        <span className='hidden text-sm md:block'>
+        <span className='hidden w-full overflow-x-hidden text-ellipsis text-sm md:block'>
           {isAuthenticated && profile && profile.fullName
-            ? profile.fullName
+            ? profile.fullName.split(' ')[0]
             : profile?.email
               ? profile?.email.split('@')[0]
               : 'Profile'}

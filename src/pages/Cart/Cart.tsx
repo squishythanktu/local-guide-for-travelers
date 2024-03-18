@@ -33,7 +33,7 @@ export default function Cart() {
   return (
     <Box className='container flex flex-col'>
       {isPending && <Loading />}
-      {!isPending && cartData && !cartData.data.data.bookings && (
+      {!isPending && cartData && cartData.data.data.bookings?.length === 0 && (
         <div className='flex h-[550px] flex-col items-center justify-center'>
           <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
           <h3>You have not added any tours to the cart yet.</h3>

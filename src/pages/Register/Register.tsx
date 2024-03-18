@@ -1,17 +1,17 @@
-import { Link } from 'react-router-dom'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import AuthLayout from 'src/layouts/AuthLayout'
-import path from 'src/constants/path.constant'
-import { Schema, schema } from 'src/utils/rules'
-import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import TextField from '@mui/material/TextField'
 import { useMutation } from '@tanstack/react-query'
-import authApi from 'src/apis/auth.api'
 import omit from 'lodash/omit'
 import { useContext } from 'react'
-import { AppContext } from 'src/contexts/app.context'
+import { Controller, useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import authApi from 'src/apis/auth.api'
+import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
+import AuthLayout from 'src/layouts/AuthLayout'
+import { Schema, schema } from 'src/utils/rules'
 
 type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
 const signUpSchema = schema.pick(['email', 'password', 'confirm_password'])
@@ -32,14 +32,14 @@ export default function Register() {
     resolver: yupResolver(signUpSchema)
   })
 
-  const registerAccountMutation = useMutation({
+  const registerMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
 
-    registerAccountMutation.mutate(body, {
+    registerMutation.mutate(body, {
       onSuccess: (data) => {
         setIsAuthenticated(true)
         setProfile(data.data.data?.user)
@@ -136,9 +136,16 @@ export default function Register() {
           />
         </div>
         <div className='form__actions flex'>
-          <Button type='submit' variant='contained' size='large' className='grow' sx={{ fontWeight: 600 }}>
+          <LoadingButton
+            loading={registerMutation.isPending}
+            type='submit'
+            variant='contained'
+            size='large'
+            className='grow'
+            sx={{ fontWeight: 600 }}
+          >
             Sign Up
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </AuthLayout>

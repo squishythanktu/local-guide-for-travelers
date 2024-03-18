@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import Typography from '@mui/material/Typography'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import NotificationItem from './NotificationItem/NotificationItem'
 import { useInfiniteQuery } from '@tanstack/react-query'
@@ -14,6 +15,9 @@ import Loading from 'src/pages/Loading'
 import { useInView } from 'react-intersection-observer'
 import { Notification as NotificationType } from 'src/types/notification.type'
 import Skeleton from '@mui/material/Skeleton'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
+import config from 'src/constants/config.constant'
 
 interface NotificationProps {
   textColor: string
@@ -22,6 +26,7 @@ interface NotificationProps {
 const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationProps) => {
   const { profile } = useContext(AppContext)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [responseRealtime, setResponseRealtime] = useState<NotificationType | null>(null)
   const { ref, inView } = useInView()
   const {
     data: notificationsData,
@@ -30,7 +35,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     hasNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: [`notification of user with id ${profile?.id}`],
+    queryKey: [`notification of user with id ${profile?.id}`, responseRealtime],
     queryFn: notificationApi.getNotifications,
     initialPageParam: 0,
     getNextPageParam: (lastPage, __allPages, lastPageParam) => {
@@ -38,21 +43,40 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
       return lastPageParam + 1
     }
   })
+  const open = Boolean(anchorEl)
+
+  useEffect(() => {
+    const socket = new SockJS(`${config.baseUrl}/ws`)
+    const stompClient = Stomp.over(socket)
+
+    stompClient.connect({}, () =>
+      stompClient.subscribe(`/topic/${profile?.email}`, (res: any) => {
+        if (res.body != responseRealtime) setResponseRealtime(res.body)
+      })
+    )
+  }, [profile?.email, responseRealtime])
 
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage()
   }, [inView, hasNextPage, fetchNextPage])
 
-  const open = Boolean(anchorEl)
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
   const handleClose = () => setAnchorEl(null)
 
+  const getUnreadNotifications = useCallback(() => {
+    if (!notificationsData) return 0
+
+    const totalCount = notificationsData.pages.reduce((count, page) => {
+      return count + page.data.data.filter((notification) => !notification.isRead).length
+    }, 0)
+    return totalCount
+  }, [notificationsData])
+
   return (
     <Box
-      className='relative ml-2 flex cursor-pointer flex-col items-center 
-text-base md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] 
+      className='relative ml-2 flex w-8 cursor-pointer flex-col items-center text-base 
+sm:w-full md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] 
 md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:hover:after:w-full'
     >
       <Button
@@ -69,7 +93,7 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
           }
         }}
       >
-        <Badge variant='dot' color='error'>
+        <Badge badgeContent={getUnreadNotifications()} color='error'>
           <NotificationsIcon sx={{ color: textColor }} />
         </Badge>
         <span className='mt-[5px] hidden lg:block lg:text-sm'>Notifications</span>
@@ -87,9 +111,10 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         sx={{
           maxHeight: '500px',
+          minHeight: '400px',
           '& .MuiPaper-root': {
             marginTop: '4px',
-            minWidth: 350
+            minWidth: 300
           },
           '& .MuiList-root': {
             paddingY: 0
@@ -108,7 +133,7 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
         )}
         {!isPending &&
           notificationsData?.pages.map((page, index) => {
-            if (page.data.data.length === 0) {
+            if (notificationsData?.pages.length === 1 && notificationsData?.pages[0].data.data.length === 0) {
               return (
                 <Box
                   key={index}
@@ -134,14 +159,14 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
                 </Box>
               )
             }
-            return page.data.data.map((noti: NotificationType, index) => {
+            return page.data.data.map((notification: NotificationType, index) => {
               if (page.data.data.length === index + 1)
-                return <NotificationItem innerRef={ref} key={noti.id} data={noti} />
-              return <NotificationItem key={noti.id} data={noti} />
+                return <NotificationItem innerRef={ref} key={notification.id} data={notification} />
+              return <NotificationItem key={notification.id} data={notification} />
             })
           })}
         {isFetchingNextPage && (
-          <>
+          <Box>
             <Box sx={{ display: 'flex', gap: 1, paddingX: '1rem', paddingY: '0.5rem' }}>
               <Skeleton variant='circular' width={40} height={40} />
               <Skeleton variant='text' sx={{ flexGrow: 1 }} />
@@ -150,7 +175,7 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
               <Skeleton variant='circular' width={40} height={40} />
               <Skeleton variant='text' sx={{ flexGrow: 1 }} />
             </Box>
-          </>
+          </Box>
         )}
         <Box sx={{ paddingY: '10px', paddingX: '16px' }}>
           {/* TODO: Handle see all recent activities API */}

@@ -25,6 +25,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: N
             alignItems: 'center',
             width: '2.5rem',
             height: '2.5rem',
+            aspectRatio: 1 / 1,
             fontWeight: '700',
             fontSize: '1.25rem',
             textTransform: 'uppercase',

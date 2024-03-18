@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import { useMutation } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
@@ -12,6 +12,7 @@ import ClockDurationIcon from 'src/assets/svg/clock-duration.svg'
 import GuideIcon from 'src/assets/svg/guide.svg'
 import LocationIcon from 'src/assets/svg/location.svg'
 import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
 import { Unit } from 'src/enums/unit.enum'
 import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
@@ -28,6 +29,7 @@ interface Props {
 export type AddBookingForm = Omit<Booking, 'status' | 'tour'>
 
 export default function BookingConfirmation({ timeOptions, formData, tour }: Props) {
+  const { isAuthenticated } = useContext(AppContext)
   const [selectedTimeOption, setSelectedTimeOption] = useState<string>('')
   const [totalPrice, setTotalPrice] = useState(0)
   const navigate = useNavigate()
@@ -67,6 +69,10 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   })
 
   const handleAddBooking = () => {
+    if (!isAuthenticated) {
+      toast.error('Please sign in before adding tour to your cart.')
+      return
+    }
     if (tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption) return
 
     addBookingMutation.mutate(bookingFormData, {

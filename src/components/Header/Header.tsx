@@ -95,7 +95,7 @@ export default function Header({
             <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
           <Box className='drawer col-span-2 col-start-11 flex items-center justify-end lg:col-span-1 lg:col-start-12 lg:hidden'>
-            {isAuthenticated && <Notification textColor={textColor} />}
+            {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
             <RightDrawer textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
         </div>

@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -12,6 +12,7 @@ import CommentBox from 'src/components/CommentBox/CommentBox'
 import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
+import { AppContext } from 'src/contexts/app.context'
 import { Unit } from 'src/enums/unit.enum'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound/NotFound'
@@ -51,6 +52,7 @@ const TourDetail: React.FC = () => {
     guide: { id: '', email: '' },
     startTimes: []
   })
+  const { isAuthenticated } = useContext(AppContext)
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
   const [formData, setFormData] = useState<BookingAssistantFormData>({
     startDate: new Date(),
@@ -243,11 +245,13 @@ const TourDetail: React.FC = () => {
                 <ReviewSortFilter onChange={handleSortFilterChange} />
               </Grid>
               <Grid item xs={4} sm={8} md={9}>
-                <CommentBox
-                  review={getReviewById()}
-                  onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
-                  isMutating={updateReviewOfTourMutation.isPending || addReviewOfTourMutation.isPending}
-                />
+                {isAuthenticated && (
+                  <CommentBox
+                    review={getReviewById()}
+                    onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}
+                    isMutating={updateReviewOfTourMutation.isPending || addReviewOfTourMutation.isPending}
+                  />
+                )}
                 {totalReviews > 0 &&
                   reviewsData?.data.data.map((review, index) => (
                     <Comment
@@ -259,14 +263,14 @@ const TourDetail: React.FC = () => {
                     />
                   ))}
                 {totalReviews === 0 && (
-                  <>
+                  <Box className='my-20'>
                     <img
                       src='/assets/images/not-found.png'
                       alt='Not Found Page'
                       className='mx-auto h-36 w-36 object-cover'
                     />
                     <h2 className='my-4 text-center'>No tour reviews available.</h2>
-                  </>
+                  </Box>
                 )}
               </Grid>
             </Grid>
