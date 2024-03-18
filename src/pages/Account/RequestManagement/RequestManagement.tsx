@@ -45,7 +45,7 @@ const RequestManagement: React.FC = () => {
         Request Management
       </h2>
       {isGuide && (
-        <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-4 rounded-md border'>
+        <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-4 border'>
           {Object.values(StatusRequestForGuide).map((item) => (
             <ButtonComponent
               key={item}

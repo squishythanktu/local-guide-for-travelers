@@ -15,7 +15,7 @@ const ButtonComponent: React.FC<Props> = ({ setRequestStatus, requestStatus, cur
       className='col-span-1 rounded-none'
       sx={{
         ...(currentRequestStatus === requestStatus.toString() && {
-          backgroundColor: (theme) => theme.palette.primary.light
+          backgroundColor: '#d9e7f4'
         })
       }}
     >
