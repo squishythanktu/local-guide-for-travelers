@@ -8,7 +8,8 @@ export type Request = {
   transportation: string[]
   duration: number
   unit: Unit
-  maxPrice: number
+  maxPricePerPerson: number
+  numberOfTravelers: number
   destination: string
   message: string
   guide: Guide

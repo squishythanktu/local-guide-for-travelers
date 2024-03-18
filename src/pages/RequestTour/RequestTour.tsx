@@ -49,7 +49,8 @@ const RequestTour: React.FC = () => {
       transportation: [],
       duration: 0,
       unit: '',
-      maxPrice: 0,
+      maxPricePerPerson: 0,
+      numberOfTravelers: 0,
       destination: '',
       message: ''
     },
@@ -79,8 +80,8 @@ const RequestTour: React.FC = () => {
           toast.success('Your request has been sent.')
           navigate(path.request)
         },
-        onError: (error) => {
-          toast.error(error.message)
+        onError: () => {
+          toast.error('You have a PENDING request for this guide, consider removing the previous before add.')
         }
       })
     }
@@ -186,15 +187,23 @@ const RequestTour: React.FC = () => {
               label={'Duration'}
             />
           </div>
-          <div className=''>
+          <div className='flex gap-3'>
             <ControlledTextField
               required
-              className='min-h-[80px] w-full grow'
+              className='min-h-[80px] w-1/2 grow'
               type='number'
               control={control}
-              name={'maxPrice'}
-              label={'Max price'}
+              name={'maxPricePerPerson'}
+              label={'Max price per person'}
               prefix='$'
+            />
+            <ControlledTextField
+              required
+              className='min-h-[80px] w-1/2 grow'
+              type='number'
+              control={control}
+              name={'numberOfTravelers'}
+              label={'Number of travelers'}
             />
           </div>
           <div className=''>

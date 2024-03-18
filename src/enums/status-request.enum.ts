@@ -6,7 +6,7 @@ export enum StatusRequestForGuide {
 }
 
 export enum StatusRequestForTraveler {
-  DELETED = 'Deleted'
+  CANCELED = 'Canceled'
 }
 
 Object.assign(StatusRequestForTraveler, StatusRequestForGuide)

@@ -88,7 +88,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
               variant='outlined'
               onClick={(event) => {
                 event.stopPropagation()
-                handleUpdateStatusRequest(StatusRequestForTraveler.DELETED.toLocaleUpperCase())()
+                handleUpdateStatusRequest(StatusRequestForTraveler.CANCELED.toLocaleUpperCase())()
               }}
               className='w-fit'
               color='error'
@@ -104,19 +104,22 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
         <div className='col-span-2 flex gap-1 text-sm font-medium'>
           Destination:<div className='text-sm'>{request.destination}</div>
         </div>
-        <div className='flex gap-1 text-sm font-medium'>
+        <div className='col-span-1 flex gap-1 text-sm font-medium'>
           Duration:
           <div className='flex gap-1 text-sm'>
             {request.duration}
             <span className='text-sm md:hidden'>{request.unit}</span>
           </div>
         </div>
-        <div className='hidden gap-1 text-sm font-medium md:flex'>
+        <div className='col-span-1 flex gap-1 text-sm font-medium sm:hidden lg:inline-block '>
           Unit:
-          <div className='text-sm'>{request.unit}</div>
+          <span className='ml-1 text-sm'>{request.unit}</span>
         </div>
-        <div className='col-span-2 flex gap-1 text-sm font-medium lg:col-span-1'>
-          Max price:<div className='text-sm'>{request.maxPrice}</div>
+        <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2  lg:col-span-1'>
+          Max price:<div className='text-sm'>{request.maxPricePerPerson}</div>
+        </div>
+        <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2 lg:col-span-1'>
+          Number of travelers:<div className='text-sm'>{request.numberOfTravelers}</div>
         </div>
         <div className='col-span-2 flex gap-1 text-sm font-medium lg:col-span-1'>
           Transportation:

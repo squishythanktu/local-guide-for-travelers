@@ -77,7 +77,8 @@ export const requestTourSchema = yup.object({
   transportation: yup.array().min(1, 'At least one transportation option must be selected'),
   duration: yup.number().positive().required().typeError('Duration must be positive a number'),
   unit: yup.string().trim().required(),
-  maxPrice: yup.number().positive().required().typeError('Max price must be positive a number'),
+  maxPricePerPerson: yup.number().positive().required().typeError('Max price must be positive a number'),
+  numberOfTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number'),
   destination: yup.string().required(),
   message: yup.string()
 })
