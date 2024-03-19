@@ -3,9 +3,9 @@ import Checkbox from '@mui/material/Checkbox'
 import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
+import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import Rating from '@mui/material/Rating'
-import Grid from '@mui/material/Grid'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { useCallback, useEffect, useState } from 'react'
 import { SortReview } from 'src/enums/sort-review.enum'
@@ -112,7 +112,7 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
           display: { xs: 'block', md: 'none' }
         }}
       >
-        <h3 className='reviews-summary__title'>Filter</h3>
+        <h3 className='reviews-summary__title mb-1.5'>Filter</h3>
 
         <MenuButton text='Star ratings' jsx={<Box sx={{ padding: '12px' }}>{RatingFormGroup}</Box>} />
       </Grid>

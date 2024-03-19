@@ -45,7 +45,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ review, onSubmit, isMutating }:
   }
 
   return (
-    <Box className='comment-box mb-6 flex border-b '>
+    <Box className='comment-box mb-6 flex'>
       <div className='review-card__user-photo mr-4 flex max-w-10'>
         <span className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xl font-bold uppercase text-slate-800'>
           {profile?.email.slice(0, 1)}

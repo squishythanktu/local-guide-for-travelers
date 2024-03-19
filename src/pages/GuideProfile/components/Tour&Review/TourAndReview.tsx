@@ -1,20 +1,24 @@
-import Divider from '@mui/material/Divider'
-import Grid from '@mui/material/Grid'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
+import Grid from '@mui/material/Grid'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { useTheme } from '@mui/material/styles'
-import { useQuery } from '@tanstack/react-query'
-import { SyntheticEvent, useState } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { SyntheticEvent, useCallback, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import reviewApi from 'src/apis/review.api'
+import { toast } from 'react-toastify'
+import reviewApi, { CommentFormData } from 'src/apis/review.api'
+import Comment from 'src/components/Comment/Comment'
+import CommentBox from 'src/components/CommentBox/CommentBox'
+import OverallRating from 'src/components/OverallRating/OverallRating'
 import ReviewSortFilter from 'src/components/ReviewSortFilter/ReviewSortFilter'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import TabPanel from 'src/components/TabPanel/TabPanel'
 import TourManagement from 'src/pages/Account/TourManagement'
+import { ReviewParams } from 'src/types/review.type'
 import { a11yProps } from 'src/utils/tab-panel'
-
 interface TourAndReviewProps {
   guideId?: string
 }
@@ -22,6 +26,8 @@ interface TourAndReviewProps {
 export default function TourAndReview({ guideId }: TourAndReviewProps) {
   const theme = useTheme()
   const [value, setValue] = useState(0)
+  const [editReviewId, setEditReviewId] = useState<number | null>(null)
+  const [reviewParams, setReviewParams] = useState<ReviewParams>({})
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -31,11 +37,85 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
     setValue(index)
   }
 
-  const { data: reviewsData } = useQuery({
-    queryKey: [`Get reviews of tour by ${guideId}`, guideId],
-    queryFn: () => reviewApi.getReviewsOfGuide(Number(guideId)),
+  const { data: reviewsData, refetch: refetchReviewsData } = useQuery({
+    queryKey: [`Get reviews of guide ${guideId}`, guideId, reviewParams],
+    queryFn: () => reviewApi.getReviewsOfGuide(Number(guideId), reviewParams),
+    enabled: guideId !== undefined,
+    staleTime: 0
+  })
+
+  const { data: isCanReview } = useQuery({
+    queryKey: [`Check user can review for tour of ${guideId}`, guideId, reviewsData],
+    queryFn: () => reviewApi.checkCanReview(Number(guideId)),
     enabled: guideId !== undefined
   })
+
+  const addReviewOfGuideMutation = useMutation({
+    mutationFn: (body: CommentFormData) => reviewApi.addReviewsOfGuideById(Number(guideId), body)
+  })
+
+  const handleCreateReviewOfGuide = useCallback((data: CommentFormData) => {
+    addReviewOfGuideMutation.mutate(data, {
+      onSuccess: () => {
+        toast.success('Add review of guide successfully.')
+        refetchReviewsData()
+        window.scrollTo({
+          top: 800,
+          behavior: 'smooth'
+        })
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }, [])
+
+  const deleteReviewOfGuideMutation = useMutation({
+    mutationFn: (guideId: number) => reviewApi.deleteReviewsOfGuideById(guideId)
+  })
+
+  const handleDeleteReviewOfGuide = useCallback((id: number) => {
+    deleteReviewOfGuideMutation.mutate(id, {
+      onSuccess: () => {
+        toast.success('Delete review of guide successfully.')
+        refetchReviewsData()
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }, [])
+
+  const updateReviewOfGuideMutation = useMutation({
+    mutationFn: (body: CommentFormData) => reviewApi.updateReviewsOfGuideById(editReviewId as number, body)
+  })
+
+  const handleUpdateReviewOfGuide = useCallback(
+    (data: CommentFormData) => {
+      if (editReviewId) {
+        updateReviewOfGuideMutation.mutate(data, {
+          onSuccess: async () => {
+            setEditReviewId(null)
+            refetchReviewsData()
+            toast.success('Update review of guide successfully.')
+          },
+          onError: (error) => {
+            toast.error(error.message)
+          }
+        })
+      }
+    },
+    [editReviewId]
+  )
+
+  const getReviewById = useCallback(
+    () => reviewsData?.data.data.filter((review) => review.id === editReviewId)[0],
+    [editReviewId, reviewsData?.data.data]
+  )
+
+  const handleSortFilterChange = useCallback((params: ReviewParams) => {
+    setReviewParams(params)
+  }, [])
 
   return (
     <Box
@@ -78,23 +158,48 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
         </TabPanel>
         <TabPanel value={2} index={2} dir={theme.direction}>
           <Divider className='mb-4' />
-          <ReviewTitle />
-          {reviewsData?.data.data && (
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              <Grid item sm={2} md={3}>
-                <ReviewSortFilter onChange={() => {}} />
-              </Grid>
-              <Grid item sm={6} md={9}>
-                {/* TODO: Handle API for comments
-                {reviewsData?.data.data.map((review) => <Comment key={review.id} comment={review} />)} */}
-              </Grid>
+          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            <Grid item xs={4} sm={2} md={3}>
+              <ReviewTitle />
             </Grid>
-          )}
-          {!reviewsData?.data.data && (
-            <>
-              <span>This tour has not had any reviews yet.</span>
-            </>
-          )}
+            <Grid item xs={4} sm={6} md={9}>
+              <OverallRating totalReviews={244} ratingReviewsAverage={111} />
+            </Grid>
+          </Grid>
+          <Grid className='py-6' container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 4, md: 12 }}>
+            <Grid item xs={4} sm={4} md={3}>
+              <ReviewSortFilter onChange={handleSortFilterChange} />
+            </Grid>
+            <Grid item xs={4} sm={4} md={9}>
+              {(editReviewId || isCanReview?.data.data.isCanReview) && (
+                <CommentBox
+                  onSubmit={editReviewId ? handleUpdateReviewOfGuide : handleCreateReviewOfGuide}
+                  review={getReviewById()}
+                  isMutating={addReviewOfGuideMutation.isPending}
+                />
+              )}
+              {reviewsData?.data.data.map((review, index) => (
+                <Comment
+                  index={index}
+                  key={review.id}
+                  setEditReviewId={(id: number) => setEditReviewId(id)}
+                  onDelete={(id: number) => handleDeleteReviewOfGuide(id)}
+                  comment={review}
+                />
+              ))}
+              {!reviewsData?.data.data ||
+                (reviewsData?.data.data.length < 1 && (
+                  <>
+                    <img
+                      src='/assets/images/not-found.png'
+                      alt='Not Found Page'
+                      className='mx-auto h-36 w-36 object-cover'
+                    />
+                    <h2 className='my-4 text-center'>No guide reviews available.</h2>
+                  </>
+                ))}
+            </Grid>
+          </Grid>
         </TabPanel>
       </SwipeableViews>
     </Box>

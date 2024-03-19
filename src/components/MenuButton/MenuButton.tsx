@@ -1,7 +1,7 @@
-import Button from '@mui/material/Button'
-import { ReactNode, useState } from 'react'
-import Popover from '@mui/material/Popover'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import Button from '@mui/material/Button'
+import Popover from '@mui/material/Popover'
+import { ReactNode, useState } from 'react'
 
 interface Props {
   jsx: ReactNode
@@ -33,6 +33,7 @@ const MenuButton = ({ jsx, text }: Props) => {
         onClick={handleClick}
         size='large'
         endIcon={<KeyboardArrowDownIcon />}
+        className='min-h-[50px]'
       >
         {text}
       </Button>

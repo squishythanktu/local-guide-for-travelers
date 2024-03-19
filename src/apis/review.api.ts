@@ -7,6 +7,7 @@ export type CommentFormData = CommentSchema
 
 export const URL_TOUR_REVIEW = '/reviews/tour-reviews'
 export const URL_GUIDE_REVIEW = '/reviews/guide-reviews'
+export const URL_USERS = '/users'
 
 const reviewApi = {
   searchReviewsOfTour(tourId: number, params: ReviewParams) {
@@ -21,8 +22,20 @@ const reviewApi = {
   deleteReviewsOfTourById(reviewId: number) {
     return http.delete<SuccessResponse<void>>(`${URL_TOUR_REVIEW}/${reviewId}`)
   },
-  getReviewsOfGuide(guideId: number) {
-    return http.get<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/${guideId}`)
+  getReviewsOfGuide(guideId: number, params: ReviewParams) {
+    return http.get<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/filter/${guideId}`, { params })
+  },
+  checkCanReview(guideId: number) {
+    return http.get<SuccessResponse<{ isCanReview: boolean }>>(`${URL_USERS}/${guideId}`)
+  },
+  addReviewsOfGuideById(guideId: number, body: CommentFormData) {
+    return http.post<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/${guideId}`, body)
+  },
+  updateReviewsOfGuideById(reviewId: number, body: CommentFormData) {
+    return http.put<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/${reviewId}`, body)
+  },
+  deleteReviewsOfGuideById(reviewId: number) {
+    return http.delete<SuccessResponse<void>>(`${URL_GUIDE_REVIEW}/${reviewId}`)
   }
 }
 

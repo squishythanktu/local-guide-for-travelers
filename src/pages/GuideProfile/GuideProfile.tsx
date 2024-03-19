@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import guideApi from 'src/apis/guide.api'
 import path from 'src/constants/path.constant'
+import Loading from '../Loading'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
-import Loading from '../Loading'
 
 export default function GuideProfile() {
   const { id } = useParams()
@@ -100,7 +100,7 @@ export default function GuideProfile() {
                   <span className='text-sm'>
                     {Array.isArray(guideProfileData?.data?.data?.languageSkill) &&
                     guideProfileData?.data?.data?.languageSkill.length > 0
-                      ? guideProfileData?.data?.data?.languageSkill.map((item) => item).join(', ')
+                      ? guideProfileData?.data?.data?.languageSkill.map((item) => item.language).join(', ')
                       : 'N/A'}
                   </span>
                 </Box>

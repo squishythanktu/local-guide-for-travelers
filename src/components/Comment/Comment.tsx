@@ -32,10 +32,8 @@ const Comment: React.FC<CommentProps> = memo(({ comment, index, setEditReviewId,
 
   const handleEdit = (id: number) => {
     setEditReviewId(id)
-    window.scrollTo({
-      top: 1800,
-      behavior: 'smooth'
-    })
+    const element = document.getElementById('review-title')
+    element?.scrollIntoView({ behavior: 'smooth' })
     handleClose()
   }
 
@@ -47,10 +45,8 @@ const Comment: React.FC<CommentProps> = memo(({ comment, index, setEditReviewId,
   const handleConfirmDelete = () => {
     onDelete(comment.id)
     setDeleteMode(false)
-    window.scrollTo({
-      top: 1800,
-      behavior: 'smooth'
-    })
+    const element = document.getElementById('review-title')
+    element?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
