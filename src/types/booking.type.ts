@@ -15,3 +15,9 @@ export type Booking = {
   tour: Tour
   guide?: Guide
 }
+
+export type PopularCity = {
+  name: string
+  bookedQuantity: number
+  image: string
+}

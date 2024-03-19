@@ -1,14 +1,14 @@
 import { Box } from '@mui/material'
-import TourCard from '../../components/TourCard/TourCard'
-import { headerHeight } from 'src/constants/width-height.constant'
-import Slider from 'react-slick'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import LocationCard from 'src/components/LocationCard'
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import tourApi from 'src/apis/tour.api'
-import { Tour } from 'src/types/tour.type'
 import Skeleton from '@mui/material/Skeleton'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import 'slick-carousel/slick/slick-theme.css'
+import 'slick-carousel/slick/slick.css'
+import bookingApi from 'src/apis/booking.api'
+import tourApi from 'src/apis/tour.api'
+import { headerHeight } from 'src/constants/width-height.constant'
+import { Tour } from 'src/types/tour.type'
+import TourCard from '../../components/TourCard/TourCard'
+import LocationCard from 'src/components/LocationCard/LocationCard'
 
 export default function Home() {
   const { data: toursData, isPending } = useQuery({
@@ -17,40 +17,13 @@ export default function Home() {
     placeholderData: keepPreviousData,
     staleTime: 5 * 1000
   })
-  const carouselSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 6,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  }
+
+  const { data: popularCitiesData, isPending: isPendingCities } = useQuery({
+    queryKey: ['popular cities'],
+    queryFn: () => bookingApi.getPopularCities(),
+    placeholderData: keepPreviousData,
+    staleTime: 5 * 1000
+  })
 
   return (
     <div className='homepage__container'>
@@ -86,18 +59,20 @@ export default function Home() {
         </div>
       </div>
       {/* Locations */}
-      <div className='collection-container container relative mx-auto my-10 max-w-[94%] lg:mx-auto lg:max-w-[1400px]'>
-        <div className='collection-header mb-4'>
-          <h2 className='text-4xl	leading-10'>Awe-inspiring destinations</h2>
-        </div>
-        <div className='collection-body'>
-          <Slider {...carouselSettings} className='w-full'>
-            {Array.from(Array(9).keys()).map((num) => (
-              <LocationCard key={num} />
+      {!isPendingCities && popularCitiesData?.data.data && popularCitiesData?.data.data.length > 0 && (
+        <div className='collection-container container relative mx-auto my-10 max-w-[94%] lg:mx-auto lg:max-w-[1400px]'>
+          <div className='collection-header mb-4'>
+            <h2 className='text-4xl	leading-10'>Awe-inspiring destinations</h2>
+          </div>
+          <div className='scroll flex flex-nowrap justify-between gap-2 overflow-x-auto'>
+            {popularCitiesData?.data.data.map((city, index) => (
+              <div key={index} className='col-span-1'>
+                <LocationCard city={city} />
+              </div>
             ))}
-          </Slider>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
