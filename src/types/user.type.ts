@@ -1,4 +1,4 @@
-type Role = 'GUIDER' | 'TRAVELER'
+import { UserRole } from 'src/enums/user-role.enum'
 
 export interface User {
   id: string
@@ -7,5 +7,5 @@ export interface User {
   dateOfBirth?: string
   phone?: string
   address?: string
-  roles?: Role[]
+  roles: UserRole[]
 }

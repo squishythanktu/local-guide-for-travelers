@@ -7,7 +7,7 @@ import { CssVarsTheme, Theme } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
 import WhiteLogoIcon from 'src/assets/svg/logo-white.svg'
 import MainLogoIcon from 'src/assets/svg/logo.svg'
-import { headerHeight } from 'src/constants/height.constant'
+import { headerHeight } from 'src/constants/width-height.constant'
 import path from 'src/constants/path.constant'
 import NavLink from './NavLink'
 import ProfileMenu from './ProfileMenu'
@@ -61,7 +61,7 @@ export default function Header({
         sticky: scroll && isEnableScroll
       })}
       sx={{
-        height: headerHeight.base,
+        height: headerHeight.sm,
         width: '100%',
         background: `${scroll && isEnableScroll ? 'white' : bgColor}`,
         '@media (min-width: 768px)': {

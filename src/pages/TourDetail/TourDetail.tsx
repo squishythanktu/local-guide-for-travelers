@@ -27,6 +27,7 @@ import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
+import { UserRole } from 'src/enums/user-role.enum'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
@@ -49,7 +50,7 @@ const TourDetail: React.FC = () => {
     itinerary: '',
     categories: [{ id: 0, name: '' }],
     images: [{ id: 0, imageLink: '' }],
-    guide: { id: '', email: '' },
+    guide: { id: '', email: '', roles: [UserRole.GUIDER] },
     startTimes: []
   })
   const { isAuthenticated } = useContext(AppContext)

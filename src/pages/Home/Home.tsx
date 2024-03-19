@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import TourCard from '../../components/TourCard/TourCard'
-import { headerHeight } from 'src/constants/height.constant'
+import { headerHeight } from 'src/constants/width-height.constant'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -57,7 +57,7 @@ export default function Home() {
       <Box
         className='hero-section'
         sx={{
-          height: `calc(600px - ${headerHeight.base})`,
+          height: `calc(600px - ${headerHeight.sm})`,
           '@media (min-width: 768px)': {
             height: `calc(600px - ${headerHeight.md})`
           }

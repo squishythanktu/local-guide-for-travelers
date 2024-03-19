@@ -8,6 +8,8 @@ import RequestManagement from './pages/Account/RequestManagement/RequestManageme
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import Loading from './pages/Loading'
 import ManagementLayout from './pages/Account/layouts/ManagementLayout/ManagementLayout'
+import { UserRole } from './enums/user-role.enum'
+import AdminLayout from './layouts/AdminLayout/AdminLayout'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -29,18 +31,128 @@ const GuideProfile = lazy(() => import('./pages/GuideProfile'))
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 const RequestTour = lazy(() => import('./pages/RequestTour/RequestTour'))
 
-function ProtectedRoute() {
+const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
-  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.home} />
 }
 
-function RejectedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
-  return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
+const AdminRoute = () => {
+  const { profile, isAuthenticated } = useContext(AppContext)
+  return isAuthenticated && profile?.roles.includes(UserRole.ADMIN) ? <Outlet /> : <Navigate to={path.home} />
+}
+
+const UserRoute = () => {
+  const { profile, isAuthenticated } = useContext(AppContext)
+  return isAuthenticated && profile?.roles[0] !== UserRole.ADMIN ? <Outlet /> : <Navigate to={path.admin} />
+}
+
+const NonAdminRoute = () => {
+  const { profile, isAuthenticated } = useContext(AppContext)
+  return !isAuthenticated || (isAuthenticated && profile?.roles[0] !== UserRole.ADMIN) ? (
+    <Outlet />
+  ) : (
+    <Navigate to={path.admin} />
+  )
 }
 
 export default function useRouteElements() {
   const routeElements = useRoutes([
+    {
+      path: '/',
+      element: <NonAdminRoute />,
+      children: [
+        {
+          path: path.home,
+          element: (
+            <HomeLayout>
+              <Suspense fallback={<Loading />}>
+                <Home />
+              </Suspense>
+            </HomeLayout>
+          )
+        },
+        {
+          path: path.tourDetail,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <TourDetail />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.cart,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <Cart />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.bookings,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <Bookings />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.guideProfile,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <GuideProfile />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.searchTour,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <SearchTours />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.searchGuide,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <SearchGuides />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.checkout,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <Checkout />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: '*',
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <NotFound />
+              </Suspense>
+            </MainLayout>
+          )
+        }
+      ]
+    },
     {
       path: '/',
       element: <RejectedRoute />,
@@ -73,7 +185,7 @@ export default function useRouteElements() {
     },
     {
       path: '/',
-      element: <ProtectedRoute />,
+      element: <UserRoute />,
       children: [
         {
           path: path.account,
@@ -168,95 +280,18 @@ export default function useRouteElements() {
       ]
     },
     {
-      path: '',
-      index: true,
-      element: (
-        <HomeLayout>
-          <Suspense fallback={<Loading />}>
-            <Home />
-          </Suspense>
-        </HomeLayout>
-      )
-    },
-    {
-      path: path.tourDetail,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <TourDetail />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: path.cart,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <Cart />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: path.bookings,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <Bookings />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: path.guideProfile,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <GuideProfile />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: path.searchTour,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <SearchTours />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: path.searchGuide,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <SearchGuides />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: path.checkout,
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <Checkout />
-          </Suspense>
-        </MainLayout>
-      )
-    },
-    {
-      path: '*',
-      element: (
-        <MainLayout>
-          <Suspense fallback={<Loading />}>
-            <NotFound />
-          </Suspense>
-        </MainLayout>
-      )
+      path: '/',
+      element: <AdminRoute />,
+      children: [
+        {
+          path: path.home,
+          element: <Navigate to={path.admin} />
+        },
+        {
+          path: path.admin,
+          element: <AdminLayout />
+        }
+      ]
     }
   ])
   return routeElements

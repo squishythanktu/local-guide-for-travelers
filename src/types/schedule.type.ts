@@ -1,4 +1,4 @@
-import { BusyDate } from 'src/enums/busy-date-type.enum'
+import { BusyDate } from 'src/enums/busy-date.enum'
 
 export type BusySchedule = {
   id: number
