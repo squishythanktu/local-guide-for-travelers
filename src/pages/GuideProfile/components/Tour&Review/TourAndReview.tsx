@@ -6,7 +6,7 @@ import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { useTheme } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { SyntheticEvent, useCallback, useState } from 'react'
+import { SyntheticEvent, useCallback, useMemo, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -117,6 +117,18 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
     setReviewParams(params)
   }, [])
 
+  const totalReviews = useMemo(() => reviewsData?.data.data.length || 0, [reviewsData?.data.data])
+
+  const getRatingReviewsAverage = useCallback(
+    () =>
+      Number(
+        ((reviewsData?.data.data.reduce((total, review) => total + review.rating, 0) as number) / totalReviews).toFixed(
+          2
+        )
+      ) || 0,
+    [reviewsData?.data.data, totalReviews]
+  )
+
   return (
     <Box
       sx={{
@@ -163,7 +175,7 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
               <ReviewTitle />
             </Grid>
             <Grid item xs={4} sm={6} md={9}>
-              <OverallRating totalReviews={244} ratingReviewsAverage={111} />
+              <OverallRating totalReviews={totalReviews} ratingReviewsAverage={getRatingReviewsAverage()} />
             </Grid>
           </Grid>
           <Grid className='py-6' container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 4, md: 12 }}>
@@ -188,7 +200,7 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
                 />
               ))}
               {!reviewsData?.data.data ||
-                (reviewsData?.data.data.length < 1 && (
+                (totalReviews < 1 && (
                   <>
                     <img
                       src='/assets/images/not-found.png'

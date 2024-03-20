@@ -16,4 +16,5 @@ export type Guide = {
   overallRating: number
   avatar: string
   languageSkill: LanguageSkill[]
+  numberOfReviews: number
 }

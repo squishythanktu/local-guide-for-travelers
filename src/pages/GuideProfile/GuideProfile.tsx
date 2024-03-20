@@ -49,8 +49,7 @@ export default function GuideProfile() {
                     {guideProfileData?.data.data.overallRating || 0}
                   </span>
                   <span className='rating-overall__reviews text-sm font-semibold  text-[var(--label-secondary)]'>
-                    {/* TODO: Replace by tour total reviews from API */}
-                    (244 reviews)
+                    ({guideProfileData?.data.data.numberOfReviews || 0} reviews)
                   </span>
                 </div>
                 <Button

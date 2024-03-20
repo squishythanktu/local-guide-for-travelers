@@ -4,11 +4,11 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import { Controller, useForm } from 'react-hook-form'
 import scheduleApi from 'src/apis/schedule.api'
 import { bookingSchema } from 'src/utils/rules'
 import { BookingAssistantFormData } from '../../TourDetail'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 
 dayjs.extend(isSameOrBefore)
 
@@ -27,8 +27,7 @@ export default function BookingAssistant({ onSubmit, id }: Props) {
     handleSubmit
   } = useForm<BookingAssistantFormData>({
     defaultValues: {
-      numberTravelers: 0,
-      startDate: new Date()
+      numberTravelers: 0
     },
     resolver: yupResolver(bookingFormSchema)
   })
