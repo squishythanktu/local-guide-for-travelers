@@ -38,17 +38,17 @@ const RejectedRoute = () => {
 
 const AdminRoute = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  return isAuthenticated && profile?.roles.includes(UserRole.ADMIN) ? <Outlet /> : <Navigate to={path.home} />
+  return isAuthenticated && profile?.role === UserRole.ADMIN ? <Outlet /> : <Navigate to={path.home} />
 }
 
 const UserRoute = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  return isAuthenticated && profile?.roles[0] !== UserRole.ADMIN ? <Outlet /> : <Navigate to={path.admin} />
+  return isAuthenticated && profile?.role !== UserRole.ADMIN ? <Outlet /> : <Navigate to={path.admin} />
 }
 
 const NonAdminRoute = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  return !isAuthenticated || (isAuthenticated && profile?.roles[0] !== UserRole.ADMIN) ? (
+  return !isAuthenticated || (isAuthenticated && profile?.role !== UserRole.ADMIN) ? (
     <Outlet />
   ) : (
     <Navigate to={path.admin} />

@@ -7,5 +7,5 @@ export interface User {
   dateOfBirth?: string
   phone?: string
   address?: string
-  roles: UserRole[]
+  role: UserRole
 }

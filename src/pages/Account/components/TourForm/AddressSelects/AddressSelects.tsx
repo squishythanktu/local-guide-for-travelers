@@ -44,6 +44,7 @@ const AddressSelects: React.FC<AddressSelectsProps> = ({ onChange }: AddressSele
       <Autocomplete
         disablePortal
         id='province'
+        value={province}
         className='w-full flex-grow'
         options={provincesData?.data.data || []}
         sx={{ width: 300 }}
@@ -66,14 +67,7 @@ const AddressSelects: React.FC<AddressSelectsProps> = ({ onChange }: AddressSele
         renderInput={(params) => (
           <TextField
             {...params}
-            label={
-              <Typography sx={{ fontWeight: 600 }}>
-                Province{' '}
-                <Typography component='span' sx={{ color: 'red' }}>
-                  *
-                </Typography>
-              </Typography>
-            }
+            label={<Typography sx={{ fontWeight: 600 }}>Province</Typography>}
             InputLabelProps={{
               shrink: true
             }}
@@ -82,89 +76,73 @@ const AddressSelects: React.FC<AddressSelectsProps> = ({ onChange }: AddressSele
           />
         )}
       />
-      {province && (
-        <Autocomplete
-          disablePortal
-          id='district'
-          className='w-full flex-grow'
-          options={districtsData?.data.data || []}
-          sx={{ width: 300 }}
-          onChange={(_event: SyntheticEvent<Element, Event>, value: string | null) => {
-            setDistrict(value)
-            if (!value) {
-              setWard(null)
-              setDistrictError('District is required')
-              return
-            }
-            setDistrictError('')
-          }}
-          renderOption={(props, option) => (
-            <Box component='li' {...props}>
-              <FmdGoodOutlinedIcon sx={{ mr: 2, flexShrink: 0, color: (theme) => theme.palette.primary.main }} />
-              {option}
-            </Box>
-          )}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={
-                <Typography sx={{ fontWeight: 600 }}>
-                  District{' '}
-                  <Typography component='span' sx={{ color: 'red' }}>
-                    *
-                  </Typography>
-                </Typography>
-              }
-              InputLabelProps={{
-                shrink: true
-              }}
-              error={!!districtError}
-              helperText={districtError}
-            />
-          )}
-        />
-      )}
-      {province && district && (
-        <Autocomplete
-          disablePortal
-          id='ward'
-          className='w-full flex-grow'
-          options={wardsData?.data.data || []}
-          sx={{ width: 300 }}
-          onChange={(_event: SyntheticEvent<Element, Event>, value: string | null) => {
-            setWard(value)
-            if (!value) {
-              setWardError('Ward is required')
-              return
-            }
-            setWardError('')
-          }}
-          renderOption={(props, option) => (
-            <Box component='li' {...props}>
-              <FmdGoodOutlinedIcon sx={{ mr: 2, flexShrink: 0, color: (theme) => theme.palette.primary.main }} />
-              {option}
-            </Box>
-          )}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={
-                <Typography sx={{ fontWeight: 600 }}>
-                  Ward{' '}
-                  <Typography component='span' sx={{ color: 'red' }}>
-                    *
-                  </Typography>
-                </Typography>
-              }
-              InputLabelProps={{
-                shrink: true
-              }}
-              error={!!wardError}
-              helperText={wardError}
-            />
-          )}
-        />
-      )}
+
+      <Autocomplete
+        disablePortal
+        id='district'
+        className='w-full flex-grow'
+        options={districtsData?.data.data || []}
+        sx={{ width: 300 }}
+        onChange={(_event: SyntheticEvent<Element, Event>, value: string | null) => {
+          setDistrict(value)
+          if (!value) {
+            setWard(null)
+            setDistrictError('District is required')
+            return
+          }
+          setDistrictError('')
+        }}
+        renderOption={(props, option) => (
+          <Box component='li' {...props}>
+            <FmdGoodOutlinedIcon sx={{ mr: 2, flexShrink: 0, color: (theme) => theme.palette.primary.main }} />
+            {option}
+          </Box>
+        )}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={<Typography sx={{ fontWeight: 600 }}>District</Typography>}
+            InputLabelProps={{
+              shrink: true
+            }}
+            error={!!districtError}
+            helperText={districtError}
+          />
+        )}
+      />
+
+      <Autocomplete
+        disablePortal
+        id='ward'
+        className='w-full flex-grow'
+        options={wardsData?.data.data || []}
+        sx={{ width: 300 }}
+        onChange={(_event: SyntheticEvent<Element, Event>, value: string | null) => {
+          setWard(value)
+          if (!value) {
+            setWardError('Ward is required')
+            return
+          }
+          setWardError('')
+        }}
+        renderOption={(props, option) => (
+          <Box component='li' {...props}>
+            <FmdGoodOutlinedIcon sx={{ mr: 2, flexShrink: 0, color: (theme) => theme.palette.primary.main }} />
+            {option}
+          </Box>
+        )}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={<Typography sx={{ fontWeight: 600 }}>Ward</Typography>}
+            InputLabelProps={{
+              shrink: true
+            }}
+            error={!!wardError}
+            helperText={wardError}
+          />
+        )}
+      />
     </>
   )
 }

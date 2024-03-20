@@ -50,7 +50,7 @@ const TourDetail: React.FC = () => {
     itinerary: '',
     categories: [{ id: 0, name: '' }],
     images: [{ id: 0, imageLink: '' }],
-    guide: { id: '', email: '', roles: [UserRole.GUIDER] },
+    guide: { id: '', email: '', role: UserRole.GUIDER },
     startTimes: []
   })
   const { isAuthenticated } = useContext(AppContext)

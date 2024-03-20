@@ -11,7 +11,7 @@ const AvatarSideNav: React.FC = () => {
       sx={{ backgroundColor: `var(--decorative-midnight-blue)` }}
     >
       <h1 className='account__header-name mb-1 text-2xl font-bold'>{profile?.fullName || 'username'}</h1>
-      <h4 className='account__header-subheading font-bold tracking-wide'>{profile?.roles?.join(' | ')}</h4>
+      <h4 className='account__header-subheading font-bold tracking-wide'>{profile?.role}</h4>
       <img
         src='/assets/svg/top-line.svg'
         className='absolute right-[-130px] top-[-10px]'

@@ -1,60 +1,80 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { useContext, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import userApi from 'src/apis/user.api'
+import ControlledTextField from 'src/components/ControlledTextField'
+import { AppContext } from 'src/contexts/app.context'
 import { UserSchema, userSchema } from 'src/utils/rules'
-import DateSelect from '../components/DateSelect'
 
-type FormData = Pick<UserSchema, 'username' | 'address' | 'phone' | 'date_of_birth'>
-const accountSchema = userSchema.pick(['username', 'address', 'phone', 'date_of_birth'])
+type FormData = Pick<UserSchema, 'fullName' | 'address' | 'phone' | 'dateOfBirth'>
+const accountSchema = userSchema.pick(['fullName', 'address', 'phone', 'dateOfBirth'])
 
 export default function Profile() {
-  const {
-    trigger,
-    control,
-    formState: { errors },
-    handleSubmit
-  } = useForm<FormData>({
+  const { profile } = useContext(AppContext)
+  const { data: profileData } = useQuery({
+    queryKey: [`get me ${profile?.email}`, profile?.email],
+    queryFn: () => userApi.getMe()
+  })
+  const { trigger, control, setValue, handleSubmit } = useForm<FormData>({
     defaultValues: {
-      username: '',
+      fullName: '',
       phone: '',
       address: '',
-      date_of_birth: new Date(1900, 0, 1) // year month day (month start from 0)
+      dateOfBirth: undefined
     },
     resolver: yupResolver(accountSchema)
   })
+
+  useEffect(() => {
+    if (profileData?.data.data) {
+      Object.entries(profileData?.data.data).forEach(([key, value]) => {
+        if (key === 'dateOfBirth' && value) {
+          setValue('dateOfBirth', value.toString().split('T')[0])
+          return
+        }
+        setValue(key as keyof FormData, value)
+      })
+    }
+  }, [profileData?.data.data, setValue])
 
   const onSubmit = () => {}
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='account-profile-form'>
-      <div className='form-defails flex flex-col'>
+      <div className='form-details flex flex-col'>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
           Profile Details
         </h2>
-        <div className='account-profile__field-group mb-4 flex flex-col md:flex-row'>
+        <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row'>
+          <ControlledTextField
+            className='min-h-20 w-full  md:w-1/2'
+            control={control}
+            name={'fullName'}
+            label={'Full name'}
+          />
           <Controller
             control={control}
-            name='username'
-            render={({ field }) => (
-              <TextField
-                id='username'
-                variant='outlined'
-                label='Username'
-                className='min-h-20'
-                style={{ flexBasis: 'calc(33.33% - 2%)' }}
-                error={!!errors.username?.message}
-                helperText={errors.username?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('username')
-                }}
-              />
-            )}
+            name='dateOfBirth'
+            render={({ field }) => {
+              return (
+                <DatePicker
+                  disableFuture
+                  label='Date of birth'
+                  value={field.value ? dayjs(field.value) : null}
+                  className='min-h-20 w-full md:w-1/2'
+                  slotProps={{ textField: { InputLabelProps: { shrink: true } } }}
+                  onChange={(event) => {
+                    field.onChange(event)
+                    trigger('dateOfBirth')
+                  }}
+                />
+              )
+            }}
           />
         </div>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
@@ -66,69 +86,33 @@ export default function Profile() {
             id='email'
             variant='outlined'
             label='Email'
-            value='lethanhtu164@gmail.com'
+            value={profileData?.data.data.email || profile?.email}
             className='min-h-20 grow'
             InputLabelProps={{
               shrink: true
             }}
           />
-          <Controller
+          <ControlledTextField
+            className='min-h-20 grow'
+            type='number'
             control={control}
-            name='phone'
-            render={({ field }) => (
-              <TextField
-                id='phone'
-                type='phone'
-                label='Phone'
-                variant='outlined'
-                className='min-h-20 grow'
-                error={!!errors.phone?.message}
-                helperText={errors.phone?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('phone')
-                }}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='address'
-            render={({ field }) => (
-              <TextField
-                id='address'
-                type='address'
-                label='Address'
-                variant='outlined'
-                className='min-h-20 grow'
-                error={!!errors.address?.message}
-                helperText={errors.address?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('address')
-                }}
-              />
-            )}
+            name={'phone'}
+            label={'Phone'}
           />
         </div>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Date of birth
+          Address
         </h2>
         <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
-          <Controller
-            control={control}
-            name='date_of_birth'
-            render={({ field }) => (
-              <DateSelect errorMessage={errors.date_of_birth?.message} value={field.value} onChange={field.onChange} />
-            )}
+          <TextField
+            id='address'
+            variant='outlined'
+            label='Address'
+            value={profileData?.data.data.address || profile?.address}
+            className='min-h-20 grow'
+            InputLabelProps={{
+              shrink: true
+            }}
           />
         </div>
       </div>
