@@ -11,6 +11,7 @@ import ControlledTextField from 'src/components/ControlledTextField'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import { Unit } from 'src/enums/unit.enum'
 import { Location } from 'src/types/location.type'
+import { Request } from 'src/types/request.type'
 import { ImageWithLink, Tour, TourCategory } from 'src/types/tour.type'
 import { User } from 'src/types/user.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
@@ -22,11 +23,12 @@ interface TourFormProps {
   onCancel: () => void
   defaultValue?: Tour | User
   isMutation: boolean
+  request?: Request
 }
 
 export type TourFormData = TourSchema
 
-export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation }: TourFormProps) {
+export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation, request }: TourFormProps) {
   const {
     trigger,
     control,
@@ -70,7 +72,15 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation 
         setImages((defaultValue as Tour).images)
       })
     }
-  }, [defaultValue, setValue])
+    if (request) {
+      setValue('duration', request.duration)
+      setValue('pricePerTraveler', request.maxPricePerPerson)
+      setValue('limitTraveler', request.numberOfTravelers)
+      setValue('transportation', request.transportation.join(', '))
+      setValue('unit', request.unit)
+      setValue('itinerary', request.destination)
+    }
+  }, [defaultValue, request, setValue])
 
   useEffect(() => {
     setValue('images', images)

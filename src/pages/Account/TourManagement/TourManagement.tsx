@@ -18,6 +18,9 @@ import TourForm from '../components/TourForm'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import IconButton from '@mui/material/IconButton'
 import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
+import { Request } from 'src/types/request.type'
+import { StatusRequestForGuide } from 'src/enums/status-request.enum'
+import { Unit } from 'src/enums/unit.enum'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -37,10 +40,43 @@ export default function TourManagement({ guideId }: Props) {
   const isOwner = !guideId
   const location = useLocation()
   const navigate = useNavigate()
+  const [request, setRequest] = useState<Request>({
+    id: 0,
+    transportation: [],
+    duration: 0,
+    unit: Unit.DAYS,
+    maxPricePerPerson: 0,
+    numberOfTravelers: 0,
+    destination: '',
+    message: '',
+    guide: {
+      id: 0,
+      email: '',
+      fullName: '',
+      dateOfBirth: new Date(),
+      phone: '',
+      address: '',
+      biography: '',
+      credential: '',
+      overallRating: 0,
+      avatar: '',
+      languageSkill: []
+    },
+    traveler: {
+      id: '',
+      email: '',
+      roles: []
+    },
+    status: StatusRequestForGuide.PENDING,
+    tourId: 0
+  })
 
   useEffect(() => {
-    if (location.state?.requestId) setCreateMode(true)
-  }, [location.state?.requestId])
+    if (location.state?.request) {
+      setCreateMode(true)
+      setRequest(location.state?.request)
+    }
+  }, [location.state?.request])
 
   const {
     data: guideToursData,
@@ -57,7 +93,7 @@ export default function TourManagement({ guideId }: Props) {
   })
 
   const createRequestTourMutation = useMutation({
-    mutationFn: (body: TourFormData) => tourApi.createRequestTour(location.state.requestId, body)
+    mutationFn: (body: TourFormData) => tourApi.createRequestTour(request.id, body)
   })
 
   const deleteTourMutation = useMutation({
@@ -284,6 +320,7 @@ export default function TourManagement({ guideId }: Props) {
             onSubmit={handleCreateTourForm}
             onCancel={handleCancelTourForm}
             isMutation={createTourMutation.isPending}
+            request={request}
           />
         </>
       )}

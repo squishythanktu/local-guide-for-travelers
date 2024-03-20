@@ -72,7 +72,12 @@ const RequestManagement: React.FC = () => {
         {displayData.map((request) => {
           return (
             <div key={request.id} className='col-span-1'>
-              <RequestComponent request={request} isGuide={isGuide} refetch={refetch} />
+              <RequestComponent
+                request={request}
+                isGuide={isGuide}
+                refetch={refetch}
+                setRequestStatus={setRequestStatus}
+              />
             </div>
           )
         })}

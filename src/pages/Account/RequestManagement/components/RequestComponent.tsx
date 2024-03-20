@@ -10,18 +10,21 @@ interface Props {
   request: Request
   isGuide?: boolean
   refetch: () => Promise<QueryObserverResult>
+  setRequestStatus: React.Dispatch<React.SetStateAction<StatusRequestForGuide | StatusRequestForTraveler>>
 }
-const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props) => {
+
+const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setRequestStatus }: Props) => {
   const navigate = useNavigate()
 
   const updateStatusRequestMutation = useMutation({
     mutationFn: (body: string) => requestApi.updateRequestStatus(request.id, { status: body })
   })
 
-  const handleUpdateStatusRequest = (status: string) => () => {
-    updateStatusRequestMutation.mutate(status, {
+  const handleUpdateStatusRequest = (status: StatusRequestForTraveler | StatusRequestForGuide) => () => {
+    updateStatusRequestMutation.mutate(status.toLocaleUpperCase(), {
       onSuccess: () => {
         refetch()
+        setRequestStatus(status)
       }
     })
   }
@@ -29,7 +32,9 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
   return (
     <Box
       className='min-h-[226px] rounded-md border py-4 text-black shadow-md'
-      onClick={() => navigate(`/${path.tourDetail.replace(':id', request.tourId.toString())}`)}
+      onClick={() => {
+        if (request.tourId) navigate(`/${path.tourDetail.replace(':id', request.tourId.toString())}`)
+      }}
     >
       <div className='request__header flex items-center justify-between px-4'>
         <div className='flex gap-3'>
@@ -47,7 +52,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
               <Button
                 onClick={(event) => {
                   event.stopPropagation()
-                  handleUpdateStatusRequest(StatusRequestForGuide.ACCEPTED.toLocaleUpperCase())()
+                  handleUpdateStatusRequest(StatusRequestForGuide.ACCEPTED)()
                 }}
                 variant='outlined'
                 className='w-fit'
@@ -59,7 +64,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
               <Button
                 onClick={(event) => {
                   event.stopPropagation()
-                  handleUpdateStatusRequest(StatusRequestForGuide.DENIED.toLocaleUpperCase())()
+                  handleUpdateStatusRequest(StatusRequestForGuide.DENIED)()
                 }}
                 variant='outlined'
                 className='w-fit'
@@ -77,7 +82,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
               color='primary'
               size='small'
               onClick={(event) => {
-                event.stopPropagation(), navigate(path.tours, { state: { requestId: request.id } })
+                event.stopPropagation(), navigate(path.tours, { state: { request: request } })
               }}
             >
               Add tour
@@ -88,7 +93,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
               variant='outlined'
               onClick={(event) => {
                 event.stopPropagation()
-                handleUpdateStatusRequest(StatusRequestForTraveler.CANCELED.toLocaleUpperCase())()
+                handleUpdateStatusRequest(StatusRequestForTraveler.CANCELED)()
               }}
               className='w-fit'
               color='error'
@@ -123,11 +128,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch }: Props)
         </div>
         <div className='col-span-2 flex gap-1 text-sm font-medium lg:col-span-1'>
           Transportation:
-          {request.transportation.map((item: string) => (
-            <div key={item} className='text-sm'>
-              {item}
-            </div>
-          ))}
+          <div className='text-sm'>{request.transportation.join(', ')}</div>
         </div>
 
         <div className='col-span-2 flex gap-2 text-sm font-medium'>
