@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import invoiceApi from 'src/apis/invoice.api'
 import CheckIcon from 'src/assets/svg/check-green.svg'
+import Loading from '../Loading'
 import NotFound from '../NotFound/NotFound'
 import ContentInvoice from './components/ContentInvoice'
-import PassengerInfo from './components/PassengerInfo'
-import Loading from '../Loading'
+import PassengerInfo from './components/PassengerInfo/PassengerInfo'
 
 export default function BookingSuccess() {
   const { id: invoiceId } = useParams()
@@ -35,7 +35,11 @@ export default function BookingSuccess() {
             <Divider className='mx-3 rounded-full border-dashed' />
             <div className='invoice__content flex flex-col gap-4 px-4 py-5'>
               <div className='passenger-info'>
-                <PassengerInfo />
+                <PassengerInfo
+                  email={invoiceData.data.data.email}
+                  fullName={invoiceData.data.data.fullName}
+                  phone={invoiceData.data.data.phone}
+                />
               </div>
               <div className='tours-info'>
                 <Box

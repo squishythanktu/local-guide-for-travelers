@@ -88,6 +88,17 @@ export const commentSchema = yup.object({
   rating: yup.number().required().min(1).max(5)
 })
 
+export const passengerInformationSchema = yup.object({
+  fullName: yup.string().trim().required(),
+  phone: yup.string().trim().required().typeError('Phone number is required'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email')
+    .min(5, 'Email length from 5 - 160 characters')
+    .max(160, 'Email length from 5 - 160 characters')
+})
+
 export type Schema = yup.InferType<typeof schema>
 
 export type UserSchema = yup.InferType<typeof userSchema>
@@ -101,3 +112,5 @@ export type BookingSchema = yup.InferType<typeof bookingSchema>
 export type RequestTourSchema = yup.InferType<typeof requestTourSchema>
 
 export type CommentSchema = yup.InferType<typeof commentSchema>
+
+export type PassengerInformationSchema = yup.InferType<typeof passengerInformationSchema>

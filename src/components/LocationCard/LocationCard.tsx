@@ -39,7 +39,7 @@ const LocationCard: React.FC<Props> = ({ city }: Props) => {
       <div className='location-card h-52 w-48 '>
         <div className='location-card__image relative h-full  '>
           <img
-            src={city.image || '/public/assets/images/city-default.jpg'}
+            src={city.image || '/assets/images/city-default.jpg'}
             alt='location img'
             className='absolute h-full w-full rounded-md object-cover'
           />

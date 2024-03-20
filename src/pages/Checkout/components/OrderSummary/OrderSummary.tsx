@@ -5,13 +5,20 @@ import Typography from '@mui/material/Typography'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
 import paymentApi from 'src/apis/payment.api'
 import BookingSummaryCard from 'src/components/BookingSummaryCard/BookingSummaryCard'
 import { AppContext } from 'src/contexts/app.context'
 import Loading from 'src/pages/Loading'
+import { PassengerInformationSchema } from 'src/utils/rules'
 
-export default function OrderSummary() {
+interface Props {
+  passengerInfo: PassengerInformationSchema
+  isDisplaySaveButton: boolean
+}
+
+const OrderSummary: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: Props) => {
   const { profile } = useContext(AppContext)
   const navigate = useNavigate()
   const { data: bookingsCartData } = useQuery({
@@ -33,7 +40,10 @@ export default function OrderSummary() {
     queryFn: () =>
       paymentApi.getPaymentUrl({
         price: totalBookingPrice as number,
-        bookingIds: getFormattedBookingIds()
+        bookingIds: getFormattedBookingIds(),
+        fullName: passengerInfo.fullName,
+        email: passengerInfo.email,
+        phone: passengerInfo.phone
       }),
     enabled: !!isProceedPaymentClicked
   })
@@ -43,6 +53,11 @@ export default function OrderSummary() {
       window.location.href = paymentUrl.data.data
     }
   }, [navigate, paymentUrl])
+
+  const handlePayment = () => {
+    if (!isDisplaySaveButton) setIsProceedPaymentClicked(true)
+    else toast.error('Please fill in the complete Passenger Information and save.')
+  }
 
   return (
     <>
@@ -71,7 +86,7 @@ export default function OrderSummary() {
             className='mt-4'
             size='large'
             endIcon={<ArrowForwardIosOutlinedIcon />}
-            onClick={() => setIsProceedPaymentClicked(true)}
+            onClick={handlePayment}
           >
             Proceed Payment
           </Button>
@@ -80,3 +95,5 @@ export default function OrderSummary() {
     </>
   )
 }
+
+export default OrderSummary

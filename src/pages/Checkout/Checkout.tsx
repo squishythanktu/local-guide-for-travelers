@@ -3,10 +3,13 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import { Box } from '@mui/material'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
-import path from 'src/constants/path.constant'
-import OrderSummary from './components/OrderSummary'
-import PassengerInformation from './components/PassengerInformation/PassengerInformation'
+import { useContext, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
+import { PassengerInformationSchema } from 'src/utils/rules'
+import OrderSummary from './components/OrderSummary/OrderSummary'
+import PassengerInformation from './components/PassengerInformation/PassengerInformation'
 
 export default function Checkout() {
   const breadcrumbs = [
@@ -34,6 +37,15 @@ export default function Checkout() {
     </Link>
   ]
 
+  const { profile } = useContext(AppContext)
+  const [isDisplaySaveButton, setIsDisplaySaveButton] = useState<boolean>(true)
+
+  const [passengerInfo, setPassengerInfo] = useState<PassengerInformationSchema>({
+    fullName: profile?.fullName || '',
+    phone: profile?.phone || '',
+    email: profile?.email || ''
+  })
+
   return (
     <Box className='container flex flex-col'>
       <Breadcrumbs className='mt-4' aria-label='breadcrumb'>
@@ -41,10 +53,14 @@ export default function Checkout() {
       </Breadcrumbs>
       <div className='flex flex-col-reverse gap-10 py-4 md:flex-row md:gap-4'>
         <div className='checkout__order-summary w-full md:w-[60%]'>
-          <OrderSummary />
+          <OrderSummary isDisplaySaveButton={isDisplaySaveButton} passengerInfo={passengerInfo} />
         </div>
         <div className='checkout__personal-details w-full md:w-[40%]'>
-          <PassengerInformation />
+          <PassengerInformation
+            isDisplaySaveButton={isDisplaySaveButton}
+            setIsDisplaySaveButton={setIsDisplaySaveButton}
+            setPassengerInfo={setPassengerInfo}
+          />
         </div>
       </div>
     </Box>

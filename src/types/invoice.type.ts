@@ -16,4 +16,7 @@ export type Invoice = {
   createAt: Date
   status: string
   tours: BookingInInvoice[]
+  email: string
+  fullName: string
+  phone: string
 }

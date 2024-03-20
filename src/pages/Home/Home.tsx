@@ -5,10 +5,10 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import bookingApi from 'src/apis/booking.api'
 import tourApi from 'src/apis/tour.api'
+import LocationCard from 'src/components/LocationCard/LocationCard'
 import { headerHeight } from 'src/constants/width-height.constant'
 import { Tour } from 'src/types/tour.type'
 import TourCard from '../../components/TourCard/TourCard'
-import LocationCard from 'src/components/LocationCard/LocationCard'
 
 export default function Home() {
   const { data: toursData, isPending } = useQuery({
@@ -64,7 +64,7 @@ export default function Home() {
           <div className='collection-header mb-4'>
             <h2 className='text-4xl	leading-10'>Awe-inspiring destinations</h2>
           </div>
-          <div className='scroll flex flex-nowrap justify-between gap-2 overflow-x-auto'>
+          <div className='scroll flex flex-nowrap gap-2 overflow-x-auto'>
             {popularCitiesData?.data.data.map((city, index) => (
               <div key={index} className='col-span-1'>
                 <LocationCard city={city} />

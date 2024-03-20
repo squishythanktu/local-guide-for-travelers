@@ -2,12 +2,14 @@ import MailOutlinedIcon from '@mui/icons-material/MailOutlined'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined'
 import { Box } from '@mui/material'
-import { useContext } from 'react'
-import { AppContext } from 'src/contexts/app.context'
 
-export default function PassengerInfo() {
-  const { profile } = useContext(AppContext)
+interface Props {
+  email: string
+  fullName: string
+  phone: string
+}
 
+const PassengerInfo: React.FC<Props> = ({ email, fullName, phone }: Props) => {
   return (
     <>
       <Box
@@ -20,19 +22,21 @@ export default function PassengerInfo() {
         <div className='flex items-center gap-1'>
           <PersonOutlineOutlinedIcon />
           <span className='mr-1 text-sm font-bold'>Name: </span>
-          <span>{profile?.fullName || 'N/A'}</span>
+          <span>{fullName || 'N/A'}</span>
         </div>
         <div className='flex items-center gap-1'>
           <MailOutlinedIcon />
           <span className='mr-1 text-sm font-bold'>Email: </span>
-          <span>{profile?.email || 'N/A'}</span>
+          <span>{email || 'N/A'}</span>
         </div>
         <div className='flex items-center gap-1'>
           <PhoneOutlinedIcon />
           <span className='mr-1 text-sm font-bold'>Phone number: </span>
-          <span>{profile?.phone || 'N/A'}</span>
+          <span>{phone || 'N/A'}</span>
         </div>
       </div>
     </>
   )
 }
+
+export default PassengerInfo
