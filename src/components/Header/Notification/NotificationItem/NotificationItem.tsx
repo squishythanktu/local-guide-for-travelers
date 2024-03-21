@@ -1,9 +1,11 @@
+import Box from '@mui/material/Box'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
+import { NotificationType } from 'src/enums/notification-type.enum'
 import { Notification } from 'src/types/notification.type'
 import { getRelativeTime } from 'src/utils/date-time'
-import { NotificationType } from 'src/enums/notification-type.enum'
 
 interface NotificationItemProps {
   data: Notification
@@ -11,6 +13,8 @@ interface NotificationItemProps {
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: NotificationItemProps) => {
+  const { profile } = useContext(AppContext)
+
   return (
     <MenuItem>
       <Box
@@ -34,12 +38,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: N
             background: (theme) => theme.palette.secondary.main
           }}
         >
-          {(data.sender?.fullName || data.sender.email).slice(0, 1)}
+          {data.sender && (data.sender?.fullName || data.sender.email).slice(0, 1)}
+          {!data.sender && profile?.email.slice(0, 1)}
         </Box>
         <Box className='notification-item__content' sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <Typography sx={{ fontSize: '14px', maxWidth: '17.5rem' }} noWrap>
             {data.notificationType !== NotificationType.receivedBooking && (
-              <strong>{data.sender?.fullName || data.sender.email} </strong>
+              <strong>{data.sender && (data.sender?.fullName || data.sender?.email)} </strong>
             )}
             {data.message}
           </Typography>

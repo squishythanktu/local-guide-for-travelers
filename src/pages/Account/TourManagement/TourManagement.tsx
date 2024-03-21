@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_Cell, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
@@ -11,16 +12,16 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
+import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import { AppContext } from 'src/contexts/app.context'
+import { StatusRequestForGuide } from 'src/enums/status-request.enum'
+import { Unit } from 'src/enums/unit.enum'
+import { UserRole } from 'src/enums/user-role.enum'
+import { Request } from 'src/types/request.type'
 import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
 import TourForm from '../components/TourForm'
-import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
-import IconButton from '@mui/material/IconButton'
 import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
-import { Request } from 'src/types/request.type'
-import { StatusRequestForGuide } from 'src/enums/status-request.enum'
-import { Unit } from 'src/enums/unit.enum'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -60,12 +61,13 @@ export default function TourManagement({ guideId }: Props) {
       credential: '',
       overallRating: 0,
       avatar: '',
-      languageSkill: []
+      languageSkill: [],
+      numberOfReviews: 0
     },
     traveler: {
       id: '',
       email: '',
-      roles: []
+      role: UserRole.TRAVELER
     },
     status: StatusRequestForGuide.PENDING,
     tourId: 0
@@ -93,7 +95,7 @@ export default function TourManagement({ guideId }: Props) {
   })
 
   const createRequestTourMutation = useMutation({
-    mutationFn: (body: TourFormData) => tourApi.createRequestTour(request.id, body)
+    mutationFn: (body: TourFormData) => tourApi.createRequestTour(location.state?.request.id, body)
   })
 
   const deleteTourMutation = useMutation({
@@ -109,7 +111,7 @@ export default function TourManagement({ guideId }: Props) {
       }
     }
 
-    if (!location.state?.requestId) {
+    if (!location.state?.request.id) {
       createTourMutation.mutate(formattedTourForm, {
         onSuccess: () => {
           setCreateMode(false)

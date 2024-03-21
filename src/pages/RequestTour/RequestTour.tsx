@@ -5,7 +5,7 @@ import { Box, Button, FormHelperText, MenuItem, TextField, Typography } from '@m
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Slider from 'react-slick'
@@ -18,13 +18,18 @@ import ControlledTextField from 'src/components/ControlledTextField'
 import TourCard from 'src/components/TourCard'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
 import { Transportation } from 'src/enums/transportation.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { Tour } from 'src/types/tour.type'
 import { RequestTourSchema, requestTourSchema } from 'src/utils/rules'
 import NotFound from '../NotFound/NotFound'
 
-export type RequestTourFormData = RequestTourSchema & { guideId: string }
+export type RequestTourFormData = RequestTourSchema & {
+  guideId: string
+  travelerRequestStatus?: string
+  travelerRequestId?: number
+}
 
 const RequestTour: React.FC = () => {
   const { profile } = useContext(AppContext)
@@ -39,10 +44,13 @@ const RequestTour: React.FC = () => {
     initialSlide: 0
   }
 
+  const [buttonClicked, setButtonClicked] = useState<StatusRequestForTraveler.DRAFT | StatusRequestForGuide.PENDING>()
+
   const {
     trigger,
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<RequestTourSchema>({
     defaultValues: {
@@ -65,6 +73,25 @@ const RequestTour: React.FC = () => {
     return <NotFound />
   }
 
+  useEffect(() => {
+    if (location.state.request) {
+      const { transportation, message, duration, unit, maxPricePerPerson, numberOfTravelers, destination } =
+        location.state.request
+      const request: RequestTourSchema = {
+        transportation,
+        message,
+        duration,
+        unit,
+        maxPricePerPerson,
+        numberOfTravelers,
+        destination
+      }
+      Object.entries(request).forEach(([key, value]) => {
+        setValue(key as keyof RequestTourSchema, value)
+      })
+    }
+  }, [location])
+
   const { data: guideToursData } = useQuery({
     queryKey: [`tours of guide ${location.state.guideId}`],
     queryFn: () => tourApi.getToursOfGuide(location.state.guideId),
@@ -74,17 +101,27 @@ const RequestTour: React.FC = () => {
 
   const onSubmit = (data: RequestTourSchema) => {
     if (profile) {
-      const formattedData: RequestTourFormData = { ...data, guideId: location.state.guideId }
+      const formattedData: RequestTourFormData = {
+        ...data,
+        guideId: location.state.guideId,
+        travelerRequestStatus: buttonClicked?.toUpperCase(),
+        travelerRequestId: location.state.request?.id || ''
+      }
       createRequestTourMutation.mutate(formattedData, {
         onSuccess: () => {
-          toast.success('Your request has been sent.')
           navigate(path.request)
+          if (buttonClicked === StatusRequestForGuide.PENDING) toast.success('Your request has been sent.')
+          if (buttonClicked === StatusRequestForTraveler.DRAFT) toast.success('Your request has been saved as a draft.')
         },
         onError: () => {
           toast.error('You have a PENDING request for this guide, consider removing the previous before add.')
         }
       })
     }
+  }
+
+  const handleLoading = (status: StatusRequestForTraveler.DRAFT | StatusRequestForGuide.PENDING) => {
+    if (buttonClicked === status) return createRequestTourMutation.isPending
   }
 
   return (
@@ -227,8 +264,23 @@ const RequestTour: React.FC = () => {
             <Button variant='outlined' className='w-fit' size='large'>
               Cancel
             </Button>
-            <LoadingButton loading={createRequestTourMutation.isPending} variant='contained' size='large' type='submit'>
-              <span>Submit request</span>
+            <LoadingButton
+              onClick={() => setButtonClicked(StatusRequestForTraveler.DRAFT)}
+              loading={handleLoading(StatusRequestForTraveler.DRAFT)}
+              variant='contained'
+              size='large'
+              type='submit'
+            >
+              <span>Save draft</span>
+            </LoadingButton>
+            <LoadingButton
+              onClick={() => setButtonClicked(StatusRequestForGuide.PENDING)}
+              loading={handleLoading(StatusRequestForGuide.PENDING)}
+              variant='contained'
+              size='large'
+              type='submit'
+            >
+              <span>Submit</span>
             </LoadingButton>
           </Box>
         </form>

@@ -39,7 +39,13 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
       <div className='request__header flex items-center justify-between px-4'>
         <div className='flex gap-3'>
           <span className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xl font-bold uppercase text-slate-800'>
-            H
+            {isGuide
+              ? request.traveler.fullName
+                ? request.traveler.fullName[0]
+                : ''
+              : request.guide.fullName
+                ? request.guide.fullName[0]
+                : ''}
           </span>
           <div className=''>
             <div className='text-sm font-bold'>{isGuide ? request.traveler.fullName : request.guide.fullName}</div>
@@ -100,6 +106,22 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               size='small'
             >
               Cancel
+            </Button>
+          )}
+          {!isGuide && request.status === StatusRequestForTraveler.DRAFT.toUpperCase() && (
+            <Button
+              variant='outlined'
+              onClick={(event) => {
+                event.stopPropagation()
+                navigate(path.requestTour, {
+                  state: { request: request, guideId: request.guide.id }
+                })
+              }}
+              className='w-fit'
+              color='primary'
+              size='small'
+            >
+              Edit
             </Button>
           )}
         </div>

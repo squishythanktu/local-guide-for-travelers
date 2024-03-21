@@ -6,7 +6,8 @@ export enum StatusRequestForGuide {
 }
 
 export enum StatusRequestForTraveler {
-  CANCELED = 'Canceled'
+  CANCELED = 'Canceled',
+  DRAFT = 'Draft'
 }
 
 Object.assign(StatusRequestForTraveler, StatusRequestForGuide)
