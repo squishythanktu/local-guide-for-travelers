@@ -2,21 +2,23 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { useContext, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import userApi from 'src/apis/user.api'
 import ControlledTextField from 'src/components/ControlledTextField'
 import { AppContext } from 'src/contexts/app.context'
+import { setProfileToLS } from 'src/utils/auth'
 import { UserSchema, userSchema } from 'src/utils/rules'
 
 type FormData = Pick<UserSchema, 'fullName' | 'address' | 'phone' | 'dateOfBirth'>
 const accountSchema = userSchema.pick(['fullName', 'address', 'phone', 'dateOfBirth'])
 
 export default function Profile() {
-  const { profile } = useContext(AppContext)
-  const { data: profileData } = useQuery({
+  const { profile, setProfile } = useContext(AppContext)
+  const { data: profileData, refetch } = useQuery({
     queryKey: [`get me ${profile?.email}`, profile?.email],
     queryFn: () => userApi.getMe()
   })
@@ -42,7 +44,23 @@ export default function Profile() {
     }
   }, [profileData?.data.data, setValue])
 
-  const onSubmit = () => {}
+  const updateProfileMutation = useMutation({
+    mutationFn: (body: FormData) => userApi.updateMe(body)
+  })
+
+  const onSubmit = (body: FormData) => {
+    updateProfileMutation.mutate(body, {
+      onSuccess: (res) => {
+        refetch()
+        setProfile(res.data.data)
+        setProfileToLS(res.data.data)
+        toast.success('Update profile successfully.')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='account-profile-form'>
@@ -104,16 +122,7 @@ export default function Profile() {
           Address
         </h2>
         <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
-          <TextField
-            id='address'
-            variant='outlined'
-            label='Address'
-            value={profileData?.data.data.address || profile?.address}
-            className='min-h-20 grow'
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
+          <ControlledTextField className='min-h-20 grow' control={control} name={'address'} label={'Address'} />
         </div>
       </div>
       <div className='button-container'>
