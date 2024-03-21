@@ -1,25 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
-import Paper from '@mui/material/Card'
+import { Box, Pagination } from '@mui/material'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import statisticApi from 'src/apis/statistic.api'
-import { Tour } from 'src/types/tour.type'
+import { PaginationParams } from 'src/types/pagination-params.type'
+import { TourInStatistic } from 'src/types/statistic.type'
 
 const SalesReportOfTour: React.FC = () => {
+  const [pagination, setPagination] = useState<PaginationParams>({
+    page: 1,
+    limit: 7
+  })
+
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour`],
-    queryFn: () => statisticApi.getStatisticOfTour(),
+    queryKey: [`sales report of tour`, pagination],
+    queryFn: () => statisticApi.getStatisticOfTour(pagination),
     staleTime: 3 * 1000
   })
 
-  const columns = useMemo<MRT_ColumnDef<Tour>[]>(
+  const columns = useMemo<MRT_ColumnDef<TourInStatistic>[]>(
     () => [
       {
         accessorKey: 'id',
-        header: 'id',
+        header: 'Id',
         size: 10
       },
       {
@@ -45,24 +51,25 @@ const SalesReportOfTour: React.FC = () => {
       },
       {
         accessorKey: 'overallRating',
-        header: 'Overall rating',
+        header: 'Rating',
         size: 30
       },
       {
         accessorKey: 'totalTravelerNumber',
-        header: 'Total booked',
+        header: 'Total travelers',
         size: 30
       },
       {
         accessorKey: 'totalRevenue',
-        header: 'Total revenue',
+        header: 'Revenue',
         size: 30
       }
     ],
     []
   )
 
-  const table = useMaterialReactTable<Tour>({
+  const table = useMaterialReactTable<TourInStatistic>({
+    enablePagination: false,
     columns,
     data: statisticsData?.data.data.tourDTOS ?? [],
     state: {
@@ -71,19 +78,9 @@ const SalesReportOfTour: React.FC = () => {
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
-    muiPaginationProps: {
-      color: 'primary',
-      shape: 'rounded',
-      variant: 'outlined'
-    },
-    paginationDisplayMode: 'pages',
     muiSkeletonProps: {
-      animation: 'wave'
-    },
-    muiTableContainerProps: {
-      sx: {
-        maxHeight: '650px'
-      }
+      animation: 'pulse',
+      height: '12px'
     },
     muiTableBodyProps: {
       sx: (theme) => ({
@@ -91,14 +88,29 @@ const SalesReportOfTour: React.FC = () => {
           backgroundColor: lighten(theme.palette.primary.main, 0.9)
         }
       })
-    }
+    },
+    renderBottomToolbarCustomActions: () => (
+      <Pagination
+        className='absolute right-5 top-1/4'
+        onChange={(_, page) => {
+          setPagination((prevPagination) => ({
+            ...prevPagination,
+            page: page
+          }))
+        }}
+        page={pagination.page}
+        count={(statisticsData?.data.data.totalOfPage || 1) - 1}
+        variant='outlined'
+        shape='rounded'
+      />
+    ),
+    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tour</h2>
   })
 
   return (
-    <Paper elevation={0} className='sales-report-tour__container h-screen p-4'>
-      <h2 className='mb-2 text-xl'>Sales Report of Tour</h2>
+    <Box className='h-screen'>
       <MaterialReactTable table={table} />
-    </Paper>
+    </Box>
   )
 }
 
