@@ -16,6 +16,14 @@ import { drawerWidth } from 'src/constants/width-height.constant'
 import { Theme, styled } from '@mui/material/styles'
 import theme from 'src/theme'
 import MuiDrawer from '@mui/material/Drawer'
+import Collapse from '@mui/material/Collapse'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import path from 'src/constants/path.constant'
+import { Link } from 'react-router-dom'
+import HomeWorkIcon from '@mui/icons-material/HomeWork'
+import HikingIcon from '@mui/icons-material/Hiking'
+import { SyntheticEvent, useState } from 'react'
 
 interface AdminDrawerProps {
   handleDrawerClose: () => void
@@ -67,6 +75,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 }))
 
 const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: AdminDrawerProps) => {
+  const [openCollapseSalesReport, setOpenCollapseSalesReport] = useState(false)
+
+  const handleClickSalesReport = (event: SyntheticEvent) => {
+    event.stopPropagation()
+    setOpenCollapseSalesReport(!openCollapseSalesReport)
+  }
+
   return (
     <Drawer variant='permanent' open={open}>
       <DrawerHeader>
@@ -123,6 +138,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               justifyContent: open ? 'initial' : 'center',
               px: 2.5
             }}
+            onClick={handleClickSalesReport}
           >
             <ListItemIcon
               sx={{
@@ -134,8 +150,25 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <TrendingUpIcon />
             </ListItemIcon>
             <ListItemText primary='Sales Report' sx={{ opacity: open ? 1 : 0 }} />
+            {openCollapseSalesReport ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
+        <Collapse in={openCollapseSalesReport} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.salesReportOfTour}>
+              <ListItemIcon>
+                <HomeWorkIcon />
+              </ListItemIcon>
+              <ListItemText primary='Tour' />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.salesReportOfGuide}>
+              <ListItemIcon>
+                <HikingIcon />
+              </ListItemIcon>
+              <ListItemText primary='Guide' />
+            </ListItemButton>
+          </List>
+        </Collapse>
       </List>
     </Drawer>
   )

@@ -30,6 +30,7 @@ const BookingFail = lazy(() => import('./pages/BookingFail'))
 const GuideProfile = lazy(() => import('./pages/GuideProfile'))
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 const RequestTour = lazy(() => import('./pages/RequestTour/RequestTour'))
+const SalesReportOfTour = lazy(() => import('./pages/SalesReportOfTour/SalesReportOfTour'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -290,6 +291,16 @@ export default function useRouteElements() {
         {
           path: path.admin,
           element: <AdminLayout />
+        },
+        {
+          path: path.salesReportOfTour,
+          element: (
+            <AdminLayout>
+              <Suspense fallback={<Loading />}>
+                <SalesReportOfTour />
+              </Suspense>
+            </AdminLayout>
+          )
         }
       ]
     }

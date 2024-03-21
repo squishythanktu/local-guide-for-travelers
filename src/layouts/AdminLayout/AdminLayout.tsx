@@ -31,7 +31,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps)
     <Box sx={{ display: 'flex' }}>
       <AdminHeader handleDrawerOpen={handleDrawerOpen} open={open} />
       <AdminDrawer handleDrawerClose={handleDrawerClose} open={open} />
-      <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+      <Box component='main' sx={{ flexGrow: 1, p: 3, background: 'var(--light-grey-background)' }}>
         <DrawerHeader />
         {children}
       </Box>

@@ -61,8 +61,8 @@ export default function TourManagement({ guideId }: Props) {
       credential: '',
       overallRating: 0,
       avatar: '',
-      languageSkill: [],
-      numberOfReviews: 0
+      numberOfReviews: 0,
+      languageSkill: []
     },
     traveler: {
       id: '',
