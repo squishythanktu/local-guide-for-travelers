@@ -35,6 +35,12 @@ export default function BookingSuccess() {
             <Divider className='mx-3 rounded-full border-dashed' />
             <div className='invoice__content flex flex-col gap-4 px-4 py-5'>
               <div className='passenger-info'>
+                <Box
+                  sx={{ backgroundColor: (theme) => theme.palette.primary.light }}
+                  className='mb-2 rounded-lg px-4 py-2 font-medium'
+                >
+                  Passenger Information
+                </Box>
                 <PassengerInfo
                   email={invoiceData.data.data.email}
                   fullName={invoiceData.data.data.fullName}

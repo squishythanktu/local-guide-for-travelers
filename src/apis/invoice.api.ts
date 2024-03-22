@@ -7,6 +7,9 @@ export const URL_INVOICES = 'invoices'
 const invoiceApi = {
   getInvoice(id: string) {
     return http.get<SuccessResponse<Invoice>>(`${URL_INVOICES}/${id}`)
+  },
+  getInvoices() {
+    return http.get<SuccessResponse<Invoice[]>>(`${URL_INVOICES}`)
   }
 }
 

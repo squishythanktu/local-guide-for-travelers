@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import { SyntheticEvent, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { BookingInInvoice } from 'src/types/invoice.type'
+import { Booking } from 'src/types/booking.type'
 import ToursInfo from '../ToursInfo'
 
 interface TabPanelProps {
@@ -44,7 +44,7 @@ const a11yProps = (index: number) => {
 }
 
 interface Props {
-  bookings?: BookingInInvoice[]
+  bookings?: Booking[]
 }
 
 export default function ContentInvoice({ bookings }: Props) {
@@ -79,7 +79,7 @@ export default function ContentInvoice({ bookings }: Props) {
         }}
       >
         <Tabs value={value} onChange={handleChange} indicatorColor='secondary' textColor='inherit'>
-          {bookings?.map((_: BookingInInvoice, index: number) => (
+          {bookings?.map((_: Booking, index: number) => (
             <Tab key={index} label={`Trip ${index + 1}`} {...a11yProps(index)} />
           ))}
         </Tabs>
@@ -89,7 +89,7 @@ export default function ContentInvoice({ bookings }: Props) {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        {bookings?.map((booking: BookingInInvoice, index: number) => (
+        {bookings?.map((booking: Booking, index: number) => (
           <TabPanel key={index} value={value} index={index} dir={theme.direction}>
             <ToursInfo booking={booking} />
           </TabPanel>

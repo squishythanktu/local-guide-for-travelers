@@ -1,10 +1,10 @@
+import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import MainStop from 'src/components/MainStop/MainStop'
-import { BookingInInvoice } from 'src/types/invoice.type'
-import Grid from '@mui/material/Grid'
+import { Booking } from 'src/types/booking.type'
 
 interface Props {
-  booking: BookingInInvoice
+  booking: Booking
 }
 export default function ToursInfo({ booking }: Props) {
   return (
@@ -22,7 +22,7 @@ export default function ToursInfo({ booking }: Props) {
         </Grid>
         <Grid item xs={4} sm={8} md={6}>
           <div className='text-sm font-medium'>
-            Number of traveler(s): <span className='text-sm'>{booking.numberTraveler}</span>
+            Number of traveler(s): <span className='text-sm'>{booking.numberTravelers}</span>
           </div>
         </Grid>
         <Grid item xs={4} sm={8} md={6}>
