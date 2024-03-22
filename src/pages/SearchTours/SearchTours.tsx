@@ -2,7 +2,7 @@ import Pagination from '@mui/material/Pagination'
 import Skeleton from '@mui/material/Skeleton'
 import SvgIcon from '@mui/material/SvgIcon'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useContext } from 'react'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import tourApi from 'src/apis/tour.api'
 import DotsIcon from 'src/assets/svg/dots.svg'
@@ -11,8 +11,12 @@ import TourCard from 'src/components/TourCard'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Tour } from 'src/types/tour.type'
 import SortFilterTours from './components'
+import { isTourInWishlist } from 'src/utils/wishlist'
+import wishlistApi from 'src/apis/wishlist.api'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function SearchTours() {
+  const { profile, isAuthenticated } = useContext(AppContext)
   const queryConfig: QueryConfig = useQueryConfig()
   const navigate = useNavigate()
   const { data: toursData, isPending } = useQuery({
@@ -20,6 +24,12 @@ export default function SearchTours() {
     queryFn: () => tourApi.searchTours(queryConfig),
     placeholderData: keepPreviousData,
     staleTime: 2 * 1000
+  })
+  const { data: wishListData, refetch } = useQuery({
+    queryKey: [`wishlist of user with id ${profile?.id}`],
+    queryFn: () => wishlistApi.getWishlist(),
+    staleTime: 5 * 1000,
+    enabled: isAuthenticated
   })
 
   const handlePaginationChange = (_event: ChangeEvent<unknown>, value: number) => {
@@ -70,7 +80,12 @@ export default function SearchTours() {
                   .fill(0)
                   .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
               : toursData?.data.data.tourDTOS.map((tourData: Tour) => (
-                  <TourCard key={tourData.id} tourData={tourData} />
+                  <TourCard
+                    key={tourData.id}
+                    tourData={tourData}
+                    isTourInWishList={!!isTourInWishlist(wishListData?.data.data as Tour[], tourData.id)}
+                    refetch={refetch}
+                  />
                 ))}
           </div>
         </div>

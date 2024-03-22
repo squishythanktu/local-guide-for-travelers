@@ -24,6 +24,8 @@ import { Unit } from 'src/enums/unit.enum'
 import { Tour } from 'src/types/tour.type'
 import { RequestTourSchema, requestTourSchema } from 'src/utils/rules'
 import NotFound from '../NotFound/NotFound'
+import wishlistApi from 'src/apis/wishlist.api'
+import { isTourInWishlist } from 'src/utils/wishlist'
 
 export type RequestTourFormData = RequestTourSchema & {
   guideId: string
@@ -32,20 +34,10 @@ export type RequestTourFormData = RequestTourSchema & {
 }
 
 const RequestTour: React.FC = () => {
-  const { profile } = useContext(AppContext)
+  const { profile, isAuthenticated } = useContext(AppContext)
+  const [buttonClicked, setButtonClicked] = useState<StatusRequestForTraveler.DRAFT | StatusRequestForGuide.PENDING>()
   const navigate = useNavigate()
   const location = useLocation()
-  const carouselSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    initialSlide: 0
-  }
-
-  const [buttonClicked, setButtonClicked] = useState<StatusRequestForTraveler.DRAFT | StatusRequestForGuide.PENDING>()
-
   const {
     trigger,
     control,
@@ -64,6 +56,21 @@ const RequestTour: React.FC = () => {
     },
     resolver: yupResolver(requestTourSchema)
   })
+  const { data: wishListData, refetch } = useQuery({
+    queryKey: [`wishlist of user with id ${profile?.id}`],
+    queryFn: () => wishlistApi.getWishlist(),
+    staleTime: 5 * 1000,
+    enabled: isAuthenticated
+  })
+
+  const carouselSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: 0
+  }
 
   const createRequestTourMutation = useMutation({
     mutationFn: (body: RequestTourFormData) => requestApi.createRequest(body)
@@ -289,7 +296,14 @@ const RequestTour: React.FC = () => {
         <h2 className='pb-4'>You might also like...</h2>
         <div className=''>
           <Slider {...carouselSettings} className=''>
-            {guideToursData?.data.data.map((tour: Tour) => <TourCard key={tour.id} tourData={tour} />)}
+            {guideToursData?.data.data.map((tour: Tour) => (
+              <TourCard
+                key={tour.id}
+                tourData={tour}
+                isTourInWishList={!!isTourInWishlist(wishListData?.data.data as Tour[], tour.id)}
+                refetch={refetch}
+              />
+            ))}
           </Slider>
         </div>
       </div>
