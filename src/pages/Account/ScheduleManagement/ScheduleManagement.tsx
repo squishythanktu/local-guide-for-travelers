@@ -97,9 +97,7 @@ const ScheduleManagement: React.FC = () => {
     return arr.map((item) => new Date(item).getTime()).includes(new Date(date).getTime())
   }
 
-  const clearAll = () => {
-    setSelectedDates([])
-  }
+  const clearAll = () => setSelectedDates([])
 
   return (
     <>

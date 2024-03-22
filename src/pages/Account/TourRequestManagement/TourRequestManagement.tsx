@@ -8,7 +8,7 @@ import { Request } from 'src/types/request.type'
 import ButtonComponent from './components/ButtonComponent'
 import RequestComponent from './components/RequestComponent'
 
-const RequestManagement: React.FC = () => {
+const TourRequestManagement: React.FC = () => {
   const { profile } = useContext(AppContext)
   const [isGuide, setIsGuide] = useState<boolean>()
 
@@ -42,7 +42,7 @@ const RequestManagement: React.FC = () => {
   return (
     <div className='flex flex-col gap-4'>
       <h2 className='border-b-1 mb-2 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-        Request Management
+        Tour Request Management
       </h2>
       {isGuide && (
         <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-4 border'>
@@ -85,4 +85,5 @@ const RequestManagement: React.FC = () => {
     </div>
   )
 }
-export default RequestManagement
+
+export default TourRequestManagement

@@ -3,12 +3,12 @@ import LoginIcon from '@mui/icons-material/Login'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import classNames from 'classnames'
-import React, { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
@@ -21,20 +21,20 @@ interface ProfileMenuProps {
 
 export default function ProfileMenu({ textColor }: ProfileMenuProps) {
   const { isAuthenticated, profile } = useContext(AppContext)
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const location = useLocation()
   const navigate = useNavigate()
-
   const open = Boolean(anchorEl)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
+
+  const handleClose = () => setAnchorEl(null)
 
   const handleLogout = () => {
     clearLS()
     navigate(path.home)
     window.location.reload()
+    handleClose()
   }
 
   return (
@@ -44,7 +44,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
         className={classNames(
           'ml-0 flex flex-col items-center text-sm font-normal hover:after:w-full md:after:absolute md:after:bottom-[1.5px] md:after:left-0 md:after:h-[2.5px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
           {
-            'md:after:w-full': location.pathname.includes(path.account)
+            'md:after:w-full': location.pathname.includes(path.account) || location.pathname.includes(path.management)
           }
         )}
         sx={{
@@ -71,9 +71,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
           id='basic-menu'
           anchorEl={anchorEl}
           open={open}
-          onClose={() => {
-            setAnchorEl(null)
-          }}
+          onClose={handleClose}
           MenuListProps={{
             'aria-labelledby': 'basic-button'
           }}
@@ -106,9 +104,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
           id='basic-menu'
           anchorEl={anchorEl}
           open={open}
-          onClose={() => {
-            setAnchorEl(null)
-          }}
+          onClose={handleClose}
           MenuListProps={{
             'aria-labelledby': 'basic-button'
           }}
@@ -121,13 +117,13 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             }
           }}
         >
-          <MenuItem component={Link} to={path.profile}>
+          <MenuItem component={Link} to={path.profile} onClick={handleClose}>
             <ListItemIcon>
               <SettingsOutlinedIcon fontSize='small' />
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem component={Link} to={path.tours}>
+          <MenuItem component={Link} to={path.request} onClick={handleClose}>
             <ListItemIcon>
               <ViewListIcon fontSize='small' />
             </ListItemIcon>

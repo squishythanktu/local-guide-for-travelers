@@ -1,10 +1,10 @@
-import { Suspense, lazy, useContext } from 'react'
+import { ReactNode, Suspense, lazy, useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import path from './constants/path.constant'
 import { AppContext } from './contexts/app.context'
 import HomeLayout from './layouts/HomeLayout'
 import MainLayout from './layouts/MainLayout'
-import RequestManagement from './pages/Account/RequestManagement/RequestManagement'
+import TourRequestManagement from './pages/Account/TourRequestManagement/TourRequestManagement'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import Loading from './pages/Loading'
 import ManagementLayout from './pages/Account/layouts/ManagementLayout/ManagementLayout'
@@ -31,6 +31,7 @@ const GuideProfile = lazy(() => import('./pages/GuideProfile'))
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 const RequestTour = lazy(() => import('./pages/RequestTour/RequestTour'))
 const SalesReportOfTour = lazy(() => import('./pages/SalesReportOfTour/SalesReportOfTour'))
+const SalesReportOfToursByGuide = lazy(() => import('./pages/SalesReportOfToursByGuide/SalesReportOfToursByGuide'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -45,6 +46,11 @@ const AdminRoute = () => {
 const UserRoute = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
   return isAuthenticated && profile?.role !== UserRole.ADMIN ? <Outlet /> : <Navigate to={path.admin} />
+}
+
+const GuideRoute = ({ children }: { children: ReactNode }) => {
+  const { profile, isAuthenticated } = useContext(AppContext)
+  return isAuthenticated && profile?.role === UserRole.GUIDER ? children : <Navigate to='*' />
 }
 
 const NonAdminRoute = () => {
@@ -223,27 +229,41 @@ export default function useRouteElements() {
           ),
           children: [
             {
-              path: path.tours,
+              path: path.request,
               element: (
                 <Suspense fallback={<Loading />}>
-                  <TourManagement />
+                  <TourRequestManagement />
                 </Suspense>
+              )
+            },
+            {
+              path: path.tours,
+              element: (
+                <GuideRoute>
+                  <Suspense fallback={<Loading />}>
+                    <TourManagement />
+                  </Suspense>
+                </GuideRoute>
               )
             },
             {
               path: path.schedule,
               element: (
-                <Suspense fallback={<Loading />}>
-                  <ScheduleManagement />
-                </Suspense>
+                <GuideRoute>
+                  <Suspense fallback={<Loading />}>
+                    <ScheduleManagement />
+                  </Suspense>
+                </GuideRoute>
               )
             },
             {
-              path: path.request,
+              path: path.salesReport,
               element: (
-                <Suspense fallback={<Loading />}>
-                  <RequestManagement />
-                </Suspense>
+                <GuideRoute>
+                  <Suspense fallback={<Loading />}>
+                    <SalesReportOfToursByGuide />
+                  </Suspense>
+                </GuideRoute>
               )
             }
           ]

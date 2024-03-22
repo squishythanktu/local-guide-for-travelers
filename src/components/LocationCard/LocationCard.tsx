@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import useQueryConfig from 'src/hooks/useQueryConfig'

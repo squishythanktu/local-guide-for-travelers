@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
-import { Box, Pagination } from '@mui/material'
+import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
@@ -9,15 +9,14 @@ import statisticApi from 'src/apis/statistic.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { StatisticOfTour } from 'src/types/statistic.type'
 
-const SalesReportOfTour: React.FC = () => {
+const SalesReportOfToursByGuide: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
     limit: 7
   })
-
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour`, pagination],
-    queryFn: () => statisticApi.getStatisticOfTour(pagination),
+    queryKey: [`sales report of tour by guide in page ${pagination.page}`, pagination],
+    queryFn: () => statisticApi.getStatisticOfTourByGuide(pagination),
     staleTime: 10 * 1000
   })
 
@@ -35,7 +34,7 @@ const SalesReportOfTour: React.FC = () => {
       },
       {
         accessorKey: 'pricePerTraveler',
-        header: 'Price',
+        header: 'Price per traveler',
         size: 30,
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       },
@@ -47,40 +46,52 @@ const SalesReportOfTour: React.FC = () => {
       {
         accessorKey: 'extraPrice',
         header: 'Extra price',
-        size: 30
+        size: 30,
+        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       },
       {
         accessorKey: 'overallRating',
-        header: 'Rating',
+        header: 'Overall rating',
         size: 30
       },
       {
         accessorKey: 'totalTravelerNumber',
-        header: 'Total travelers',
+        header: 'Total booked',
         size: 30
       },
       {
         accessorKey: 'totalRevenue',
-        header: 'Revenue',
-        size: 30
+        header: 'Total revenue',
+        size: 30,
+        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       }
     ],
     []
   )
 
   const table = useMaterialReactTable<StatisticOfTour>({
-    enablePagination: false,
     columns,
-    data: statisticsData?.data.data.tourDTOS ?? [],
+    data: statisticsData?.data.data.statisticalTourDTOS ?? [],
     state: {
       isLoading
     },
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
+    enablePagination: false,
+    muiPaginationProps: {
+      color: 'primary',
+      shape: 'rounded',
+      variant: 'outlined'
+    },
+    paginationDisplayMode: 'pages',
     muiSkeletonProps: {
-      animation: 'pulse',
-      height: '12px'
+      animation: 'wave'
+    },
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: '650px'
+      }
     },
     muiTableBodyProps: {
       sx: (theme) => ({
@@ -95,23 +106,25 @@ const SalesReportOfTour: React.FC = () => {
         onChange={(_, page) => {
           setPagination((prevPagination) => ({
             ...prevPagination,
-            page: page
+            page: page - 1
           }))
         }}
-        page={pagination.page}
-        count={(statisticsData?.data.data.totalOfPage || 1) - 1}
+        page={(pagination.page as number) + 1}
+        count={statisticsData?.data.data.totalOfPage}
         variant='outlined'
         shape='rounded'
       />
-    ),
-    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tour</h2>
+    )
   })
 
   return (
-    <Box className='h-screen'>
+    <>
+      <h2 className='border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
+        Sales Report
+      </h2>
       <MaterialReactTable table={table} />
-    </Box>
+    </>
   )
 }
 
-export default SalesReportOfTour
+export default SalesReportOfToursByGuide

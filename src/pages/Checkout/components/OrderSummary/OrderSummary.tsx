@@ -11,6 +11,7 @@ import paymentApi from 'src/apis/payment.api'
 import BookingSummaryCard from 'src/components/BookingSummaryCard/BookingSummaryCard'
 import { AppContext } from 'src/contexts/app.context'
 import Loading from 'src/pages/Loading'
+import { BookingsInCart } from 'src/types/booking.type'
 import { PassengerInformationSchema } from 'src/utils/rules'
 
 interface Props {
@@ -27,13 +28,16 @@ const OrderSummary: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: P
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
   })
-  const totalBookingPrice = bookingsCartData?.data.data.bookings!.reduce((total, booking) => total + booking.price, 0)
-  const totalBookingLength = bookingsCartData?.data.data.bookings!.length
+  const totalBookingPrice = (bookingsCartData?.data.data as BookingsInCart).bookings!.reduce(
+    (total, booking) => total + booking.price,
+    0
+  )
+  const totalBookingLength = (bookingsCartData?.data.data as BookingsInCart).bookings!.length
   const [isProceedPaymentClicked, setIsProceedPaymentClicked] = useState<boolean>(false)
 
   const getFormattedBookingIds = useCallback(() => {
-    return bookingsCartData?.data.data.bookings!.map((booking) => booking.id).join(',') as string
-  }, [bookingsCartData?.data.data.bookings])
+    return (bookingsCartData?.data.data as BookingsInCart).bookings!.map((booking) => booking.id).join(',') as string
+  }, [bookingsCartData?.data.data])
 
   const { data: paymentUrl } = useQuery({
     queryKey: [`Get payment url for bookings with id ${getFormattedBookingIds}`],
@@ -64,7 +68,7 @@ const OrderSummary: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: P
       <h1 className='pb-3'>Order summary</h1>
       <Box style={{ maxHeight: 600, overflow: 'auto' }}>
         {bookingsCartData ? (
-          bookingsCartData.data.data.bookings!.map((bookingCartData, index) => (
+          (bookingsCartData.data.data as BookingsInCart).bookings!.map((bookingCartData, index) => (
             <BookingSummaryCard key={index} booking={bookingCartData} />
           ))
         ) : (

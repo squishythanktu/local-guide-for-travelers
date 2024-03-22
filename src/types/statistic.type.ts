@@ -1,10 +1,14 @@
-export type StatisticOfTour = {
-  tourDTOS: TourInStatistic[]
-  totalOfPage: number
-  totalOfResult: number
+import { PageResult } from './page-result.type'
+
+export type TourStatisticResult = PageResult & {
+  tourDTOS: StatisticOfTour[]
 }
 
-export type TourInStatistic = {
+export type TourStatisticByGuideResult = PageResult & {
+  statisticalTourDTOS: StatisticOfTour[]
+}
+
+export type StatisticOfTour = {
   id: number
   name: string
   pricePerTraveler: number
@@ -13,4 +17,5 @@ export type TourInStatistic = {
   overallRating: number
   totalTravelerNumber: number
   totalRevenue: number
+  totalBooking: number
 }
