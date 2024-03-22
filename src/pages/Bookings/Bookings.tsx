@@ -28,7 +28,7 @@ const Bookings: React.FC = () => {
   })
 
   const { data: invoicesData, refetch: refetchInvoicesData } = useQuery({
-    queryKey: [`Get invoices by ${profile?.id}`],
+    queryKey: [`Get invoices by user with id ${profile?.id}`],
     queryFn: () => invoiceApi.getInvoices()
   })
 

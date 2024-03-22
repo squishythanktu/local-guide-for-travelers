@@ -7,21 +7,21 @@ import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'materi
 import { useMemo, useState } from 'react'
 import statisticApi from 'src/apis/statistic.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
-import { StatisticOfTour } from 'src/types/statistic.type'
+import { GuideInStatistic } from 'src/types/statistic.type'
 
-const SalesReportOfTour: React.FC = () => {
+const SalesReportOfGuide: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
     limit: 7
   })
 
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour`, pagination],
-    queryFn: () => statisticApi.getStatisticOfTour(pagination),
-    staleTime: 10 * 1000
+    queryKey: [`sales report of guide`, pagination],
+    queryFn: () => statisticApi.getStatisticOfGuide(pagination),
+    staleTime: 3 * 1000
   })
 
-  const columns = useMemo<MRT_ColumnDef<StatisticOfTour>[]>(
+  const columns = useMemo<MRT_ColumnDef<GuideInStatistic>[]>(
     () => [
       {
         accessorKey: 'id',
@@ -29,29 +29,28 @@ const SalesReportOfTour: React.FC = () => {
         size: 10
       },
       {
-        accessorKey: 'name',
+        accessorKey: 'fullName',
         header: 'Name',
-        size: 200
-      },
-      {
-        accessorKey: 'pricePerTraveler',
-        header: 'Price',
-        size: 30,
-        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
-      },
-      {
-        accessorKey: 'limitTraveler',
-        header: 'Limit traveler(s)',
         size: 30
       },
       {
-        accessorKey: 'extraPrice',
-        header: 'Extra price',
+        accessorKey: 'email',
+        header: 'Email',
+        size: 30
+      },
+      {
+        accessorKey: 'address',
+        header: 'Address',
         size: 30
       },
       {
         accessorKey: 'overallRating',
         header: 'Rating',
+        size: 30
+      },
+      {
+        accessorKey: 'totalBooking',
+        header: 'Total booking',
         size: 30
       },
       {
@@ -68,10 +67,10 @@ const SalesReportOfTour: React.FC = () => {
     []
   )
 
-  const table = useMaterialReactTable<StatisticOfTour>({
+  const table = useMaterialReactTable<GuideInStatistic>({
     enablePagination: false,
     columns,
-    data: statisticsData?.data.data.tourDTOS ?? [],
+    data: statisticsData?.data.data.statisticalGuideDTOS ?? [],
     state: {
       isLoading
     },
@@ -104,7 +103,7 @@ const SalesReportOfTour: React.FC = () => {
         shape='rounded'
       />
     ),
-    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tour</h2>
+    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Guide</h2>
   })
 
   return (
@@ -114,4 +113,4 @@ const SalesReportOfTour: React.FC = () => {
   )
 }
 
-export default SalesReportOfTour
+export default SalesReportOfGuide

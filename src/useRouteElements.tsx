@@ -2,14 +2,14 @@ import { ReactNode, Suspense, lazy, useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import path from './constants/path.constant'
 import { AppContext } from './contexts/app.context'
+import { UserRole } from './enums/user-role.enum'
+import AdminLayout from './layouts/AdminLayout/AdminLayout'
 import HomeLayout from './layouts/HomeLayout'
 import MainLayout from './layouts/MainLayout'
 import TourRequestManagement from './pages/Account/TourRequestManagement/TourRequestManagement'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
-import Loading from './pages/Loading'
 import ManagementLayout from './pages/Account/layouts/ManagementLayout/ManagementLayout'
-import { UserRole } from './enums/user-role.enum'
-import AdminLayout from './layouts/AdminLayout/AdminLayout'
+import Loading from './pages/Loading'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -32,6 +32,7 @@ const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 const RequestTour = lazy(() => import('./pages/RequestTour/RequestTour'))
 const SalesReportOfTour = lazy(() => import('./pages/SalesReportOfTour/SalesReportOfTour'))
 const SalesReportOfToursByGuide = lazy(() => import('./pages/SalesReportOfToursByGuide/SalesReportOfToursByGuide'))
+const SalesReportOfGuide = lazy(() => import('./pages/SalesReportOfGuide/SalesReportOfGuide'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -318,6 +319,16 @@ export default function useRouteElements() {
             <AdminLayout>
               <Suspense fallback={<Loading />}>
                 <SalesReportOfTour />
+              </Suspense>
+            </AdminLayout>
+          )
+        },
+        {
+          path: path.salesReportOfGuide,
+          element: (
+            <AdminLayout>
+              <Suspense fallback={<Loading />}>
+                <SalesReportOfGuide />
               </Suspense>
             </AdminLayout>
           )
