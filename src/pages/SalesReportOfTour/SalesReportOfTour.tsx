@@ -7,7 +7,7 @@ import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'materi
 import { useMemo, useState } from 'react'
 import statisticApi from 'src/apis/statistic.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
-import { StatisticOfTour } from 'src/types/statistic.type'
+import { TourInStatistic } from 'src/types/statistic.type'
 
 const SalesReportOfTour: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
@@ -21,7 +21,7 @@ const SalesReportOfTour: React.FC = () => {
     staleTime: 10 * 1000
   })
 
-  const columns = useMemo<MRT_ColumnDef<StatisticOfTour>[]>(
+  const columns = useMemo<MRT_ColumnDef<TourInStatistic>[]>(
     () => [
       {
         accessorKey: 'id',
@@ -68,7 +68,7 @@ const SalesReportOfTour: React.FC = () => {
     []
   )
 
-  const table = useMaterialReactTable<StatisticOfTour>({
+  const table = useMaterialReactTable<TourInStatistic>({
     enablePagination: false,
     columns,
     data: statisticsData?.data.data.tourDTOS ?? [],
