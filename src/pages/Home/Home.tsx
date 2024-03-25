@@ -39,6 +39,12 @@ export default function Home() {
     enabled: isAuthenticated
   })
 
+  const renderSkeletons = () => {
+    return Array(8)
+      .fill(0)
+      .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
+  }
+
   return (
     <div className='homepage__container'>
       <Box
@@ -66,18 +72,21 @@ export default function Home() {
         </div>
         <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {isPending
-            ? Array(8)
-                .fill(0)
-                .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
-            : !isWishlistDataPending &&
-              toursData?.data.data.map((tourData: Tour) => (
-                <TourCard
-                  key={tourData.id}
-                  tourData={tourData}
-                  isTourInWishList={!!isTourInWishlist(wishListData?.data.data as Tour[], tourData.id)}
-                  refetch={refetch}
-                />
-              ))}
+            ? renderSkeletons()
+            : isAuthenticated
+              ? isWishlistDataPending
+                ? renderSkeletons()
+                : toursData?.data.data.map((tourData: Tour) => (
+                    <TourCard
+                      key={tourData.id}
+                      tourData={tourData}
+                      isTourInWishList={!!isTourInWishlist(wishListData?.data.data as Tour[], tourData.id)}
+                      refetch={refetch}
+                    />
+                  ))
+              : toursData?.data.data.map((tourData: Tour) => (
+                  <TourCard key={tourData.id} tourData={tourData} refetch={refetch} />
+                ))}
         </div>
       </div>
       {/* Locations */}

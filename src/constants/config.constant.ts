@@ -1,6 +1,5 @@
 const config = {
-  // baseUrl: 'https://local-guide-be.azurewebsites.net'
-  baseUrl: 'http://localhost:8081'
+  baseUrl: 'https://local-guide.azurewebsites.net/'
 }
 
 export default config

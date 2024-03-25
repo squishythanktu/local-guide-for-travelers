@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Rating from '@mui/material/Rating'
+import { QueryObserverResult, RefetchOptions, useMutation } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 import classNames from 'classnames'
 import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import wishlistApi from 'src/apis/wishlist.api'
 import { AppContext } from 'src/contexts/app.context'
 import { Tour } from 'src/types/tour.type'
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
-import wishlistApi from 'src/apis/wishlist.api'
-import { QueryObserverResult, RefetchOptions, useMutation } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
 import { SuccessResponse } from 'src/types/utils.type'
 
 interface TourCardProps {
   tourData: Tour
-  isTourInWishList: boolean
+  isTourInWishList?: boolean
   refetch: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<AxiosResponse<SuccessResponse<Tour[]>, any>, Error>>

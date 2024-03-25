@@ -33,6 +33,7 @@ const RequestTour = lazy(() => import('./pages/RequestTour/RequestTour'))
 const SalesReportOfTour = lazy(() => import('./pages/SalesReportOfTour/SalesReportOfTour'))
 const SalesReportOfToursByGuide = lazy(() => import('./pages/SalesReportOfToursByGuide/SalesReportOfToursByGuide'))
 const SalesReportOfGuide = lazy(() => import('./pages/SalesReportOfGuide/SalesReportOfGuide'))
+const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -145,6 +146,16 @@ export default function useRouteElements() {
             <MainLayout>
               <Suspense fallback={<Loading />}>
                 <Checkout />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.wishlist,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <Wishlist />
               </Suspense>
             </MainLayout>
           )

@@ -72,7 +72,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem disablePadding>
+        <ListItem disablePadding component={Link} to={path.wishlist}>
           <ListItemButton>
             <ListItemIcon>
               <FavoriteBorderIcon />

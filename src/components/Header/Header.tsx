@@ -84,7 +84,7 @@ export default function Header({
             className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
             sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
           >
-            <NavLink to='' icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
+            <NavLink to={path.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
             <NavLink to={path.cart} icon={<ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />} text='Cart' />
             <NavLink
               to={path.bookings}
