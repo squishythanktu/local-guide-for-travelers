@@ -4,12 +4,13 @@ import { useContext, useEffect, useState } from 'react'
 import requestApi from 'src/apis/request.api'
 import { AppContext } from 'src/contexts/app.context'
 import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
+import Loading from 'src/pages/Loading'
 import { Request } from 'src/types/request.type'
 import ButtonComponent from './components/ButtonComponent'
 import RequestComponent from './components/RequestComponent'
 
 const TourRequestManagement: React.FC = () => {
-  const { profile } = useContext(AppContext)
+  const { profile, isAuthenticated } = useContext(AppContext)
   const [isGuide, setIsGuide] = useState<boolean>()
 
   const { data: requestsData, refetch } = useQuery({
@@ -25,7 +26,7 @@ const TourRequestManagement: React.FC = () => {
 
   useEffect(() => {
     let displayRequestsData: Request[] = []
-    if (requestsData && profile) {
+    if (requestsData && requestsData.data.data.length > 0 && profile) {
       if (parseInt(profile.id) === requestsData.data.data[0].guide.id) {
         setIsGuide(true)
       }
@@ -41,47 +42,57 @@ const TourRequestManagement: React.FC = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <h2 className='border-b-1 mb-2 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-        Tour Request Management
-      </h2>
-      {isGuide && (
-        <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-4 border'>
-          {Object.values(StatusRequestForGuide).map((item) => (
-            <ButtonComponent
-              key={item}
-              setRequestStatus={setRequestStatus}
-              requestStatus={item}
-              currentRequestStatus={requestStatus}
-            />
-          ))}
-        </Box>
+      {isAuthenticated && !requestsData?.data.data && <Loading />}
+      {isAuthenticated && requestsData?.data.data && requestsData.data.data.length > 0 ? (
+        <div className=''>
+          <h2 className='border-b-1 mb-2 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
+            Tour Request Management
+          </h2>
+          {isGuide && (
+            <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-4 border'>
+              {Object.values(StatusRequestForGuide).map((item) => (
+                <ButtonComponent
+                  key={item}
+                  setRequestStatus={setRequestStatus}
+                  requestStatus={item}
+                  currentRequestStatus={requestStatus}
+                />
+              ))}
+            </Box>
+          )}
+          {!isGuide && (
+            <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-6 border'>
+              {Object.values(StatusRequestForTraveler).map((item) => (
+                <ButtonComponent
+                  key={item}
+                  setRequestStatus={setRequestStatus}
+                  requestStatus={item}
+                  currentRequestStatus={requestStatus}
+                />
+              ))}
+            </Box>
+          )}
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+            {displayData.map((request) => {
+              return (
+                <div key={request.id} className='col-span-1'>
+                  <RequestComponent
+                    request={request}
+                    isGuide={isGuide}
+                    refetch={refetch}
+                    setRequestStatus={setRequestStatus}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className='flex h-[550px] flex-col items-center justify-center'>
+          <img src='/assets/images/empty-booking.png' alt='Empty request' className='mb-2 h-72 w-72 object-cover' />
+          <h3>No request data available.</h3>
+        </div>
       )}
-      {!isGuide && (
-        <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-6 border'>
-          {Object.values(StatusRequestForTraveler).map((item) => (
-            <ButtonComponent
-              key={item}
-              setRequestStatus={setRequestStatus}
-              requestStatus={item}
-              currentRequestStatus={requestStatus}
-            />
-          ))}
-        </Box>
-      )}
-      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-        {displayData.map((request) => {
-          return (
-            <div key={request.id} className='col-span-1'>
-              <RequestComponent
-                request={request}
-                isGuide={isGuide}
-                refetch={refetch}
-                setRequestStatus={setRequestStatus}
-              />
-            </div>
-          )
-        })}
-      </div>
     </div>
   )
 }
