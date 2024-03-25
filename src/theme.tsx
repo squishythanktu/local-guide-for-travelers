@@ -1,4 +1,5 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
+const rootElement = document.getElementById('root')
 
 // Edit this file for custom theme
 const theme = extendTheme({
@@ -61,6 +62,11 @@ const theme = extendTheme({
           fontWeight: 600,
           borderBottom: '0.5px solid var(--border-primary)'
         }
+      }
+    },
+    MuiDialog: {
+      defaultProps: {
+        container: rootElement
       }
     }
   }

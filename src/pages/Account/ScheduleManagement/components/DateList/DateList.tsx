@@ -3,32 +3,56 @@ import { Box, Button, IconButton } from '@mui/material'
 import List from '@mui/material/List'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
+import { DateObject } from 'react-multi-date-picker'
 import { DayInSchedule } from 'src/types/schedule.type'
-import { compareDate, formatDate } from 'src/utils/date-time'
+import { DateArrayConvertToDateObjectArray, compareDate, formatDate, isInArr } from 'src/utils/date-time'
 
 interface Props {
   busyByGuide: DayInSchedule[]
   busyByDay: DayInSchedule[]
   busyByHour: DayInSchedule[]
-  handleDeleteDay: (date: Date) => () => void
+  handleDateChange: (date: DateObject[]) => void
 }
 
-const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, handleDeleteDay, busyByHour }: Props) => {
+const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleDateChange }: Props) => {
   const [pastBusyDates, setPastBusyDates] = useState<Date[]>([])
   const [futureBusyDates, setFutureBusyDates] = useState<Date[]>([])
   const [pastBookedByDay, setPastBookedByDay] = useState<Date[]>([])
   const [futureBookedByDay, setFutureBookedByDay] = useState<Date[]>([])
   const [pastBookedByHour, setPastBookedByHour] = useState<Date[]>([])
   const [futureBookedByHour, setFutureBookedByHour] = useState<Date[]>([])
-
+  const [selectedDates, setSelectedDates] = useState<Date[]>([])
   const [dayState, setDayState] = useState<'daysOff' | 'bookedByDay' | 'bookedByHour'>('daysOff')
   const [temporalState, setTemporalState] = useState<'upcoming' | 'past'>('upcoming')
   const [displayDates, setDisplayDates] = useState<Date[]>([])
+
+  const confirmDelete = () => {
+    if (selectedDates.length < 1) return
+    const oldDayOff = busyByGuide.map((d) => d.busyDate)
+    handleDateChange(DateArrayConvertToDateObjectArray(oldDayOff.filter((date) => !isInArr(date, selectedDates))))
+    setSelectedDates([])
+  }
+
+  const handleDeleteDay = (date: Date) => () => {
+    const newBusyDates = busyByGuide.filter((d) => d.busyDate !== date)
+    handleDateChange(newBusyDates.map((d) => new DateObject(d.busyDate)))
+  }
 
   const formattedData = (dateArr: Date[], type: 'ASC' | 'DESC') => {
     const data = [...new Set(dateArr)]
     if (type === 'DESC') return data.sort((a, b) => compareDate(b, a))
     return data.sort((a, b) => compareDate(a, b))
+  }
+
+  const handleDayClick = (day: Date) => {
+    const isDelete = selectedDates.includes(day)
+    if (isDelete) {
+      const newSelectedDates = selectedDates.filter((item) => item !== day)
+      setSelectedDates(newSelectedDates)
+      return
+    }
+    const newSelectedDates = [...selectedDates, day]
+    setSelectedDates(newSelectedDates)
   }
 
   useEffect(() => {
@@ -106,8 +130,13 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, handleDeleteDay, bu
     setTemporalState('past')
   }
 
+  const shouldDisableButton = () => {
+    if (selectedDates.length > 0) return false
+    return true
+  }
+
   return (
-    <Box className='h-[332px] rounded-md border' sx={{ bgcolor: 'background.paper' }}>
+    <Box className='relative h-[380px] rounded-md border' sx={{ bgcolor: 'background.paper' }}>
       <Box className='flex flex-col items-center justify-center rounded-t-md'>
         <Box
           sx={{
@@ -195,37 +224,14 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, handleDeleteDay, bu
           </Button>
         </Box>
       </Box>
-      <List
-        disablePadding
-        className='rounded-b-md px-2 pt-2'
-        sx={{
-          width: '100%',
-          maxWidth: 360,
-          bgcolor: 'background.paper',
-          position: 'relative',
-          overflow: 'auto',
-          maxHeight: '288px',
-          '@media (min-width: 346px)': {
-            maxHeight: '230px'
-          },
-          '@media (min-width: 547px)': {
-            maxHeight: '250px'
-          },
-          '@media (min-width: 768px)': {
-            maxHeight: '230px'
-          },
-          '@media (min-width: 1124px)': {
-            maxHeight: '250px'
-          }
-        }}
-        subheader={<li />}
-      >
-        <div className=''></div>
+      <List disablePadding className='rounded-b-md px-2 pt-2' subheader={<li />}>
         {displayDates.map((item, index) => (
           <Box
             sx={{ borderColor: (theme) => theme.palette.primary.main }}
             key={index}
-            className='mx-4 my-1 rounded-md border py-1 md:mx-0 lg:mx-4'
+            className={classNames('mx-4 my-1 rounded-md border py-1 md:mx-0 lg:mx-4', {
+              'bg-[#fff0f1] ': isInArr(item, selectedDates)
+            })}
           >
             <Box
               sx={{ color: (theme) => theme.palette.primary.main }}
@@ -234,10 +240,18 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, handleDeleteDay, bu
                   dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming',
                 'justify-items-center': dayState.toString() === 'bookedDays'
               })}
+              onClick={(event) => {
+                event.stopPropagation(), handleDayClick(item)
+              }}
             >
-              <div className=''>{formatDate(item, 'MM/DD/YYYY')}</div>
+              <div className='grid justify-center'>{formatDate(new Date(item), 'MM/DD/YYYY')}</div>
               {dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming' && (
-                <IconButton onClick={handleDeleteDay(item)} className='p-0'>
+                <IconButton
+                  onClick={(event) => {
+                    event.stopPropagation(), handleDeleteDay(item)()
+                  }}
+                  className='p-0'
+                >
                   <CloseIcon
                     className='h-4 w-4'
                     sx={{
@@ -250,6 +264,16 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, handleDeleteDay, bu
           </Box>
         ))}
       </List>
+      {dayState === 'daysOff' && temporalState == 'upcoming' && (
+        <Button
+          disabled={shouldDisableButton()}
+          variant='contained'
+          className='absolute bottom-0 w-full rounded-none rounded-b-md'
+          onClick={confirmDelete}
+        >
+          Delete
+        </Button>
+      )}
     </Box>
   )
 }
