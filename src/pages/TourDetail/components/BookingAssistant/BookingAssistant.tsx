@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from '@hookform/resolvers/yup'
 import Button from '@mui/material/Button'
 import OutlinedInput from '@mui/material/OutlinedInput'
@@ -9,17 +10,18 @@ import { Controller, useForm } from 'react-hook-form'
 import scheduleApi from 'src/apis/schedule.api'
 import { bookingSchema } from 'src/utils/rules'
 import { BookingAssistantFormData } from '../../TourDetail'
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 
 dayjs.extend(isSameOrBefore)
 
 const bookingFormSchema = bookingSchema.pick(['numberTravelers', 'startDate'])
 
-interface Props {
+interface BookingAssistantProps {
   onSubmit: (data: BookingAssistantFormData) => void
   id: number
 }
 
-export default function BookingAssistant({ onSubmit, id }: Props) {
+export default function BookingAssistant({ onSubmit, id }: BookingAssistantProps) {
   const {
     trigger,
     control,
@@ -27,7 +29,7 @@ export default function BookingAssistant({ onSubmit, id }: Props) {
     handleSubmit
   } = useForm<BookingAssistantFormData>({
     defaultValues: {
-      numberTravelers: 0
+      numberTravelers: 1
     },
     resolver: yupResolver(bookingFormSchema)
   })
@@ -61,6 +63,7 @@ export default function BookingAssistant({ onSubmit, id }: Props) {
               placeholder='Participant(s)'
               className='rounded-sm'
               type='number'
+              endAdornment={<PersonOutlineOutlinedIcon sx={{ color: '#757575', marginRight: '-5px' }} />}
               sx={{
                 bgcolor: 'white',
                 '.MuiOutlinedInput-notchedOutline': {

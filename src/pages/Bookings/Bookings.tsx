@@ -50,13 +50,9 @@ const Bookings: React.FC = () => {
     }
   }, [bookingsHistoryData])
 
-  const handleChange = (_: SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
+  const handleChange = (_: SyntheticEvent, newValue: number) => setValue(newValue)
 
-  const handleChangeIndex = (index: number) => {
-    setValue(index)
-  }
+  const handleChangeIndex = (index: number) => setValue(index)
 
   if (!isAuthenticated)
     return (
@@ -67,7 +63,7 @@ const Bookings: React.FC = () => {
     )
 
   return (
-    <Box className='container flex min-h-[550px] flex-col py-5'>
+    <Box className='container flex min-h-[550px] flex-col '>
       {isAuthenticated && !bookingsHistoryData?.data.data && <Loading />}
       {isAuthenticated && bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
         <div>
@@ -78,7 +74,7 @@ const Bookings: React.FC = () => {
               onChange={handleChange}
               indicatorColor='secondary'
               textColor='inherit'
-              className='mt-3 w-1/2 rounded-xl border shadow-none'
+              className='mt-3 w-full rounded-xl border shadow-none md:w-1/2'
               sx={{
                 color: (theme) => theme.palette.primary.main,
                 backgroundColor: (theme) => theme.palette.common.white,

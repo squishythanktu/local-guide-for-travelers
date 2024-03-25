@@ -31,39 +31,36 @@ export default function Cart() {
     )
 
   return (
-    <Box className='container flex flex-col'>
+    <Box className='container flex min-h-[550px] flex-col'>
       {isPending && <Loading />}
-      {!isPending && (cartData?.data.data as []).length === 0 && (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
+      {!isPending && (cartData?.data.data.bookings?.length === 0 || !cartData?.data.data.bookings) && (
+        <div className='flex min-h-[550px] flex-col items-center justify-center'>
           <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
           <h3>You have not added any tours to the cart yet.</h3>
         </div>
       )}
-      {!isPending &&
-        cartData &&
-        (cartData.data.data as BookingsInCart).bookings &&
-        (cartData.data.data as BookingsInCart).bookings.length > 0 && (
-          <div className='grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-28'>
-            <div className='py-5 lg:col-span-3'>
-              <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>
-              <div className='cart__items'>
-                <div className='flex flex-col gap-4'>
-                  {(cartData.data.data as BookingsInCart).bookings.map((booking: Booking) => (
-                    <CartBookingItem key={booking.id} booking={booking} refetch={refetch} />
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className='flex flex-col gap-4 pb-8 pt-0 lg:col-span-2 lg:pt-[60px]'>
-              <div className='cart__total'>
-                <CartTotal bookings={(cartData?.data.data as BookingsInCart).bookings} />
-              </div>
-              <div className='cart__info'>
-                <CartInfo />
+      {!isPending && cartData && cartData.data.data.bookings && cartData.data.data.bookings.length > 0 && (
+        <div className='grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-28'>
+          <div className='py-5 lg:col-span-3'>
+            <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>
+            <div className='cart__items'>
+              <div className='flex flex-col gap-4'>
+                {cartData.data.data.bookings.map((booking: Booking) => (
+                  <CartBookingItem key={booking.id} booking={booking} refetch={refetch} />
+                ))}
               </div>
             </div>
           </div>
-        )}
+          <div className='flex flex-col gap-4 pb-8 pt-0 lg:col-span-2 lg:pt-[60px]'>
+            <div className='cart__total'>
+              <CartTotal bookings={(cartData?.data.data as BookingsInCart).bookings} />
+            </div>
+            <div className='cart__info'>
+              <CartInfo />
+            </div>
+          </div>
+        </div>
+      )}
     </Box>
   )
 }

@@ -1,6 +1,6 @@
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
-import { Button, Chip, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material'
+import { Box, Button, Chip, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material'
 import { QueryObserverResult, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -9,13 +9,14 @@ import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import PassengerInfo from 'src/pages/BookingSuccess/components/PassengerInfo/PassengerInfo'
 import { Invoice } from 'src/types/invoice.type'
 import BookingContent from '../BookingContent/BookingContent'
+import Collapse from '@mui/material/Collapse'
 
-interface Props {
+interface InvoiceComponentProps {
   invoice: Invoice
   refetchInvoicesData: () => Promise<QueryObserverResult>
 }
 
-const InvoiceComponent: React.FC<Props> = ({ invoice, refetchInvoicesData }: Props) => {
+const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInvoicesData }: InvoiceComponentProps) => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(false)
   const [isClicked, setIsClicked] = useState<{ confirmRefund: boolean; refund: boolean }>({
     confirmRefund: false,
@@ -49,7 +50,7 @@ const InvoiceComponent: React.FC<Props> = ({ invoice, refetchInvoicesData }: Pro
     <div className='mb-7 mt-3  rounded-lg border-2 '>
       <div className='grid grid-cols-2 p-3'>
         <div className='col-span-1'>
-          <div className='text-lg font-medium'>Passenger Information</div>
+          <div className='pb-3 text-lg font-medium'>Passenger Information</div>
           <PassengerInfo email={invoice.email} fullName={invoice.fullName} phone={invoice.phone} />
         </div>
         <div className='col-span-1 flex flex-col items-end justify-between gap-4'>
@@ -72,29 +73,31 @@ const InvoiceComponent: React.FC<Props> = ({ invoice, refetchInvoicesData }: Pro
           {invoice.status === 'REFUNDED' && (
             <Chip className='' label='REFUNDED' color='error' size='small' variant='filled' />
           )}
-          <Typography className='text-2xl font-extrabold' sx={{ color: (theme) => theme.palette.secondary.main }}>
-            ${invoice.priceTotal}
+          <Typography
+            className='text-2xl font-extrabold'
+            sx={{ color: (theme) => theme.palette.secondary.main, marginTop: 'auto' }}
+          >
+            ${invoice.priceTotal.toLocaleString()}
           </Typography>
         </div>
       </div>
       <div className=''>
-        <div className='px-3 pb-3 text-lg font-medium'>
-          Tours Information
+        <div className='flex justify-between px-3 pb-3'>
+          <span className='text-lg font-medium'>Tours Information</span>
           <Button
             variant='outlined'
             endIcon={openCollapse ? <ExpandLess /> : <ExpandMore />}
             onClick={() => setOpenCollapse(!openCollapse)}
             className='ml-2'
-            size='small'
           >
-            {!openCollapse ? 'View' : 'Hide'}
+            {!openCollapse ? 'View Details' : 'Hide Details'}
           </Button>
         </div>
-        {openCollapse && (
-          <div className='bg-slate-200 p-3'>
+        <Collapse in={openCollapse} timeout='auto' unmountOnExit>
+          <Box sx={{ padding: '0.75rem', background: 'var(--light-grey-background)' }}>
             <BookingContent bookingList={invoice.tours} />
-          </div>
-        )}
+          </Box>
+        </Collapse>
       </div>
       {isClicked.refund && (
         <ConfirmDialog

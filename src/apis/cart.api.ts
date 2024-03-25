@@ -8,7 +8,7 @@ export const URL_CARTS = 'carts'
 
 const cartApi = {
   getBookingsInCart() {
-    return http.get<SuccessResponse<BookingsInCart | []>>(URL_CARTS)
+    return http.get<SuccessResponse<BookingsInCart>>(URL_CARTS)
   },
   updateBookingInCart(body: BookingUpdateFormData) {
     return http.put<SuccessResponse<BookingsInCart>>(URL_CARTS, body)

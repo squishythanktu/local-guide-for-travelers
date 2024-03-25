@@ -19,17 +19,18 @@ import { BookingSchema } from 'src/utils/rules'
 import CartBookingForm from '../CartBookingForm'
 import utc from 'dayjs/plugin/utc'
 import dayjs from 'dayjs'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 dayjs.extend(utc)
 type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate' | 'startTime'>
 export type BookingUpdateFormData = BookingFormData & { id: number }
 
-interface Props {
+interface CartBookingItemProps {
   booking: Booking
   refetch: () => Promise<QueryObserverResult>
 }
 
-export default function CartBookingItem({ booking, refetch }: Props) {
+export default function CartBookingItem({ booking, refetch }: CartBookingItemProps) {
   const [editMode, setEditMode] = useState(false)
   const handleUpdate = () => {
     setEditMode(true)
@@ -120,14 +121,15 @@ export default function CartBookingItem({ booking, refetch }: Props) {
                   >
                     <span className='text-sm font-medium'>Update</span>
                   </Button>
-                  <Button
+                  <LoadingButton
+                    loading={deleteBookingMutation.isPending}
                     onClick={handleDelete}
                     className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full'
                     color='error'
                     variant='outlined'
                   >
                     <DeleteIcon className='h-4 w-4' />
-                  </Button>
+                  </LoadingButton>
                 </div>
               </>
             )}

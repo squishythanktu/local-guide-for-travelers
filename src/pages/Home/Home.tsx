@@ -12,6 +12,7 @@ import TourCard from '../../components/TourCard/TourCard'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import wishlistApi from 'src/apis/wishlist.api'
+import { isTourInWishlist } from 'src/utils/wishlist'
 
 export default function Home() {
   const { profile, isAuthenticated } = useContext(AppContext)
@@ -27,14 +28,16 @@ export default function Home() {
     placeholderData: keepPreviousData,
     staleTime: 5 * 1000
   })
-  const { data: wishListData, refetch } = useQuery({
+  const {
+    data: wishListData,
+    refetch,
+    isPending: isWishlistDataPending
+  } = useQuery({
     queryKey: [`wishlist of user with id ${profile?.id}`],
     queryFn: () => wishlistApi.getWishlist(),
     staleTime: 5 * 1000,
     enabled: isAuthenticated
   })
-
-  const isTourInWishlist = (wishListData: Tour[], tourId: number) => wishListData.find((tour) => tour.id === tourId)
 
   return (
     <div className='homepage__container'>
@@ -66,7 +69,8 @@ export default function Home() {
             ? Array(8)
                 .fill(0)
                 .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
-            : toursData?.data.data.map((tourData: Tour) => (
+            : !isWishlistDataPending &&
+              toursData?.data.data.map((tourData: Tour) => (
                 <TourCard
                   key={tourData.id}
                   tourData={tourData}

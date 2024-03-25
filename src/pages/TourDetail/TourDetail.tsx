@@ -182,13 +182,9 @@ const TourDetail: React.FC = () => {
     setReviewParams(x)
   }, [])
 
-  if (isLoadingTour) {
-    return <Loading />
-  }
+  if (isLoadingTour) return <Loading />
 
-  if (errorTour) {
-    return <NotFound />
-  }
+  if (errorTour) return <NotFound />
 
   return (
     <div className='px-4 py-2 text-sm md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>
