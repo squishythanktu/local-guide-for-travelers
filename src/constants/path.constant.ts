@@ -25,7 +25,8 @@ const path = {
   bookingSuccess: '/booking-success/:id',
   bookingFail: '/booking-fail',
   requestTour: '/request-add-tour',
-  wishlist: '/wishlist'
+  wishlist: '/wishlist',
+  guideApplications: '/guide-applications'
 }
 
 export default path

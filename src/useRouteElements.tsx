@@ -35,6 +35,7 @@ const SalesReportOfToursByGuide = lazy(() => import('./pages/SalesReportOfToursB
 const SalesReportOfGuide = lazy(() => import('./pages/SalesReportOfGuide/SalesReportOfGuide'))
 const TourConfirmation = lazy(() => import('./pages/TourConfirmation/TourConfirmation'))
 const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'))
+const GuideApplication = lazy(() => import('./pages/GuideApplication/GuideApplication'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -157,6 +158,16 @@ export default function useRouteElements() {
             <MainLayout>
               <Suspense fallback={<Loading />}>
                 <Wishlist />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.guideApplications,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <GuideApplication />
               </Suspense>
             </MainLayout>
           )

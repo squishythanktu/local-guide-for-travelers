@@ -14,6 +14,8 @@ import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
 import ViewListIcon from '@mui/icons-material/ViewList'
+import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined'
+import { Divider } from '@mui/material'
 
 interface ProfileMenuProps {
   textColor: string
@@ -96,6 +98,13 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             </ListItemIcon>
             Sign up
           </MenuItem>
+          <Divider />
+          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
+            <ListItemIcon>
+              <ContactPageOutlinedIcon fontSize='small' />
+            </ListItemIcon>
+            Guide Application
+          </MenuItem>
         </Menu>
       )}
       {isAuthenticated && (
@@ -129,6 +138,13 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             </ListItemIcon>
             Management
           </MenuItem>
+          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
+            <ListItemIcon>
+              <ContactPageOutlinedIcon fontSize='small' />
+            </ListItemIcon>
+            Guide Application
+          </MenuItem>
+          <Divider />
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon fontSize='small' />
