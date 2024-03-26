@@ -13,8 +13,8 @@ const tourApi = {
   getTours() {
     return http.get<SuccessResponse<Tour[]>>(URL_TOURS)
   },
-  getTourById(id: string) {
-    return http.get<TourSuccessResponse>(`${URL_TOURS}/${id}`)
+  getTourById(id: string | number) {
+    return http.get<TourSuccessResponse>(`${URL_TOURS}/${id as string}`)
   },
   createTour(body: TourFormData) {
     return http.post<SuccessResponse<Tour>>(URL_TOURS, body)
@@ -36,6 +36,15 @@ const tourApi = {
   },
   createRequestTour(requestId: number, body: TourFormData) {
     return http.post<SuccessResponse<Tour>>(`${URL_TOURS}/${requestId}`, body)
+  },
+  getPendingTours() {
+    return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/pending`)
+  },
+  acceptPendingTour(tourId: number) {
+    return http.put<SuccessResponse<Tour>>(`${URL_TOURS}/accept/${tourId}`)
+  },
+  denyPendingTour(tourId: number) {
+    return http.put<SuccessResponse<Tour>>(`${URL_TOURS}/deny/${tourId}`)
   }
 }
 

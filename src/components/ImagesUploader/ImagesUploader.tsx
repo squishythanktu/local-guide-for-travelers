@@ -11,24 +11,24 @@ type ImagesUploaderProps = {
   setImages: (arg: (string | ImageWithLink)[]) => void
 }
 
-const ImagesUploader: React.FC<ImagesUploaderProps> = memo((props: ImagesUploaderProps) => {
-  const maxImagesUpload = 10
+const ImagesUploader: React.FC<ImagesUploaderProps> = memo(({ images, setImages }: ImagesUploaderProps) => {
+  const maxImagesUpload = 5
   const inputId = Math.random().toString(32).substring(2)
 
   const handleOnAddImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
 
-    const files = Array.from(e.target.files).slice(0, maxImagesUpload - props.images.length)
+    const files = Array.from(e.target.files).slice(0, maxImagesUpload - images.length)
     const base64Array = await Promise.all(files.map((file) => convertToBase64(file)))
 
-    props.setImages([...props.images, ...base64Array])
+    setImages([...images, ...base64Array])
     e.target.value = ''
   }
 
   const handleOnRemoveImage = (index: number) => {
-    const newImages = [...props.images]
+    const newImages = [...images]
     newImages.splice(index, 1)
-    props.setImages(newImages)
+    setImages(newImages)
   }
 
   const convertToBase64 = (file: File): Promise<string> => {
@@ -47,7 +47,7 @@ const ImagesUploader: React.FC<ImagesUploaderProps> = memo((props: ImagesUploade
   return (
     <>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
-        {props.images.map((image, i) => (
+        {images.map((image, i) => (
           <Grid
             item
             xs={2}
@@ -88,13 +88,13 @@ const ImagesUploader: React.FC<ImagesUploaderProps> = memo((props: ImagesUploade
       <label htmlFor={inputId} className='flex items-center gap-3'>
         <Button
           variant='contained'
-          disabled={props.images.length >= maxImagesUpload}
+          disabled={images.length >= maxImagesUpload}
           component='span'
           startIcon={<CloudUploadIcon />}
         >
           Upload Images
         </Button>
-        <span className='text-sm'>Up to 10 images</span>
+        <span className='text-sm'>Up to 5 images</span>
         <input
           id={inputId}
           type='file'

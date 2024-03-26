@@ -102,6 +102,8 @@ const SalesReportOfToursByGuide: React.FC = () => {
     },
     renderBottomToolbarCustomActions: () => (
       <Pagination
+        showFirstButton
+        showLastButton
         className='absolute right-5 top-1/4'
         onChange={(_, page) => {
           setPagination((prevPagination) => ({

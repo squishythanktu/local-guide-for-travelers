@@ -116,7 +116,7 @@ const RequestTour: React.FC = () => {
       }
       createRequestTourMutation.mutate(formattedData, {
         onSuccess: () => {
-          navigate(path.request)
+          navigate(path.tourRequest)
           if (buttonClicked === StatusRequestForGuide.PENDING) toast.success('Your request has been sent.')
           if (buttonClicked === StatusRequestForTraveler.DRAFT) toast.success('Your request has been saved as a draft.')
         },

@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import * as React from 'react'
+import { useState } from 'react'
 import AdminDrawer from 'src/components/AdminDrawer/AdminDrawer'
 import AdminHeader from 'src/components/AdminHeader/AdminHeader'
 
@@ -17,20 +17,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps) => {
-  const [open, setOpen] = React.useState(false)
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
+  const [open, setOpen] = useState(false)
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AdminHeader handleDrawerOpen={handleDrawerOpen} open={open} />
-      <AdminDrawer handleDrawerClose={handleDrawerClose} open={open} />
+      <AdminHeader handleDrawerOpen={() => setOpen(true)} open={open} />
+      <AdminDrawer handleDrawerClose={() => setOpen(false)} open={open} />
       <Box component='main' sx={{ flexGrow: 1, p: 3, background: 'var(--light-grey-background)' }}>
         <DrawerHeader />
         {children}

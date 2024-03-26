@@ -123,7 +123,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem component={Link} to={path.request} onClick={handleClose}>
+          <MenuItem component={Link} to={path.tourRequest} onClick={handleClose}>
             <ListItemIcon>
               <ViewListIcon fontSize='small' />
             </ListItemIcon>

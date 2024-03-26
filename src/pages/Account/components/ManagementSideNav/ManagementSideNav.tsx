@@ -24,7 +24,7 @@ const ManagementSideNav: React.FC = () => {
       <div className='account__side-menu'>
         <Paper>
           <MenuList>
-            <MenuItem component={Link} to={path.request}>
+            <MenuItem component={Link} to={path.tourRequest}>
               <ListItemIcon>
                 <TourIcon fontSize='small' />
               </ListItemIcon>

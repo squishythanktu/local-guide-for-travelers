@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom'
 import HomeWorkIcon from '@mui/icons-material/HomeWork'
 import HikingIcon from '@mui/icons-material/Hiking'
 import { SyntheticEvent, useState } from 'react'
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber'
 
 interface AdminDrawerProps {
   handleDrawerClose: () => void
@@ -76,10 +77,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: AdminDrawerProps) => {
   const [openCollapseSalesReport, setOpenCollapseSalesReport] = useState(false)
+  const [openCollapseTourManagement, setOpenCollapseTourManagement] = useState(false)
 
   const handleClickSalesReport = (event: SyntheticEvent) => {
     event.stopPropagation()
     setOpenCollapseSalesReport(!openCollapseSalesReport)
+  }
+
+  const handleClickTourManagement = (event: SyntheticEvent) => {
+    event.stopPropagation()
+    setOpenCollapseTourManagement(!openCollapseTourManagement)
   }
 
   return (
@@ -98,6 +105,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               justifyContent: open ? 'initial' : 'center',
               px: 2.5
             }}
+            onClick={handleClickTourManagement}
           >
             <ListItemIcon
               sx={{
@@ -109,8 +117,19 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <TourIcon />
             </ListItemIcon>
             <ListItemText primary='Tour Management' sx={{ opacity: open ? 1 : 0 }} />
+            {openCollapseTourManagement ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
+        <Collapse in={openCollapseTourManagement} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourConfirmation}>
+              <ListItemIcon>
+                <ConfirmationNumberIcon />
+              </ListItemIcon>
+              <ListItemText primary='Tour Confirmation' />
+            </ListItemButton>
+          </List>
+        </Collapse>
         <ListItem disablePadding sx={{ display: 'block' }}>
           <ListItemButton
             sx={{

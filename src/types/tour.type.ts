@@ -1,3 +1,4 @@
+import { TourStatus } from 'src/enums/tour-status.enum'
 import { Location } from './location.type'
 import { User } from './user.type'
 import { SuccessResponse } from './utils.type'
@@ -32,6 +33,7 @@ export type Tour = {
   guide: User
   images: ImageWithLink[]
   locations: Location[]
+  status?: TourStatus
 }
 
 export interface TourGuideParams {

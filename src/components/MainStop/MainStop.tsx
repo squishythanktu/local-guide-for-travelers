@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Stepper from '@mui/material/Stepper'
@@ -17,7 +18,7 @@ const MainStop: React.FC<MainStopProps> = ({
   titleClassName = 'text-[18px] font-semibold md:text-2xl'
 }: MainStopProps) => {
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <div className={titleClassName}>Main stops</div>
       <Stepper orientation={orientation} activeStep={-1}>
         {locations.map((location, index) => (
@@ -34,7 +35,7 @@ const MainStop: React.FC<MainStopProps> = ({
           </Step>
         ))}
       </Stepper>
-    </>
+    </Box>
   )
 }
 

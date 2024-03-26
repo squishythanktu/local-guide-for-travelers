@@ -1,4 +1,5 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
+
 const rootElement = document.getElementById('root')
 
 // Edit this file for custom theme
@@ -65,6 +66,11 @@ const theme = extendTheme({
       }
     },
     MuiDialog: {
+      defaultProps: {
+        container: rootElement
+      }
+    },
+    MuiPopper: {
       defaultProps: {
         container: rootElement
       }

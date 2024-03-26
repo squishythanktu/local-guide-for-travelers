@@ -69,12 +69,12 @@ const SalesReportOfTour: React.FC = () => {
   )
 
   const table = useMaterialReactTable<TourInStatistic>({
-    enablePagination: false,
     columns,
     data: statisticsData?.data.data.tourDTOS ?? [],
     state: {
       isLoading
     },
+    enablePagination: false,
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
@@ -91,6 +91,8 @@ const SalesReportOfTour: React.FC = () => {
     },
     renderBottomToolbarCustomActions: () => (
       <Pagination
+        showFirstButton
+        showLastButton
         className='absolute right-5 top-1/4'
         onChange={(_, page) => {
           setPagination((prevPagination) => ({

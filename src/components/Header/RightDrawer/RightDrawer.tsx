@@ -122,7 +122,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               </ListItemIcon>
               <ListItemText primary='Settings' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.request}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourRequest}>
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>

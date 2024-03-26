@@ -19,8 +19,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   content
 }: ConfirmDialogProps) => {
   return (
-    <Dialog open={true} aria-labelledby='draggable-dialog-title'>
-      <DialogTitle style={{ cursor: 'move' }} id='draggable-dialog-title'>
+    <Dialog open={true} aria-labelledby='dialog'>
+      <DialogTitle style={{ cursor: 'move' }} id='dialog-title'>
         {title}
       </DialogTitle>
       <DialogContent>

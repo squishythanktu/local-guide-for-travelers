@@ -4,19 +4,19 @@ import { Button } from '@mui/material'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import React from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
 
 const AdminProfileMenu: React.FC = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const { profile } = useContext(AppContext)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const navigate = useNavigate()
   const open = Boolean(anchorEl)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
   const handleLogout = () => {
     clearLS()
@@ -41,7 +41,7 @@ const AdminProfileMenu: React.FC = () => {
         disableFocusRipple
       >
         <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: 'white', marginBottom: '4px' }} />
-        <span className='hidden overflow-x-hidden text-ellipsis text-sm md:block'>Admin</span>
+        <span className='hidden overflow-x-hidden text-ellipsis text-sm md:block'>{profile?.email}</span>
       </Button>
       <Menu
         disableScrollLock

@@ -33,6 +33,7 @@ const RequestTour = lazy(() => import('./pages/RequestTour/RequestTour'))
 const SalesReportOfTour = lazy(() => import('./pages/SalesReportOfTour/SalesReportOfTour'))
 const SalesReportOfToursByGuide = lazy(() => import('./pages/SalesReportOfToursByGuide/SalesReportOfToursByGuide'))
 const SalesReportOfGuide = lazy(() => import('./pages/SalesReportOfGuide/SalesReportOfGuide'))
+const TourConfirmation = lazy(() => import('./pages/TourConfirmation/TourConfirmation'))
 const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'))
 
 const RejectedRoute = () => {
@@ -241,7 +242,7 @@ export default function useRouteElements() {
           ),
           children: [
             {
-              path: path.request,
+              path: path.tourRequest,
               element: (
                 <Suspense fallback={<Loading />}>
                   <TourRequestManagement />
@@ -323,6 +324,16 @@ export default function useRouteElements() {
         {
           path: path.admin,
           element: <AdminLayout />
+        },
+        {
+          path: path.tourConfirmation,
+          element: (
+            <AdminLayout>
+              <Suspense fallback={<Loading />}>
+                <TourConfirmation />
+              </Suspense>
+            </AdminLayout>
+          )
         },
         {
           path: path.salesReportOfTour,

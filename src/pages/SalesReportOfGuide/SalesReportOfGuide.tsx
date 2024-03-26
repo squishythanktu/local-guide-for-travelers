@@ -68,12 +68,12 @@ const SalesReportOfGuide: React.FC = () => {
   )
 
   const table = useMaterialReactTable<GuideInStatistic>({
-    enablePagination: false,
     columns,
     data: statisticsData?.data.data.statisticalGuideDTOS ?? [],
     state: {
       isLoading
     },
+    enablePagination: false,
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
@@ -90,6 +90,8 @@ const SalesReportOfGuide: React.FC = () => {
     },
     renderBottomToolbarCustomActions: () => (
       <Pagination
+        showFirstButton
+        showLastButton
         className='absolute right-5 top-1/4'
         onChange={(_, page) => {
           setPagination((prevPagination) => ({
