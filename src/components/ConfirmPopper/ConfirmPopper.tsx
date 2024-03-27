@@ -1,4 +1,5 @@
 import LoadingButton from '@mui/lab/LoadingButton'
+import { TextField } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Fade from '@mui/material/Fade'
@@ -6,6 +7,7 @@ import Paper from '@mui/material/Paper'
 import Popper from '@mui/material/Popper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
+import { Dispatch, SetStateAction } from 'react'
 import theme from 'src/theme'
 
 interface ConfirmPopperProps {
@@ -17,6 +19,9 @@ interface ConfirmPopperProps {
   handleClickYes: () => void
   handleClickNo: () => void
   loading: boolean
+  reason?: string
+  setReason?: Dispatch<SetStateAction<string | undefined>>
+  currentAction?: 'deny' | 'accept' | undefined
 }
 
 const ConfirmPopper: React.FC<ConfirmPopperProps> = ({
@@ -27,7 +32,10 @@ const ConfirmPopper: React.FC<ConfirmPopperProps> = ({
   popperAnchorEl,
   handleClickYes,
   handleClickNo,
-  loading
+  loading,
+  reason,
+  setReason,
+  currentAction
 }: ConfirmPopperProps) => {
   return (
     <Popper
@@ -67,6 +75,15 @@ const ConfirmPopper: React.FC<ConfirmPopperProps> = ({
               {icon}
               <Typography className='text-lg font-bold'>{title}</Typography>
             </Box>
+            {setReason && currentAction === 'deny' && (
+              <TextField
+                className='mt-4 w-full'
+                label='Reason'
+                value={reason}
+                onChange={(event) => setReason(event.target.value)}
+                variant='outlined'
+              />
+            )}
             <Typography className='mb-8 mt-4 text-[var(--label-secondary)]'>{content}</Typography>
             <Stack direction='row' spacing={1} className='flex justify-end'>
               <Button onClick={handleClickNo} size='large' color='error'>

@@ -34,6 +34,7 @@ const SalesReportOfTour = lazy(() => import('./pages/SalesReportOfTour/SalesRepo
 const SalesReportOfToursByGuide = lazy(() => import('./pages/SalesReportOfToursByGuide/SalesReportOfToursByGuide'))
 const SalesReportOfGuide = lazy(() => import('./pages/SalesReportOfGuide/SalesReportOfGuide'))
 const TourConfirmation = lazy(() => import('./pages/TourConfirmation/TourConfirmation'))
+const GuideConfirmation = lazy(() => import('./pages/GuideConfirmation/GuideConfirmation'))
 const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'))
 const GuideApplication = lazy(() => import('./pages/GuideApplication/GuideApplication'))
 
@@ -342,6 +343,16 @@ export default function useRouteElements() {
             <AdminLayout>
               <Suspense fallback={<Loading />}>
                 <TourConfirmation />
+              </Suspense>
+            </AdminLayout>
+          )
+        },
+        {
+          path: path.guideConfirmation,
+          element: (
+            <AdminLayout>
+              <Suspense fallback={<Loading />}>
+                <GuideConfirmation />
               </Suspense>
             </AdminLayout>
           )

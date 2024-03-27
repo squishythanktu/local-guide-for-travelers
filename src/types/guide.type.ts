@@ -1,3 +1,7 @@
+import { GuideApplicationStatus } from 'src/enums/guide-application-status'
+import { ImageWithLink } from './tour.type'
+import { User } from './user.type'
+
 type LanguageSkill = {
   id: number
   language: string
@@ -17,4 +21,16 @@ export type Guide = {
   avatar: string
   languageSkill: LanguageSkill[]
   numberOfReviews: number
+}
+
+export type GuideApplication = {
+  id: number
+  isLicensedGuide: boolean
+  transportation: string
+  yearsOfExperience: number
+  howGuideHearAboutUs: string
+  status: GuideApplicationStatus
+  reasonDeny: string
+  user: User
+  images: ImageWithLink[]
 }

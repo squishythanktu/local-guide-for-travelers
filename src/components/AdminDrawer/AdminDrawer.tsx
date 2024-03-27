@@ -1,30 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import HikingIcon from '@mui/icons-material/Hiking'
+import HomeWorkIcon from '@mui/icons-material/HomeWork'
 import PersonIcon from '@mui/icons-material/Person'
 import TourIcon from '@mui/icons-material/Tour'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import Collapse from '@mui/material/Collapse'
 import Divider from '@mui/material/Divider'
+import MuiDrawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import * as React from 'react'
-import { drawerWidth } from 'src/constants/width-height.constant'
 import { Theme, styled } from '@mui/material/styles'
-import theme from 'src/theme'
-import MuiDrawer from '@mui/material/Drawer'
-import Collapse from '@mui/material/Collapse'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
-import path from 'src/constants/path.constant'
-import { Link } from 'react-router-dom'
-import HomeWorkIcon from '@mui/icons-material/HomeWork'
-import HikingIcon from '@mui/icons-material/Hiking'
+import * as React from 'react'
 import { SyntheticEvent, useState } from 'react'
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber'
+import { Link } from 'react-router-dom'
+import path from 'src/constants/path.constant'
+import { drawerWidth } from 'src/constants/width-height.constant'
+import theme from 'src/theme'
 
 interface AdminDrawerProps {
   handleDrawerClose: () => void
@@ -78,6 +78,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: AdminDrawerProps) => {
   const [openCollapseSalesReport, setOpenCollapseSalesReport] = useState(false)
   const [openCollapseTourManagement, setOpenCollapseTourManagement] = useState(false)
+  const [openCollapseGuideManagement, setOpenCollapseGuideManagement] = useState(false)
 
   const handleClickSalesReport = (event: SyntheticEvent) => {
     event.stopPropagation()
@@ -87,6 +88,11 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
   const handleClickTourManagement = (event: SyntheticEvent) => {
     event.stopPropagation()
     setOpenCollapseTourManagement(!openCollapseTourManagement)
+  }
+
+  const handleClickGuideManagement = (event: SyntheticEvent) => {
+    event.stopPropagation()
+    setOpenCollapseGuideManagement(!openCollapseGuideManagement)
   }
 
   return (
@@ -137,6 +143,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               justifyContent: open ? 'initial' : 'center',
               px: 2.5
             }}
+            onClick={handleClickGuideManagement}
           >
             <ListItemIcon
               sx={{
@@ -148,8 +155,19 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <PersonIcon />
             </ListItemIcon>
             <ListItemText primary='Guide Management' sx={{ opacity: open ? 1 : 0 }} />
+            {openCollapseGuideManagement ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
+        <Collapse in={openCollapseGuideManagement} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideConfirmation}>
+              <ListItemIcon>
+                <ConfirmationNumberIcon />
+              </ListItemIcon>
+              <ListItemText primary='Guide Confirmation' />
+            </ListItemButton>
+          </List>
+        </Collapse>
         <ListItem disablePadding sx={{ display: 'block' }}>
           <ListItemButton
             sx={{
