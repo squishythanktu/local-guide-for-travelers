@@ -1,5 +1,5 @@
 export enum TourStatus {
-  PENDING = 'Pending',
-  DENY = 'Deny',
-  ACCEPT = 'Accept'
+  PENDING = 'PENDING',
+  DENY = 'DENY',
+  ACCEPT = 'ACCEPT'
 }

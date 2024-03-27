@@ -14,6 +14,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import requestApi from 'src/apis/request.api'
 import tourApi from 'src/apis/tour.api'
+import wishlistApi from 'src/apis/wishlist.api'
 import ControlledTextField from 'src/components/ControlledTextField'
 import TourCard from 'src/components/TourCard'
 import path from 'src/constants/path.constant'
@@ -23,9 +24,8 @@ import { Transportation } from 'src/enums/transportation.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { Tour } from 'src/types/tour.type'
 import { RequestTourSchema, requestTourSchema } from 'src/utils/rules'
-import NotFound from '../NotFound/NotFound'
-import wishlistApi from 'src/apis/wishlist.api'
 import { isTourInWishlist } from 'src/utils/wishlist'
+import NotFound from '../NotFound/NotFound'
 
 export type RequestTourFormData = RequestTourSchema & {
   guideId: string
@@ -300,7 +300,7 @@ const RequestTour: React.FC = () => {
               <TourCard
                 key={tour.id}
                 tourData={tour}
-                isTourInWishList={!!isTourInWishlist(wishListData?.data.data as Tour[], tour.id)}
+                isTourInWishList={wishListData ? !!isTourInWishlist(wishListData?.data.data as Tour[], tour.id) : false}
                 refetch={refetch}
               />
             ))}

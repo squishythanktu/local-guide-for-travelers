@@ -28,11 +28,8 @@ const OrderSummary: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: P
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
   })
-  const totalBookingPrice = (bookingsCartData?.data.data as BookingsInCart).bookings!.reduce(
-    (total, booking) => total + booking.price,
-    0
-  )
-  const totalBookingLength = (bookingsCartData?.data.data as BookingsInCart).bookings!.length
+  const totalBookingPrice = bookingsCartData?.data.data.bookings.reduce((total, booking) => total + booking.price, 0)
+  const totalBookingLength = bookingsCartData?.data.data.bookings.length
   const [isProceedPaymentClicked, setIsProceedPaymentClicked] = useState<boolean>(false)
 
   const getFormattedBookingIds = useCallback(() => {

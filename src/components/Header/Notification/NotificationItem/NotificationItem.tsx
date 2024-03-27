@@ -2,6 +2,8 @@ import Box from '@mui/material/Box'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { NotificationType } from 'src/enums/notification-type.enum'
 import { Notification } from 'src/types/notification.type'
@@ -14,9 +16,31 @@ interface NotificationItemProps {
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: NotificationItemProps) => {
   const { profile } = useContext(AppContext)
+  const navigate = useNavigate()
+
+  const handleNavigate = () => {
+    switch (data.notificationType) {
+      case NotificationType.addTour: {
+        navigate(`${path.tourDetail.replace(':id', data.associateId.toString())}`)
+        break
+      }
+      case NotificationType.addReviewForGuide: {
+        navigate(`${path.guideProfile.replace(':id', data.associateId.toString())}`)
+        break
+      }
+      case NotificationType.addReviewForTour: {
+        navigate(`${path.tourDetail.replace(':id', data.associateId.toString())}`)
+        break
+      }
+      case NotificationType.bookedTour: {
+        navigate(`${path.bookings}`)
+        break
+      }
+    }
+  }
 
   return (
-    <MenuItem>
+    <MenuItem onClick={handleNavigate}>
       <Box
         ref={innerRef}
         className='notification-item'

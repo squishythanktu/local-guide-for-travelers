@@ -17,7 +17,7 @@ const path = {
   reset: '/reset',
   searchTour: 'tours/search',
   searchGuide: 'guides/search',
-  tourDetail: 'tours/:id',
+  tourDetail: '/tours/:id',
   guideProfile: '/guides/:id',
   cart: '/cart',
   checkout: '/cart/checkout',

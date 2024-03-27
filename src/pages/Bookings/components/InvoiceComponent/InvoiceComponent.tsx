@@ -1,6 +1,7 @@
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { Box, Button, Chip, Dialog, DialogActions, DialogTitle, Typography } from '@mui/material'
+import Collapse from '@mui/material/Collapse'
 import { QueryObserverResult, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -9,7 +10,6 @@ import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import PassengerInfo from 'src/pages/BookingSuccess/components/PassengerInfo/PassengerInfo'
 import { Invoice } from 'src/types/invoice.type'
 import BookingContent from '../BookingContent/BookingContent'
-import Collapse from '@mui/material/Collapse'
 
 interface InvoiceComponentProps {
   invoice: Invoice
@@ -64,7 +64,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
                 }))
               }
               className='w-fit'
-              color='primary'
+              color='error'
               size='medium'
             >
               Cancel & Refund

@@ -95,7 +95,7 @@ export default function GuideProfile() {
                   <span className='font-bold'>Skills & Credentials </span>
                 </Box>
                 <Box className='px-4 text-sm font-bold'>
-                  Language skills:{' '}
+                  Language skills:
                   <span className='text-sm'>
                     {Array.isArray(guideProfileData?.data?.data?.languageSkill) &&
                     guideProfileData?.data?.data?.languageSkill.length > 0

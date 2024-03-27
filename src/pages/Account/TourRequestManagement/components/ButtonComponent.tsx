@@ -6,9 +6,15 @@ interface Props {
   setRequestStatus: Dispatch<SetStateAction<StatusRequestForGuide | StatusRequestForTraveler>>
   requestStatus: StatusRequestForGuide | StatusRequestForTraveler
   currentRequestStatus: StatusRequestForGuide | StatusRequestForTraveler
+  quantity: number
 }
 
-const ButtonComponent: React.FC<Props> = ({ setRequestStatus, requestStatus, currentRequestStatus }: Props) => {
+const ButtonComponent: React.FC<Props> = ({
+  setRequestStatus,
+  requestStatus,
+  currentRequestStatus,
+  quantity
+}: Props) => {
   return (
     <Button
       onClick={() => setRequestStatus(requestStatus)}
@@ -20,6 +26,7 @@ const ButtonComponent: React.FC<Props> = ({ setRequestStatus, requestStatus, cur
       }}
     >
       {requestStatus}
+      <div className='ml-1 text-sm'>({quantity})</div>
     </Button>
   )
 }

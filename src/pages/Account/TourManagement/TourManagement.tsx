@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
 import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
 import IconButton from '@mui/material/IconButton'
 import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -13,8 +14,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { StatusRequestForGuide } from 'src/enums/status-request.enum'
+import { TourStatus } from 'src/enums/tour-status.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { UserRole } from 'src/enums/user-role.enum'
 import { Request } from 'src/types/request.type'
@@ -237,6 +240,24 @@ export default function TourManagement({ guideId }: Props) {
     []
   )
 
+  const statusColumn = {
+    accessorKey: 'status',
+    header: 'Status',
+    size: 20,
+    Cell: ({ cell }: { cell: MRT_Cell<Tour> }) => {
+      switch (cell.getValue() as string) {
+        case 'PENDING':
+          return <Chip label={cell.getValue() as string} color='warning' size='small' />
+        case 'ACCEPT':
+          return <Chip label={cell.getValue() as string} color='success' size='small' />
+        case 'DENY':
+          return <Chip label={cell.getValue() as string} color='error' size='small' />
+        default:
+          return
+      }
+    }
+  }
+
   const actionColumn = {
     accessorKey: 'action',
     header: 'Actions',
@@ -269,14 +290,20 @@ export default function TourManagement({ guideId }: Props) {
 
   const columns = useMemo<MRT_ColumnDef<Tour>[]>(() => {
     if (isOwner) {
-      return [...baseColumns, actionColumn]
+      return [...baseColumns, actionColumn, statusColumn]
     }
     return baseColumns
   }, [isOwner])
 
+  const [displayData, setDisplayData] = useState<Tour[]>()
+  useEffect(() => {
+    if (isOwner) return setDisplayData(guideToursData?.data.data)
+    return setDisplayData(guideToursData?.data.data.filter((item) => item.status === TourStatus.ACCEPT))
+  }, [guideToursData])
+
   const table = useMaterialReactTable<Tour>({
     columns,
-    data: guideToursData?.data.data ?? [],
+    data: displayData ?? [],
     state: {
       isLoading
     },
@@ -306,7 +333,7 @@ export default function TourManagement({ guideId }: Props) {
     },
     muiTableBodyRowProps: ({ row }) => ({
       onClick: () => {
-        navigate(`/tours/${row.original.id}`)
+        navigate(`${path.tourDetail.replace(':id', row.original.id.toString())}`)
       }
     }),
     renderTopToolbarCustomActions: () =>

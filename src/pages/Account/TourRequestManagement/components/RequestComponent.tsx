@@ -31,9 +31,9 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
 
   return (
     <Box
-      className='min-h-[226px] rounded-md border py-4 text-black shadow-md'
+      className='min-h-[250px] rounded-md border py-4 text-black shadow-md'
       onClick={() => {
-        if (request.tourId) navigate(`/${path.tourDetail.replace(':id', request.tourId.toString())}`)
+        if (request.tourId) navigate(`${path.tourDetail.replace(':id', request.tourId.toString())}`)
       }}
     >
       <div className='request__header flex items-center justify-between px-4'>

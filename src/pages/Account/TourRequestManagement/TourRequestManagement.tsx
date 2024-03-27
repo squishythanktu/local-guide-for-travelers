@@ -56,6 +56,7 @@ const TourRequestManagement: React.FC = () => {
                   setRequestStatus={setRequestStatus}
                   requestStatus={item}
                   currentRequestStatus={requestStatus}
+                  quantity={displayData.length}
                 />
               ))}
             </Box>
@@ -68,11 +69,12 @@ const TourRequestManagement: React.FC = () => {
                   setRequestStatus={setRequestStatus}
                   requestStatus={item}
                   currentRequestStatus={requestStatus}
+                  quantity={displayData.length}
                 />
               ))}
             </Box>
           )}
-          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+          <div className='mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2'>
             {displayData.map((request) => {
               return (
                 <div key={request.id} className='col-span-1'>
