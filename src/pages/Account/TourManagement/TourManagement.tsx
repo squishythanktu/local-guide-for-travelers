@@ -25,7 +25,6 @@ import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
 import TourForm from '../components/TourForm'
 import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
-import Chip from '@mui/material/Chip'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {
@@ -218,23 +217,6 @@ export default function TourManagement({ guideId }: Props) {
         header: 'Price',
         size: 100,
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
-      },
-      {
-        accessorKey: 'status',
-        header: 'Status',
-        size: 20,
-        Cell: ({ cell }) => {
-          switch (cell.getValue() as string) {
-            case 'PENDING':
-              return <Chip label={cell.getValue() as string} color='warning' size='small' />
-            case 'ACCEPT':
-              return <Chip label={cell.getValue() as string} color='success' size='small' />
-            case 'DENY':
-              return <Chip label={cell.getValue() as string} color='error' size='small' />
-            default:
-              return
-          }
-        }
       }
     ],
     []

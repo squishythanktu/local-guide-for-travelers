@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 import { lighten } from '@mui/material/styles'
@@ -12,7 +13,7 @@ import TourDetailsDialog from './components/TourDetailsDialog/TourDetailsDialog'
 const TourConfirmation: React.FC = () => {
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
-  const [pagination, setPagination] = useState<PaginationParams>({
+  const [pagination] = useState<PaginationParams>({
     page: 0,
     limit: 7
   })

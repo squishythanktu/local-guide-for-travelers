@@ -138,7 +138,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                           : guideApplicationData?.data.data.user.email}
                       </span>
                     </Grid>
-                    <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
+                    <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
                       <ApartmentIcon />
                       <Typography variant='body1' className='font-semibold'>
                         Address:
@@ -164,7 +164,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       <Typography variant='body1' className='font-semibold'>
                         Date of birth:
                       </Typography>
-                      <span>{guideApplicationData?.data.data.user.dateOfBirth}</span>
+                      <span>{guideApplicationData?.data.data.user.dateOfBirth?.slice(0, 10)}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
                       <DirectionsBusIcon />

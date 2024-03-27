@@ -25,16 +25,6 @@ import { Link } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { drawerWidth } from 'src/constants/width-height.constant'
 import theme from 'src/theme'
-import MuiDrawer from '@mui/material/Drawer'
-import Collapse from '@mui/material/Collapse'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
-import path from 'src/constants/path.constant'
-import { Link } from 'react-router-dom'
-import HomeWorkIcon from '@mui/icons-material/HomeWork'
-import HikingIcon from '@mui/icons-material/Hiking'
-import { SyntheticEvent, useState } from 'react'
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber'
 
 interface AdminDrawerProps {
   handleDrawerClose: () => void
