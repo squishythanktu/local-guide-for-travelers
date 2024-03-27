@@ -40,6 +40,12 @@ const TourRequestManagement: React.FC = () => {
     setDisplayData(displayRequestsData)
   }, [requestsData, requestStatus])
 
+  const handleQuantity = (item: StatusRequestForGuide | StatusRequestForTraveler) => {
+    if (requestsData)
+      return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
+    return 0
+  }
+
   return (
     <div className='flex flex-col gap-4'>
       {isAuthenticated && !requestsData?.data.data && <Loading />}
@@ -56,7 +62,7 @@ const TourRequestManagement: React.FC = () => {
                   setRequestStatus={setRequestStatus}
                   requestStatus={item}
                   currentRequestStatus={requestStatus}
-                  quantity={displayData.length}
+                  quantity={handleQuantity(item)}
                 />
               ))}
             </Box>
@@ -69,7 +75,7 @@ const TourRequestManagement: React.FC = () => {
                   setRequestStatus={setRequestStatus}
                   requestStatus={item}
                   currentRequestStatus={requestStatus}
-                  quantity={displayData.length}
+                  quantity={handleQuantity(item)}
                 />
               ))}
             </Box>

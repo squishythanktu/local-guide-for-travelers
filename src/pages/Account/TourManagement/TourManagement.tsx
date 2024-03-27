@@ -73,7 +73,31 @@ export default function TourManagement({ guideId }: Props) {
       role: UserRole.TRAVELER
     },
     status: StatusRequestForGuide.PENDING,
-    tourId: 0
+    tour: {
+      id: 0,
+      name: '',
+      description: '',
+      transportation: '',
+      includeService: '',
+      duration: 0,
+      unit: '',
+      startTimes: [],
+      overallRating: 0,
+      estimatedLocalCashNeeded: '',
+      pricePerTraveler: 0,
+      limitTraveler: 0,
+      extraPrice: 0,
+      province: '',
+      itinerary: '',
+      categories: [],
+      guide: {
+        id: '',
+        email: '',
+        role: UserRole.GUIDER
+      },
+      images: [],
+      locations: []
+    }
   })
 
   useEffect(() => {

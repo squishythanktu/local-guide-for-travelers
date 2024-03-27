@@ -1,9 +1,10 @@
-import { Box, Button, Divider } from '@mui/material'
+import { Box, Button, Chip, Divider } from '@mui/material'
 import { QueryObserverResult, useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import requestApi from 'src/apis/request.api'
 import path from 'src/constants/path.constant'
 import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
+import { TourStatus } from 'src/enums/tour-status.enum'
 import { Request } from 'src/types/request.type'
 
 interface Props {
@@ -33,7 +34,8 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
     <Box
       className='min-h-[250px] rounded-md border py-4 text-black shadow-md'
       onClick={() => {
-        if (request.tourId) navigate(`${path.tourDetail.replace(':id', request.tourId.toString())}`)
+        if (request.tour && request.tour.status === TourStatus.ACCEPT)
+          navigate(`${path.tourDetail.replace(':id', request.tour.id.toString())}`)
       }}
     >
       <div className='request__header flex items-center justify-between px-4'>
@@ -124,6 +126,17 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               Edit
             </Button>
           )}
+          {request.status === StatusRequestForGuide.DONE.toUpperCase() && (
+            <>
+              {request.tour.status === TourStatus.PENDING && (
+                <Chip label='Admin approval pending' color='primary' size='small' />
+              )}
+              {request.tour.status === TourStatus.DENY && <Chip label='Admin deny' color='error' size='small' />}
+              {request.tour.status === TourStatus.ACCEPT && (
+                <Chip label='Admin accepted' color='success' size='small' />
+              )}
+            </>
+          )}
         </div>
       </div>
       <Divider className='my-2' />
@@ -148,7 +161,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
         <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2 lg:col-span-1'>
           Number of travelers:<div className='text-sm'>{request.numberOfTravelers}</div>
         </div>
-        <div className='col-span-2 flex gap-1 text-sm font-medium lg:col-span-1'>
+        <div className='col-span-2 flex gap-1 text-sm font-medium'>
           Transportation:
           <div className='text-sm'>{request.transportation.join(', ')}</div>
         </div>
