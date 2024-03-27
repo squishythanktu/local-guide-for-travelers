@@ -4,19 +4,19 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import Box from '@mui/material/Box'
 import SvgIcon from '@mui/material/SvgIcon'
 import { CssVarsTheme, Theme } from '@mui/material/styles'
+import classNames from 'classnames'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import WhiteLogoIcon from 'src/assets/svg/logo-white.svg'
 import MainLogoIcon from 'src/assets/svg/logo.svg'
-import { headerHeight } from 'src/constants/width-height.constant'
 import path from 'src/constants/path.constant'
+import { headerHeight } from 'src/constants/width-height.constant'
+import { AppContext } from 'src/contexts/app.context'
 import NavLink from './NavLink'
+import Notification from './Notification/Notification'
 import ProfileMenu from './ProfileMenu'
 import RightDrawer from './RightDrawer/RightDrawer'
 import SearchBar from './SearchBar/SearchBar'
-import { useContext, useEffect, useState } from 'react'
-import classNames from 'classnames'
-import Notification from './Notification/Notification'
-import { AppContext } from 'src/contexts/app.context'
 
 interface HeaderProps {
   bgColor?: string
@@ -67,7 +67,8 @@ export default function Header({
         '@media (min-width: 768px)': {
           height: headerHeight.md
         },
-        boxShadow: `${scroll && isEnableScroll && 'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px'}`
+        boxShadow: `${scroll && isEnableScroll && 'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px'}`,
+        zIndex: '100'
       }}
     >
       <Box className='header__content block min-w-80 px-4 py-2 md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>

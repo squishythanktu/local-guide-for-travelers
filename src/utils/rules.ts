@@ -34,6 +34,23 @@ export const userSchema = yup.object({
   confirm_password: handleConfirmPasswordYup('new_password')
 })
 
+export const guideApplicationSchema = userSchema.shape({
+  fullName: yup.string().trim().required().max(100, 'Maximum length of full name is 100 characters'),
+  phone: yup.string().trim().max(20, 'Maximum length is 20 characters').required(),
+  address: yup.string().trim().required().max(160, 'Maximum length is 160 characters'),
+  dateOfBirth: yup.date().required(),
+  email: yup.string().email().required(),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(6, 'Password length from 6 - 160 characters')
+    .max(160, 'Password length from 6 - 160 characters'),
+  yearsOfExperience: yup.number().required().positive().typeError('Year of experience must be positive a number'),
+  isLicensedGuide: yup.boolean().required(),
+  licenseImages: yup.array().of(yup.string()),
+  transportation: yup.object().required()
+})
+
 export const tourSchema = yup.object({
   name: yup.string().trim().required().max(100, 'Maximum length is 100 characters'),
   description: yup.string().trim(),
@@ -104,6 +121,8 @@ export type Schema = yup.InferType<typeof schema>
 export type UserSchema = yup.InferType<typeof userSchema>
 
 export type TourSchema = yup.InferType<typeof tourSchema>
+
+export type GuideApplicationSchema = yup.InferType<typeof guideApplicationSchema>
 
 export type SearchSchema = yup.InferType<typeof searchSchema>
 

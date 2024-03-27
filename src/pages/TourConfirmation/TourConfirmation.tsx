@@ -23,7 +23,6 @@ const TourConfirmation: React.FC = () => {
     refetch
   } = useQuery({
     queryKey: [`tour requests in page ${pagination.page}`, pagination],
-    // queryFn: () => tourApi.getTours(),
     queryFn: () => tourApi.getPendingTours(),
     staleTime: 10 * 1000
   })
