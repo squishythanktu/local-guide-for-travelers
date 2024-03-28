@@ -81,7 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                 onChange={(event) => {
                   field.onChange(event)
                   trigger('searchType')
-                  setSearch({ ...search, searchType: event.target.value })
+                  setSearch({ searchValue: '', searchType: event.target.value })
                 }}
                 className='w-[80px] overflow-auto text-sm md:w-[100px] md:text-base'
                 sx={{
@@ -136,12 +136,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                   onSubmitSearch()
                 }
                 return (
-                  <Box
-                    component='li'
-                    sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-                    {...props}
-                    onClick={handleOptionClick}
-                  >
+                  <Box component='li' {...props} onClick={handleOptionClick}>
                     {option.imageLink ? (
                       <img
                         loading='lazy'
@@ -149,7 +144,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                           height: 42,
                           width: 42,
                           borderRadius: '8px',
-                          objectFit: 'cover'
+                          objectFit: 'cover',
+                          marginRight: '1rem',
+                          flexShrink: 0
                         }}
                         srcSet={`${option.imageLink} 2x`}
                         src={`${option.imageLink}`}
@@ -165,13 +162,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                           marginRight: '16px',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          flexShrink: 0
                         }}
                       >
                         <FmdGoodOutlinedIcon />
                       </Box>
                     )}
-                    {option.resultName}
+                    <span className='flex-grow'>{option.resultName}</span>
                   </Box>
                 )
               }}

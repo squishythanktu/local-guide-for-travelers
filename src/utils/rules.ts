@@ -25,10 +25,10 @@ export const schema = yup.object({
 })
 
 export const userSchema = yup.object({
-  fullName: yup.string().trim().max(100, 'Maximum length is 100 characters'),
-  phone: yup.string().trim().max(20, 'Maximum length is 20 characters'),
-  address: yup.string().trim().max(160, 'Maximum length is 160 characters'),
-  dateOfBirth: yup.date(),
+  fullName: yup.string().trim().max(100, 'Maximum length is 100 characters').nullable(),
+  phone: yup.string().trim().max(20, 'Maximum length is 20 characters').nullable(),
+  address: yup.string().trim().max(160, 'Maximum length is 160 characters').nullable(),
+  dateOfBirth: yup.date().nullable(),
   password: schema.fields['password'],
   new_password: schema.fields['password'],
   confirm_password: handleConfirmPasswordYup('new_password')
