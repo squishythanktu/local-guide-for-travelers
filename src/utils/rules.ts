@@ -21,7 +21,7 @@ export const schema = yup.object({
     .required('Password is required')
     .min(6, 'Password length from 6 - 160 characters')
     .max(160, 'Password length from 6 - 160 characters'),
-  confirm_password: handleConfirmPasswordYup('password')
+  confirmPassword: handleConfirmPasswordYup('password')
 })
 
 export const userSchema = yup.object({
@@ -30,8 +30,12 @@ export const userSchema = yup.object({
   address: yup.string().trim().max(160, 'Maximum length is 160 characters').nullable(),
   dateOfBirth: yup.date().nullable(),
   password: schema.fields['password'],
-  new_password: schema.fields['password'],
-  confirm_password: handleConfirmPasswordYup('new_password')
+  newPassword: yup
+    .string()
+    .required('New password is required')
+    .min(6, 'New password length from 6 - 160 characters')
+    .max(160, 'New password length from 6 - 160 characters'),
+  confirmPassword: handleConfirmPasswordYup('newPassword')
 })
 
 export const guideApplicationSchema = userSchema.shape({

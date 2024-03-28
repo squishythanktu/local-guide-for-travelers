@@ -34,7 +34,7 @@ import { GuideApplicationType } from 'src/types/guide-application.type'
 import { convertDateToUTC7 } from 'src/utils/date-time'
 import { GuideApplicationSchema, guideApplicationSchema } from 'src/utils/rules'
 
-type FormData = Omit<GuideApplicationSchema, 'new_password' | 'confirm_password'>
+type FormData = Omit<GuideApplicationSchema, 'newPassword' | 'confirmPassword'>
 const applicationSchema = guideApplicationSchema.pick([
   'fullName',
   'address',

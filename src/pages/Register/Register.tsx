@@ -1,43 +1,38 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
-import TextField from '@mui/material/TextField'
 import { useMutation } from '@tanstack/react-query'
 import omit from 'lodash/omit'
 import { useContext } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
+import ControlledTextField from 'src/components/ControlledTextField'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import AuthLayout from 'src/layouts/AuthLayout'
 import { Schema, schema } from 'src/utils/rules'
 
-type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
-const signUpSchema = schema.pick(['email', 'password', 'confirm_password'])
+type FormData = Pick<Schema, 'email' | 'password' | 'confirmPassword'>
+const signUpSchema = schema.pick(['email', 'password', 'confirmPassword'])
 
 export default function Register() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
-  const {
-    control,
-    trigger,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>({
+  const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
       email: '',
       password: '',
-      confirm_password: ''
+      confirmPassword: ''
     },
     resolver: yupResolver(signUpSchema)
   })
 
   const registerMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirmPassword'>) => authApi.registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
-    const body = omit(data, ['confirm_password'])
+    const body = omit(data, ['confirmPassword'])
 
     registerMutation.mutate(body, {
       onSuccess: (data) => {
@@ -65,75 +60,9 @@ export default function Register() {
           </div>
         </div>
         <div className='form__inputs mt-4 flex flex-col gap-4'>
-          <Controller
-            control={control}
-            name='email'
-            render={({ field }) => (
-              <TextField
-                id='email'
-                variant='outlined'
-                label='Email'
-                autoFocus
-                className='min-h-20'
-                error={!!errors.email?.message}
-                helperText={errors.email?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('email')
-                }}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='password'
-            render={({ field }) => (
-              <TextField
-                id='password'
-                type='password'
-                label='Password'
-                variant='outlined'
-                className='min-h-20'
-                error={!!errors.password?.message}
-                helperText={errors.password?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('password')
-                }}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='confirm_password'
-            render={({ field }) => (
-              <TextField
-                id='confirm_password'
-                type='password'
-                label='Confirm password'
-                variant='outlined'
-                className='min-h-20'
-                error={!!errors.confirm_password?.message}
-                helperText={errors.confirm_password?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('confirm_password')
-                }}
-              />
-            )}
-          />
+          <ControlledTextField control={control} name='email' label='Email' />
+          <ControlledTextField control={control} type='password' name='password' label='Password' />
+          <ControlledTextField control={control} type='password' name='confirmPassword' label='Confirm password' />
         </div>
         <div className='form__actions flex'>
           <LoadingButton

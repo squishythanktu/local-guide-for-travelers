@@ -1,35 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link } from 'react-router-dom'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import AuthLayout from 'src/layouts/AuthLayout'
-import path from 'src/constants/path.constant'
-import GoogleIcon from 'src/assets/svg/google.svg'
-import FacebookIcon from 'src/assets/svg/facebook.svg'
-import SvgIcon from '@mui/material/SvgIcon'
-import { Controller, useForm } from 'react-hook-form'
-import { Schema, schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
-import authApi from 'src/apis/auth.api'
-import { useMutation } from '@tanstack/react-query'
-import { useContext } from 'react'
-import { AppContext } from 'src/contexts/app.context'
-import { toast } from 'react-toastify'
-import { AxiosResponse } from 'axios'
-import { AuthSuccessResponse } from 'src/types/auth.type'
 import LoadingButton from '@mui/lab/LoadingButton'
+import Button from '@mui/material/Button'
+import SvgIcon from '@mui/material/SvgIcon'
+import { useMutation } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
+import { useContext } from 'react'
+import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import authApi from 'src/apis/auth.api'
+import FacebookIcon from 'src/assets/svg/facebook.svg'
+import GoogleIcon from 'src/assets/svg/google.svg'
+import ControlledTextField from 'src/components/ControlledTextField'
+import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
+import AuthLayout from 'src/layouts/AuthLayout'
+import { AuthSuccessResponse } from 'src/types/auth.type'
+import { Schema, schema } from 'src/utils/rules'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
-  const {
-    control,
-    trigger,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>({
+  const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
       email: '',
       password: ''
@@ -47,8 +42,8 @@ export default function Login() {
         setIsAuthenticated(true)
         setProfile(data.data.data.user)
       },
-      onError: () => {
-        toast.error('Login unsuccessful. Please check your login credentials.')
+      onError: (error: any) => {
+        toast.error(error.response.data.message)
       }
     })
   })
@@ -68,52 +63,8 @@ export default function Login() {
           </div>
         </div>
         <div className='form__inputs mt-4 flex flex-col gap-4'>
-          <Controller
-            control={control}
-            name='email'
-            render={({ field }) => (
-              <TextField
-                id='email'
-                variant='outlined'
-                label='Email'
-                autoFocus
-                className='min-h-20'
-                error={!!errors.email?.message}
-                helperText={errors.email?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('email')
-                }}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='password'
-            render={({ field }) => (
-              <TextField
-                id='password'
-                type='password'
-                label='Password'
-                variant='outlined'
-                className='min-h-20'
-                error={!!errors.password?.message}
-                helperText={errors.password?.message}
-                {...field}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                onChange={(event) => {
-                  field.onChange(event)
-                  trigger('password')
-                }}
-              />
-            )}
-          />
+          <ControlledTextField control={control} name='email' label='Email' />
+          <ControlledTextField control={control} type='password' name='password' label='Password' />
         </div>
         <div className='form__actions flex flex-col gap-4'>
           <div className='flex justify-end'>

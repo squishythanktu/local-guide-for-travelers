@@ -1,16 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import Button from '@mui/material/Button'
+import LoadingButton from '@mui/lab/LoadingButton'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import userApi from 'src/apis/user.api'
+import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import ControlledTextField from 'src/components/ControlledTextField'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { setProfileToLS } from 'src/utils/auth'
+import { User } from 'src/types/user.type'
+import { clearLS, setProfileToLS } from 'src/utils/auth'
 import { UserSchema, userSchema } from 'src/utils/rules'
 
 type FormData = Pick<UserSchema, 'fullName' | 'address' | 'phone' | 'dateOfBirth'>
@@ -18,6 +22,8 @@ const accountSchema = userSchema.pick(['fullName', 'address', 'phone', 'dateOfBi
 
 export default function Profile() {
   const { profile, setProfile } = useContext(AppContext)
+  const [deleteMode, setDeleteMode] = useState<boolean>(false)
+  const navigate = useNavigate()
   const { data: profileData, refetch } = useQuery({
     queryKey: [`get me ${profile?.email}`, profile?.email],
     queryFn: () => userApi.getMe()
@@ -48,6 +54,10 @@ export default function Profile() {
     mutationFn: (body: FormData) => userApi.updateMe(body)
   })
 
+  const deleteProfileMutation = useMutation({
+    mutationFn: (id: number) => userApi.deleteAccount(id)
+  })
+
   const onSubmit = (body: FormData) => {
     updateProfileMutation.mutate(body, {
       onSuccess: (res) => {
@@ -57,6 +67,22 @@ export default function Profile() {
         toast.success('Update profile successfully.')
       },
       onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
+
+  const handleConfirmDeleteAccount = () => {
+    deleteProfileMutation.mutate(Number((profile as User)?.id), {
+      onSuccess: () => {
+        window.location.reload()
+        setDeleteMode(false)
+        clearLS()
+        navigate(path.home)
+        toast.success('Delete account successfully.')
+      },
+      onError: (error) => {
+        setDeleteMode(false)
         toast.error(error.message)
       }
     })
@@ -125,10 +151,34 @@ export default function Profile() {
           <ControlledTextField className='min-h-20 grow' control={control} name={'address'} label={'Address'} />
         </div>
       </div>
-      <div className='button-container'>
-        <Button type='submit' variant='contained' size='large' className='w-full md:w-32'>
+      <div className='button-container flex justify-between gap-4'>
+        <LoadingButton
+          loading={updateProfileMutation.isPending}
+          type='submit'
+          variant='contained'
+          size='large'
+          className='h-fit w-full md:w-32'
+        >
           Save
-        </Button>
+        </LoadingButton>
+        <LoadingButton
+          loading={deleteProfileMutation.isPending}
+          variant='outlined'
+          size='large'
+          color='error'
+          className='h-fit w-full whitespace-nowrap md:w-32'
+          onClick={() => setDeleteMode(true)}
+        >
+          Delete account
+        </LoadingButton>
+        {deleteMode && (
+          <ConfirmDialog
+            title='Delete account confirmation'
+            content='Are you sure want to delete this account?'
+            handleClose={() => setDeleteMode(false)}
+            handleConfirm={handleConfirmDeleteAccount}
+          />
+        )}
       </div>
     </form>
   )

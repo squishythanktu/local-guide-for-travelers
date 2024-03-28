@@ -10,7 +10,9 @@ const AvatarSideNav: React.FC = () => {
       className='account__header relative flex h-32 flex-col justify-center overflow-hidden text-center text-white'
       sx={{ backgroundColor: `var(--decorative-midnight-blue)` }}
     >
-      <h1 className='account__header-name mb-1 text-2xl font-bold'>{profile?.fullName || 'username'}</h1>
+      <h1 className='account__header-name mb-1 text-2xl font-bold'>
+        {profile?.fullName || profile?.email.split('@')[0]}
+      </h1>
       <h4 className='account__header-subheading font-bold tracking-wide'>{profile?.role}</h4>
       <img
         src='/assets/svg/top-line.svg'
