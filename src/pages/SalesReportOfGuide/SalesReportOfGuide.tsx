@@ -1,23 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
-import { Box, Pagination } from '@mui/material'
+import { Box } from '@mui/material'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import statisticApi from 'src/apis/statistic.api'
-import { PaginationParams } from 'src/types/pagination-params.type'
 import { GuideInStatistic } from 'src/types/statistic.type'
 
 const SalesReportOfGuide: React.FC = () => {
-  const [pagination, setPagination] = useState<PaginationParams>({
-    page: 0,
-    limit: 7
-  })
-
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of guide`, pagination],
-    queryFn: () => statisticApi.getStatisticOfGuide(pagination),
+    queryKey: [`sales report of guide`],
+    queryFn: () => statisticApi.getStatisticOfGuide(),
     staleTime: 3 * 1000
   })
 
@@ -69,14 +63,20 @@ const SalesReportOfGuide: React.FC = () => {
 
   const table = useMaterialReactTable<GuideInStatistic>({
     columns,
-    data: statisticsData?.data.data.statisticalGuideDTOS ?? [],
+    data: statisticsData?.data.data ?? [],
     state: {
       isLoading
     },
-    enablePagination: false,
+    enablePagination: true,
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
+    muiPaginationProps: {
+      color: 'primary',
+      shape: 'rounded',
+      variant: 'outlined'
+    },
+    paginationDisplayMode: 'pages',
     muiSkeletonProps: {
       animation: 'pulse',
       height: '12px'
@@ -88,23 +88,6 @@ const SalesReportOfGuide: React.FC = () => {
         }
       })
     },
-    renderBottomToolbarCustomActions: () => (
-      <Pagination
-        showFirstButton
-        showLastButton
-        className='absolute right-5 top-1/4'
-        onChange={(_, page) => {
-          setPagination((prevPagination) => ({
-            ...prevPagination,
-            page: page - 1
-          }))
-        }}
-        page={(pagination.page || 0) + 1}
-        count={statisticsData?.data.data.totalOfPage || 1}
-        variant='outlined'
-        shape='rounded'
-      />
-    ),
     renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Guide</h2>
   })
 

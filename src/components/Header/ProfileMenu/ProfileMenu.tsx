@@ -103,7 +103,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             <ListItemIcon>
               <ContactPageOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            Guide Application
+            Register as a guide
           </MenuItem>
         </Menu>
       )}
@@ -137,12 +137,6 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
               <ViewListIcon fontSize='small' />
             </ListItemIcon>
             Management
-          </MenuItem>
-          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
-            <ListItemIcon>
-              <ContactPageOutlinedIcon fontSize='small' />
-            </ListItemIcon>
-            Guide Application
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleLogout}>

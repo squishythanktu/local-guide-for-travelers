@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
-import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useMemo, useState } from 'react'
+import { useContext, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import statisticApi from 'src/apis/statistic.api'
-import { PaginationParams } from 'src/types/pagination-params.type'
+import path from 'src/constants/path.constant'
+import { AppContext } from 'src/contexts/app.context'
 import { TourInStatistic } from 'src/types/statistic.type'
 
 const SalesReportOfToursByGuide: React.FC = () => {
-  const [pagination, setPagination] = useState<PaginationParams>({
-    page: 0,
-    limit: 7
-  })
+  const { profile } = useContext(AppContext)
+  const navigate = useNavigate()
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour by guide in page ${pagination.page}`, pagination],
-    queryFn: () => statisticApi.getStatisticOfTourByGuide(pagination),
+    queryKey: [`sales report of tour by guide with id ${profile?.id}`],
+    queryFn: () => statisticApi.getStatisticOfTourByGuide(),
     staleTime: 10 * 1000
   })
 
@@ -44,6 +43,12 @@ const SalesReportOfToursByGuide: React.FC = () => {
         size: 30
       },
       {
+        accessorKey: 'totalRevenue',
+        header: 'Total revenue',
+        size: 30,
+        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
+      },
+      {
         accessorKey: 'extraPrice',
         header: 'Extra price',
         size: 30,
@@ -58,12 +63,6 @@ const SalesReportOfToursByGuide: React.FC = () => {
         accessorKey: 'totalTravelerNumber',
         header: 'Total booked',
         size: 30
-      },
-      {
-        accessorKey: 'totalRevenue',
-        header: 'Total revenue',
-        size: 30,
-        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       }
     ],
     []
@@ -71,14 +70,14 @@ const SalesReportOfToursByGuide: React.FC = () => {
 
   const table = useMaterialReactTable<TourInStatistic>({
     columns,
-    data: statisticsData?.data.data.statisticalTourDTOS ?? [],
+    data: statisticsData?.data.data ?? [],
     state: {
       isLoading
     },
+    enablePagination: true,
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
-    enablePagination: false,
     muiPaginationProps: {
       color: 'primary',
       shape: 'rounded',
@@ -88,6 +87,11 @@ const SalesReportOfToursByGuide: React.FC = () => {
     muiSkeletonProps: {
       animation: 'wave'
     },
+    muiTableBodyRowProps: ({ row }) => ({
+      onClick: () => navigate(`${path.tourDetail.replace(':id', row.original.id.toString())}`),
+
+      sx: { cursor: 'pointer' }
+    }),
     muiTableContainerProps: {
       sx: {
         maxHeight: '650px'
@@ -99,24 +103,7 @@ const SalesReportOfToursByGuide: React.FC = () => {
           backgroundColor: lighten(theme.palette.primary.main, 0.9)
         }
       })
-    },
-    renderBottomToolbarCustomActions: () => (
-      <Pagination
-        showFirstButton
-        showLastButton
-        className='absolute right-5 top-1/4'
-        onChange={(_, page) => {
-          setPagination((prevPagination) => ({
-            ...prevPagination,
-            page: page - 1
-          }))
-        }}
-        page={(pagination.page as number) + 1}
-        count={statisticsData?.data.data.totalOfPage}
-        variant='outlined'
-        shape='rounded'
-      />
-    )
+    }
   })
 
   return (

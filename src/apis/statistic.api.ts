@@ -1,19 +1,18 @@
-import { GuideStatisticResult, TourStatisticByGuideResult, TourStatisticResult } from 'src/types/statistic.type'
+import { GuideInStatistic, TourInStatistic } from 'src/types/statistic.type'
 import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
-import { PaginationParams } from './../types/pagination-params.type'
 
 const URL_STATISTIC = 'statistic'
 
 const statisticApi = {
-  getStatisticOfTour(params: PaginationParams) {
-    return http.get<SuccessResponse<TourStatisticResult>>(`${URL_STATISTIC}/tours`, { params })
+  getStatisticOfTour() {
+    return http.get<SuccessResponse<TourInStatistic[]>>(`${URL_STATISTIC}/tours`)
   },
-  getStatisticOfTourByGuide(params?: PaginationParams) {
-    return http.get<SuccessResponse<TourStatisticByGuideResult>>(`${URL_STATISTIC}/guide/tours`, { params })
+  getStatisticOfTourByGuide() {
+    return http.get<SuccessResponse<TourInStatistic[]>>(`${URL_STATISTIC}/guide/tours`)
   },
-  getStatisticOfGuide(params: PaginationParams) {
-    return http.get<SuccessResponse<GuideStatisticResult>>(`${URL_STATISTIC}/guides`, { params })
+  getStatisticOfGuide() {
+    return http.get<SuccessResponse<GuideInStatistic[]>>(`${URL_STATISTIC}/guides`)
   }
 }
 

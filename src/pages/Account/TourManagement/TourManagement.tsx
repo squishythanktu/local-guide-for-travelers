@@ -338,9 +338,8 @@ export default function TourManagement({ guideId }: Props) {
       })
     },
     muiTableBodyRowProps: ({ row }) => ({
-      onClick: () => {
-        navigate(`${path.tourDetail.replace(':id', row.original.id.toString())}`)
-      }
+      onClick: () => navigate(`${path.tourDetail.replace(':id', row.original.id.toString())}`),
+      sx: { cursor: 'pointer' }
     }),
     renderTopToolbarCustomActions: () =>
       isOwner ? (

@@ -28,31 +28,29 @@ import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { QueryObserverResult, RefetchOptions, useMutation } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
 import ConfirmPopper from 'src/components/ConfirmPopper/ConfirmPopper'
 import MainStop from 'src/components/MainStop/MainStop'
 import { Tour } from 'src/types/tour.type'
-import { SuccessResponse } from 'src/types/utils.type'
 import { formatTime } from 'src/utils/date-time'
 
 interface TourDetailsDialogProps {
   tourData: Tour
   isPendingTourDetail: boolean
   handleCloseTourDetailDialog: () => void
-  refetch: (
-    options?: RefetchOptions | undefined
-  ) => Promise<QueryObserverResult<AxiosResponse<SuccessResponse<Tour[]>, any>, Error>>
+  refetch: any
+  readonly?: boolean
 }
 
 const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
   tourData,
   isPendingTourDetail,
   handleCloseTourDetailDialog,
-  refetch
+  refetch,
+  readonly = false
 }: TourDetailsDialogProps) => {
   const [popperAnchorEl, setPopperAnchorEl] = useState<null | HTMLElement>(null)
   const [openPopper, setOpenPopper] = useState<boolean>(false)
@@ -291,37 +289,45 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
           )}
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <LoadingButton
-          loading={denyPendingTourMutation.isPending}
-          onClick={(e) => handleAction(e, 'deny')}
-          variant='contained'
-          size='large'
-          color='error'
-        >
-          Deny
-        </LoadingButton>
-        <LoadingButton
-          loading={acceptPendingTourMutation.isPending}
-          onClick={(e) => handleAction(e, 'accept')}
-          variant='contained'
-          size='large'
-        >
-          Accept
-        </LoadingButton>
-      </DialogActions>
-      <ConfirmPopper
-        icon={currentAction === 'accept' ? <InfoOutlinedIcon /> : <WarningAmberIcon />}
-        title={currentAction === 'accept' ? 'Accept tour confirmation' : 'Deny tour confirmation'}
-        content={
-          currentAction === 'accept' ? 'Are you sure want to accept this tour?' : 'Are you sure want to deny this tour?'
-        }
-        popperAnchorEl={popperAnchorEl}
-        openPopper={openPopper}
-        handleClickYes={currentAction === 'accept' ? handleSubmitAccept : handleSubmitDeny}
-        handleClickNo={handleCancel}
-        loading={currentAction === 'accept' ? acceptPendingTourMutation.isPending : denyPendingTourMutation.isPending}
-      />
+      {!readonly && (
+        <>
+          <DialogActions>
+            <LoadingButton
+              loading={denyPendingTourMutation.isPending}
+              onClick={(e) => handleAction(e, 'deny')}
+              variant='contained'
+              size='large'
+              color='error'
+            >
+              Deny
+            </LoadingButton>
+            <LoadingButton
+              loading={acceptPendingTourMutation.isPending}
+              onClick={(e) => handleAction(e, 'accept')}
+              variant='contained'
+              size='large'
+            >
+              Accept
+            </LoadingButton>
+          </DialogActions>
+          <ConfirmPopper
+            icon={currentAction === 'accept' ? <InfoOutlinedIcon /> : <WarningAmberIcon />}
+            title={currentAction === 'accept' ? 'Accept tour confirmation' : 'Deny tour confirmation'}
+            content={
+              currentAction === 'accept'
+                ? 'Are you sure want to accept this tour?'
+                : 'Are you sure want to deny this tour?'
+            }
+            popperAnchorEl={popperAnchorEl}
+            openPopper={openPopper}
+            handleClickYes={currentAction === 'accept' ? handleSubmitAccept : handleSubmitDeny}
+            handleClickNo={handleCancel}
+            loading={
+              currentAction === 'accept' ? acceptPendingTourMutation.isPending : denyPendingTourMutation.isPending
+            }
+          />
+        </>
+      )}
     </Dialog>
   )
 }
