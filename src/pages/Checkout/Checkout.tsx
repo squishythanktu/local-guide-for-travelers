@@ -10,6 +10,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { PassengerInformationSchema } from 'src/utils/rules'
 import OrderSummary from './components/OrderSummary/OrderSummary'
 import PassengerInformation from './components/PassengerInformation/PassengerInformation'
+import PaymentMethod from './components/PaymentMethod/PaymentMethod'
 
 export default function Checkout() {
   const breadcrumbs = [
@@ -53,7 +54,7 @@ export default function Checkout() {
       </Breadcrumbs>
       <div className='flex flex-col-reverse gap-10 py-4 md:flex-row md:gap-4'>
         <div className='checkout__order-summary w-full md:w-[60%]'>
-          <OrderSummary isDisplaySaveButton={isDisplaySaveButton} passengerInfo={passengerInfo} />
+          <OrderSummary />
         </div>
         <div className='checkout__personal-details w-full md:w-[40%]'>
           <PassengerInformation
@@ -61,6 +62,9 @@ export default function Checkout() {
             setIsDisplaySaveButton={setIsDisplaySaveButton}
             setPassengerInfo={setPassengerInfo}
           />
+          {!isDisplaySaveButton && (
+            <PaymentMethod isDisplaySaveButton={isDisplaySaveButton} passengerInfo={passengerInfo} />
+          )}
         </div>
       </div>
     </Box>

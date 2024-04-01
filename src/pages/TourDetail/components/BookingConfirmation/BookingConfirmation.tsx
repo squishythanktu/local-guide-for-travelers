@@ -1,3 +1,4 @@
+import LoadingButton from '@mui/lab/LoadingButton'
 import { Divider } from '@mui/material'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -18,7 +19,6 @@ import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
 import { convertDateToUTC7, convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
-import LoadingButton from '@mui/lab/LoadingButton'
 
 interface Props {
   timeOptions?: string[]
@@ -51,8 +51,12 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
     const data = {
       ...bookingFormData,
       startDate: selectedTimeOption
-        ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + convertHourToUTC7(selectedTimeOption))
-        : convertDateToUTC7(formData.startDate),
+        ? new Date(
+            new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + convertHourToUTC7(selectedTimeOption))
+          )
+        : new Date(
+            new Date(dayjs(formData.startDate).format('YYYY-MM-DD')).toISOString().substring(0, 11) + tour.startTimes[0]
+          ),
       price: totalPrice
     }
     setBookingFormData(data)

@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { Box, FormHelperText, Typography } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -28,7 +29,13 @@ export default function Profile() {
     queryKey: [`get me ${profile?.email}`, profile?.email],
     queryFn: () => userApi.getMe()
   })
-  const { trigger, control, setValue, handleSubmit } = useForm<FormData>({
+  const {
+    trigger,
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
     defaultValues: {
       fullName: '',
       phone: '',
@@ -100,23 +107,34 @@ export default function Profile() {
             control={control}
             name={'fullName'}
             label={'Full name'}
+            required
           />
           <Controller
             control={control}
             name='dateOfBirth'
             render={({ field }) => {
               return (
-                <DatePicker
-                  disableFuture
-                  label='Date of birth'
-                  value={field.value ? dayjs(field.value) : null}
-                  className='min-h-20 w-full md:w-1/2'
-                  slotProps={{ textField: { InputLabelProps: { shrink: true } } }}
-                  onChange={(event) => {
-                    field.onChange(event)
-                    trigger('dateOfBirth')
-                  }}
-                />
+                <div className='flex w-full flex-col md:w-1/2'>
+                  <DatePicker
+                    disableFuture
+                    label={
+                      <Box sx={{ fontWeight: '600' }}>
+                        Date of birth
+                        <Typography component='span' sx={{ color: 'red' }}>
+                          *
+                        </Typography>
+                      </Box>
+                    }
+                    value={field.value ? dayjs(field.value) : null}
+                    className='min-h-10'
+                    slotProps={{ textField: { InputLabelProps: { shrink: true } } }}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('dateOfBirth')
+                    }}
+                  />
+                  {!!errors.dateOfBirth && <FormHelperText error>{errors.dateOfBirth.message}</FormHelperText>}
+                </div>
               )
             }}
           />
@@ -137,6 +155,7 @@ export default function Profile() {
             }}
           />
           <ControlledTextField
+            required
             className='min-h-20 grow'
             type='number'
             control={control}
@@ -148,7 +167,13 @@ export default function Profile() {
           Address
         </h2>
         <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
-          <ControlledTextField className='min-h-20 grow' control={control} name={'address'} label={'Address'} />
+          <ControlledTextField
+            required
+            className='min-h-20 grow'
+            control={control}
+            name={'address'}
+            label={'Address'}
+          />
         </div>
       </div>
       <div className='button-container flex justify-between gap-4'>

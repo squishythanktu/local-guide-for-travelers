@@ -37,6 +37,7 @@ const TourConfirmation = lazy(() => import('./pages/TourConfirmation/TourConfirm
 const GuideConfirmation = lazy(() => import('./pages/GuideConfirmation/GuideConfirmation'))
 const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'))
 const GuideApplication = lazy(() => import('./pages/GuideApplication/GuideApplication'))
+const CryptoPayment = lazy(() => import('./pages/CryptoPayment/CryptoPayment'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -319,6 +320,16 @@ export default function useRouteElements() {
             <MainLayout>
               <Suspense fallback={<Loading />}>
                 <RequestTour />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.cryptoPayment,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <CryptoPayment />
               </Suspense>
             </MainLayout>
           )

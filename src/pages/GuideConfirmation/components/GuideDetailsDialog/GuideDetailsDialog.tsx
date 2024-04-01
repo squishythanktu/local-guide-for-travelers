@@ -46,14 +46,12 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
   refetch
 }: GuideDetailsDialogProps) => {
   const [currentAction, setCurrentAction] = useState<'deny' | 'accept' | undefined>(undefined)
-  const [popperAnchorEl, setPopperAnchorEl] = useState<null | HTMLElement>(null)
   const [openPopper, setOpenPopper] = useState<boolean>(false)
   const [reason, setReason] = useState<string>()
 
-  const handleAction = (event: React.MouseEvent<HTMLButtonElement>, action: 'accept' | 'deny') => {
+  const handleAction = (action: 'accept' | 'deny') => {
     setOpenPopper((prev) => !prev)
     setCurrentAction(action)
-    setPopperAnchorEl(event.currentTarget)
   }
 
   const updateStatusGuideApplicationMutation = useMutation({
@@ -88,7 +86,6 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
 
   const handleCancel = () => {
     setOpenPopper(false)
-    setPopperAnchorEl(null)
   }
 
   const { data: guideApplicationData, isPending: isPendingGuideDetail } = useQuery({
@@ -138,7 +135,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                           : guideApplicationData?.data.data.user.email}
                       </span>
                     </Grid>
-                    <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
+                    <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
                       <ApartmentIcon />
                       <Typography variant='body1' className='font-semibold'>
                         Address:
@@ -166,7 +163,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       </Typography>
                       <span>{guideApplicationData?.data.data.user.dateOfBirth?.slice(0, 10)}</span>
                     </Grid>
-                    <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
+                    <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
                       <DirectionsBusIcon />
                       <Typography variant='body1' className='font-semibold'>
                         Transportation:
@@ -180,44 +177,45 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       </Typography>
                       <span>{guideApplicationData?.data.data.howGuideHearAboutUs}</span>
                     </Grid>
-                    {guideApplicationData?.data.data.images && guideApplicationData?.data.data.images.length > 0 && (
-                      <Grid item xs={4} sm={8} md={12} className='guide-details__description flex flex-col gap-2'>
-                        <Box className='flex gap-2'>
-                          <ImageIcon />
-                          <Typography variant='body1' className='font-semibold'>
-                            Image(s)
-                          </Typography>
-                        </Box>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
-                          {guideApplicationData.data.data.images.map((image, i) => (
-                            <Grid
-                              item
-                              xs={2}
-                              sm={2}
-                              md={2}
-                              key={i}
-                              sx={{
-                                display: 'flex',
-                                justifyContent: 'start',
-                                alignItems: 'center',
-                                position: 'relative'
-                              }}
-                            >
-                              <img
-                                src={image.imageLink}
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'cover',
-                                  aspectRatio: '1 / 1'
+                    {guideApplicationData?.data.data.licenseImages &&
+                      guideApplicationData?.data.data.licenseImages.length > 0 && (
+                        <Grid item xs={4} sm={8} md={12} className='guide-details__description flex flex-col gap-2'>
+                          <Box className='flex gap-2'>
+                            <ImageIcon />
+                            <Typography variant='body1' className='font-semibold'>
+                              Image(s)
+                            </Typography>
+                          </Box>
+                          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
+                            {guideApplicationData.data.data.licenseImages.map((image, i) => (
+                              <Grid
+                                item
+                                xs={2}
+                                sm={2}
+                                md={2}
+                                key={i}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'start',
+                                  alignItems: 'center',
+                                  position: 'relative'
                                 }}
-                                alt=''
-                              />
-                            </Grid>
-                          ))}
+                              >
+                                <img
+                                  src={image.imageLink}
+                                  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    aspectRatio: '1 / 1'
+                                  }}
+                                  alt=''
+                                />
+                              </Grid>
+                            ))}
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    )}
+                      )}
                   </Grid>
                 </Box>
               </Box>
@@ -227,7 +225,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
         <DialogActions>
           <LoadingButton
             loading={currentAction === 'deny' ? updateStatusGuideApplicationMutation.isPending : false}
-            onClick={(e) => handleAction(e, 'deny')}
+            onClick={() => handleAction('deny')}
             variant='contained'
             size='large'
             color='error'
@@ -238,21 +236,20 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
             loading={currentAction === 'accept' ? updateStatusGuideApplicationMutation.isPending : false}
             variant='contained'
             size='large'
-            onClick={(e) => handleAction(e, 'accept')}
+            onClick={() => handleAction('accept')}
           >
             Accept
           </LoadingButton>
         </DialogActions>
         <ConfirmPopper
           icon={currentAction === 'accept' ? <InfoOutlinedIcon /> : <WarningAmberIcon />}
-          title={currentAction === 'accept' ? 'Accept guide confirmation' : 'Deny guide confirmation'}
+          title={currentAction === 'accept' ? 'Accept guide' : 'Deny guide'}
           content={
             currentAction === 'accept'
               ? 'Are you sure want to accept this guide?'
               : 'Are you sure want to deny this guide?'
           }
-          popperAnchorEl={popperAnchorEl}
-          openPopper={openPopper}
+          openDialog={openPopper}
           handleClickYes={handleSubmit}
           handleClickNo={handleCancel}
           loading={updateStatusGuideApplicationMutation.isPending}

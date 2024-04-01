@@ -1,21 +1,17 @@
+import CloseIcon from '@mui/icons-material/Close'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { TextField } from '@mui/material'
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Fade from '@mui/material/Fade'
-import Paper from '@mui/material/Paper'
-import Popper from '@mui/material/Popper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { Dispatch, SetStateAction } from 'react'
-import theme from 'src/theme'
 
-interface ConfirmPopperProps {
+interface ConfirmDialogProps {
   icon: React.ReactNode
   title: string
   content: string
-  openPopper: boolean
-  popperAnchorEl: null | HTMLElement
+  openDialog: boolean
   handleClickYes: () => void
   handleClickNo: () => void
   loading: boolean
@@ -24,80 +20,62 @@ interface ConfirmPopperProps {
   currentAction?: 'deny' | 'accept' | undefined
 }
 
-const ConfirmPopper: React.FC<ConfirmPopperProps> = ({
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   icon,
   title,
   content,
-  openPopper,
-  popperAnchorEl,
+  openDialog,
   handleClickYes,
   handleClickNo,
   loading,
   reason,
   setReason,
   currentAction
-}: ConfirmPopperProps) => {
+}: ConfirmDialogProps) => {
   return (
-    <Popper
-      sx={{ zIndex: theme.zIndex.modal }}
-      open={openPopper}
-      anchorEl={popperAnchorEl}
-      placement='top-end'
-      transition
-      disablePortal={false}
-      modifiers={[
-        {
-          name: 'flip',
-          enabled: false,
-          options: {
-            altBoundary: false,
-            rootBoundary: 'document',
-            padding: 8
-          }
-        },
-        {
-          name: 'preventOverflow',
-          enabled: false,
-          options: {
-            altAxis: false,
-            altBoundary: false,
-            tether: false,
-            rootBoundary: 'document',
-            padding: 8
-          }
-        }
-      ]}
-    >
-      {({ TransitionProps }) => (
-        <Fade {...TransitionProps} timeout={350}>
-          <Paper sx={{ margin: 1, p: 2 }}>
-            <Box className='flex items-center gap-2'>
-              {icon}
-              <Typography className='text-lg font-bold'>{title}</Typography>
-            </Box>
-            {setReason && currentAction === 'deny' && (
-              <TextField
-                className='mt-4 w-full'
-                label='Reason'
-                value={reason}
-                onChange={(event) => setReason(event.target.value)}
-                variant='outlined'
-              />
-            )}
-            <Typography className='mb-8 mt-4 text-[var(--label-secondary)]'>{content}</Typography>
-            <Stack direction='row' spacing={1} className='flex justify-end'>
-              <Button onClick={handleClickNo} size='large' color='error'>
-                No
-              </Button>
-              <LoadingButton loading={loading} onClick={handleClickYes} variant='outlined' size='large'>
-                Yes
-              </LoadingButton>
-            </Stack>
-          </Paper>
-        </Fade>
-      )}
-    </Popper>
+    <>
+      <Dialog fullWidth maxWidth='xs' open={openDialog}>
+        <DialogTitle style={{ cursor: 'move', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box className='flex items-center gap-2'>
+            {icon}
+            <Typography className='text-lg font-bold'>{title}</Typography>
+          </Box>
+          <IconButton onClick={handleClickNo}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {setReason && currentAction === 'deny' && (
+            <TextField
+              className='mt-4 w-full'
+              label={
+                <Box sx={{ fontWeight: '500' }}>
+                  Reason
+                  <Typography component='span' sx={{ color: 'red' }}>
+                    *
+                  </Typography>
+                </Box>
+              }
+              value={reason}
+              onChange={(event) => setReason(event.target.value)}
+              variant='outlined'
+            />
+          )}
+          <Box sx={{ paddingTop: '1rem' }}>{content}</Box>
+        </DialogContent>
+        <DialogActions>
+          <Stack direction='row' spacing={1} className='flex justify-end'>
+            <Button onClick={handleClickNo} size='large' color='error'>
+              No
+            </Button>
+            <LoadingButton loading={loading} onClick={handleClickYes} variant='outlined' size='large'>
+              Yes
+            </LoadingButton>
+          </Stack>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
 
-export default ConfirmPopper
+export default ConfirmDialog

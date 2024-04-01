@@ -1,5 +1,7 @@
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { Location } from './location.type'
+import { PageResult } from './page-result.type'
+import { Review } from './review.type'
 import { User } from './user.type'
 import { SuccessResponse } from './utils.type'
 
@@ -34,6 +36,7 @@ export type Tour = {
   images: ImageWithLink[]
   locations: Location[]
   status?: TourStatus
+  reviewDTOS?: Review[]
 }
 
 export interface TourGuideParams {
@@ -51,3 +54,7 @@ export interface TourGuideParams {
 }
 
 export type TourSuccessResponse = SuccessResponse<Tour>
+
+export type ToursResult = {
+  tourDTOS: Tour[]
+} & PageResult

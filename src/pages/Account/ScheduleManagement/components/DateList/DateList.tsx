@@ -112,6 +112,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
       return
     }
     setDisplayDates(formattedData(pastBookedByDay, 'DESC'))
+    setSelectedDates([])
   }, [busyByGuide, busyByDay, busyByHour, temporalState, dayState])
 
   const handleBookedByDayButton = () => {
@@ -241,7 +242,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
                 'justify-items-center': dayState.toString() === 'bookedDays'
               })}
               onClick={(event) => {
-                event.stopPropagation(), handleDayClick(item)
+                if (dayState === 'daysOff' && temporalState == 'upcoming') event.stopPropagation(), handleDayClick(item)
               }}
             >
               <div className='grid justify-center'>{formatDate(new Date(item), 'MM/DD/YYYY')}</div>

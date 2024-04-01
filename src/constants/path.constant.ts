@@ -27,7 +27,8 @@ const path = {
   bookingFail: '/booking-fail',
   requestTour: '/request-add-tour',
   wishlist: '/wishlist',
-  guideApplications: '/guide-applications'
+  guideApplications: '/guide-applications',
+  cryptoPayment: '/crypto-payment'
 }
 
 export default path

@@ -1,6 +1,5 @@
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import Box from '@mui/material/Box'
 import SvgIcon from '@mui/material/SvgIcon'
 import { CssVarsTheme, Theme } from '@mui/material/styles'
@@ -12,6 +11,7 @@ import MainLogoIcon from 'src/assets/svg/logo.svg'
 import path from 'src/constants/path.constant'
 import { headerHeight } from 'src/constants/width-height.constant'
 import { AppContext } from 'src/contexts/app.context'
+import CartBadge from './CartBadge/CartBadge'
 import NavLink from './NavLink'
 import Notification from './Notification/Notification'
 import ProfileMenu from './ProfileMenu'
@@ -86,7 +86,7 @@ export default function Header({
             sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
           >
             <NavLink to={path.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
-            <NavLink to={path.cart} icon={<ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />} text='Cart' />
+            <NavLink to={path.cart} icon={<CartBadge />} text='Cart' />
             <NavLink
               to={path.bookings}
               icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}

@@ -1,24 +1,26 @@
-import { Box } from '@mui/material'
+import { Box, Pagination } from '@mui/material'
 import Skeleton from '@mui/material/Skeleton'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useContext, useState } from 'react'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import bookingApi from 'src/apis/booking.api'
 import tourApi from 'src/apis/tour.api'
+import wishlistApi from 'src/apis/wishlist.api'
 import LocationCard from 'src/components/LocationCard/LocationCard'
 import { headerHeight } from 'src/constants/width-height.constant'
-import { Tour } from 'src/types/tour.type'
-import TourCard from '../../components/TourCard/TourCard'
-import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
-import wishlistApi from 'src/apis/wishlist.api'
+import { PaginationParams } from 'src/types/pagination-params.type'
+import { Tour } from 'src/types/tour.type'
 import { isTourInWishlist } from 'src/utils/wishlist'
+import TourCard from '../../components/TourCard/TourCard'
 
 export default function Home() {
   const { profile, isAuthenticated } = useContext(AppContext)
+  const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, limit: 8 })
   const { data: toursData, isPending } = useQuery({
-    queryKey: ['tours'],
-    queryFn: () => tourApi.getTours(),
+    queryKey: ['tours', paginationParams],
+    queryFn: () => tourApi.getTours(paginationParams),
     placeholderData: keepPreviousData,
     staleTime: 5 * 1000
   })
@@ -76,7 +78,7 @@ export default function Home() {
             : isAuthenticated
               ? isWishlistDataPending
                 ? renderSkeletons()
-                : toursData?.data.data.map((tourData: Tour) => (
+                : toursData?.data.data.tourDTOS.map((tourData: Tour) => (
                     <TourCard
                       key={tourData.id}
                       tourData={tourData}
@@ -84,11 +86,27 @@ export default function Home() {
                       refetch={refetch}
                     />
                   ))
-              : toursData?.data.data.map((tourData: Tour) => (
+              : toursData?.data.data.tourDTOS.map((tourData: Tour) => (
                   <TourCard key={tourData.id} tourData={tourData} refetch={refetch} />
                 ))}
         </div>
+        {toursData && (
+          <Pagination
+            onChange={(_, page) => {
+              setPaginationParams((prevPagination) => ({
+                ...prevPagination,
+                page: page - 1
+              }))
+            }}
+            count={toursData?.data.data.totalOfPage as unknown as number}
+            className='my-6 flex justify-center'
+            size='large'
+            variant='outlined'
+            color='primary'
+          />
+        )}
       </div>
+
       {/* Locations */}
       {!isPendingCities && popularCitiesData?.data.data && popularCitiesData?.data.data.length > 0 && (
         <div className='collection-container container relative mx-auto my-10 max-w-[94%] lg:mx-auto lg:max-w-[1400px]'>

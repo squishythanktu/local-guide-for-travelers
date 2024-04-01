@@ -114,8 +114,7 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
               <Rating defaultValue={tourData?.overallRating} precision={0.1} size='small' readOnly />
               <span className='rating-overall__number text-sm font-semibold'>{tourData?.overallRating.toFixed(2)}</span>
               <span className='rating-overall__reviews text-sm font-semibold  text-[var(--label-secondary)]'>
-                {/* TODO: Replace by tour total reviews from API */}
-                (244 reviews)
+                ({tourData.reviewDTOS?.length} reviews)
               </span>
             </div>
             <div className='pricing-container font-semibold'>

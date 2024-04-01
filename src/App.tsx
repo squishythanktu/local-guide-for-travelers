@@ -1,13 +1,13 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AppContext, AppProvider } from './contexts/app.context'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import useRouteElements from './useRouteElements'
-import { useContext, useEffect } from 'react'
-import { LocalStorageEventTarget } from './utils/auth'
-import { ToastContainer } from 'react-toastify'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useContext, useEffect } from 'react'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { AppContext, AppProvider } from './contexts/app.context'
+import useRouteElements from './useRouteElements'
+import { LocalStorageEventTarget } from './utils/auth'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +33,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>{routeElements}</LocalizationProvider>
-        <ToastContainer />
+        <ToastContainer autoClose={2000} hideProgressBar theme='colored' />
       </AppProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
