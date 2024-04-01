@@ -25,7 +25,7 @@ export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
         ))}
       </Box>
       <div className='header w-full'>
-        <h1 className='title my-2 text-left text-3xl font-bold md:text-4xl lg:font-extrabold'>{tour.name}</h1>
+        <h2 className='title my-2 text-left text-3xl font-bold md:text-4xl lg:font-extrabold'>{tour.name}</h2>
         <div className='basic-info flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4'>
           <div className='rating mr-2 flex items-center gap-2'>
             <Rating max={5} precision={0.1} value={Number(tour.overallRating.toFixed(2))} size='large' readOnly />

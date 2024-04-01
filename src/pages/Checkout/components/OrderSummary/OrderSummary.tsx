@@ -20,7 +20,7 @@ const OrderSummary: React.FC = () => {
   const totalBookingLength = bookingsCartData?.data.data.bookings.length
   return (
     <>
-      <h1 className='pb-3'>Order summary</h1>
+      <h2 className='pb-3'>Order summary</h2>
       <Box style={{ maxHeight: 600, overflow: 'auto' }}>
         {bookingsCartData ? (
           (bookingsCartData.data.data as BookingsInCart).bookings!.map((bookingCartData, index) => (

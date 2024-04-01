@@ -28,7 +28,7 @@ const Wishlist: React.FC = () => {
       {isAuthenticated && !wishListData?.data.data && <Loading />}
       {isAuthenticated && wishListData?.data.data && wishListData.data.data.length > 0 ? (
         <div className=''>
-          <h1 className='wishlist__title'>Wishlist</h1>
+          <h2 className='wishlist__title pt-5'>Wishlist</h2>
           <div className='my-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
             {wishListData.data.data.map((tour, index) => (
               <TourCard tourData={tour} refetch={refetch} key={index} isTourInWishList={true} />

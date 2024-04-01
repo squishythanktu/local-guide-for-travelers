@@ -63,9 +63,9 @@ export default function SearchGuides() {
             <span className='text-base font-semibold sm:text-2xl'>Local guides match</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
-                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
+                <h2 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
                   {queryConfig.searchValue}
-                </h1>
+                </h2>
                 <SvgIcon
                   component={NoodleIcon}
                   inheritViewBox
@@ -90,6 +90,8 @@ export default function SearchGuides() {
                 className='h-14 min-w-48'
                 MenuProps={{ disableScrollLock: true }}
                 startAdornment={<SortIcon className='mr-1' />}
+                style={{ height: 63, marginTop: '-6px' }}
+                sx={{ color: (theme) => theme.palette.primary.main, fontWeight: 800 }}
               >
                 <MenuItem disabled value=''>
                   <em>Sort</em>

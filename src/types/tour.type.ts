@@ -49,8 +49,6 @@ export interface TourGuideParams {
   maxPrice?: number | string
   searchValue?: string
   categoryId?: number[]
-  start_date?: string
-  end_date?: string
 }
 
 export type TourSuccessResponse = SuccessResponse<Tour>

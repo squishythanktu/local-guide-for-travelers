@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { SortReview } from 'src/enums/sort-review.enum'
 import { ReviewParams } from 'src/types/review.type'
 import MenuButton from '../MenuButton/MenuButton'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 
 interface ReviewSortFilter {
   onChange: (reviewParams: ReviewParams) => void
@@ -72,16 +73,22 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
   return (
     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className='sort-filter-reviews'>
       <Grid item xs={2} sm={3} md={12} className='sort-by'>
-        <h3 className='reviews-summary__title'>Sort by</h3>
+        <h3 className='reviews-summary__title mb-2'>Sort by</h3>
         <FormControl fullWidth>
           <Select
             labelId='demo-simple-select-label'
             id='demo-simple-select'
             value={sortBy}
             onChange={handleSelectChange}
-            sx={{ maxWidth: '175px' }}
             MenuProps={{ disableScrollLock: true }}
+            style={{ height: 63, marginTop: '-6px' }}
+            sx={{ color: (theme) => theme.palette.primary.main, fontWeight: 800, maxWidth: '175px' }}
           >
+            <MenuItem disabled value=''>
+              <em>
+                <strong>Sort</strong>
+              </em>
+            </MenuItem>
             {Object.values(SortReview).map((value) => (
               <MenuItem key={value} value={value}>
                 {value}
@@ -112,9 +119,13 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
           display: { xs: 'block', md: 'none' }
         }}
       >
-        <h3 className='reviews-summary__title mb-1.5'>Filter</h3>
+        <h3 className='reviews-summary__title mb-2'>Filter</h3>
 
-        <MenuButton text='Star ratings' jsx={<Box sx={{ padding: '12px' }}>{RatingFormGroup}</Box>} />
+        <MenuButton
+          text='Star ratings'
+          icon={<StarBorderIcon />}
+          jsx={<Box sx={{ padding: '12px' }}>{RatingFormGroup}</Box>}
+        />
       </Grid>
     </Grid>
   )

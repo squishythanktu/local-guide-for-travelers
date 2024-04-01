@@ -19,9 +19,7 @@ export default function useQueryConfig() {
       maxPrice: queryParams.maxPrice,
       minPrice: queryParams.minPrice,
       searchValue: queryParams.searchValue,
-      categoryId: queryParams.categoryId,
-      start_date: queryParams.start_date,
-      end_date: queryParams.end_date
+      categoryId: queryParams.categoryId
     },
     isUndefined
   )

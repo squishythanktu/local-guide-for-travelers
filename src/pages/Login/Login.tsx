@@ -84,7 +84,7 @@ export default function Login() {
         </div>
       </form>
 
-      <div className='form__oauth flex flex-col items-center gap-4'>
+      <div className='form__oauth hidden flex-col items-center gap-4'>
         <div className='flex w-full items-center gap-4'>
           <div className='block h-[0.5px] w-full border-none bg-gray-400' />
           <p className='whitespace-nowrap	'>or continue with</p>

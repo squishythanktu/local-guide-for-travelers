@@ -2,14 +2,18 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import Button from '@mui/material/Button'
 import Popover from '@mui/material/Popover'
 import { ReactNode, useState } from 'react'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import theme from 'src/theme'
 
-interface Props {
+interface MenuButtonProps {
   jsx: ReactNode
   text: string
+  icon: ReactNode
 }
 
-const MenuButton = ({ jsx, text }: Props) => {
+const MenuButton = ({ jsx, text, icon }: MenuButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const isLgBreakpoint = useMediaQuery(theme.breakpoints.up('lg'))
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget)
@@ -28,14 +32,22 @@ const MenuButton = ({ jsx, text }: Props) => {
         aria-controls={open ? 'demo-customized-menu' : undefined}
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
-        variant='contained'
+        variant='outlined'
         disableElevation
         onClick={handleClick}
         size='large'
         endIcon={<KeyboardArrowDownIcon />}
-        className='min-h-[50px]'
+        className='min-h-[55px]'
+        sx={{
+          fontWeight: 800,
+          borderColor: '#c4c4c4',
+          '&:hover': {
+            borderColor: '#564345',
+            backgroundColor: 'transparent'
+          }
+        }}
       >
-        {text}
+        {isLgBreakpoint ? text : icon}
       </Button>
       <Popover
         id='demo-customized-menu'

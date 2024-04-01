@@ -11,6 +11,7 @@ import { DayInSchedule } from 'src/types/schedule.type'
 import { DateArrayConvertToDateObjectArray } from 'src/utils/date-time'
 import DateList from './components/DateList/DateList'
 import Notes from './components/Notes/Notes'
+import './schedule-management.style.scss'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 

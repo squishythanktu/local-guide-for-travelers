@@ -68,6 +68,15 @@ const NonAdminRoute = () => {
   )
 }
 
+const NonAdminGuiderRoute = () => {
+  const { profile, isAuthenticated } = useContext(AppContext)
+  return !isAuthenticated || (isAuthenticated && profile?.role === UserRole.TRAVELER) ? (
+    <Outlet />
+  ) : (
+    <Navigate to={path.home} />
+  )
+}
+
 export default function useRouteElements() {
   const routeElements = useRoutes([
     {
@@ -165,21 +174,27 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.guideApplications,
-          element: (
-            <MainLayout>
-              <Suspense fallback={<Loading />}>
-                <GuideApplication />
-              </Suspense>
-            </MainLayout>
-          )
-        },
-        {
           path: '*',
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
                 <NotFound />
+              </Suspense>
+            </MainLayout>
+          )
+        }
+      ]
+    },
+    {
+      path: '/',
+      element: <NonAdminGuiderRoute />,
+      children: [
+        {
+          path: path.guideApplications,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <GuideApplication />
               </Suspense>
             </MainLayout>
           )

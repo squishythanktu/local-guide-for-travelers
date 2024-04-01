@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined'
 import ViewListIcon from '@mui/icons-material/ViewList'
 import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
@@ -25,6 +26,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
+import { UserRole } from 'src/enums/user-role.enum'
 
 interface RightDrawerProps {
   textColor: string
@@ -128,6 +130,14 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               </ListItemIcon>
               <ListItemText primary='Management' />
             </ListItemButton>
+            {profile?.role === UserRole.TRAVELER && (
+              <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideApplications}>
+                <ListItemIcon>
+                  <ContactPageOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary='Register as a guide' />
+              </ListItemButton>
+            )}
             <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon />
@@ -192,6 +202,12 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
         </ListItem>
         <Collapse in={open} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideApplications}>
+              <ListItemIcon>
+                <ContactPageOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary='Register as a guide' />
+            </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={path.login}>
               <ListItemIcon>
                 <LoginIcon />

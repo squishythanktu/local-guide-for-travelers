@@ -68,7 +68,7 @@ const Bookings: React.FC = () => {
       {isAuthenticated && bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
         <div>
           <div>
-            <h1 className='my-bookings__title'>My bookings</h1>
+            <h2 className='my-bookings__title pt-5'>My bookings</h2>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -102,7 +102,7 @@ const Bookings: React.FC = () => {
             </SwipeableViews>
           </div>
           <div>
-            <h1
+            <h2
               onClick={() =>
                 window.scrollTo({
                   top: 600,
@@ -112,7 +112,7 @@ const Bookings: React.FC = () => {
               className='my-bookings__title mt-6'
             >
               My invoices
-            </h1>
+            </h2>
             {invoicesData?.data.data &&
               invoicesData?.data.data.map((invoice, index) => (
                 <InvoiceComponent key={index} invoice={invoice} refetchInvoicesData={refetchInvoicesData} />

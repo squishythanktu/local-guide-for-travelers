@@ -1,3 +1,4 @@
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import SortIcon from '@mui/icons-material/Sort'
 import { Box, Typography } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
@@ -6,13 +7,12 @@ import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
+import omitBy from 'lodash/omitBy'
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import categoryApi from 'src/apis/category.api'
 import CurrencyInput from 'src/components/CurrencyInput/CurrencyInput'
-import DateRangePicker from 'src/components/DateRangePicker/DateRangePicker'
 import MenuButton from 'src/components/MenuButton/MenuButton'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 import { TourCategory } from 'src/types/tour.type'
@@ -115,7 +115,7 @@ export default function SortFilterTours() {
 
   return (
     <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 py-2 md:flex-row md:items-center'>
-      <div className='filter-container flex gap-4'>
+      <div className='sort-container flex w-full flex-col gap-4 sm:w-fit sm:flex-row'>
         <MenuButton
           jsx={
             <Box
@@ -158,25 +158,7 @@ export default function SortFilterTours() {
             </Box>
           }
           text='Price'
-        />
-        <MenuButton
-          jsx={
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                paddingY: 2,
-                paddingX: 3,
-                flexDirection: 'column'
-              }}
-            >
-              <Typography variant='subtitle2' sx={{ color: (theme) => theme.palette.secondary.main }}>
-                Filter by date range
-              </Typography>
-              <DateRangePicker className='w-full max-w-[462px]' queryConfig={queryConfig} />
-            </Box>
-          }
-          text='Date range'
+          icon={<AttachMoneyIcon />}
         />
 
         <Autocomplete
@@ -212,7 +194,7 @@ export default function SortFilterTours() {
           }}
         />
       </div>
-      <div className='sort-container flex items-center'>
+      <div className='filter-container w-full sm:w-fit'>
         <Select
           name='sort-by'
           value={sortingValue}
@@ -222,9 +204,13 @@ export default function SortFilterTours() {
           className='h-14 min-w-48'
           MenuProps={{ disableScrollLock: true }}
           startAdornment={<SortIcon className='mr-1' />}
+          style={{ height: 63, marginTop: '-6px' }}
+          sx={{ color: (theme) => theme.palette.primary.main, fontWeight: 800, width: '100%' }}
         >
           <MenuItem disabled value=''>
-            <em>Sort</em>
+            <em>
+              <strong>Sort</strong>
+            </em>
           </MenuItem>
           <MenuItem value='overallRating-asc'>Rating - Low to high</MenuItem>
           <MenuItem value='overallRating-desc'>Rating - High to low</MenuItem>

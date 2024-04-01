@@ -50,9 +50,9 @@ export default function SearchTours() {
             <span className='text-base font-semibold sm:text-2xl'>Things to do in</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
-                <h1 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
+                <h2 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
                   {queryConfig.searchValue}
-                </h1>
+                </h2>
                 <SvgIcon
                   component={NoodleIcon}
                   inheritViewBox
@@ -71,7 +71,7 @@ export default function SearchTours() {
             {isPending ? (
               <Skeleton variant='text' sx={{ fontSize: '1rem' }} width={100} />
             ) : (
-              `${toursData?.data.data.totalOfResult} guides found.`
+              `${toursData?.data.data.totalOfResult} tour(s) found.`
             )}
           </div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>

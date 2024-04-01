@@ -42,7 +42,7 @@ export default function Cart() {
       {!isPending && cartData && cartData.data.data.bookings && cartData.data.data.bookings.length > 0 && (
         <div className='grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-28'>
           <div className='py-5 lg:col-span-3'>
-            <div className='cart__title pb-2 text-2xl font-black'>Shopping cart</div>
+            <h2 className='cart__title pb-2 font-black'>Shopping cart</h2>
             <div className='cart__items'>
               <div className='flex flex-col gap-4'>
                 {cartData.data.data.bookings.map((booking: Booking) => (
