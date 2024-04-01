@@ -19,22 +19,26 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import addressApi from 'src/apis/address.api'
 import guideApplicationApi from 'src/apis/guide-application.api'
+import userApi from 'src/apis/user.api'
 import ControlledTextField from 'src/components/ControlledTextField/ControlledTextField'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { TypeOfTransport } from 'src/enums/type-of-transport.enum'
 import { GuideApplicationType } from 'src/types/guide-application.type'
+import { User } from 'src/types/user.type'
 import { convertDateToUTC7 } from 'src/utils/date-time'
 import { GuideApplicationSchema, guideApplicationSchema } from 'src/utils/rules'
 
 type FormData = Omit<GuideApplicationSchema, 'newPassword' | 'confirmPassword'>
+
 const applicationSchema = guideApplicationSchema.pick([
   'fullName',
   'address',
@@ -49,7 +53,7 @@ const applicationSchema = guideApplicationSchema.pick([
 ])
 
 const GuideApplication: React.FC = () => {
-  const { isAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, profile } = useContext(AppContext)
   const [openCollapse, setOpenCollapse] = useState(false)
   const [transportationState, setTransportationState] = useState({
     none: false,
@@ -77,8 +81,24 @@ const GuideApplication: React.FC = () => {
     queryKey: ['provinces'],
     queryFn: () => addressApi.getProvinces()
   })
+  const { data: profileData } = useQuery({
+    queryKey: [`get me ${profile?.email}`, profile?.email],
+    queryFn: () => userApi.getMe()
+  })
   const watchIsLicenseGuide: boolean = watch('isLicensedGuide')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (profileData?.data.data) {
+      const user = profileData?.data.data as User
+
+      setValue('email', user.email)
+      user?.fullName && setValue('fullName', user.fullName)
+      user?.phone && setValue('phone', user.phone)
+      user?.address && setValue('address', user.address)
+      user?.dateOfBirth && setValue('dateOfBirth', dayjs(user.dateOfBirth.split('T')[0]) as any)
+    }
+  }, [profileData?.data.data, setValue])
 
   useEffect(() => {
     setValue('licenseImages', images)
@@ -117,13 +137,15 @@ const GuideApplication: React.FC = () => {
       transportation: getTransportationString(data.transportation),
       licenseImages: data.licenseImages as string[]
     }
+    console.log(formattedData)
+
     createGuideApplicationMutation.mutate(formattedData, {
       onSuccess: () => {
         toast.success('Create guide application successfully.')
         navigate(path.home)
       },
-      onError: (error) => {
-        toast.error(error.message)
+      onError: (error: any) => {
+        toast.error(error.response.data.message)
       }
     })
   }
@@ -147,7 +169,14 @@ const GuideApplication: React.FC = () => {
             Profile Details
           </h2>
           <div className='field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
-            <ControlledTextField className='min-h-20 w-full' control={control} name={'fullName'} label={'Full name'} />
+            <ControlledTextField
+              required
+              disabled={!!profile}
+              className='min-h-20 w-full'
+              control={control}
+              name={'fullName'}
+              label={'Full name'}
+            />
             <Controller
               control={control}
               name='dateOfBirth'
@@ -155,7 +184,16 @@ const GuideApplication: React.FC = () => {
                 return (
                   <DatePicker
                     disableFuture
-                    label='Date of birth'
+                    disabled={!!profile}
+                    label={
+                      <Typography sx={{ fontWeight: 600 }}>
+                        Date of birth
+                        <Typography component='span' sx={{ color: 'red' }}>
+                          {' '}
+                          *
+                        </Typography>
+                      </Typography>
+                    }
                     value={field.value}
                     className='min-h-20 w-full'
                     slotProps={{
@@ -185,6 +223,7 @@ const GuideApplication: React.FC = () => {
                     freeSolo
                     disablePortal
                     id='address'
+                    disabled={!!profile}
                     className='w-full flex-grow'
                     onBlur={onBlur}
                     value={value}
@@ -204,7 +243,15 @@ const GuideApplication: React.FC = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label={<Typography sx={{ fontWeight: 600 }}>Address</Typography>}
+                        label={
+                          <Typography sx={{ fontWeight: 600 }}>
+                            Address{' '}
+                            <Typography component='span' sx={{ color: 'red' }}>
+                              {' '}
+                              *
+                            </Typography>
+                          </Typography>
+                        }
                         InputLabelProps={{
                           shrink: true
                         }}
@@ -216,11 +263,26 @@ const GuideApplication: React.FC = () => {
                 )
               }}
             />
-            <ControlledTextField className='min-h-20 w-full' control={control} name={'phone'} label={'Phone'} />
+            <ControlledTextField
+              required
+              disabled={!!profile}
+              className='min-h-20 w-full'
+              control={control}
+              name={'phone'}
+              label={'Phone'}
+            />
           </div>
           <div className='field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
-            <ControlledTextField className='min-h-20 w-full' control={control} name={'email'} label={'Email'} />
             <ControlledTextField
+              required
+              disabled={!!profile}
+              className='min-h-20 w-full'
+              control={control}
+              name={'email'}
+              label={'Email'}
+            />
+            <ControlledTextField
+              required
               className='min-h-20 w-full'
               type='password'
               control={control}
@@ -268,6 +330,10 @@ const GuideApplication: React.FC = () => {
           <FormControl className='min-h-[132px]'>
             <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
               Are you a licensed tour guide?
+              <Typography component='span' sx={{ color: 'red' }}>
+                {' '}
+                *
+              </Typography>
             </Typography>
             <Controller
               control={control}
@@ -285,6 +351,7 @@ const GuideApplication: React.FC = () => {
             />
           </FormControl>
           <ControlledTextField
+            required
             className='min-h-20 w-full md:w-[49%]'
             type='number'
             control={control}

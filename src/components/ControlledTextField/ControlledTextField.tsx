@@ -18,6 +18,7 @@ interface ControlledTextFieldProps {
   prefix?: string
   required?: boolean
   placeholder?: string
+  disabled?: boolean
 }
 
 export default function ControlledTextField({
@@ -32,7 +33,8 @@ export default function ControlledTextField({
   type = 'text',
   prefix,
   required = false,
-  placeholder
+  placeholder,
+  disabled = false
 }: ControlledTextFieldProps) {
   return (
     <Controller
@@ -41,6 +43,7 @@ export default function ControlledTextField({
       render={({ field, fieldState: { error } }) => (
         <TextField
           id={name}
+          disabled={disabled}
           label={
             label && (
               <Typography sx={{ fontWeight: 600 }}>
