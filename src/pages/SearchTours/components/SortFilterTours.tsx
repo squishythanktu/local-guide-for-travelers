@@ -71,14 +71,17 @@ export default function SortFilterTours() {
     (name: string, value: string) => {
       let newMinPrice = minPrice
       let newMaxPrice = maxPrice
+
       if (parseFloat(value) < 0 || value === '') return
 
       if (name === 'minPrice' && value !== minPrice) {
         newMinPrice = value
       }
+
       if (name === 'maxPrice' && value !== maxPrice) {
         newMaxPrice = value
       }
+
       if (newMinPrice !== minPrice || newMaxPrice !== maxPrice) {
         setMinPrice(newMinPrice)
         setMaxPrice(newMaxPrice)

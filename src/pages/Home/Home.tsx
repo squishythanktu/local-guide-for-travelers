@@ -17,7 +17,7 @@ import TourCard from '../../components/TourCard/TourCard'
 
 export default function Home() {
   const { profile, isAuthenticated } = useContext(AppContext)
-  const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, limit: 8 })
+  const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, limit: 12 })
   const { data: toursData, isPending } = useQuery({
     queryKey: ['tours', paginationParams],
     queryFn: () => tourApi.getTours(paginationParams),

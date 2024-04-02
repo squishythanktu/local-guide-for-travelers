@@ -41,13 +41,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
       <div className='request__header flex items-center justify-between px-4'>
         <div className='flex gap-3'>
           <span className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xl font-bold uppercase text-slate-800'>
-            {isGuide
-              ? request.traveler.fullName
-                ? request.traveler.fullName[0]
-                : ''
-              : request.guide.fullName
-                ? request.guide.fullName[0]
-                : ''}
+            {request.traveler.fullName ? request.traveler.fullName[0] : request.traveler.email[0]}
           </span>
           <div className=''>
             <div className='text-sm font-bold'>{isGuide ? request.traveler.fullName : request.guide.fullName}</div>
@@ -129,7 +123,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
           {request.status === StatusRequestForGuide.DONE.toUpperCase() && (
             <>
               {request.tour.status === TourStatus.PENDING && (
-                <Chip label='Admin approval pending' color='primary' size='small' />
+                <Chip label='Admin awaiting' color='primary' size='small' />
               )}
               {request.tour.status === TourStatus.DENY && <Chip label='Admin deny' color='error' size='small' />}
               {request.tour.status === TourStatus.ACCEPT && (

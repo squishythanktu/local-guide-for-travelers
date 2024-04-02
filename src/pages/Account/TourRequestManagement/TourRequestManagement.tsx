@@ -8,6 +8,7 @@ import Loading from 'src/pages/Loading'
 import { Request } from 'src/types/request.type'
 import ButtonComponent from './components/ButtonComponent'
 import RequestComponent from './components/RequestComponent'
+import ButtonGroup from '@mui/material/ButtonGroup'
 
 const TourRequestManagement: React.FC = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
@@ -38,7 +39,7 @@ const TourRequestManagement: React.FC = () => {
         .map((item) => item)
     }
     setDisplayData(displayRequestsData)
-  }, [requestsData, requestStatus])
+  }, [requestsData, requestStatus, profile])
 
   const handleQuantity = (item: StatusRequestForGuide | StatusRequestForTraveler) => {
     if (requestsData)
@@ -55,7 +56,10 @@ const TourRequestManagement: React.FC = () => {
             Tour Request Management
           </h2>
           {isGuide && (
-            <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-4 border'>
+            <Box
+              sx={{ borderColor: (theme) => theme.palette.primary.main }}
+              className='grid grid-cols-4 overflow-x-auto border'
+            >
               {Object.values(StatusRequestForGuide).map((item) => (
                 <ButtonComponent
                   key={item}
@@ -68,7 +72,21 @@ const TourRequestManagement: React.FC = () => {
             </Box>
           )}
           {!isGuide && (
-            <Box sx={{ borderColor: (theme) => theme.palette.primary.main }} className='grid grid-cols-6 border'>
+            // <Box style={{ width: '100%', overflow: 'auto' }}>
+            <ButtonGroup
+              variant='outlined'
+              aria-label='Basic button group'
+              sx={{
+                width: '100%',
+                overflowX: 'scroll',
+                button: {
+                  flex: 'none'
+                },
+                '::-webkit-scrollbar': {
+                  display: 'none'
+                }
+              }}
+            >
               {Object.values(StatusRequestForTraveler).map((item) => (
                 <ButtonComponent
                   key={item}
@@ -78,7 +96,8 @@ const TourRequestManagement: React.FC = () => {
                   quantity={handleQuantity(item)}
                 />
               ))}
-            </Box>
+            </ButtonGroup>
+            // </Box>
           )}
           <div className='mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2'>
             {displayData.map((request) => {

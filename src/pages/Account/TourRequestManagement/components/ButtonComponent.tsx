@@ -18,7 +18,8 @@ const ButtonComponent: React.FC<Props> = ({
   return (
     <Button
       onClick={() => setRequestStatus(requestStatus)}
-      className='col-span-1 rounded-none'
+      className='grow'
+      size='large'
       sx={{
         ...(currentRequestStatus === requestStatus.toString() && {
           backgroundColor: '#d9e7f4'

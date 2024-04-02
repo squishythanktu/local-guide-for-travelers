@@ -86,6 +86,13 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             }
           }}
         >
+          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
+            <ListItemIcon>
+              <ContactPageOutlinedIcon fontSize='small' />
+            </ListItemIcon>
+            Become a guide
+          </MenuItem>
+          <Divider />
           <MenuItem component={Link} to={path.login}>
             <ListItemIcon>
               <LoginIcon fontSize='small' />
@@ -97,13 +104,6 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
               <PersonAddAlt1Icon fontSize='small' />
             </ListItemIcon>
             Sign up
-          </MenuItem>
-          <Divider />
-          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
-            <ListItemIcon>
-              <ContactPageOutlinedIcon fontSize='small' />
-            </ListItemIcon>
-            Register as a guide
           </MenuItem>
         </Menu>
       )}
@@ -142,7 +142,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             <ListItemIcon>
               <ContactPageOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            Register as a guide
+            Become a guide
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleLogout}>
