@@ -67,7 +67,14 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: 
   }
 
   if (isTransferMoney && coinData?.data.data)
-    navigate(path.cryptoPayment, { state: { priceTotal: totalBookingPrice, coin: coinData?.data.data } })
+    navigate(path.cryptoPayment, {
+      state: {
+        priceTotal: totalBookingPrice,
+        coin: coinData?.data.data,
+        bookingIds: getFormattedBookingIds(),
+        passengerInfo: passengerInfo
+      }
+    })
 
   useEffect(() => {
     if (isTransferMoney) {

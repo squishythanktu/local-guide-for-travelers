@@ -6,15 +6,18 @@ import { Box, Divider, Grid, IconButton } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import paymentApi from 'src/apis/payment.api'
 import ControlledTextField from 'src/components/ControlledTextField'
+import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import { CryptoPaymentData } from 'src/types/payment.type'
 import { PassengerInformationSchema, passengerInformationSchema } from 'src/utils/rules'
 
 const CryptoPayment: React.FC = () => {
   const { profile } = useContext(AppContext)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const { control, handleSubmit } = useForm<PassengerInformationSchema>({
     defaultValues: {
@@ -26,17 +29,24 @@ const CryptoPayment: React.FC = () => {
   })
 
   const cryptoTransactionMutation = useMutation({
-    mutationFn: (body: { amount: number; buyer_email: string }) => paymentApi.cryptoTransaction(body)
+    mutationFn: (body: CryptoPaymentData) => paymentApi.cryptoTransaction(body)
   })
 
   const handleCryptoPayment = (body: PassengerInformationSchema) => {
     cryptoTransactionMutation.mutate(
-      { amount: location.state.priceTotal as number, buyer_email: body.email },
+      {
+        amount: location.state.coin as number,
+        buyer_email: body.email,
+        bookingIds: location.state.bookingIds,
+        passengerInfo: location.state.passengerInfo
+      },
       {
         onSuccess: (data) => {
-          window.location.href = data.data.data.result.checkout_url
+          navigate(`${path.bookingSuccess.replace(':id', data.data.data.toString())}`)
         },
-        onError: () => {}
+        onError: () => {
+          navigate(path.bookingFail)
+        }
       }
     )
   }

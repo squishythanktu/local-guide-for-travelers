@@ -1,8 +1,8 @@
 import axios, { AxiosError, type AxiosInstance } from 'axios'
+import { URL_LOGIN, URL_LOGOUT, URL_REGISTER } from 'src/apis/auth.api'
 import config from 'src/constants/config.constant'
 import { AuthSuccessResponse } from 'src/types/auth.type'
 import { clearLS, getAccessTokenFromLocalStorage, setAccessTokenToLS, setProfileToLS } from './auth'
-import { URL_LOGIN, URL_LOGOUT, URL_REGISTER } from 'src/apis/auth.api'
 
 export class Http {
   instance: AxiosInstance
@@ -12,7 +12,7 @@ export class Http {
     this.accessToken = getAccessTokenFromLocalStorage()
     this.instance = axios.create({
       baseURL: config.baseUrl,
-      timeout: 10 * 1000,
+      timeout: 10 * 1000 * 6 * 5,
       headers: {
         'Content-Type': 'application/json'
       }
