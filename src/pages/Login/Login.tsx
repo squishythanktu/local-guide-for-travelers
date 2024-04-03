@@ -3,27 +3,39 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Button from '@mui/material/Button'
 import SvgIcon from '@mui/material/SvgIcon'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
-import FacebookIcon from 'src/assets/svg/facebook.svg'
+import userApi from 'src/apis/user.api'
 import GoogleIcon from 'src/assets/svg/google.svg'
 import ControlledTextField from 'src/components/ControlledTextField'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import useQueryParams from 'src/hooks/useQueryParams'
 import AuthLayout from 'src/layouts/AuthLayout'
 import { AuthSuccessResponse } from 'src/types/auth.type'
 import { Schema, schema } from 'src/utils/rules'
+import http from 'src/utils/http'
+import { setAccessTokenToLS, setProfileToLS } from 'src/utils/auth'
+import config from 'src/constants/config.constant'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const [isOauthTokenExists, setOauthTokenExists] = useState<boolean>(false)
+  const queryParams: { token?: string; error?: string } = useQueryParams()
+  const navigate = useNavigate()
+  const { data: profileData } = useQuery({
+    queryKey: [`get me`],
+    queryFn: () => userApi.getMe(),
+    enabled: isOauthTokenExists
+  })
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
       email: '',
@@ -31,6 +43,31 @@ export default function Login() {
     },
     resolver: yupResolver(signInSchema)
   })
+
+  useEffect(() => {
+    if (!queryParams) return
+
+    if (queryParams.token) {
+      setAccessTokenToLS(queryParams.token)
+      http.interceptors.request.use((config) => {
+        config.headers.authorization = `Bearer ${queryParams.token}`
+        return config
+      })
+      setOauthTokenExists(true)
+      return
+    }
+
+    if (queryParams.error) toast.error('Access denied.')
+  }, [queryParams])
+
+  useEffect(() => {
+    if (profileData?.data.data) {
+      setIsAuthenticated(true)
+      setProfileToLS(profileData.data.data)
+      setProfile(profileData.data.data)
+      navigate(path.home)
+    }
+  }, [navigate, profileData, setIsAuthenticated, setProfile])
 
   const loginMutation = useMutation({
     mutationFn: (body: FormData) => authApi.login(body)
@@ -84,7 +121,7 @@ export default function Login() {
         </div>
       </form>
 
-      <div className='form__oauth hidden flex-col items-center gap-4'>
+      <div className='form__oauth flex flex-col items-center gap-4'>
         <div className='flex w-full items-center gap-4'>
           <div className='block h-[0.5px] w-full border-none bg-gray-400' />
           <p className='whitespace-nowrap	'>or continue with</p>
@@ -92,12 +129,19 @@ export default function Login() {
         </div>
 
         <div className='buttons flex w-full gap-8'>
-          <Button type='button' variant='outlined' className='grow'>
+          <Button
+            type='button'
+            variant='outlined'
+            className='grow'
+            onClick={() => {
+              window.location.href = `${config.baseUrl}/oauth2/authorization/google?redirect_uri=${config.frontEndUrl}`
+            }}
+          >
             <SvgIcon component={GoogleIcon} inheritViewBox className='text-3xl' />
           </Button>
-          <Button type='button' variant='outlined' className='grow'>
+          {/* <Button type='button' variant='outlined' className='grow'>
             <SvgIcon component={FacebookIcon} inheritViewBox className='text-3xl' />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </AuthLayout>
