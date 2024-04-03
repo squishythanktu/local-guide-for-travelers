@@ -1,21 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
+import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import statisticApi from 'src/apis/statistic.api'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import { PaginationParams } from 'src/types/pagination-params.type'
 import { TourInStatistic } from 'src/types/statistic.type'
 
 const SalesReportOfToursByGuide: React.FC = () => {
   const { profile } = useContext(AppContext)
   const navigate = useNavigate()
+  const [pagination, setPagination] = useState<PaginationParams>({
+    page: 0,
+    limit: 7
+  })
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour by guide with id ${profile?.id}`],
-    queryFn: () => statisticApi.getStatisticOfTourByGuide(),
+    queryKey: [`sales report of tour by guide with id ${profile?.id} in page ${pagination?.page}`, pagination],
+    queryFn: () => statisticApi.getStatisticOfTourByGuide(pagination),
     staleTime: 10 * 1000
   })
 
@@ -70,11 +76,11 @@ const SalesReportOfToursByGuide: React.FC = () => {
 
   const table = useMaterialReactTable<TourInStatistic>({
     columns,
-    data: statisticsData?.data.data ?? [],
+    data: statisticsData?.data.data.statisticalTourDTOS ?? [],
     state: {
       isLoading
     },
-    enablePagination: true,
+    enablePagination: false,
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
@@ -103,7 +109,22 @@ const SalesReportOfToursByGuide: React.FC = () => {
           backgroundColor: lighten(theme.palette.primary.main, 0.9)
         }
       })
-    }
+    },
+    renderBottomToolbarCustomActions: () => (
+      <Pagination
+        className='absolute right-5 top-1/4'
+        onChange={(_, page) => {
+          setPagination((prevPagination) => ({
+            ...prevPagination,
+            page: page - 1
+          }))
+        }}
+        page={(pagination.page || 0) + 1}
+        count={statisticsData?.data.data.totalOfPage || 1}
+        variant='outlined'
+        shape='rounded'
+      />
+    )
   })
 
   return (

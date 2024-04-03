@@ -296,7 +296,7 @@ export default function TourManagement({ guideId }: Props) {
 
   const columns = useMemo<MRT_ColumnDef<Tour>[]>(() => {
     if (isOwner) {
-      return [...baseColumns, actionColumn, statusColumn]
+      return [...baseColumns, statusColumn, actionColumn]
     }
     return baseColumns
   }, [isOwner])

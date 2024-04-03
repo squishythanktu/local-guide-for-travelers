@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 import { Box } from '@mui/material'
+import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
@@ -10,13 +11,18 @@ import tourApi from 'src/apis/tour.api'
 import { TourInStatistic } from 'src/types/statistic.type'
 import { Tour } from 'src/types/tour.type'
 import TourDetailsDialog from '../TourConfirmation/components/TourDetailsDialog/TourDetailsDialog'
+import { PaginationParams } from 'src/types/pagination-params.type'
 
 const SalesReportOfTour: React.FC = () => {
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
+  const [pagination, setPagination] = useState<PaginationParams>({
+    page: 0,
+    limit: 7
+  })
   const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour`],
-    queryFn: () => statisticApi.getStatisticOfTour(),
+    queryKey: [`sales report of tour in page ${pagination.page}`, pagination],
+    queryFn: () => statisticApi.getStatisticOfTour(pagination),
     staleTime: 10 * 1000
   })
   const { data: pendingTourDetailsData, isPending: isPendingTourDetail } = useQuery({
@@ -80,11 +86,11 @@ const SalesReportOfTour: React.FC = () => {
 
   const table = useMaterialReactTable<TourInStatistic>({
     columns,
-    data: statisticsData?.data.data ?? [],
+    data: statisticsData?.data.data.tourDTOS ?? [],
     state: {
       isLoading
     },
-    enablePagination: true,
+    enablePagination: false,
     enableFullScreenToggle: false,
     enableDensityToggle: false,
     enableHiding: false,
@@ -117,6 +123,21 @@ const SalesReportOfTour: React.FC = () => {
         }
       })
     },
+    renderBottomToolbarCustomActions: () => (
+      <Pagination
+        className='absolute right-5 top-1/4'
+        onChange={(_, page) => {
+          setPagination((prevPagination) => ({
+            ...prevPagination,
+            page: page - 1
+          }))
+        }}
+        page={(pagination.page || 0) + 1}
+        count={statisticsData?.data.data.totalOfPage || 1}
+        variant='outlined'
+        shape='rounded'
+      />
+    ),
     renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tour</h2>
   })
 
