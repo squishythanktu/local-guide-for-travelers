@@ -5,7 +5,7 @@ import guideApi from 'src/apis/guide.api'
 import ApartmentIcon from '@mui/icons-material/Apartment'
 import CakeIcon from '@mui/icons-material/Cake'
 import CloseIcon from '@mui/icons-material/Close'
-import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact'
+import DescriptionIcon from '@mui/icons-material/Description'
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus'
 import HikingIcon from '@mui/icons-material/Hiking'
 import ImageIcon from '@mui/icons-material/Image'
@@ -170,12 +170,12 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       </Typography>
                       <span>{guideApplicationData?.data.data.transportation}</span>
                     </Grid>
-                    <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
-                      <ConnectWithoutContactIcon />
+                    <Grid item xs={4} sm={8} md={12} className='guide-biography flex items-center gap-2'>
+                      <DescriptionIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        How guide hear about us:
+                        Biography:
                       </Typography>
-                      <span>{guideApplicationData?.data.data.howGuideHearAboutUs}</span>
+                      <span>{guideApplicationData?.data.data.biography}</span>
                     </Grid>
                     {guideApplicationData?.data.data.licenseImages &&
                       guideApplicationData?.data.data.licenseImages.length > 0 && (

@@ -49,7 +49,8 @@ const applicationSchema = guideApplicationSchema.pick([
   'transportation',
   'isLicensedGuide',
   'yearsOfExperience',
-  'licenseImages'
+  'licenseImages',
+  'biography'
 ])
 
 const GuideApplication: React.FC = () => {
@@ -73,7 +74,8 @@ const GuideApplication: React.FC = () => {
       transportation: transportationState,
       isLicensedGuide: false,
       licenseImages: [],
-      yearsOfExperience: 0
+      yearsOfExperience: 0,
+      biography: ''
     },
     resolver: yupResolver(applicationSchema)
   })
@@ -356,6 +358,15 @@ const GuideApplication: React.FC = () => {
             control={control}
             name={'yearsOfExperience'}
             label={'Years of Experience'}
+          />
+          <ControlledTextField
+            multiline
+            rows={3}
+            required
+            className='min-h-20 w-full md:w-full'
+            control={control}
+            name={'biography'}
+            label={'Biography'}
           />
           <Collapse in={openCollapse} timeout='auto' unmountOnExit>
             <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>

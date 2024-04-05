@@ -45,11 +45,6 @@ const GuideConfirmation: React.FC = () => {
         accessorKey: 'transportation',
         header: 'Transportation',
         size: 30
-      },
-      {
-        accessorKey: 'howGuideHearAboutUs',
-        header: 'How guide hear about us?',
-        size: 200
       }
     ],
     []

@@ -33,4 +33,5 @@ export type GuideApplication = {
   reasonDeny: string
   user: User
   licenseImages: ImageWithLink[]
+  biography: string
 }

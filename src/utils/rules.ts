@@ -52,7 +52,8 @@ export const guideApplicationSchema = userSchema.shape({
   yearsOfExperience: yup.number().required().positive().typeError('Year of experience must be positive a number'),
   isLicensedGuide: yup.boolean().required(),
   licenseImages: yup.array().of(yup.string()),
-  transportation: yup.object().required()
+  transportation: yup.object().required(),
+  biography: yup.string().required()
 })
 
 export const tourSchema = yup.object({
