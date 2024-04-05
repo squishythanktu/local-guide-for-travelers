@@ -18,6 +18,7 @@ const Profile = lazy(() => import('./pages/Account/Profile'))
 const TourDetail = lazy(() => import('./pages/TourDetail/TourDetail'))
 const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
+const ChangePasswordByToken = lazy(() => import('./pages/ResetPassword/ChangePasswordByToken/ChangePasswordByToken'))
 const SearchTours = lazy(() => import('./pages/SearchTours'))
 const SearchGuides = lazy(() => import('./pages/SearchGuides'))
 const TourManagement = lazy(() => import('./pages/Account/TourManagement'))
@@ -226,6 +227,14 @@ export default function useRouteElements() {
           element: (
             <Suspense fallback={<Loading />}>
               <ResetPassword />
+            </Suspense>
+          )
+        },
+        {
+          path: path.changePasswordByToken,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <ChangePasswordByToken />
             </Suspense>
           )
         }

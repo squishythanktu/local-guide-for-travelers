@@ -16,6 +16,7 @@ const path = {
   salesReportOfTour: '/admin/sales-report/tour',
   salesReportOfGuide: '/admin/sales-report/guide',
   reset: '/reset',
+  changePasswordByToken: '/change-password-by-token',
   searchTour: 'tours/search',
   searchGuide: 'guides/search',
   tourDetail: '/tours/:id',

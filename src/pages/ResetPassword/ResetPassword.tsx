@@ -1,26 +1,47 @@
-import AuthLayout from 'src/layouts/AuthLayout'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, useForm } from 'react-hook-form'
-import { Schema, schema } from 'src/utils/rules'
+import LoadingButton from '@mui/lab/LoadingButton'
 import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
+import { useMutation } from '@tanstack/react-query'
+import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import authApi from 'src/apis/auth.api'
+import path from 'src/constants/path.constant'
+import AuthLayout from 'src/layouts/AuthLayout'
+import { Schema, schema } from 'src/utils/rules'
 
-type FormData = Pick<Schema, 'email'>
+export type ResetPasswordFormData = Pick<Schema, 'email'>
 const resetPasswordSchema = schema.pick(['email'])
 
 export default function ResetPassword() {
+  const navigate = useNavigate()
   const {
     control,
     trigger,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>({
+  } = useForm<ResetPasswordFormData>({
     defaultValues: {
       email: ''
     },
     resolver: yupResolver(resetPasswordSchema)
   })
-  const onSubmit = () => {}
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: (formData: ResetPasswordFormData) => authApi.reset(formData)
+  })
+
+  const onSubmit = (formData: ResetPasswordFormData) => {
+    resetPasswordMutation.mutate(formData, {
+      onSuccess: () => {
+        toast.success('The password reset link has been sent to your email.')
+        navigate(path.changePasswordByToken)
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      }
+    })
+  }
 
   return (
     <AuthLayout>
@@ -55,9 +76,15 @@ export default function ResetPassword() {
               />
             )}
           />
-          <Button type='submit' variant='contained' size='large' sx={{ fontWeight: 600 }}>
+          <LoadingButton
+            loading={resetPasswordMutation.isPending}
+            type='submit'
+            variant='contained'
+            size='large'
+            sx={{ fontWeight: 600 }}
+          >
             Send reset link
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </AuthLayout>
