@@ -33,6 +33,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   const [selectedTimeOption, setSelectedTimeOption] = useState<string>('')
   const [totalPrice, setTotalPrice] = useState(0)
   const navigate = useNavigate()
+  const [stateButton, setStateButton] = useState<'bookNow' | 'addCart'>()
 
   const handleOptionClick = (option: string) => {
     setSelectedTimeOption(option)
@@ -72,6 +73,10 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
     }
   })
 
+  useEffect(() => {
+    if (stateButton === 'addCart' || stateButton === 'bookNow') handleAddBooking()
+  }, [stateButton])
+
   const handleAddBooking = () => {
     if (!isAuthenticated) {
       toast.error('Please sign in before adding tour to your cart.')
@@ -80,9 +85,13 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
     if (tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption) return
 
     addBookingMutation.mutate(bookingFormData, {
-      onSuccess: () => {
-        toast.success('Add booking in cart successfully.')
-        navigate(path.cart)
+      onSuccess: (data) => {
+        if (stateButton === 'addCart') {
+          toast.success('Add booking in cart successfully.')
+          navigate(path.cart)
+          return
+        }
+        navigate(path.checkout, { state: { bookingId: data.data.data.bookings.slice(-1)[0].id } })
       },
       onError: (error) => {
         toast.error(error.message)
@@ -161,21 +170,23 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           <div className='text-xs font-medium'>All taxes and fees included</div>
         </div>
         <div className='flex flex-col gap-2 pt-2 md:col-span-1 md:flex-row md:justify-self-end '>
-          <Button
+          <LoadingButton
             type='submit'
             className='mr-2 rounded-full pr-7 font-semibold md:inline-block'
             variant='outlined'
             size='large'
+            loading={stateButton === 'bookNow' && addBookingMutation.isPending}
+            onClick={() => setStateButton('bookNow')}
           >
             Book now
-          </Button>
+          </LoadingButton>
           <LoadingButton
             type='submit'
-            loading={addBookingMutation.isPending}
+            loading={stateButton === 'addCart' && addBookingMutation.isPending}
             className='mr-2 rounded-full pr-7 font-semibold md:inline-block'
             variant='contained'
             size='large'
-            onClick={handleAddBooking}
+            onClick={() => setStateButton('addCart')}
           >
             Add to cart
           </LoadingButton>

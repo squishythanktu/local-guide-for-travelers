@@ -13,9 +13,10 @@ import { PassengerInformationSchema } from 'src/utils/rules'
 interface Props {
   passengerInfo: PassengerInformationSchema
   isDisplaySaveButton: boolean
+  bookingId?: number
 }
 
-const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: Props) => {
+const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bookingId }: Props) => {
   const { profile } = useContext(AppContext)
   const navigate = useNavigate()
   const { data: bookingsCartData } = useQuery({
@@ -36,8 +37,12 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton }: 
     queryKey: [`Get payment url for bookings with id ${getFormattedBookingIds}`],
     queryFn: () =>
       paymentApi.getPaymentUrl({
-        price: totalBookingPrice as number,
-        bookingIds: getFormattedBookingIds(),
+        price: !bookingId
+          ? (totalBookingPrice as number)
+          : bookingsCartData
+            ? bookingsCartData.data.data.bookings.slice(-1)[0].price
+            : 0,
+        bookingIds: bookingId ? bookingId.toString() : getFormattedBookingIds(),
         fullName: passengerInfo.fullName,
         email: passengerInfo.email,
         phone: passengerInfo.phone

@@ -14,6 +14,7 @@ import OverallRating from 'src/components/OverallRating/OverallRating'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import { AppContext } from 'src/contexts/app.context'
 import { Unit } from 'src/enums/unit.enum'
+import { UserRole } from 'src/enums/user-role.enum'
 import Loading from 'src/pages/Loading'
 import NotFound from 'src/pages/NotFound/NotFound'
 import { ReviewParams } from 'src/types/review.type'
@@ -27,7 +28,6 @@ import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
-import { UserRole } from 'src/enums/user-role.enum'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 

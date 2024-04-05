@@ -1,4 +1,4 @@
-import { BookingsInCart } from 'src/types/booking.type'
+import { Booking, BookingsInCart } from 'src/types/booking.type'
 import { SuccessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
 import { BookingUpdateFormData } from '../pages/Cart/components/CartBookingItem/CartBookingItem'
@@ -17,7 +17,7 @@ const cartApi = {
     return http.delete<SuccessResponse<void>>(`${URL_CARTS}/${id}`)
   },
   createBookingInCart(body: AddBookingForm) {
-    return http.post<SuccessResponse<void>>(URL_CARTS, body)
+    return http.post<SuccessResponse<{ bookings: Booking[] }>>(URL_CARTS, body)
   }
 }
 

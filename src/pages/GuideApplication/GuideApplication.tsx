@@ -137,7 +137,6 @@ const GuideApplication: React.FC = () => {
       transportation: getTransportationString(data.transportation),
       licenseImages: data.licenseImages as string[]
     }
-    console.log(formattedData)
 
     createGuideApplicationMutation.mutate(formattedData, {
       onSuccess: () => {
