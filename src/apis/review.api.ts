@@ -22,11 +22,14 @@ const reviewApi = {
   deleteReviewsOfTourById(reviewId: number) {
     return http.delete<SuccessResponse<void>>(`${URL_TOUR_REVIEW}/${reviewId}`)
   },
+  checkCanReviewOfTour(tourId: number) {
+    return http.get<SuccessResponse<{ isCanReview: boolean }>>(`${URL_USERS}/is-can-review-tour/${tourId}`)
+  },
   getReviewsOfGuide(guideId: number, params: ReviewParams) {
     return http.get<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/filter/${guideId}`, { params })
   },
-  checkCanReview(guideId: number) {
-    return http.get<SuccessResponse<{ isCanReview: boolean }>>(`${URL_USERS}/${guideId}`)
+  checkCanReviewOfGuide(guideId: number) {
+    return http.get<SuccessResponse<{ isCanReview: boolean }>>(`${URL_USERS}/is-can-review-guide/${guideId}`)
   },
   addReviewsOfGuideById(guideId: number, body: CommentFormData) {
     return http.post<SuccessResponse<Review[]>>(`${URL_GUIDE_REVIEW}/${guideId}`, body)

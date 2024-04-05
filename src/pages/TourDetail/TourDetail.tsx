@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -12,7 +12,7 @@ import CommentBox from 'src/components/CommentBox/CommentBox'
 import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
-import { AppContext } from 'src/contexts/app.context'
+import { TourStatus } from 'src/enums/tour-status.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { UserRole } from 'src/enums/user-role.enum'
 import Loading from 'src/pages/Loading'
@@ -28,7 +28,6 @@ import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
-import { TourStatus } from 'src/enums/tour-status.enum'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
@@ -54,7 +53,6 @@ const TourDetail: React.FC = () => {
     startTimes: [],
     status: TourStatus.PENDING
   })
-  const { isAuthenticated } = useContext(AppContext)
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
   const [formData, setFormData] = useState<BookingAssistantFormData>({
     startDate: new Date(),
@@ -82,6 +80,11 @@ const TourDetail: React.FC = () => {
     queryKey: [`Start time of id ${id} in ${formData.startDate}`, formData],
     queryFn: () => tourApi.getStartTimeOfTour(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
     enabled: tourData?.data.data.unit === Unit.HOURS && tourData?.data.data.duration < 5 && checkAvailability
+  })
+  const { data: isCanReview } = useQuery({
+    queryKey: [`Check user can review for tour of ${id}`, id, reviewsData],
+    queryFn: () => reviewApi.checkCanReviewOfTour(Number(id)),
+    enabled: id !== undefined
   })
   const totalReviews = useMemo(() => reviewsData?.data.data.length || 0, [reviewsData?.data.data])
 
@@ -235,7 +238,7 @@ const TourDetail: React.FC = () => {
                 <ReviewSortFilter onChange={handleSortFilterChange} />
               </Grid>
               <Grid item xs={4} sm={8} md={9}>
-                {isAuthenticated && (
+                {(editReviewId || isCanReview?.data.data.isCanReview) && (
                   <CommentBox
                     review={getReviewById()}
                     onSubmit={editReviewId ? handleUpdateReviewOfTour : handleCreateReviewOfTour}

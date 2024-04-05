@@ -46,7 +46,7 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
 
   const { data: isCanReview } = useQuery({
     queryKey: [`Check user can review for tour of ${guideId}`, guideId, reviewsData],
-    queryFn: () => reviewApi.checkCanReview(Number(guideId)),
+    queryFn: () => reviewApi.checkCanReviewOfGuide(Number(guideId)),
     enabled: guideId !== undefined
   })
 
