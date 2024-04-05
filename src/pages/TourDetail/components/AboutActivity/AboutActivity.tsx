@@ -6,25 +6,13 @@ import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlin
 import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined'
 import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import { Tour } from 'src/types/tour.type'
 
 interface AboutActivityProps {
-  limit: number
-  duration: number
-  unit: string
-  transportation: string
-  includeService: string
-  estimatedLocalCashNeeded: string
-  itinerary: string
+  tour: Tour
 }
-export default function AboutActivity({
-  limit,
-  duration,
-  unit,
-  transportation,
-  includeService,
-  estimatedLocalCashNeeded,
-  itinerary
-}: AboutActivityProps) {
+export default function AboutActivity({ tour }: AboutActivityProps) {
   return (
     <div className='flex flex-col gap-4'>
       <div className='text-[18px] font-semibold md:text-2xl'>About this activity</div>
@@ -33,16 +21,21 @@ export default function AboutActivity({
         title={'Free cancellation'}
         content={'Cancel up to 24 hours in advance for a full refund'}
       />
-      <ActivityInfo icon={<GroupsOutlinedIcon />} title={'Group'} content={`Limited to ${limit} participants`} />
-      <ActivityInfo icon={<AlarmOnOutlinedIcon />} title={'Duration'} content={`${duration} ${unit}`} />
-      <ActivityInfo icon={<AirportShuttleOutlinedIcon />} title={'Transportation'} content={`${transportation}`} />
-      <ActivityInfo icon={<FastfoodOutlinedIcon />} title={'Service'} content={`${includeService}`} />
+      <ActivityInfo
+        icon={<GroupsOutlinedIcon />}
+        title={'Group'}
+        content={`Limited to ${tour.limitTraveler} participants`}
+      />
+      <ActivityInfo icon={<AttachMoneyIcon />} title={'Price per person'} content={`${tour.pricePerTraveler} $`} />
+      <ActivityInfo icon={<AlarmOnOutlinedIcon />} title={'Duration'} content={`${tour.duration} ${tour.unit}`} />
+      <ActivityInfo icon={<AirportShuttleOutlinedIcon />} title={'Transportation'} content={`${tour.transportation}`} />
+      <ActivityInfo icon={<FastfoodOutlinedIcon />} title={'Service'} content={`${tour.includeService}`} />
       <ActivityInfo
         icon={<LocalAtmOutlinedIcon />}
         title={'Local Cash Needed'}
-        content={`${estimatedLocalCashNeeded}`}
+        content={`${tour.estimatedLocalCashNeeded}`}
       />
-      <ActivityInfo icon={<CalendarMonthOutlinedIcon />} title={'Itinerary'} content={`${itinerary}`} />
+      <ActivityInfo icon={<CalendarMonthOutlinedIcon />} title={'Itinerary'} content={`${tour.itinerary}`} />
     </div>
   )
 }

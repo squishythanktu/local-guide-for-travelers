@@ -65,7 +65,6 @@ export const tourSchema = yup.object({
   estimatedLocalCashNeeded: yup.string().required().typeError('Estimated local cash needed is required'),
   pricePerTraveler: yup.number().positive().required().typeError('Price per traveler must be positive a number'),
   limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
-  extraPrice: yup.number().positive().required().typeError('Extra price must be positive a number'),
   itinerary: yup.string().trim().required(),
   locations: yup
     .array()

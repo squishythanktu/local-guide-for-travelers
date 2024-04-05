@@ -3,11 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useState } from 'react'
 import requestApi from 'src/apis/request.api'
 import { AppContext } from 'src/contexts/app.context'
-import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
+import { StatusRequest } from 'src/enums/status-request.enum'
 import Loading from 'src/pages/Loading'
 import { Request } from 'src/types/request.type'
 import ButtonComponent from './components/ButtonComponent'
 import RequestComponent from './components/RequestComponent'
+import { TourStatus } from 'src/enums/tour-status.enum'
 
 const TourRequestManagement: React.FC = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
@@ -19,9 +20,7 @@ const TourRequestManagement: React.FC = () => {
     staleTime: 6 * 1000
   })
 
-  const [requestStatus, setRequestStatus] = useState<StatusRequestForGuide | StatusRequestForTraveler>(
-    StatusRequestForGuide.PENDING
-  )
+  const [requestStatus, setRequestStatus] = useState<StatusRequest>(StatusRequest.PENDING)
   const [displayData, setDisplayData] = useState<Request[]>([])
 
   useEffect(() => {
@@ -34,15 +33,43 @@ const TourRequestManagement: React.FC = () => {
         setIsGuide(false)
       }
       displayRequestsData = requestsData.data.data
-        .filter((item) => item.status === requestStatus.toUpperCase())
+        .filter((item) => {
+          if (requestStatus === StatusRequest.PENDING)
+            return (
+              item.status === StatusRequest.PENDING.toUpperCase() ||
+              item.status === StatusRequest.ACCEPTED.toUpperCase() ||
+              (item.tour ? item.tour.status === TourStatus.PENDING : false)
+            )
+          if (requestStatus === StatusRequest.CANCELED)
+            return (
+              item.status === StatusRequest.CANCELED.toUpperCase() ||
+              item.status === StatusRequest.DENIED.toUpperCase() ||
+              (item.tour ? item.tour.status === TourStatus.DENY : false)
+            )
+          if (requestStatus === StatusRequest.DONE) return item.tour ? item.tour.status === TourStatus.ACCEPT : false
+          return item.status === requestStatus.toUpperCase()
+        })
         .map((item) => item)
     }
     setDisplayData(displayRequestsData)
   }, [requestsData, requestStatus, profile])
 
-  const handleQuantity = (item: StatusRequestForGuide | StatusRequestForTraveler) => {
-    if (requestsData)
+  const handleQuantity = (item: StatusRequest) => {
+    if (requestsData) {
+      if (!isGuide) {
+        if (!isGuide && item === StatusRequest.PENDING)
+          return requestsData.data.data
+            .filter(
+              (data) => data.status === item.toUpperCase() || data.status === StatusRequest.ACCEPTED.toUpperCase()
+            )
+            .map((item) => item).length
+        if (!isGuide && item === StatusRequest.CANCELED)
+          return requestsData.data.data
+            .filter((data) => data.status === item.toUpperCase() || data.status === StatusRequest.DENIED.toUpperCase())
+            .map((item) => item).length
+      }
       return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
+    }
     return 0
   }
 
@@ -69,7 +96,7 @@ const TourRequestManagement: React.FC = () => {
                 }
               }}
             >
-              {Object.values(StatusRequestForGuide).map((item) => (
+              {Object.values(StatusRequest).map((item) => (
                 <ButtonComponent
                   key={item}
                   setRequestStatus={setRequestStatus}
@@ -95,15 +122,17 @@ const TourRequestManagement: React.FC = () => {
                 }
               }}
             >
-              {Object.values(StatusRequestForTraveler).map((item) => (
-                <ButtonComponent
-                  key={item}
-                  setRequestStatus={setRequestStatus}
-                  requestStatus={item}
-                  currentRequestStatus={requestStatus}
-                  quantity={handleQuantity(item)}
-                />
-              ))}
+              {Object.values(StatusRequest)
+                .filter((item) => item !== StatusRequest.ACCEPTED && item !== StatusRequest.DENIED)
+                .map((item) => (
+                  <ButtonComponent
+                    key={item}
+                    setRequestStatus={setRequestStatus}
+                    requestStatus={item}
+                    currentRequestStatus={requestStatus}
+                    quantity={handleQuantity(item)}
+                  />
+                ))}
             </ButtonGroup>
           )}
           <div className='mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2'>

@@ -48,7 +48,6 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
       categories: [],
       pricePerTraveler: 0,
       limitTraveler: 0,
-      extraPrice: 0,
       estimatedLocalCashNeeded: '',
       itinerary: '',
       images: [],
@@ -116,15 +115,6 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
               control={control}
               name={'pricePerTraveler'}
               label={'Price per traveler'}
-              prefix='$'
-            />
-            <ControlledTextField
-              required
-              className='min-h-[80px] grow lg:w-1/2'
-              type='number'
-              control={control}
-              name={'extraPrice'}
-              label={'Extra price'}
               prefix='$'
             />
           </div>

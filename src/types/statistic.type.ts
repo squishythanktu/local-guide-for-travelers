@@ -3,10 +3,12 @@ import { Guide } from './guide.type'
 import { Tour } from './tour.type'
 import { PageResult } from './page-result.type'
 
-export type TourInStatistic = Pick<
-  Tour,
-  'id' | 'name' | 'pricePerTraveler' | 'limitTraveler' | 'extraPrice' | 'overallRating'
-> & { overallRating: number; totalTravelerNumber: number; totalRevenue: number; totalBooking: number }
+export type TourInStatistic = Pick<Tour, 'id' | 'name' | 'pricePerTraveler' | 'limitTraveler' | 'overallRating'> & {
+  overallRating: number
+  totalTravelerNumber: number
+  totalRevenue: number
+  totalBooking: number
+}
 
 export type GuideInStatistic = Omit<
   Guide,

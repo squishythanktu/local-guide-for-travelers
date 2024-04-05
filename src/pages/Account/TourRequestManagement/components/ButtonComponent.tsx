@@ -1,11 +1,11 @@
 import { Button } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
-import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
+import { StatusRequest } from 'src/enums/status-request.enum'
 
 interface Props {
-  setRequestStatus: Dispatch<SetStateAction<StatusRequestForGuide | StatusRequestForTraveler>>
-  requestStatus: StatusRequestForGuide | StatusRequestForTraveler
-  currentRequestStatus: StatusRequestForGuide | StatusRequestForTraveler
+  setRequestStatus: Dispatch<SetStateAction<StatusRequest>>
+  requestStatus: StatusRequest
+  currentRequestStatus: StatusRequest
   quantity: number
 }
 

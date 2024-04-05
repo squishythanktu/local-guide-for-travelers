@@ -3,7 +3,7 @@ import { QueryObserverResult, useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import requestApi from 'src/apis/request.api'
 import path from 'src/constants/path.constant'
-import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
+import { StatusRequest } from 'src/enums/status-request.enum'
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { Request } from 'src/types/request.type'
 
@@ -11,7 +11,7 @@ interface Props {
   request: Request
   isGuide?: boolean
   refetch: () => Promise<QueryObserverResult>
-  setRequestStatus: React.Dispatch<React.SetStateAction<StatusRequestForGuide | StatusRequestForTraveler>>
+  setRequestStatus: React.Dispatch<React.SetStateAction<StatusRequest>>
 }
 
 const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setRequestStatus }: Props) => {
@@ -21,7 +21,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
     mutationFn: (body: string) => requestApi.updateRequestStatus(request.id, { status: body })
   })
 
-  const handleUpdateStatusRequest = (status: StatusRequestForTraveler | StatusRequestForGuide) => () => {
+  const handleUpdateStatusRequest = (status: StatusRequest) => () => {
     updateStatusRequestMutation.mutate(status.toLocaleUpperCase(), {
       onSuccess: () => {
         refetch()
@@ -49,12 +49,12 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
           </div>
         </div>
         <div className='flex gap-2'>
-          {isGuide && request.status === StatusRequestForGuide.PENDING.toUpperCase() && (
+          {isGuide && request.status === StatusRequest.PENDING.toUpperCase() && (
             <>
               <Button
                 onClick={(event) => {
                   event.stopPropagation()
-                  handleUpdateStatusRequest(StatusRequestForGuide.ACCEPTED)()
+                  handleUpdateStatusRequest(StatusRequest.ACCEPTED)()
                 }}
                 variant='outlined'
                 className='w-fit'
@@ -66,7 +66,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               <Button
                 onClick={(event) => {
                   event.stopPropagation()
-                  handleUpdateStatusRequest(StatusRequestForGuide.DENIED)()
+                  handleUpdateStatusRequest(StatusRequest.DENIED)()
                 }}
                 variant='outlined'
                 className='w-fit'
@@ -77,7 +77,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               </Button>
             </>
           )}
-          {isGuide && request.status === StatusRequestForGuide.ACCEPTED.toUpperCase() && (
+          {isGuide && request.status === StatusRequest.ACCEPTED.toUpperCase() && (
             <Button
               variant='outlined'
               className='w-fit'
@@ -90,21 +90,27 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               Add tour
             </Button>
           )}
-          {!isGuide && request.status === StatusRequestForGuide.PENDING.toUpperCase() && (
-            <Button
-              variant='outlined'
-              onClick={(event) => {
-                event.stopPropagation()
-                handleUpdateStatusRequest(StatusRequestForTraveler.CANCELED)()
-              }}
-              className='w-fit'
-              color='error'
-              size='small'
-            >
-              Cancel
-            </Button>
-          )}
-          {!isGuide && request.status === StatusRequestForTraveler.DRAFT.toUpperCase() && (
+          {!isGuide &&
+            (request.status === StatusRequest.PENDING.toUpperCase() ? (
+              <Button
+                variant='outlined'
+                onClick={(event) => {
+                  event.stopPropagation()
+                  handleUpdateStatusRequest(StatusRequest.CANCELED)()
+                }}
+                className='w-fit'
+                color='error'
+                size='small'
+              >
+                Cancel
+              </Button>
+            ) : request.status === StatusRequest.ACCEPTED.toUpperCase() ? (
+              <Chip label='Guide accepted' color='success' size='small' />
+            ) : (
+              request.tour &&
+              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='success' size='small' />
+            ))}
+          {!isGuide && request.status === StatusRequest.DRAFT.toUpperCase() && (
             <Button
               variant='outlined'
               onClick={(event) => {
@@ -120,17 +126,16 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               Edit
             </Button>
           )}
-          {request.status === StatusRequestForGuide.DONE.toUpperCase() && (
-            <>
-              {request.tour.status === TourStatus.PENDING && (
-                <Chip label='Admin awaiting' color='primary' size='small' />
-              )}
-              {request.tour.status === TourStatus.DENY && <Chip label='Admin deny' color='error' size='small' />}
-              {request.tour.status === TourStatus.ACCEPT && (
-                <Chip label='Admin accepted' color='success' size='small' />
-              )}
-            </>
-          )}
+
+          {!isGuide &&
+            (request.status === StatusRequest.CANCELED.toUpperCase() ? (
+              <Chip label='Self-canceled' color='error' size='small' />
+            ) : request.status === StatusRequest.DENIED.toUpperCase() ? (
+              <Chip label='Guide denied' color='error' size='small' />
+            ) : (
+              request.tour &&
+              request.tour.status === TourStatus.DENY && <Chip label='Admin denied' color='error' size='small' />
+            ))}
         </div>
       </div>
       <Divider className='my-2' />

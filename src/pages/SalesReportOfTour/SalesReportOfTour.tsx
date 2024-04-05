@@ -61,11 +61,6 @@ const SalesReportOfTour: React.FC = () => {
         size: 30
       },
       {
-        accessorKey: 'extraPrice',
-        header: 'Extra price',
-        size: 30
-      },
-      {
         accessorKey: 'overallRating',
         header: 'Rating',
         size: 30

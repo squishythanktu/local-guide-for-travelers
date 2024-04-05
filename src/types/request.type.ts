@@ -1,8 +1,8 @@
-import { StatusRequestForGuide } from 'src/enums/status-request.enum'
+import { StatusRequest } from 'src/enums/status-request.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { Guide } from './guide.type'
-import { User } from './user.type'
 import { Tour } from './tour.type'
+import { User } from './user.type'
 
 export type Request = {
   id: number
@@ -15,6 +15,6 @@ export type Request = {
   message: string
   guide: Guide
   traveler: User
-  status: StatusRequestForGuide
+  status: StatusRequest
   tour: Tour
 }

@@ -177,13 +177,6 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                     <span>${tourData.pricePerTraveler.toLocaleString()}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
-                    <AttachMoneyIcon />
-                    <Typography variant='body1' className='font-semibold'>
-                      Extra price:
-                    </Typography>
-                    <span>${tourData.extraPrice.toLocaleString()}</span>
-                  </Grid>
-                  <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <LocalAtmIcon />
                     <Typography variant='body1' className='font-semibold'>
                       Estimated local cash needed:

@@ -28,14 +28,13 @@ export type Tour = {
   estimatedLocalCashNeeded: string
   pricePerTraveler: number
   limitTraveler: number
-  extraPrice: number
   province: string
   itinerary: string
   categories: TourCategory[]
   guide: User
   images: ImageWithLink[]
   locations: Location[]
-  status?: TourStatus
+  status: TourStatus
   reviewDTOS?: Review[]
 }
 

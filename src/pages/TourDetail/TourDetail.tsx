@@ -28,6 +28,7 @@ import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
+import { TourStatus } from 'src/enums/tour-status.enum'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
@@ -44,14 +45,14 @@ const TourDetail: React.FC = () => {
     estimatedLocalCashNeeded: '',
     pricePerTraveler: 0,
     limitTraveler: 0,
-    extraPrice: 0,
     overallRating: 0,
     province: '',
     itinerary: '',
     categories: [{ id: 0, name: '' }],
     images: [{ id: 0, imageLink: '' }],
     guide: { id: '', email: '', role: UserRole.GUIDER },
-    startTimes: []
+    startTimes: [],
+    status: TourStatus.PENDING
   })
   const { isAuthenticated } = useContext(AppContext)
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
@@ -198,15 +199,7 @@ const TourDetail: React.FC = () => {
             <div className='col-span-1 flex flex-col gap-6 md:col-span-2 lg:col-span-3'>
               <div className='overview-activity text-sm md:text-[16px]'>{tour.description}</div>
               <div className='about-activity flex flex-col gap-2'></div>
-              <AboutActivity
-                limit={tour.limitTraveler}
-                duration={tour.duration}
-                unit={tour.unit}
-                transportation={tour.transportation}
-                includeService={tour.includeService}
-                estimatedLocalCashNeeded={tour.estimatedLocalCashNeeded}
-                itinerary={tour.itinerary}
-              />
+              <AboutActivity tour={tour} />
               <div className='check-availability'></div>
             </div>
             <div className='col-span-1'>

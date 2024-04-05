@@ -55,12 +55,6 @@ const SalesReportOfToursByGuide: React.FC = () => {
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       },
       {
-        accessorKey: 'extraPrice',
-        header: 'Extra price',
-        size: 30,
-        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
-      },
-      {
         accessorKey: 'overallRating',
         header: 'Overall rating',
         size: 30

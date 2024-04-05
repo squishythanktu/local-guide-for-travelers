@@ -64,7 +64,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   }, [selectedTimeOption, totalPrice])
 
   useEffect(() => {
-    setTotalPrice(tour.pricePerTraveler + (formData.numberTravelers - 1) * tour.extraPrice)
+    setTotalPrice(tour.pricePerTraveler * formData.numberTravelers)
   }, [formData])
 
   const addBookingMutation = useMutation({
@@ -152,9 +152,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
         )}
         <div className='participants flex flex-col gap-2'>
           <div className='relative flex'>
-            <div className='text-sm font-medium text-gray-500'>
-              Person 1x ${tour.pricePerTraveler.toLocaleString()} - Extra price ${tour.extraPrice.toLocaleString()}
-            </div>
+            <div className='text-sm font-medium text-gray-500'>Person 1x ${tour.pricePerTraveler.toLocaleString()}</div>
             <div className='absolute right-2 text-sm font-medium text-gray-500'>${totalPrice.toLocaleString()}</div>
           </div>
           <div className='flex items-center font-normal'>

@@ -1,13 +1,8 @@
-export enum StatusRequestForGuide {
+export enum StatusRequest {
   PENDING = 'Pending',
   ACCEPTED = 'Accepted',
   DENIED = 'Denied',
-  DONE = 'Done'
-}
-
-export enum StatusRequestForTraveler {
+  DONE = 'Done',
   CANCELED = 'Canceled',
   DRAFT = 'Draft'
 }
-
-Object.assign(StatusRequestForTraveler, StatusRequestForGuide)

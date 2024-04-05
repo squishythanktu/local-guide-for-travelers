@@ -16,13 +16,14 @@ import tourApi from 'src/apis/tour.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { StatusRequestForGuide } from 'src/enums/status-request.enum'
+import { StatusRequest } from 'src/enums/status-request.enum'
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { UserRole } from 'src/enums/user-role.enum'
 import { Request } from 'src/types/request.type'
 import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
+import { capitalizeString } from 'src/utils/string'
 import TourForm from '../components/TourForm'
 import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
 
@@ -72,7 +73,7 @@ export default function TourManagement({ guideId }: Props) {
       email: '',
       role: UserRole.TRAVELER
     },
-    status: StatusRequestForGuide.PENDING,
+    status: StatusRequest.PENDING,
     tour: {
       id: 0,
       name: '',
@@ -86,7 +87,6 @@ export default function TourManagement({ guideId }: Props) {
       estimatedLocalCashNeeded: '',
       pricePerTraveler: 0,
       limitTraveler: 0,
-      extraPrice: 0,
       province: '',
       itinerary: '',
       categories: [],
@@ -96,7 +96,8 @@ export default function TourManagement({ guideId }: Props) {
         role: UserRole.GUIDER
       },
       images: [],
-      locations: []
+      locations: [],
+      status: TourStatus.PENDING
     }
   })
 
@@ -253,11 +254,11 @@ export default function TourManagement({ guideId }: Props) {
     Cell: ({ cell }: { cell: MRT_Cell<Tour> }) => {
       switch (cell.getValue() as string) {
         case 'PENDING':
-          return <Chip label={cell.getValue() as string} color='warning' size='small' />
+          return <Chip label={capitalizeString(cell.getValue() as string)} color='warning' size='small' />
         case 'ACCEPT':
-          return <Chip label={cell.getValue() as string} color='success' size='small' />
+          return <Chip label={capitalizeString(cell.getValue() as string)} color='success' size='small' />
         case 'DENY':
-          return <Chip label={cell.getValue() as string} color='error' size='small' />
+          return <Chip label={capitalizeString(cell.getValue() as string)} color='error' size='small' />
         default:
           return
       }

@@ -19,7 +19,7 @@ import ControlledTextField from 'src/components/ControlledTextField'
 import TourCard from 'src/components/TourCard'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { StatusRequestForGuide, StatusRequestForTraveler } from 'src/enums/status-request.enum'
+import { StatusRequest } from 'src/enums/status-request.enum'
 import { Transportation } from 'src/enums/transportation.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { Tour } from 'src/types/tour.type'
@@ -35,7 +35,7 @@ export type RequestTourFormData = RequestTourSchema & {
 
 const RequestTour: React.FC = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  const [buttonClicked, setButtonClicked] = useState<StatusRequestForTraveler.DRAFT | StatusRequestForGuide.PENDING>()
+  const [buttonClicked, setButtonClicked] = useState<StatusRequest.DRAFT | StatusRequest.PENDING>()
   const navigate = useNavigate()
   const location = useLocation()
   const {
@@ -117,8 +117,8 @@ const RequestTour: React.FC = () => {
       createRequestTourMutation.mutate(formattedData, {
         onSuccess: () => {
           navigate(path.tourRequest)
-          if (buttonClicked === StatusRequestForGuide.PENDING) toast.success('Your request has been sent.')
-          if (buttonClicked === StatusRequestForTraveler.DRAFT) toast.success('Your request has been saved as a draft.')
+          if (buttonClicked === StatusRequest.PENDING) toast.success('Your request has been sent.')
+          if (buttonClicked === StatusRequest.DRAFT) toast.success('Your request has been saved as a draft.')
         },
         onError: () => {
           toast.error('You have a PENDING request for this guide, consider removing the previous before add.')
@@ -127,7 +127,7 @@ const RequestTour: React.FC = () => {
     }
   }
 
-  const handleLoading = (status: StatusRequestForTraveler.DRAFT | StatusRequestForGuide.PENDING) => {
+  const handleLoading = (status: StatusRequest.DRAFT | StatusRequest.PENDING) => {
     if (buttonClicked === status) return createRequestTourMutation.isPending
   }
 
@@ -272,8 +272,8 @@ const RequestTour: React.FC = () => {
               Cancel
             </Button>
             <LoadingButton
-              onClick={() => setButtonClicked(StatusRequestForTraveler.DRAFT)}
-              loading={handleLoading(StatusRequestForTraveler.DRAFT)}
+              onClick={() => setButtonClicked(StatusRequest.DRAFT)}
+              loading={handleLoading(StatusRequest.DRAFT)}
               variant='contained'
               size='large'
               type='submit'
@@ -281,8 +281,8 @@ const RequestTour: React.FC = () => {
               <span>Save draft</span>
             </LoadingButton>
             <LoadingButton
-              onClick={() => setButtonClicked(StatusRequestForGuide.PENDING)}
-              loading={handleLoading(StatusRequestForGuide.PENDING)}
+              onClick={() => setButtonClicked(StatusRequest.PENDING)}
+              loading={handleLoading(StatusRequest.PENDING)}
               variant='contained'
               size='large'
               type='submit'
