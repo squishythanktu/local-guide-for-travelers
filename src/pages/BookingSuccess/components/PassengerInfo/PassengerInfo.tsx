@@ -14,17 +14,17 @@ const PassengerInfo: React.FC<Props> = ({ email, fullName, phone }: Props) => {
       <div className='flex flex-col gap-2'>
         <div className='flex items-center gap-2'>
           <PersonOutlineOutlinedIcon />
-          <span className='mr-1 text-sm font-bold'>Name: </span>
+          <span className='mr-1 hidden text-sm font-bold sm:block'>Name: </span>
           <span>{fullName || 'N/A'}</span>
         </div>
         <div className='flex items-center gap-2'>
           <MailOutlinedIcon />
-          <span className='mr-1 text-sm font-bold'>Email: </span>
+          <span className='mr-1 hidden text-sm font-bold sm:block'>Email: </span>
           <span>{email || 'N/A'}</span>
         </div>
         <div className='flex items-center gap-2'>
           <PhoneOutlinedIcon />
-          <span className='mr-1 text-sm font-bold'>Phone number: </span>
+          <span className='mr-1 hidden text-sm font-bold sm:block'>Phone number: </span>
           <span>{phone || 'N/A'}</span>
         </div>
       </div>

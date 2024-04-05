@@ -26,6 +26,7 @@ const ScheduleManagement = lazy(() => import('./pages/Account/ScheduleManagement
 const Checkout = lazy(() => import('./pages/Checkout'))
 const Cart = lazy(() => import('./pages/Cart'))
 const Bookings = lazy(() => import('./pages/Bookings/Bookings'))
+const Invoices = lazy(() => import('./pages/Invoices/Invoices'))
 const BookingSuccess = lazy(() => import('./pages/BookingSuccess'))
 const BookingFail = lazy(() => import('./pages/BookingFail'))
 const GuideProfile = lazy(() => import('./pages/GuideProfile'))
@@ -121,6 +122,16 @@ export default function useRouteElements() {
             <MainLayout>
               <Suspense fallback={<Loading />}>
                 <Bookings />
+              </Suspense>
+            </MainLayout>
+          )
+        },
+        {
+          path: path.invoices,
+          element: (
+            <MainLayout>
+              <Suspense fallback={<Loading />}>
+                <Invoices />
               </Suspense>
             </MainLayout>
           )

@@ -17,6 +17,7 @@ import Notification from './Notification/Notification'
 import ProfileMenu from './ProfileMenu'
 import RightDrawer from './RightDrawer/RightDrawer'
 import SearchBar from './SearchBar/SearchBar'
+import ReceiptIcon from '@mui/icons-material/Receipt'
 
 interface HeaderProps {
   bgColor?: string
@@ -73,7 +74,7 @@ export default function Header({
     >
       <Box className='header__content block min-w-80 px-4 py-2 md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>
         <div className='grid grid-cols-12'>
-          <Link to='/' className='col-span-1 flex items-center lg:col-span-2'>
+          <Link to='/' className='col-span-1 flex items-center'>
             <SvgIcon
               component={logoColor === 'main' ? MainLogoIcon : scroll && isEnableScroll ? MainLogoIcon : WhiteLogoIcon}
               inheritViewBox
@@ -92,6 +93,7 @@ export default function Header({
               icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
               text='Bookings'
             />
+            <NavLink to={path.invoices} icon={<ReceiptIcon sx={{ fontSize: 24 }} />} text='Invoices' />
             {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
             <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>

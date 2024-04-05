@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Box } from '@mui/material'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
@@ -7,7 +5,6 @@ import { useQuery } from '@tanstack/react-query'
 import { SyntheticEvent, useContext, useEffect, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import bookingApi from 'src/apis/booking.api'
-import invoiceApi from 'src/apis/invoice.api'
 import TabPanel from 'src/components/TabPanel/TabPanel'
 import { AppContext } from 'src/contexts/app.context'
 import theme from 'src/theme'
@@ -16,7 +13,6 @@ import { compareDate } from 'src/utils/date-time'
 import { a11yProps } from 'src/utils/tab-panel'
 import Loading from '../Loading'
 import BookingContent from './components/BookingContent/BookingContent'
-import InvoiceComponent from './components/InvoiceComponent/InvoiceComponent'
 
 const Bookings: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
@@ -25,11 +21,6 @@ const Bookings: React.FC = () => {
     queryKey: [`get bookings history of user ${profile?.email}`],
     queryFn: () => bookingApi.getBookingsHistory(),
     staleTime: 10 * 1000
-  })
-
-  const { data: invoicesData, refetch: refetchInvoicesData } = useQuery({
-    queryKey: [`Get invoices by user with id ${profile?.id}`],
-    queryFn: () => invoiceApi.getInvoices()
   })
 
   const [upcomingBookings, setUpcomingBookings] = useState<Booking[]>([])
@@ -58,71 +49,53 @@ const Bookings: React.FC = () => {
     return (
       <div className='flex h-[550px] flex-col items-center justify-center'>
         <img src='/assets/images/empty-booking.png' alt='Empty booking' className='h-52 w-52 object-cover' />
-        <h3>You have to sign in first to see your bookings and invoices.</h3>
+        <h3>You have to sign in first to see your bookings.</h3>
       </div>
     )
 
   return (
     <Box className='container flex min-h-[550px] flex-col '>
-      {isAuthenticated && !bookingsHistoryData?.data.data && <Loading />}
-      {isAuthenticated && bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
-        <div>
-          <div>
-            <h2 className='my-bookings__title pt-5'>My bookings</h2>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor='secondary'
-              textColor='inherit'
-              className='mt-3 w-full rounded-xl border shadow-none md:w-1/2'
-              sx={{
-                color: (theme) => theme.palette.primary.main,
-                backgroundColor: (theme) => theme.palette.common.white,
-                borderColor: (theme) => theme.palette.primary.main
-              }}
-            >
-              <Tab className='w-1/3' label={`All`} {...a11yProps(1)} />
-              <Tab className='w-1/3' label={`Upcoming bookings`} {...a11yProps(2)} />
-              <Tab className='w-1/3' label={`Past bookings`} {...a11yProps(3)} />
-            </Tabs>
-            <SwipeableViews
-              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-              index={value}
-              onChangeIndex={handleChangeIndex}
-            >
-              <TabPanel value={1} index={1} dir={theme.direction}>
-                <BookingContent bookingList={bookingsHistoryData?.data.data} />
-              </TabPanel>
-              <TabPanel value={2} index={2} dir={theme.direction}>
-                <BookingContent bookingList={upcomingBookings} />
-              </TabPanel>
-              <TabPanel value={3} index={3} dir={theme.direction}>
-                <BookingContent bookingList={pastBookings} />
-              </TabPanel>
-            </SwipeableViews>
-          </div>
-          <div>
-            <h2
-              onClick={() =>
-                window.scrollTo({
-                  top: 600,
-                  behavior: 'smooth'
-                })
-              }
-              className='my-bookings__title mt-6'
-            >
-              My invoices
-            </h2>
-            {invoicesData?.data.data &&
-              invoicesData?.data.data.map((invoice, index) => (
-                <InvoiceComponent key={index} invoice={invoice} refetchInvoicesData={refetchInvoicesData} />
-              ))}
-          </div>
-        </div>
+      {!bookingsHistoryData?.data.data && <Loading />}
+      {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
+        <>
+          <h2 className='my-bookings__title pt-5'>My bookings</h2>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor='secondary'
+            textColor='inherit'
+            className='mt-3 rounded-xl border shadow-none'
+            sx={{
+              color: (theme) => theme.palette.primary.main,
+              backgroundColor: (theme) => theme.palette.common.white,
+              borderColor: (theme) => theme.palette.primary.main
+            }}
+            centered
+          >
+            <Tab className='w-1/3' label={`All`} {...a11yProps(1)} />
+            <Tab className='w-1/3' label={`Upcoming bookings`} {...a11yProps(2)} />
+            <Tab className='w-1/3' label={`Past bookings`} {...a11yProps(3)} />
+          </Tabs>
+          <SwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={value}
+            onChangeIndex={handleChangeIndex}
+          >
+            <TabPanel value={1} index={1} dir={theme.direction}>
+              <BookingContent bookingList={bookingsHistoryData?.data.data} />
+            </TabPanel>
+            <TabPanel value={2} index={2} dir={theme.direction}>
+              <BookingContent bookingList={upcomingBookings} />
+            </TabPanel>
+            <TabPanel value={3} index={3} dir={theme.direction}>
+              <BookingContent bookingList={pastBookings} />
+            </TabPanel>
+          </SwipeableViews>
+        </>
       ) : (
         <div className='flex h-[550px] flex-col items-center justify-center'>
           <img src='/assets/images/empty-booking.png' alt='Empty booking' className='h-52 w-52 object-cover' />
-          <h3>No bookings & invoices data available.</h3>
+          <h3>No bookings data available.</h3>
         </div>
       )}
     </Box>

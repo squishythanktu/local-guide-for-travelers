@@ -36,7 +36,7 @@ export default function Cart() {
       {!isPending && (cartData?.data.data.bookings?.length === 0 || !cartData?.data.data.bookings) && (
         <div className='flex min-h-[550px] flex-col items-center justify-center'>
           <img src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
-          <h3>You have not added any tours to the cart yet.</h3>
+          <h3>No cart data available.</h3>
         </div>
       )}
       {!isPending && cartData && cartData.data.data.bookings && cartData.data.data.bookings.length > 0 && (

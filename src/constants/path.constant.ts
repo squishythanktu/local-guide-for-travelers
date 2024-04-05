@@ -30,7 +30,8 @@ const path = {
   requestTour: '/request-add-tour',
   wishlist: '/wishlist',
   guideApplications: '/guide-applications',
-  cryptoPayment: '/crypto-payment'
+  cryptoPayment: '/crypto-payment',
+  invoices: '/invoices'
 }
 
 export default path

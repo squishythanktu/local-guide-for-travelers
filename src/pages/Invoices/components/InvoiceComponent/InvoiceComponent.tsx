@@ -9,7 +9,7 @@ import paymentApi from 'src/apis/payment.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import PassengerInfo from 'src/pages/BookingSuccess/components/PassengerInfo/PassengerInfo'
 import { Invoice } from 'src/types/invoice.type'
-import BookingContent from '../BookingContent/BookingContent'
+import BookingContent from '../../../Bookings/components/BookingContent/BookingContent'
 
 interface InvoiceComponentProps {
   invoice: Invoice
@@ -47,29 +47,14 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
   }, [isLoading])
 
   return (
-    <div className='mb-7 mt-3  rounded-lg border-2 '>
-      <div className='grid grid-cols-2 p-3'>
+    <div className='mb-7 mt-3 rounded-lg border-2 '>
+      <h2 className='pl-3 pt-3 text-2xl text-[var(--primary-color)]'>Invoice #{invoice.id}</h2>
+      <div className='flex flex-col justify-between p-3 sm:flex-row'>
         <div className='col-span-1'>
           <div className='pb-3 text-lg font-medium'>Passenger Information</div>
           <PassengerInfo email={invoice.email} fullName={invoice.fullName} phone={invoice.phone} />
         </div>
         <div className='col-span-1 flex flex-col items-end justify-between gap-4'>
-          {invoice.status === 'PAID' && (
-            <Button
-              variant='outlined'
-              onClick={() =>
-                setIsClicked((prevState) => ({
-                  ...prevState,
-                  refund: true
-                }))
-              }
-              className='w-fit'
-              color='error'
-              size='medium'
-            >
-              Cancel & Refund
-            </Button>
-          )}
           {invoice.status === 'REFUNDED' && (
             <Chip className='' label='REFUNDED' color='error' size='small' variant='filled' />
           )}
@@ -79,21 +64,40 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
           >
             ${invoice.priceTotal.toLocaleString()}
           </Typography>
+          <div className='flex justify-end gap-2 sm:flex-row'>
+            <Box className='invoice-actions flex gap-2'>
+              {invoice.status === 'PAID' && (
+                <Button
+                  variant='outlined'
+                  onClick={() =>
+                    setIsClicked((prevState) => ({
+                      ...prevState,
+                      refund: true
+                    }))
+                  }
+                  className='w-fit'
+                  color='error'
+                  size='medium'
+                >
+                  Refund
+                </Button>
+              )}
+              <Button
+                variant='outlined'
+                endIcon={openCollapse ? <ExpandLess /> : <ExpandMore />}
+                onClick={() => setOpenCollapse(!openCollapse)}
+                className='ml-2'
+              >
+                {!openCollapse ? 'View Details' : 'Hide Details'}
+              </Button>
+            </Box>
+          </div>
         </div>
       </div>
-      <div className=''>
-        <div className='flex justify-between px-3 pb-3'>
-          <span className='text-lg font-medium'>Tours Information</span>
-          <Button
-            variant='outlined'
-            endIcon={openCollapse ? <ExpandLess /> : <ExpandMore />}
-            onClick={() => setOpenCollapse(!openCollapse)}
-            className='ml-2'
-          >
-            {!openCollapse ? 'View Details' : 'Hide Details'}
-          </Button>
-        </div>
+      <div className='invoice__tour-information'>
         <Collapse in={openCollapse} timeout='auto' unmountOnExit>
+          <span className='px-3 text-lg font-medium'>Tours Information</span>
+
           <Box sx={{ padding: '0.75rem', background: 'var(--light-grey-background)' }}>
             <BookingContent bookingList={invoice.tours} />
           </Box>

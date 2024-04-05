@@ -27,6 +27,7 @@ import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLS } from 'src/utils/auth'
 import { UserRole } from 'src/enums/user-role.enum'
+import ReceiptIcon from '@mui/icons-material/Receipt'
 
 interface RightDrawerProps {
   textColor: string
@@ -96,6 +97,14 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               <ConfirmationNumberOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary='Bookings' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding component={Link} to={path.invoices}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ReceiptIcon />
+            </ListItemIcon>
+            <ListItemText primary='Invoices' />
           </ListItemButton>
         </ListItem>
         <Divider />
@@ -180,6 +189,14 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               <ConfirmationNumberOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary='Bookings' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding component={Link} to={path.invoices}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ReceiptIcon />
+            </ListItemIcon>
+            <ListItemText primary='Invoices' />
           </ListItemButton>
         </ListItem>
         <Divider />

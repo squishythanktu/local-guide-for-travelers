@@ -9,7 +9,7 @@ interface BookingContentProps {
 
 const BookingContent: React.FC<BookingContentProps> = ({ bookingList }: BookingContentProps) => {
   return (
-    <Box style={{ maxHeight: 450, overflow: 'auto' }}>
+    <Box>
       {!bookingList ? (
         <Loading />
       ) : bookingList.length > 0 ? (
