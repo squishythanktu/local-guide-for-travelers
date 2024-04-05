@@ -17,11 +17,12 @@ dayjs.extend(isSameOrBefore)
 const bookingFormSchema = bookingSchema.pick(['numberTravelers', 'startDate'])
 
 interface BookingAssistantProps {
-  onSubmit: (data: BookingAssistantFormData) => void
   id: number
+  onSubmit: (data: BookingAssistantFormData) => void
+  limitTraveler: number
 }
 
-export default function BookingAssistant({ onSubmit, id }: BookingAssistantProps) {
+const BookingAssistant: React.FC<BookingAssistantProps> = ({ onSubmit, id, limitTraveler }: BookingAssistantProps) => {
   const {
     trigger,
     control,
@@ -50,7 +51,7 @@ export default function BookingAssistant({ onSubmit, id }: BookingAssistantProps
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex flex-col gap-4 rounded-3xl bg-[#1a2b49] px-3 py-5 text-white'
+      className='flex flex-col gap-4 rounded-3xl bg-[var(--decorative-midnight-blue)] px-3 py-5 text-white'
     >
       <div className='font-semibold'>Select participants & date</div>
       <div className='flex flex-col gap-4'>
@@ -69,6 +70,10 @@ export default function BookingAssistant({ onSubmit, id }: BookingAssistantProps
                 '.MuiOutlinedInput-notchedOutline': {
                   border: 'none'
                 }
+              }}
+              inputProps={{
+                min: 1,
+                max: limitTraveler
               }}
               onChange={(event) => {
                 field.onChange(event)
@@ -104,7 +109,7 @@ export default function BookingAssistant({ onSubmit, id }: BookingAssistantProps
       </div>
       <Button
         type='submit'
-        className='mr-2 w-[100%] rounded-[4px] pr-7 font-semibold md:inline-block'
+        className='mr-2 w-[100%] rounded-full pr-7 font-semibold md:inline-block'
         variant='contained'
         size='large'
       >
@@ -113,3 +118,5 @@ export default function BookingAssistant({ onSubmit, id }: BookingAssistantProps
     </form>
   )
 }
+
+export default BookingAssistant

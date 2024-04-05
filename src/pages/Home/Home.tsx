@@ -14,9 +14,31 @@ import { PaginationParams } from 'src/types/pagination-params.type'
 import { Tour } from 'src/types/tour.type'
 import { isTourInWishlist } from 'src/utils/wishlist'
 import TourCard from '../../components/TourCard/TourCard'
+import SwipeableViews from 'react-swipeable-views'
+import { autoPlay } from 'react-swipeable-views-utils'
+import { useTheme } from '@mui/material/styles'
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
+
+const images = [
+  {
+    label: 'homepage-cover-1',
+    imgPath: '/assets/images/homepage-cover.jpg'
+  },
+  {
+    label: 'homepage-cover-2',
+    imgPath: '/assets/images/homepage-cover2.jpg'
+  },
+  {
+    label: 'homepage-cover-3',
+    imgPath: '/assets/images/homepage-cover3.jpg'
+  }
+]
 
 export default function Home() {
+  const theme = useTheme()
   const { profile, isAuthenticated } = useContext(AppContext)
+  const [activeStep, setActiveStep] = useState<number>(0)
   const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, limit: 12 })
   const { data: toursData, isPending } = useQuery({
     queryKey: ['tours', paginationParams],
@@ -41,6 +63,8 @@ export default function Home() {
     enabled: isAuthenticated
   })
 
+  const handleStepChange = (step: number) => setActiveStep(step)
+
   const renderSkeletons = () => {
     return Array(8)
       .fill(0)
@@ -59,7 +83,20 @@ export default function Home() {
         }}
       >
         <Box className='hero-section__image-container absolute left-0 top-0 z-[-1] h-[600px] w-full'>
-          <img src='/assets/images/homepage-cover.jpg' alt='Homepage cover' className='h-full w-full object-cover' />
+          <AutoPlaySwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={activeStep}
+            onChangeIndex={handleStepChange}
+            enableMouseEvents
+          >
+            {images.map((step, index) => (
+              <div key={step.label} className='h-[600px] w-full'>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <img src={step.imgPath} alt={step.label} className='h-full w-full object-cover brightness-90' />
+                ) : null}
+              </div>
+            ))}
+          </AutoPlaySwipeableViews>
         </Box>
         <Box className='hero-section__content m-auto flex max-w-[1400px] flex-col items-center justify-start px-4 py-4 md:py-8 lg:px-24 '>
           <h1 className='hero-section__header mb-10 mt-32 w-1/2 self-start text-4xl leading-none text-white drop-shadow-2xl md:text-5xl lg:text-6xl'>

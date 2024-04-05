@@ -58,6 +58,7 @@
     "@types/react-image-gallery": "^1.2.4",
     "@types/react-slick": "^0.23.13",
     "@types/react-swipeable-views": "^0.13.5",
+    "@types/react-swipeable-views-utils": "^0.13.7",
     "@types/sockjs-client": "^1.5.4",
     "@types/stompjs": "^2.3.9",
     "@typescript-eslint/eslint-plugin": "^6.19.0",

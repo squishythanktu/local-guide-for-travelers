@@ -205,8 +205,21 @@ const TourDetail: React.FC = () => {
               <AboutActivity tour={tour} />
               <div className='check-availability'></div>
             </div>
-            <div className='col-span-1'>
-              <BookingAssistant onSubmit={handleSubmitBookingAssistant} id={tour.id} />
+            <div className='col-span-1 flex flex-col gap-2'>
+              <Box className='check-availability-box flex flex-col gap-4'>
+                <span className='font-bold'>
+                  From{' '}
+                  <span className='text-2xl font-extrabold text-[var(--decorative-orange)]'>
+                    ${tour.pricePerTraveler.toLocaleString()}
+                  </span>{' '}
+                  per person
+                </span>
+                <BookingAssistant
+                  id={tour.id}
+                  onSubmit={handleSubmitBookingAssistant}
+                  limitTraveler={tour.limitTraveler}
+                />
+              </Box>
             </div>
           </div>
         </div>
