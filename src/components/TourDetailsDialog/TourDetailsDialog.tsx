@@ -136,7 +136,7 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                     <Typography variant='body1' className='font-semibold'>
                       Address:
                     </Typography>
-                    <span>{tourData.locations[0].address}</span>
+                    <span>{tourData.locations.length > 0 ? tourData.locations[0]?.name : 'N/A'}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <HikingIcon />
@@ -242,12 +242,14 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                     <span>{tourData.description}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={12} className='tour-details__description flex flex-col gap-2'>
-                    <Box className='flex gap-2'>
-                      <ImageIcon />
-                      <Typography variant='body1' className='font-semibold'>
-                        Image(s)
-                      </Typography>
-                    </Box>
+                    {tourData.images.length > 0 && (
+                      <Box className='flex gap-2'>
+                        <ImageIcon />
+                        <Typography variant='body1' className='font-semibold'>
+                          Image(s)
+                        </Typography>
+                      </Box>
+                    )}
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
                       {tourData.images.map((image, i) => (
                         <Grid
@@ -277,9 +279,11 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                       ))}
                     </Grid>
                   </Grid>
-                  <Grid item xs={4} sm={8} md={12} className='tour-details__description flex items-center gap-2'>
-                    <MainStop locations={tourData.locations} orientation='vertical' isShowAddress={true} />
-                  </Grid>
+                  {tourData.locations.length > 0 && (
+                    <Grid item xs={4} sm={8} md={12} className='tour-details__description flex items-center gap-2'>
+                      <MainStop locations={tourData.locations} orientation='vertical' isShowAddress={true} />
+                    </Grid>
+                  )}
                 </Grid>
               </Box>
             </Box>

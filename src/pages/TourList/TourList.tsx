@@ -1,31 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
-import { Box } from '@mui/material'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import { useMemo, useState } from 'react'
-import statisticApi from 'src/apis/statistic.api'
 import tourApi from 'src/apis/tour.api'
-import { TourInStatistic } from 'src/types/statistic.type'
-import { Tour } from 'src/types/tour.type'
-import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
+import TourDetailsDialog from 'src/components/TourDetailsDialog/TourDetailsDialog'
 import { PaginationParams } from 'src/types/pagination-params.type'
+import { Tour } from 'src/types/tour.type'
 
-const SalesReportOfTour: React.FC = () => {
-  const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
-  const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
+const TourList: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
     limit: 7
   })
-  const { data: statisticsData, isLoading } = useQuery({
-    queryKey: [`sales report of tour in page ${pagination.page}`, pagination],
-    queryFn: () => statisticApi.getStatisticOfTour(pagination),
+  const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
+  const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
+  const { data: toursData, isLoading } = useQuery({
+    queryKey: [`tour requests in page ${pagination.page}`, pagination],
+    queryFn: () => tourApi.getToursWithStatus(pagination),
     staleTime: 10 * 1000
   })
-  const { data: pendingTourDetailsData, isPending: isPendingTourDetail } = useQuery({
+  const { data: tourDetailsData, isPending: isPendingTourDetail } = useQuery({
     queryKey: [`tour details with id ${selectedTourId}`, selectedTourId],
     queryFn: () => tourApi.getTourById(selectedTourId as number),
     staleTime: 60 * 1000,
@@ -37,17 +34,41 @@ const SalesReportOfTour: React.FC = () => {
     setOpenTourDetailDialog(false)
   }
 
-  const columns = useMemo<MRT_ColumnDef<TourInStatistic>[]>(
+  const columns = useMemo<MRT_ColumnDef<any>[]>(
     () => [
       {
         accessorKey: 'id',
         header: 'Id',
-        size: 10
+        size: 30
       },
       {
         accessorKey: 'name',
         header: 'Name',
         size: 200
+      },
+      {
+        accessorKey: 'guide',
+        accessorFn: (originalRow) => originalRow.guide.fullName || originalRow.guide.email,
+        header: 'Guide',
+        size: 100
+      },
+      {
+        accessorKey: 'address',
+        accessorFn: (originalRow) => (originalRow.locations.length > 0 ? originalRow.locations[0]?.name : 'N/A'),
+        header: 'Address',
+        size: 100
+      },
+      {
+        accessorKey: 'duration',
+        accessorFn: (originalRow) => originalRow.duration,
+        header: 'Duration',
+        size: 30
+      },
+      {
+        accessorKey: 'unit',
+        accessorFn: (originalRow) => originalRow.unit,
+        header: 'Unit',
+        size: 30
       },
       {
         accessorKey: 'pricePerTraveler',
@@ -59,34 +80,14 @@ const SalesReportOfTour: React.FC = () => {
         accessorKey: 'limitTraveler',
         header: 'Limit traveler(s)',
         size: 30
-      },
-      {
-        accessorKey: 'extraPrice',
-        header: 'Extra price',
-        size: 30
-      },
-      {
-        accessorKey: 'overallRating',
-        header: 'Rating',
-        size: 30
-      },
-      {
-        accessorKey: 'totalTravelerNumber',
-        header: 'Total travelers',
-        size: 30
-      },
-      {
-        accessorKey: 'totalRevenue',
-        header: 'Revenue',
-        size: 30
       }
     ],
     []
   )
 
-  const table = useMaterialReactTable<TourInStatistic>({
+  const table = useMaterialReactTable<any>({
     columns,
-    data: statisticsData?.data.data.tourDTOS ?? [],
+    data: toursData?.data.data.tourDTOS ?? [],
     state: {
       isLoading
     },
@@ -98,24 +99,6 @@ const SalesReportOfTour: React.FC = () => {
       animation: 'pulse',
       height: '12px'
     },
-    muiPaginationProps: {
-      color: 'primary',
-      shape: 'rounded',
-      variant: 'outlined'
-    },
-    paginationDisplayMode: 'pages',
-    muiTableBodyRowProps: ({ row }) => ({
-      onClick: () => {
-        setOpenTourDetailDialog(true)
-        setSelectedTourId(row.original.id)
-      },
-      sx: { cursor: 'pointer' }
-    }),
-    muiTableContainerProps: {
-      sx: {
-        maxHeight: '650px'
-      }
-    },
     muiTableBodyProps: {
       sx: (theme) => ({
         '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]) > td': {
@@ -123,6 +106,22 @@ const SalesReportOfTour: React.FC = () => {
         }
       })
     },
+    muiTableBodyRowProps: ({ row }) => ({
+      onClick: () => {
+        setOpenTourDetailDialog(true)
+        setSelectedTourId(row.original.id)
+      },
+      sx: {
+        cursor: 'pointer'
+      }
+    }),
+    muiPaginationProps: {
+      color: 'primary',
+      shape: 'rounded',
+      showRowsPerPage: false,
+      variant: 'outlined'
+    },
+    paginationDisplayMode: 'pages',
     renderBottomToolbarCustomActions: () => (
       <Pagination
         showLastButton
@@ -134,28 +133,28 @@ const SalesReportOfTour: React.FC = () => {
           }))
         }}
         page={(pagination.page || 0) + 1}
-        count={statisticsData?.data.data.totalOfPage || 1}
+        count={toursData?.data.data.totalOfPage || 1}
         variant='outlined'
         shape='rounded'
       />
     ),
-    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tour</h2>
+    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Tour List</h2>
   })
 
   return (
-    <Box className='h-screen'>
+    <>
       <MaterialReactTable table={table} />
       {openTourDetailDialog && (
         <TourDetailsDialog
-          tourData={pendingTourDetailsData?.data.data as Tour}
+          tourData={tourDetailsData?.data.data as Tour}
           isPendingTourDetail={isPendingTourDetail}
           handleCloseTourDetailDialog={handleCloseTourDetailDialog}
           readonly={true}
           refetch={() => {}}
         />
       )}
-    </Box>
+    </>
   )
 }
 
-export default SalesReportOfTour
+export default TourList

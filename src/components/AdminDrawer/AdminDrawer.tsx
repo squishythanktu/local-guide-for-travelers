@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { drawerWidth } from 'src/constants/width-height.constant'
 import theme from 'src/theme'
+import ListIcon from '@mui/icons-material/List'
 
 interface AdminDrawerProps {
   handleDrawerClose: () => void
@@ -128,6 +129,12 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
         </ListItem>
         <Collapse in={openCollapseTourManagement} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourList}>
+              <ListItemIcon>
+                <ListIcon />
+              </ListItemIcon>
+              <ListItemText primary='Tour List' />
+            </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourConfirmation}>
               <ListItemIcon>
                 <ConfirmationNumberIcon />

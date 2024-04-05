@@ -46,6 +46,9 @@ const tourApi = {
   },
   denyPendingTour(tourId: number) {
     return http.put<SuccessResponse<Tour>>(`${URL_TOURS}/deny/${tourId}`)
+  },
+  getToursWithStatus(params: PaginationParams) {
+    return http.get<SuccessResponse<ToursResult>>(`${URL_TOURS}/admin`, { params })
   }
 }
 

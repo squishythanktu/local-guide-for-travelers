@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react'
 import tourApi from 'src/apis/tour.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { Tour } from 'src/types/tour.type'
-import TourDetailsDialog from './components/TourDetailsDialog/TourDetailsDialog'
+import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
 
 const TourConfirmation: React.FC = () => {
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
@@ -29,7 +29,7 @@ const TourConfirmation: React.FC = () => {
   const { data: pendingTourDetailsData, isPending: isPendingTourDetail } = useQuery({
     queryKey: [`pending tour details with id ${selectedTourId}`, selectedTourId],
     queryFn: () => tourApi.getTourById(selectedTourId as number),
-    staleTime: 2 * 1000,
+    staleTime: 60 * 1000,
     enabled: selectedTourId != undefined
   })
 

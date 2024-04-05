@@ -135,7 +135,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
                 <ListItemIcon>
                   <ContactPageOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary='Register as a guide' />
+                <ListItemText primary='Become a guide' />
               </ListItemButton>
             )}
             <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
@@ -206,7 +206,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               <ListItemIcon>
                 <ContactPageOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary='Register as a guide' />
+              <ListItemText primary='Become a guide' />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={path.login}>
               <ListItemIcon>

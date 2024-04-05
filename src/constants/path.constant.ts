@@ -12,6 +12,7 @@ const path = {
   salesReport: '/management/sales-reports',
   admin: '/admin',
   tourConfirmation: '/admin/tour-confirmation',
+  tourList: '/admin/tour-list',
   guideConfirmation: '/admin/guide-confirmation',
   salesReportOfTour: '/admin/sales-report/tour',
   salesReportOfGuide: '/admin/sales-report/guide',
