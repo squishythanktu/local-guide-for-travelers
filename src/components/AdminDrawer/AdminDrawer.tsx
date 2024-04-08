@@ -117,7 +117,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemIcon
               sx={{
                 minWidth: 0,
-                mr: open ? 3 : 'auto',
+                mr: open ? 1 : 'auto',
                 justifyContent: 'center'
               }}
             >
@@ -155,7 +155,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemIcon
               sx={{
                 minWidth: 0,
-                mr: open ? 3 : 'auto',
+                mr: open ? 1 : 'auto',
                 justifyContent: 'center'
               }}
             >
@@ -187,7 +187,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemIcon
               sx={{
                 minWidth: 0,
-                mr: open ? 3 : 'auto',
+                mr: open ? 1 : 'auto',
                 justifyContent: 'center'
               }}
             >

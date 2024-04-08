@@ -26,3 +26,14 @@ export type ToursOfGuideStatisticResult = {
 export type GuideStatisticResult = {
   statisticalGuideDTOS: GuideInStatistic[]
 } & PageResult
+
+export type YearStatisticResult = {
+  year: number
+  monthDTOS: MonthStatisticResult[]
+}
+
+export type MonthStatisticResult = {
+  revenue: number
+  bookingOfNumber: number
+  month: number
+}

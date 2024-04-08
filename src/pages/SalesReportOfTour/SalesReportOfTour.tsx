@@ -2,23 +2,43 @@
 /* eslint-disable react/prop-types */
 import { Box } from '@mui/material'
 import Pagination from '@mui/material/Pagination'
+import Card from '@mui/material/Card'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import statisticApi from 'src/apis/statistic.api'
 import tourApi from 'src/apis/tour.api'
-import { TourInStatistic } from 'src/types/statistic.type'
+import { MonthStatisticResult, TourInStatistic } from 'src/types/statistic.type'
 import { Tour } from 'src/types/tour.type'
 import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
 import { PaginationParams } from 'src/types/pagination-params.type'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement
+} from 'chart.js'
+import { Line, Bar } from 'react-chartjs-2'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { months } from 'src/constants/months.constant'
+import dayjs, { Dayjs } from 'dayjs'
+import { chartData, chartOptions } from 'src/constants/chart.constant'
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
 const SalesReportOfTour: React.FC = () => {
+  const [currentYear, setCurrentYear] = useState<Dayjs>(dayjs())
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
-    limit: 7
+    limit: 10
   })
   const { data: statisticsData, isLoading } = useQuery({
     queryKey: [`sales report of tour in page ${pagination.page}`, pagination],
@@ -31,10 +51,24 @@ const SalesReportOfTour: React.FC = () => {
     staleTime: 60 * 1000,
     enabled: selectedTourId != undefined
   })
+  const { data: statisticsByYearData } = useQuery({
+    queryKey: [`statistic of tour in year ${currentYear}`, currentYear],
+    queryFn: () => statisticApi.getStatisticOfTourByYear(currentYear.year()),
+    staleTime: 10 * 1000
+  })
 
   const handleCloseTourDetailDialog = () => {
     setSelectedTourId(undefined)
     setOpenTourDetailDialog(false)
+  }
+
+  useEffect(() => {}, [statisticsByYearData])
+
+  const generateChartData = (data: MonthStatisticResult[] | undefined, key: 'bookingOfNumber' | 'revenue') => {
+    return months.map((month) => {
+      const monthData = data?.find((statistic) => statistic.month === months.indexOf(month) + 1)
+      return monthData ? monthData[key] : 0
+    })
   }
 
   const columns = useMemo<MRT_ColumnDef<TourInStatistic>[]>(
@@ -42,28 +76,12 @@ const SalesReportOfTour: React.FC = () => {
       {
         accessorKey: 'id',
         header: 'Id',
-        size: 10
+        size: 30
       },
       {
         accessorKey: 'name',
         header: 'Name',
         size: 200
-      },
-      {
-        accessorKey: 'pricePerTraveler',
-        header: 'Price',
-        size: 30,
-        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
-      },
-      {
-        accessorKey: 'limitTraveler',
-        header: 'Limit traveler(s)',
-        size: 30
-      },
-      {
-        accessorKey: 'overallRating',
-        header: 'Rating',
-        size: 30
       },
       {
         accessorKey: 'totalTravelerNumber',
@@ -73,6 +91,7 @@ const SalesReportOfTour: React.FC = () => {
       {
         accessorKey: 'totalRevenue',
         header: 'Revenue',
+        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>,
         size: 30
       }
     ],
@@ -106,11 +125,6 @@ const SalesReportOfTour: React.FC = () => {
       },
       sx: { cursor: 'pointer' }
     }),
-    muiTableContainerProps: {
-      sx: {
-        maxHeight: '650px'
-      }
-    },
     muiTableBodyProps: {
       sx: (theme) => ({
         '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]) > td': {
@@ -134,21 +148,57 @@ const SalesReportOfTour: React.FC = () => {
         shape='rounded'
       />
     ),
-    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tour</h2>
+    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Tours</h2>
   })
 
   return (
-    <Box className='h-screen'>
-      <MaterialReactTable table={table} />
-      {openTourDetailDialog && (
-        <TourDetailsDialog
-          tourData={pendingTourDetailsData?.data.data as Tour}
-          isPendingTourDetail={isPendingTourDetail}
-          handleCloseTourDetailDialog={handleCloseTourDetailDialog}
-          readonly={true}
-          refetch={() => {}}
+    <Box className='grid grid-cols-12 gap-4'>
+      <Box className='col-span-12 lg:col-span-6'>
+        <MaterialReactTable table={table} />
+        {openTourDetailDialog && (
+          <TourDetailsDialog
+            tourData={pendingTourDetailsData?.data.data as Tour}
+            isPendingTourDetail={isPendingTourDetail}
+            handleCloseTourDetailDialog={handleCloseTourDetailDialog}
+            readonly={true}
+            refetch={() => {}}
+          />
+        )}
+      </Box>
+      <Card className='col-span-12 flex flex-col gap-2 p-3 lg:col-span-6'>
+        <Box className='flex items-center gap-4'>
+          <strong>Select year: </strong>
+          <DatePicker
+            views={['year']}
+            className='h-fit w-fit'
+            value={currentYear}
+            onChange={(newYear) => {
+              const year = newYear as Dayjs
+              if (year.isValid()) setCurrentYear(year)
+            }}
+          />
+        </Box>
+        <Line
+          options={chartOptions('Revenue by year')}
+          data={chartData(
+            months,
+            'Revenue ($)',
+            generateChartData(statisticsByYearData?.data.data.monthDTOS, 'revenue'),
+            'rgb(255, 99, 132)',
+            'rgba(255, 99, 132, 0.5)'
+          )}
         />
-      )}
+        <Bar
+          options={chartOptions('Number of bookings by year')}
+          data={chartData(
+            months,
+            'Number of bookings',
+            generateChartData(statisticsByYearData?.data.data.monthDTOS, 'bookingOfNumber'),
+            'rgb(53, 162, 235)',
+            'rgba(53, 162, 235, 0.5)'
+          )}
+        />
+      </Card>
     </Box>
   )
 }
