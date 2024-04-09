@@ -4,7 +4,7 @@ import Loading from 'src/pages/Loading'
 import { Booking } from 'src/types/booking.type'
 
 interface BookingContentProps {
-  bookingList: Booking[]
+  bookingList?: Booking[]
 }
 
 const BookingContent: React.FC<BookingContentProps> = ({ bookingList }: BookingContentProps) => {

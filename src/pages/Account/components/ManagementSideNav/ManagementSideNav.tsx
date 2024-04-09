@@ -14,6 +14,7 @@ import AvatarSideNav from 'src/components/AvatarSideNav/AvatarSideNav'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { UserRole } from 'src/enums/user-role.enum'
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 
 const ManagementSideNav: React.FC = () => {
   const { profile } = useContext(AppContext)
@@ -50,6 +51,15 @@ const ManagementSideNav: React.FC = () => {
                   </ListItemIcon>
                   <Typography variant='inherit' noWrap>
                     Schedule Management
+                  </Typography>
+                </MenuItem>
+                <Divider />
+                <MenuItem component={Link} to={path.bookingsManagement}>
+                  <ListItemIcon>
+                    <ConfirmationNumberOutlinedIcon fontSize='small' />
+                  </ListItemIcon>
+                  <Typography variant='inherit' noWrap>
+                    Booking Management
                   </Typography>
                 </MenuItem>
                 <Divider />

@@ -9,6 +9,7 @@ const path = {
   tours: '/management/my-tours',
   schedule: '/management/schedules',
   tourRequest: '/management/tour-requests',
+  bookingsManagement: '/management/booked',
   salesReport: '/management/sales-reports',
   admin: '/admin',
   tourConfirmation: '/admin/tour-confirmation',
