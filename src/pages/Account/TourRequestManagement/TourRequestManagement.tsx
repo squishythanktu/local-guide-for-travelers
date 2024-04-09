@@ -96,15 +96,17 @@ const TourRequestManagement: React.FC = () => {
                 }
               }}
             >
-              {Object.values(StatusRequest).map((item) => (
-                <ButtonComponent
-                  key={item}
-                  setRequestStatus={setRequestStatus}
-                  requestStatus={item}
-                  currentRequestStatus={requestStatus}
-                  quantity={handleQuantity(item)}
-                />
-              ))}
+              {Object.values(StatusRequest)
+                .filter((item) => item !== StatusRequest.CANCELED && item !== StatusRequest.DRAFT)
+                .map((item) => (
+                  <ButtonComponent
+                    key={item}
+                    setRequestStatus={setRequestStatus}
+                    requestStatus={item}
+                    currentRequestStatus={requestStatus}
+                    quantity={handleQuantity(item)}
+                  />
+                ))}
             </ButtonGroup>
           )}
           {!isGuide && (

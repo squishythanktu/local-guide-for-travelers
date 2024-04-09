@@ -2,78 +2,90 @@ import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlin
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import TourIcon from '@mui/icons-material/Tour'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import MenuItem from '@mui/material/MenuItem'
-import MenuList from '@mui/material/MenuList'
+import ListItemText from '@mui/material/ListItemText'
 import Paper from '@mui/material/Paper'
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import AvatarSideNav from 'src/components/AvatarSideNav/AvatarSideNav'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { UserRole } from 'src/enums/user-role.enum'
+import { isActive } from 'src/utils/active.util'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 
 const ManagementSideNav: React.FC = () => {
   const { profile } = useContext(AppContext)
+  const location = useLocation()
 
   return (
-    <div className='account__container flex-auto md:m-0'>
+    <div className='management__container flex-auto md:m-0'>
       <AvatarSideNav />
-      <div className='account__side-menu'>
+      <div className='management__side-menu'>
         <Paper>
-          <MenuList>
-            <MenuItem component={Link} to={path.tourRequest}>
-              <ListItemIcon>
-                <TourIcon fontSize='small' />
-              </ListItemIcon>
-              <Typography variant='inherit' noWrap>
-                Tour Request Management
-              </Typography>
-            </MenuItem>
+          <List>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton component={Link} to={path.tourRequest} selected={isActive(location, path.tourRequest)}>
+                <ListItemIcon>
+                  <TourIcon fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary='Tour Request Management' />
+              </ListItemButton>
+            </ListItem>
             {profile?.role === UserRole.GUIDER && (
               <Box>
-                <Divider sx={{ marginY: '0.5rem' }} />
-                <MenuItem component={Link} to={path.tours}>
-                  <ListItemIcon>
-                    <AddLocationAltOutlinedIcon fontSize='small' />
-                  </ListItemIcon>
-                  <Typography variant='inherit' noWrap>
-                    Tour Management
-                  </Typography>
-                </MenuItem>
                 <Divider />
-                <MenuItem component={Link} to={path.schedule}>
-                  <ListItemIcon>
-                    <CalendarMonthIcon fontSize='small' />
-                  </ListItemIcon>
-                  <Typography variant='inherit' noWrap>
-                    Schedule Management
-                  </Typography>
-                </MenuItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton component={Link} to={path.tours} selected={isActive(location, path.tours)}>
+                    <ListItemIcon>
+                      <AddLocationAltOutlinedIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Tour Management' />
+                  </ListItemButton>
+                </ListItem>
                 <Divider />
-                <MenuItem component={Link} to={path.bookingsManagement}>
-                  <ListItemIcon>
-                    <ConfirmationNumberOutlinedIcon fontSize='small' />
-                  </ListItemIcon>
-                  <Typography variant='inherit' noWrap>
-                    Booking Management
-                  </Typography>
-                </MenuItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    component={Link}
+                    to={path.bookingsManagement}
+                    selected={isActive(location, path.bookingsManagement)}
+                  >
+                    <ListItemIcon>
+                      <ConfirmationNumberOutlinedIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Booking Management' />
+                  </ListItemButton>
+                </ListItem>
                 <Divider />
-                <MenuItem component={Link} to={path.salesReport}>
-                  <ListItemIcon>
-                    <TrendingUpIcon fontSize='small' />
-                  </ListItemIcon>
-                  <Typography variant='inherit' noWrap>
-                    Sales Report
-                  </Typography>
-                </MenuItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton component={Link} to={path.schedule} selected={isActive(location, path.schedule)}>
+                    <ListItemIcon>
+                      <CalendarMonthIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Schedule Management' />
+                  </ListItemButton>
+                </ListItem>
+                <Divider />
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    component={Link}
+                    to={path.salesReport}
+                    selected={isActive(location, path.salesReport)}
+                  >
+                    <ListItemIcon>
+                      <TrendingUpIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Sales Report' />
+                  </ListItemButton>
+                </ListItem>
               </Box>
             )}
-          </MenuList>
+          </List>
         </Paper>
       </div>
     </div>

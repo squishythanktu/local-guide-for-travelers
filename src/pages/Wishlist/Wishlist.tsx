@@ -18,7 +18,7 @@ const Wishlist: React.FC = () => {
   if (!isAuthenticated)
     return (
       <div className='flex h-[550px] flex-col items-center justify-center'>
-        <img src='/assets/images/empty-booking.png' alt='Empty booking' className='h-52 w-52 object-cover' />
+        <img src='/assets/images/empty-wishlist.png' alt='Empty booking' className='h-52 w-52 object-cover' />
         <h3>You have to sign in first to see your wishlist.</h3>
       </div>
     )

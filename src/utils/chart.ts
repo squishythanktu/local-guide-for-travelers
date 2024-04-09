@@ -1,3 +1,6 @@
+import { months } from 'src/constants/months.constant'
+import { MonthStatisticResult } from 'src/types/statistic.type'
+
 export const chartOptions = (text: string) => {
   return {
     responsive: true,
@@ -33,4 +36,11 @@ export const chartData = (
       }
     ]
   }
+}
+
+export const generateChartData = (data: MonthStatisticResult[] | undefined, key: 'bookingOfNumber' | 'revenue') => {
+  return months.map((month) => {
+    const monthData = data?.find((statistic) => statistic.month === months.indexOf(month) + 1)
+    return monthData ? monthData[key] : 0
+  })
 }

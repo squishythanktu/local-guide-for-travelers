@@ -21,8 +21,11 @@ const statisticApi = {
   getStatisticOfGuide(params: PaginationParams) {
     return http.get<SuccessResponse<GuideStatisticResult>>(`${URL_STATISTIC}/guides`, { params })
   },
-  getStatisticOfTourByYear(year: number) {
-    return http.get<SuccessResponse<YearStatisticResult>>(`${URL_STATISTIC}/month/${year}`)
+  getYearStatisticOfTourByAdmin(year: number) {
+    return http.get<SuccessResponse<YearStatisticResult>>(`${URL_STATISTIC}/month/admin/${year}`)
+  },
+  getYearStatisticOfTourByGuide(year: number) {
+    return http.get<SuccessResponse<YearStatisticResult>>(`${URL_STATISTIC}/month/guide/${year}`)
   },
   getStatisticOfPopularGuide() {
     return http.get<SuccessResponse<PopularGuideResult[]>>(`${URL_STATISTIC}/popular`)

@@ -155,7 +155,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
           <span className='ml-1 text-sm'>{request.unit}</span>
         </div>
         <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2  lg:col-span-1'>
-          Max price:<div className='text-sm'>{request.maxPricePerPerson}</div>
+          Max price:<div className='text-sm'>${request.maxPricePerPerson.toLocaleString()}</div>
         </div>
         <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2 lg:col-span-1'>
           Number of travelers:<div className='text-sm'>{request.numberOfTravelers}</div>

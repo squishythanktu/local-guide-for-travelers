@@ -9,6 +9,7 @@ import tourApi from 'src/apis/tour.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { Tour } from 'src/types/tour.type'
 import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
+import PersonIcon from '@mui/icons-material/Person'
 
 const TourConfirmation: React.FC = () => {
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
@@ -83,6 +84,12 @@ const TourConfirmation: React.FC = () => {
       {
         accessorKey: 'limitTraveler',
         header: 'Limit traveler(s)',
+        Cell: ({ cell }) => (
+          <div className='flex items-center gap-1'>
+            <PersonIcon className='text-blue-400' fontSize='small' />
+            {cell.getValue<number>()}
+          </div>
+        ),
         size: 30
       }
     ],

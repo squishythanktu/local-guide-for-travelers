@@ -16,6 +16,7 @@ import { clearLS } from 'src/utils/auth'
 import ViewListIcon from '@mui/icons-material/ViewList'
 import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined'
 import { Divider } from '@mui/material'
+import { UserRole } from 'src/enums/user-role.enum'
 
 interface ProfileMenuProps {
   textColor: string
@@ -138,12 +139,14 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             </ListItemIcon>
             Management
           </MenuItem>
-          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
-            <ListItemIcon>
-              <ContactPageOutlinedIcon fontSize='small' />
-            </ListItemIcon>
-            Become a guide
-          </MenuItem>
+          {profile?.role !== UserRole.GUIDER && (
+            <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
+              <ListItemIcon>
+                <ContactPageOutlinedIcon fontSize='small' />
+              </ListItemIcon>
+              Become a guide
+            </MenuItem>
+          )}
           <Divider />
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>

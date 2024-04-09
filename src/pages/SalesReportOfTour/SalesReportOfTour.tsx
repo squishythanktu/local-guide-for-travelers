@@ -1,34 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 import { Box } from '@mui/material'
-import Pagination from '@mui/material/Pagination'
 import Card from '@mui/material/Card'
+import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useQuery } from '@tanstack/react-query'
-import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import { useEffect, useMemo, useState } from 'react'
-import statisticApi from 'src/apis/statistic.api'
-import tourApi from 'src/apis/tour.api'
-import { MonthStatisticResult, TourInStatistic } from 'src/types/statistic.type'
-import { Tour } from 'src/types/tour.type'
-import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
-import { PaginationParams } from 'src/types/pagination-params.type'
 import {
-  Chart as ChartJS,
+  BarElement,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
-  Tooltip,
-  Legend,
-  BarElement
+  Tooltip
 } from 'chart.js'
-import { Line, Bar } from 'react-chartjs-2'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { months } from 'src/constants/months.constant'
 import dayjs, { Dayjs } from 'dayjs'
-import { chartData, chartOptions } from 'src/utils/chart'
+import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
+import { useMemo, useState } from 'react'
+import { Bar, Line } from 'react-chartjs-2'
+import statisticApi from 'src/apis/statistic.api'
+import tourApi from 'src/apis/tour.api'
+import { months } from 'src/constants/months.constant'
+import { PaginationParams } from 'src/types/pagination-params.type'
+import { TourInStatistic } from 'src/types/statistic.type'
+import { Tour } from 'src/types/tour.type'
+import { chartData, chartOptions, generateChartData } from 'src/utils/chart'
+import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
@@ -52,23 +52,14 @@ const SalesReportOfTour: React.FC = () => {
     enabled: selectedTourId != undefined
   })
   const { data: statisticsByYearData } = useQuery({
-    queryKey: [`statistic of tour in year ${currentYear}`, currentYear],
-    queryFn: () => statisticApi.getStatisticOfTourByYear(currentYear.year()),
+    queryKey: [`statistic of tour in year ${currentYear} by admin`, currentYear],
+    queryFn: () => statisticApi.getYearStatisticOfTourByAdmin(currentYear.year()),
     staleTime: 10 * 1000
   })
 
   const handleCloseTourDetailDialog = () => {
     setSelectedTourId(undefined)
     setOpenTourDetailDialog(false)
-  }
-
-  useEffect(() => {}, [statisticsByYearData])
-
-  const generateChartData = (data: MonthStatisticResult[] | undefined, key: 'bookingOfNumber' | 'revenue') => {
-    return months.map((month) => {
-      const monthData = data?.find((statistic) => statistic.month === months.indexOf(month) + 1)
-      return monthData ? monthData[key] : 0
-    })
   }
 
   const columns = useMemo<MRT_ColumnDef<TourInStatistic>[]>(

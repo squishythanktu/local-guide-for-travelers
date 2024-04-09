@@ -12,6 +12,7 @@ import { Pie } from 'react-chartjs-2'
 import statisticApi from 'src/apis/statistic.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { GuideInStatistic } from 'src/types/statistic.type'
+import GradeIcon from '@mui/icons-material/Grade'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -55,6 +56,12 @@ const SalesReportOfGuide: React.FC = () => {
       {
         accessorKey: 'overallRating',
         header: 'Rating',
+        Cell: ({ cell }) => (
+          <div className='flex items-center gap-1'>
+            <GradeIcon className='text-yellow-400' fontSize='small' />
+            {cell.getValue<number>()}
+          </div>
+        ),
         size: 30
       },
       {

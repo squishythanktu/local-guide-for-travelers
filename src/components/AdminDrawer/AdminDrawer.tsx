@@ -21,11 +21,12 @@ import ListItemText from '@mui/material/ListItemText'
 import { Theme, styled } from '@mui/material/styles'
 import * as React from 'react'
 import { SyntheticEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { drawerWidth } from 'src/constants/width-height.constant'
 import theme from 'src/theme'
 import ListIcon from '@mui/icons-material/List'
+import { isActive } from 'src/utils/active.util'
 
 interface AdminDrawerProps {
   handleDrawerClose: () => void
@@ -80,6 +81,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
   const [openCollapseSalesReport, setOpenCollapseSalesReport] = useState(false)
   const [openCollapseTourManagement, setOpenCollapseTourManagement] = useState(false)
   const [openCollapseGuideManagement, setOpenCollapseGuideManagement] = useState(false)
+  const location = useLocation()
 
   const handleClickSalesReport = (event: SyntheticEvent) => {
     event.stopPropagation()
@@ -129,13 +131,23 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
         </ListItem>
         <Collapse in={openCollapseTourManagement} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourList}>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              component={Link}
+              to={path.tourList}
+              selected={isActive(location, path.tourList)}
+            >
               <ListItemIcon>
                 <ListIcon />
               </ListItemIcon>
               <ListItemText primary='Tour List' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourConfirmation}>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              component={Link}
+              to={path.tourConfirmation}
+              selected={isActive(location, path.tourConfirmation)}
+            >
               <ListItemIcon>
                 <ConfirmationNumberIcon />
               </ListItemIcon>
@@ -167,7 +179,12 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
         </ListItem>
         <Collapse in={openCollapseGuideManagement} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideConfirmation}>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              component={Link}
+              to={path.guideConfirmation}
+              selected={isActive(location, path.guideConfirmation)}
+            >
               <ListItemIcon>
                 <ConfirmationNumberIcon />
               </ListItemIcon>
@@ -199,13 +216,23 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
         </ListItem>
         <Collapse in={openCollapseSalesReport} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.salesReportOfTour}>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              component={Link}
+              to={path.salesReportOfTour}
+              selected={isActive(location, path.salesReportOfTour)}
+            >
               <ListItemIcon>
                 <HomeWorkIcon />
               </ListItemIcon>
               <ListItemText primary='Tour' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.salesReportOfGuide}>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              component={Link}
+              to={path.salesReportOfGuide}
+              selected={isActive(location, path.salesReportOfGuide)}
+            >
               <ListItemIcon>
                 <HikingIcon />
               </ListItemIcon>

@@ -9,6 +9,7 @@ import tourApi from 'src/apis/tour.api'
 import TourDetailsDialog from 'src/components/TourDetailsDialog/TourDetailsDialog'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { Tour } from 'src/types/tour.type'
+import PersonIcon from '@mui/icons-material/Person'
 
 const TourList: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
@@ -79,6 +80,12 @@ const TourList: React.FC = () => {
       {
         accessorKey: 'limitTraveler',
         header: 'Limit traveler(s)',
+        Cell: ({ cell }) => (
+          <div className='flex items-center gap-1'>
+            <PersonIcon className='text-blue-400' fontSize='small' />
+            {cell.getValue<number>()}
+          </div>
+        ),
         size: 30
       }
     ],

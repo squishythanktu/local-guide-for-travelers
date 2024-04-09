@@ -1,7 +1,7 @@
 interface ActivityInfoProps {
   icon: JSX.Element
   title: string
-  content: string
+  content: string | React.ReactNode
 }
 
 export default function ActivityInfo({ icon, title, content }: ActivityInfoProps) {
@@ -12,8 +12,8 @@ export default function ActivityInfo({ icon, title, content }: ActivityInfoProps
           <span className=''>{icon}</span>
         </div>
         <div className='col-span-11'>
-          <span className='text-[15px] font-semibold'>{title}</span>
-          <div className='text-sm md:text-[16px]'>{content}</div>
+          <p className='font-semibold'>{title}</p>
+          <p className='mb-1 text-sm text-[var(--label-secondary)]'>{content}</p>
         </div>
       </div>
     </div>

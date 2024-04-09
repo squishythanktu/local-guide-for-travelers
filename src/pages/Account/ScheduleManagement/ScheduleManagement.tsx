@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import CloseIcon from '@mui/icons-material/Close'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List } from '@mui/material'
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 import React, { useContext, useEffect, useState } from 'react'
 import { Calendar, DateObject } from 'react-multi-date-picker'
 import scheduleApi from 'src/apis/schedule.api'
+import { months } from 'src/constants/months.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { BusyDate } from 'src/enums/busy-date.enum'
 import { DayInSchedule } from 'src/types/schedule.type'
@@ -12,7 +13,6 @@ import { DateArrayConvertToDateObjectArray } from 'src/utils/date-time'
 import DateList from './components/DateList/DateList'
 import Notes from './components/Notes/Notes'
 import './schedule-management.style.scss'
-import { months } from 'src/constants/months.constant'
 
 const ScheduleManagement: React.FC = () => {
   const { profile } = useContext(AppContext)
@@ -76,7 +76,7 @@ const ScheduleManagement: React.FC = () => {
                 setSelectedDates([])
               }}
             >
-              <HighlightOffIcon color='error' />
+              <CloseIcon />
             </IconButton>
           </DialogTitle>
           <DialogContent>
