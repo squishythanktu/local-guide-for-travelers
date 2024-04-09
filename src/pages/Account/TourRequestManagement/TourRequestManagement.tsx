@@ -32,24 +32,43 @@ const TourRequestManagement: React.FC = () => {
       if (profile.id === requestsData.data.data[0].traveler?.id) {
         setIsGuide(false)
       }
-      displayRequestsData = requestsData.data.data
-        .filter((item) => {
-          if (requestStatus === StatusRequest.PENDING)
-            return (
-              item.status === StatusRequest.PENDING.toUpperCase() ||
-              item.status === StatusRequest.ACCEPTED.toUpperCase() ||
-              (item.tour ? item.tour.status === TourStatus.PENDING : false)
-            )
-          if (requestStatus === StatusRequest.CANCELED)
-            return (
-              item.status === StatusRequest.CANCELED.toUpperCase() ||
-              item.status === StatusRequest.DENIED.toUpperCase() ||
-              (item.tour ? item.tour.status === TourStatus.DENY : false)
-            )
-          if (requestStatus === StatusRequest.DONE) return item.tour ? item.tour.status === TourStatus.ACCEPT : false
-          return item.status === requestStatus.toUpperCase()
-        })
-        .map((item) => item)
+      displayRequestsData = !isGuide
+        ? requestsData.data.data
+            .filter((item) => {
+              if (requestStatus === StatusRequest.PENDING)
+                return (
+                  item.status === StatusRequest.PENDING.toUpperCase() ||
+                  item.status === StatusRequest.ACCEPTED.toUpperCase() ||
+                  (item.tour ? item.tour.status === TourStatus.PENDING : false)
+                )
+              if (requestStatus === StatusRequest.CANCELED)
+                return (
+                  item.status === StatusRequest.CANCELED.toUpperCase() ||
+                  item.status === StatusRequest.DENIED.toUpperCase() ||
+                  (item.tour ? item.tour.status === TourStatus.DENY : false)
+                )
+              if (requestStatus === StatusRequest.DONE)
+                return item.tour ? item.tour.status === TourStatus.ACCEPT : false
+              return item.status === requestStatus.toUpperCase()
+            })
+            .map((item) => item)
+        : requestsData.data.data
+            .filter((item) => {
+              if (requestStatus === StatusRequest.PENDING)
+                return (
+                  item.status === StatusRequest.PENDING.toUpperCase() ||
+                  (item.tour ? item.tour.status === TourStatus.PENDING : false)
+                )
+              if (requestStatus === StatusRequest.DENIED)
+                return (
+                  item.status === StatusRequest.DENIED.toUpperCase() ||
+                  (item.tour ? item.tour.status === TourStatus.DENY : false)
+                )
+              if (requestStatus === StatusRequest.DONE)
+                return item.tour ? item.tour.status === TourStatus.ACCEPT : false
+              return item.status === requestStatus.toUpperCase()
+            })
+            .map((item) => item)
     }
     setDisplayData(displayRequestsData)
   }, [requestsData, requestStatus, profile])
@@ -57,18 +76,35 @@ const TourRequestManagement: React.FC = () => {
   const handleQuantity = (item: StatusRequest) => {
     if (requestsData) {
       if (!isGuide) {
-        if (!isGuide && item === StatusRequest.PENDING)
+        if (item === StatusRequest.PENDING)
           return requestsData.data.data
             .filter(
               (data) => data.status === item.toUpperCase() || data.status === StatusRequest.ACCEPTED.toUpperCase()
             )
             .map((item) => item).length
-        if (!isGuide && item === StatusRequest.CANCELED)
+        if (item === StatusRequest.CANCELED)
           return requestsData.data.data
             .filter((data) => data.status === item.toUpperCase() || data.status === StatusRequest.DENIED.toUpperCase())
             .map((item) => item).length
+        return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
       }
-      return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
+      if (isGuide) {
+        if (item === StatusRequest.PENDING)
+          return requestsData.data.data
+            .filter(
+              (data) => data.status === item.toUpperCase() || (data.tour && data.tour.status === TourStatus.PENDING)
+            )
+            .map((item) => item).length
+        if (item === StatusRequest.DENIED)
+          return requestsData.data.data
+            .filter((data) => data.status === item.toUpperCase() || (data.tour && data.tour.status === TourStatus.DENY))
+            .map((item) => item).length
+        if (item === StatusRequest.DONE)
+          return requestsData.data.data
+            .filter((data) => data.tour && data.tour.status === TourStatus.ACCEPT)
+            .map((item) => item).length
+        return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
+      }
     }
     return 0
   }

@@ -49,34 +49,47 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
           </div>
         </div>
         <div className='flex gap-2'>
-          {isGuide && request.status === StatusRequest.PENDING.toUpperCase() && (
-            <>
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation()
-                  handleUpdateStatusRequest(StatusRequest.ACCEPTED)()
-                }}
-                variant='outlined'
-                className='w-fit'
-                color='success'
-                size='small'
-              >
-                Accept
-              </Button>
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation()
-                  handleUpdateStatusRequest(StatusRequest.DENIED)()
-                }}
-                variant='outlined'
-                className='w-fit'
-                color='error'
-                size='small'
-              >
-                Reject
-              </Button>
-            </>
-          )}
+          {isGuide &&
+            (request.status === StatusRequest.DENIED.toUpperCase() ? (
+              <>
+                <Chip label='Self-denied' color='error' size='small' />
+              </>
+            ) : (
+              request.tour &&
+              request.tour.status === TourStatus.DENY && <Chip label='Admin denied' color='error' size='small' />
+            ))}
+          {isGuide &&
+            (request.status === StatusRequest.PENDING.toUpperCase() ? (
+              <>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handleUpdateStatusRequest(StatusRequest.ACCEPTED)()
+                  }}
+                  variant='outlined'
+                  className='w-fit'
+                  color='success'
+                  size='small'
+                >
+                  Accept
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handleUpdateStatusRequest(StatusRequest.DENIED)()
+                  }}
+                  variant='outlined'
+                  className='w-fit'
+                  color='error'
+                  size='small'
+                >
+                  Reject
+                </Button>
+              </>
+            ) : (
+              request.tour &&
+              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='success' size='small' />
+            ))}
           {isGuide && request.status === StatusRequest.ACCEPTED.toUpperCase() && (
             <Button
               variant='outlined'
@@ -126,7 +139,6 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               Edit
             </Button>
           )}
-
           {!isGuide &&
             (request.status === StatusRequest.CANCELED.toUpperCase() ? (
               <Chip label='Self-canceled' color='error' size='small' />
