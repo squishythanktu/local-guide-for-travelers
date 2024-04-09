@@ -1,6 +1,7 @@
 import { PaginationParams } from 'src/types/pagination-params.type'
 import {
   GuideStatisticResult,
+  PopularGuideResult,
   TourStatisticResult,
   ToursOfGuideStatisticResult,
   YearStatisticResult
@@ -22,6 +23,9 @@ const statisticApi = {
   },
   getStatisticOfTourByYear(year: number) {
     return http.get<SuccessResponse<YearStatisticResult>>(`${URL_STATISTIC}/month/${year}`)
+  },
+  getStatisticOfPopularGuide() {
+    return http.get<SuccessResponse<PopularGuideResult[]>>(`${URL_STATISTIC}/popular`)
   }
 }
 

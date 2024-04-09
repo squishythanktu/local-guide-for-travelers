@@ -28,7 +28,7 @@ import { Line, Bar } from 'react-chartjs-2'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { months } from 'src/constants/months.constant'
 import dayjs, { Dayjs } from 'dayjs'
-import { chartData, chartOptions } from 'src/constants/chart.constant'
+import { chartData, chartOptions } from 'src/utils/chart'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 

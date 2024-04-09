@@ -2,6 +2,7 @@ import { Omit } from 'lodash'
 import { Guide } from './guide.type'
 import { Tour } from './tour.type'
 import { PageResult } from './page-result.type'
+import { User } from './user.type'
 
 export type TourInStatistic = Pick<Tour, 'id' | 'name' | 'pricePerTraveler' | 'limitTraveler' | 'overallRating'> & {
   overallRating: number
@@ -36,4 +37,11 @@ export type MonthStatisticResult = {
   revenue: number
   bookingOfNumber: number
   month: number
+}
+
+export type PopularGuideResult = Omit<User, 'role'> & {
+  overallRating: number
+  totalTravelerNumber: number
+  totalRevenue: number
+  totalBooking: number
 }

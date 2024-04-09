@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 import { Box } from '@mui/material'
+import Card from '@mui/material/Card'
 import Pagination from '@mui/material/Pagination'
 import { lighten } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import { useMemo, useState } from 'react'
+import { Pie } from 'react-chartjs-2'
 import statisticApi from 'src/apis/statistic.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { GuideInStatistic } from 'src/types/statistic.type'
+
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 const SalesReportOfGuide: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
@@ -19,6 +24,10 @@ const SalesReportOfGuide: React.FC = () => {
     queryKey: [`sales report of guide in page ${pagination.page}`, pagination],
     queryFn: () => statisticApi.getStatisticOfGuide(pagination),
     staleTime: 10 * 1000
+  })
+  const { data: popularGuidesData } = useQuery({
+    queryKey: [`statistic of popular guides`],
+    queryFn: () => statisticApi.getStatisticOfPopularGuide()
   })
 
   const columns = useMemo<MRT_ColumnDef<GuideInStatistic>[]>(
@@ -61,6 +70,7 @@ const SalesReportOfGuide: React.FC = () => {
       {
         accessorKey: 'totalRevenue',
         header: 'Revenue',
+        Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>,
         size: 30
       }
     ],
@@ -114,8 +124,42 @@ const SalesReportOfGuide: React.FC = () => {
   })
 
   return (
-    <Box className='h-screen'>
-      <MaterialReactTable table={table} />
+    <Box className='grid grid-cols-12 gap-4'>
+      <Box className='col-span-12 lg:col-span-6'>
+        <MaterialReactTable table={table} />
+      </Box>
+      <Card className='col-span-12 flex flex-col gap-2 px-3 pb-3 lg:col-span-6'>
+        <h2 className='pt-3 text-xl'>Top 5 popular guides</h2>
+        <Pie
+          options={{
+            aspectRatio: 2
+          }}
+          data={{
+            labels: popularGuidesData?.data.data.map((data) => (data.fullName ? data.fullName : data.email)),
+            datasets: [
+              {
+                label: 'Total revenue ($)',
+                data: popularGuidesData?.data.data.map((data) => data.totalRevenue),
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+              }
+            ]
+          }}
+        />
+      </Card>
     </Box>
   )
 }

@@ -20,10 +20,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }: AdminLayoutProps)
   const [open, setOpen] = useState(false)
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height: '100%' }}>
       <AdminHeader handleDrawerOpen={() => setOpen(true)} open={open} />
       <AdminDrawer handleDrawerClose={() => setOpen(false)} open={open} />
-      <Box component='main' sx={{ flexGrow: 1, p: 3, background: 'var(--light-grey-background)' }}>
+      <Box component='main' sx={{ flexGrow: 1, p: 3, background: 'var(--light-grey-background)', height: '100%' }}>
         <DrawerHeader />
         {children}
       </Box>
