@@ -1,16 +1,18 @@
 import Footer from 'src/components/Footer'
 import Header from 'src/components/Header'
 
-interface Props {
+interface MainLayoutProps {
   children?: React.ReactNode
 }
 
-export default function MainLayout({ children }: Props) {
+const MainLayout: React.FC<MainLayoutProps> = ({ children }: MainLayoutProps) => {
   return (
     <div>
-      <Header textColor='black' bgColor='white' isEnableScroll={false} />
+      <Header textColor='black' bgColor='white' />
       {children}
       <Footer />
     </div>
   )
 }
+
+export default MainLayout

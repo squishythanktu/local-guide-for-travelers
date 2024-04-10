@@ -35,7 +35,7 @@ const images = [
   }
 ]
 
-export default function Home() {
+const Home: React.FC = () => {
   const theme = useTheme()
   const { profile, isAuthenticated } = useContext(AppContext)
   const [activeStep, setActiveStep] = useState<number>(0)
@@ -175,3 +175,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home

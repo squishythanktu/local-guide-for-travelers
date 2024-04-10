@@ -17,7 +17,7 @@ import { Schema, schema } from 'src/utils/rules'
 type FormData = Pick<Schema, 'email' | 'password' | 'confirmPassword'>
 const signUpSchema = schema.pick(['email', 'password', 'confirmPassword'])
 
-export default function Register() {
+const Register: React.FC = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
@@ -81,3 +81,4 @@ export default function Register() {
     </AuthLayout>
   )
 }
+export default Register

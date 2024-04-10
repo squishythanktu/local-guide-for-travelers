@@ -40,7 +40,7 @@ export default function Header({
 
     const handleScroll = () => {
       const scrollHeight = window.scrollY
-      const specificHeight = 520
+      const specificHeight = 85
 
       if (scrollHeight > specificHeight) {
         setScroll(true)
@@ -69,7 +69,7 @@ export default function Header({
           height: headerHeight.md
         },
         boxShadow: `${scroll && isEnableScroll && 'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px'}`,
-        zIndex: '100'
+        zIndex: '1500'
       }}
     >
       <Box className='header__content block min-w-80 px-4 py-2 md:mx-auto md:px-8 md:py-3 lg:w-full lg:max-w-[1400px] lg:px-8 xl:px-24'>

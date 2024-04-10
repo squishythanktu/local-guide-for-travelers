@@ -11,7 +11,7 @@ import theme from 'src/theme'
 import { Booking } from 'src/types/booking.type'
 import { compareDate } from 'src/utils/date-time'
 import { a11yProps } from 'src/utils/tab-panel'
-import Loading from '../Loading'
+import Loading from '../Loading/Loading'
 import BookingContent from './components/BookingContent/BookingContent'
 
 const Bookings: React.FC = () => {

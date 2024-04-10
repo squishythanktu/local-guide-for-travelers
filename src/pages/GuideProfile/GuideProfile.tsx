@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import guideApi from 'src/apis/guide.api'
 import path from 'src/constants/path.constant'
-import Loading from '../Loading'
+import Loading from '../Loading/Loading'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
 

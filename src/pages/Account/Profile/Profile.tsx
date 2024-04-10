@@ -21,7 +21,7 @@ import { UserSchema, userSchema } from 'src/utils/rules'
 type FormData = Pick<UserSchema, 'fullName' | 'address' | 'phone' | 'dateOfBirth'>
 const accountSchema = userSchema.pick(['fullName', 'address', 'phone', 'dateOfBirth'])
 
-export default function Profile() {
+const Profile: React.FC = () => {
   const { profile, setProfile } = useContext(AppContext)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const navigate = useNavigate()
@@ -208,3 +208,5 @@ export default function Profile() {
     </form>
   )
 }
+
+export default Profile

@@ -5,16 +5,15 @@ import { AppContext } from './contexts/app.context'
 import { UserRole } from './enums/user-role.enum'
 import AdminLayout from './layouts/AdminLayout/AdminLayout'
 import HomeLayout from './layouts/HomeLayout'
-import MainLayout from './layouts/MainLayout'
-import TourRequestManagement from './pages/Account/TourRequestManagement/TourRequestManagement'
+import MainLayout from './layouts/MainLayout/MainLayout'
 import AccountLayout from './pages/Account/layouts/AccountLayout'
 import ManagementLayout from './pages/Account/layouts/ManagementLayout/ManagementLayout'
-import Loading from './pages/Loading'
+import Loading from './pages/Loading/Loading'
 
-const Home = lazy(() => import('./pages/Home'))
-const Login = lazy(() => import('./pages/Login'))
-const Register = lazy(() => import('./pages/Register'))
-const Profile = lazy(() => import('./pages/Account/Profile'))
+const Home = lazy(() => import('./pages/Home/Home'))
+const Login = lazy(() => import('./pages/Login/Login'))
+const Register = lazy(() => import('./pages/Register/Register'))
+const Profile = lazy(() => import('./pages/Account/Profile/Profile'))
 const TourDetail = lazy(() => import('./pages/TourDetail/TourDetail'))
 const ChangePassword = lazy(() => import('./pages/Account/ChangePassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
@@ -42,6 +41,7 @@ const GuideApplication = lazy(() => import('./pages/GuideApplication/GuideApplic
 const CryptoPayment = lazy(() => import('./pages/CryptoPayment/CryptoPayment'))
 const TourList = lazy(() => import('./pages/TourList/TourList'))
 const BookingManagement = lazy(() => import('./pages/Account/BookingManagement/BookingManagement'))
+const TourRequestManagement = lazy(() => import('./pages/Account/TourRequestManagement/TourRequestManagement'))
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)

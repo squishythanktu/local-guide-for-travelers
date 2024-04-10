@@ -5,7 +5,7 @@ import { useContext } from 'react'
 import cartApi from 'src/apis/cart.api'
 import BookingSummaryCard from 'src/components/BookingSummaryCard/BookingSummaryCard'
 import { AppContext } from 'src/contexts/app.context'
-import Loading from 'src/pages/Loading'
+import Loading from 'src/pages/Loading/Loading'
 import { BookingsInCart } from 'src/types/booking.type'
 
 interface OrderSummaryProps {

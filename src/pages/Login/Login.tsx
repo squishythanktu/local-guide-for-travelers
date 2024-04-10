@@ -26,7 +26,7 @@ import config from 'src/constants/config.constant'
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
 
-export default function Login() {
+const Login: React.FC = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const [isOauthTokenExists, setOauthTokenExists] = useState<boolean>(false)
   const queryParams: { token?: string; error?: string } = useQueryParams()
@@ -147,3 +147,5 @@ export default function Login() {
     </AuthLayout>
   )
 }
+
+export default Login

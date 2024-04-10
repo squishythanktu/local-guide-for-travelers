@@ -1,7 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { Box } from '@mui/material'
 
-export default function Loading() {
+const Loading: React.FC = () => {
   return (
     <Box
       className='h-screen w-full'
@@ -15,3 +15,5 @@ export default function Loading() {
     </Box>
   )
 }
+
+export default Loading

@@ -2,7 +2,7 @@ import { QueryObserverResult, useMutation, useQuery } from '@tanstack/react-quer
 import tourApi from 'src/apis/tour.api'
 import TourForm, { TourFormData } from '../TourForm'
 import { toast } from 'react-toastify'
-import Loading from 'src/pages/Loading'
+import Loading from 'src/pages/Loading/Loading'
 
 export type TourUpdateFormData = TourFormData & { id: string }
 

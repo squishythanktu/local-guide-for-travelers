@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import BookingSummaryCard from 'src/components/BookingSummaryCard/BookingSummaryCard'
-import Loading from 'src/pages/Loading'
+import Loading from 'src/pages/Loading/Loading'
 import { Booking } from 'src/types/booking.type'
 
 interface BookingContentProps {

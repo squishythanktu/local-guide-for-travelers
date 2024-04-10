@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import wishlistApi from 'src/apis/wishlist.api'
 import TourCard from 'src/components/TourCard'
 import { AppContext } from 'src/contexts/app.context'
-import Loading from '../Loading'
+import Loading from '../Loading/Loading'
 
 const Wishlist: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
