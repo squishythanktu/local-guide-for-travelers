@@ -49,7 +49,7 @@ export default function CartTotal({ bookings }: CartTotalProps) {
       <CardContent>
         <Alert variant='standard' severity='success' className='text-sm'>
           <AlertTitle className='text-sm'>Free cancellation</AlertTitle>
-          <div className='text-sm'>Until 24 hours before activity</div>
+          <div className='text-sm'>Within 1 hour after booking or more than 7 days before activity</div>
         </Alert>
       </CardContent>
     </Card>

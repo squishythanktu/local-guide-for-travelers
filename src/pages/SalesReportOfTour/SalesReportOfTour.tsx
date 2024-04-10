@@ -38,7 +38,7 @@ const SalesReportOfTour: React.FC = () => {
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
-    limit: 10
+    limit: 8
   })
   const { data: statisticsData, isLoading } = useQuery({
     queryKey: [`sales report of tour in page ${pagination.page}`, pagination],

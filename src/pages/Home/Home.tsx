@@ -23,15 +23,15 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 const images = [
   {
     label: 'homepage-cover-1',
-    imgPath: '/assets/images/homepage-cover.jpg'
+    imgPath: '/assets/images/homepage-cover.webp'
   },
   {
     label: 'homepage-cover-2',
-    imgPath: '/assets/images/homepage-cover2.jpg'
+    imgPath: '/assets/images/homepage-cover2.webp'
   },
   {
     label: 'homepage-cover-3',
-    imgPath: '/assets/images/homepage-cover3.jpg'
+    imgPath: '/assets/images/homepage-cover3.webp'
   }
 ]
 
@@ -68,7 +68,15 @@ export default function Home() {
   const renderSkeletons = () => {
     return Array(8)
       .fill(0)
-      .map((_, index) => <Skeleton variant='rounded' width='100%' height='300px' key={index} />)
+      .map((_, index) => (
+        <Box key={index} className='flex flex-col'>
+          <Skeleton variant='rounded' width='100%' height='320px' key={index} />
+          <Box sx={{ pt: 0.5 }}>
+            <Skeleton />
+            <Skeleton width='60%' />
+          </Box>
+        </Box>
+      ))
   }
 
   return (
@@ -92,7 +100,12 @@ export default function Home() {
             {images.map((step, index) => (
               <div key={step.label} className='h-[600px] w-full'>
                 {Math.abs(activeStep - index) <= 2 ? (
-                  <img src={step.imgPath} alt={step.label} className='h-full w-full object-cover brightness-90' />
+                  <img
+                    loading='lazy'
+                    src={step.imgPath}
+                    alt={step.label}
+                    className='h-full w-full object-cover brightness-90'
+                  />
                 ) : null}
               </div>
             ))}

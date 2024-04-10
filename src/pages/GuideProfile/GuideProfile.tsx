@@ -32,8 +32,9 @@ export default function GuideProfile() {
               <div className='flex flex-col items-center gap-2'>
                 <div className='avatar'>
                   <img
-                    src='/assets/images/homepage-cover.jpg'
+                    src='/assets/images/default-user.jpg'
                     alt='Avatar'
+                    loading='lazy'
                     className='h-20 w-20 rounded-full object-cover'
                   />
                 </div>
@@ -95,7 +96,7 @@ export default function GuideProfile() {
                   <span className='font-bold'>Skills & Credentials </span>
                 </Box>
                 <Box className='px-4 text-sm font-bold'>
-                  Language skills:
+                  Language skills:{' '}
                   <span className='text-sm'>
                     {Array.isArray(guideProfileData?.data?.data?.languageSkill) &&
                     guideProfileData?.data?.data?.languageSkill.length > 0
@@ -104,7 +105,7 @@ export default function GuideProfile() {
                   </span>
                 </Box>
                 <Box className='px-4 text-sm font-bold'>
-                  Credential: <span className='text-sm'>{guideProfileData?.data.data.credential || 'N/A'}</span>
+                  Biography: <span className='text-sm'>{guideProfileData?.data.data.biography || 'N/A'}</span>
                 </Box>
               </div>
             </div>

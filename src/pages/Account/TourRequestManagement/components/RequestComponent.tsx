@@ -88,7 +88,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               </>
             ) : (
               request.tour &&
-              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='success' size='small' />
+              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='warning' size='small' />
             ))}
           {isGuide && request.status === StatusRequest.ACCEPTED.toUpperCase() && (
             <Button
@@ -121,7 +121,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               <Chip label='Guide accepted' color='success' size='small' />
             ) : (
               request.tour &&
-              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='success' size='small' />
+              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='warning' size='small' />
             ))}
           {!isGuide && request.status === StatusRequest.DRAFT.toUpperCase() && (
             <Button

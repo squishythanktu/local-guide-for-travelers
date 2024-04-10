@@ -80,6 +80,7 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
                 <img
                   src={tourData.images[0]?.imageLink || '/assets/images/default-cover.jpg'}
                   alt='Tour img'
+                  loading='lazy'
                   className={classNames('h-full w-full object-cover transition duration-700', {
                     'scale-125': isCardHovered
                   })}

@@ -19,11 +19,9 @@ export default function GuideCard({ guideData }: { guideData: Guide }) {
           <div className='tour-card__top relative'>
             <div className='tour-card__photo relative mx-auto my-5 h-48 w-48'>
               <img
-                src={
-                  guideData.avatar ||
-                  'https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611731.jpg?w=826&t=st=1708352677~exp=1708353277~hmac=870176e19fbbd52185e8c97459b302216e16cac7cf27ca12bde9daf38334129a'
-                }
+                src={guideData.avatar || '/assets/images/default-user.jpg'}
                 alt='Guide img'
+                loading='lazy'
                 className='h-full w-full rounded-full border-2 border-[var(--decorative-midnight-blue)] object-cover'
               />
               <div className='absolute left-[33px] top-[15px] h-28 w-[210px] rotate-[60deg] rounded-t-full border-l-[3px] border-r-[3px] border-t-[3px] border-[var(--decorative-orange)]'></div>

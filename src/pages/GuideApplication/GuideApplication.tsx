@@ -172,7 +172,6 @@ const GuideApplication: React.FC = () => {
           <div className='field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
             <ControlledTextField
               required
-              disabled={!!profile}
               className='min-h-20 w-full'
               control={control}
               name={'fullName'}
@@ -185,7 +184,6 @@ const GuideApplication: React.FC = () => {
                 return (
                   <DatePicker
                     disableFuture
-                    disabled={!!profile}
                     label={
                       <Typography sx={{ fontWeight: 600 }}>
                         Date of birth
@@ -224,7 +222,6 @@ const GuideApplication: React.FC = () => {
                     freeSolo
                     disablePortal
                     id='address'
-                    disabled={!!profile}
                     className='w-full flex-grow'
                     onBlur={onBlur}
                     value={value}
@@ -266,7 +263,6 @@ const GuideApplication: React.FC = () => {
             />
             <ControlledTextField
               required
-              disabled={!!profile}
               className='min-h-20 w-full'
               control={control}
               name={'phone'}
@@ -328,7 +324,7 @@ const GuideApplication: React.FC = () => {
               />
             </FormGroup>
           </FormControl>
-          <FormControl className='min-h-[132px]'>
+          <FormControl>
             <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
               Are you a licensed tour guide?
               <Typography component='span' sx={{ color: 'red' }}>
@@ -351,6 +347,14 @@ const GuideApplication: React.FC = () => {
               }}
             />
           </FormControl>
+          <Collapse in={openCollapse} timeout='auto' unmountOnExit>
+            <Box sx={{ marginY: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
+                License images
+              </Typography>
+              <ImagesUploader images={images} setImages={setImages as any} />
+            </Box>
+          </Collapse>
           <ControlledTextField
             required
             className='min-h-20 w-full md:w-[49%]'
@@ -368,15 +372,6 @@ const GuideApplication: React.FC = () => {
             name={'biography'}
             label={'Biography'}
           />
-          <Collapse in={openCollapse} timeout='auto' unmountOnExit>
-            <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
-                License images
-              </Typography>
-              <ImagesUploader images={images} setImages={setImages as any} />
-            </Box>
-          </Collapse>
-
           <Alert severity='info' className='my-4'>
             <AlertTitle>Info</AlertTitle>
             You will receive an email once your registration is accepted.

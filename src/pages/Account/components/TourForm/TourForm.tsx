@@ -86,7 +86,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
   }, [images, setValue])
 
   const handleStartTimeChange = (startTimes: Dayjs[]) => {
-    const formattedDate: Date[] = startTimes.map((time) => time.toDate())
+    const formattedDate: Date[] = startTimes.map((time) => time?.toDate())
     setValue('startTimes', formattedDate)
   }
 

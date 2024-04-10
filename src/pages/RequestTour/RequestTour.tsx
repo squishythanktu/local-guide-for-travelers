@@ -238,7 +238,7 @@ const RequestTour: React.FC = () => {
               type='number'
               control={control}
               name={'maxPricePerPerson'}
-              label={'Max price per person'}
+              label={'Max price per traveler'}
               prefix='$'
             />
             <ControlledTextField

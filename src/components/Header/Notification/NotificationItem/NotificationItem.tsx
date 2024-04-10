@@ -1,8 +1,10 @@
 import Box from '@mui/material/Box'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
+import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import notificationApi from 'src/apis/notifications.api'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { NotificationType } from 'src/enums/notification-type.enum'
@@ -18,7 +20,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: N
   const { profile } = useContext(AppContext)
   const navigate = useNavigate()
 
+  const updateReadNotificationStatusMutation = useMutation({
+    mutationFn: (id: number) => notificationApi.updateReadNotificationStatus(id)
+  })
+
   const handleNavigate = () => {
+    updateReadNotificationStatusMutation.mutate(data.id, {})
+
     switch (data.notificationType) {
       case NotificationType.addTour: {
         navigate(`${path.tourDetail.replace(':id', data.associateId.toString())}`)

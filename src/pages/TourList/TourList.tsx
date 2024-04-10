@@ -14,7 +14,7 @@ import PersonIcon from '@mui/icons-material/Person'
 const TourList: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
-    limit: 7
+    limit: 8
   })
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)

@@ -190,7 +190,12 @@ const TourRequestManagement: React.FC = () => {
         </div>
       ) : (
         <div className='flex h-[550px] flex-col items-center justify-center'>
-          <img src='/assets/images/empty-booking.png' alt='Empty request' className='mb-2 h-72 w-72 object-cover' />
+          <img
+            src='/assets/images/empty-booking.png'
+            alt='Empty request'
+            loading='lazy'
+            className='mb-2 h-72 w-72 object-cover'
+          />
           <h3>No request data available.</h3>
         </div>
       )}

@@ -49,11 +49,11 @@ export const guideApplicationSchema = userSchema.shape({
     .required('Password is required')
     .min(6, 'Password length from 6 - 160 characters')
     .max(160, 'Password length from 6 - 160 characters'),
-  yearsOfExperience: yup.number().required().positive().typeError('Year of experience must be positive a number'),
+  yearsOfExperience: yup.number().required().min(0).typeError('Year of experience must be positive a number'),
   isLicensedGuide: yup.boolean().required(),
   licenseImages: yup.array().of(yup.string()),
   transportation: yup.object().required(),
-  biography: yup.string().required()
+  biography: yup.string().required().max(350, 'Maximum length is 350 characters')
 })
 
 export const tourSchema = yup.object({

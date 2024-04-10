@@ -33,6 +33,7 @@ const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({ booking }: Book
               component='img'
               alt='Tour image'
               src={booking.tour.images[0]?.imageLink || '/assets/images/default-cover.jpg'}
+              loading='lazy'
             />
           }
           title={

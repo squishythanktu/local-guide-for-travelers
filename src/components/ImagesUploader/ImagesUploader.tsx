@@ -81,6 +81,7 @@ const ImagesUploader: React.FC<ImagesUploaderProps> = memo(({ images, setImages 
                 aspectRatio: '1 / 1'
               }}
               alt=''
+              loading='lazy'
             />
           </Grid>
         ))}

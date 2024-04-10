@@ -4,20 +4,19 @@ import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
-import Typography from '@mui/material/Typography'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import NotificationItem from './NotificationItem/NotificationItem'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { AppContext } from 'src/contexts/app.context'
-import notificationApi from 'src/apis/notifications.api'
-import Loading from 'src/pages/Loading'
-import { useInView } from 'react-intersection-observer'
-import { Notification as NotificationType } from 'src/types/notification.type'
 import Skeleton from '@mui/material/Skeleton'
+import Typography from '@mui/material/Typography'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import SockJS from 'sockjs-client'
-import Stomp from 'stompjs'
+import notificationApi from 'src/apis/notifications.api'
 import config from 'src/constants/config.constant'
+import { AppContext } from 'src/contexts/app.context'
+import Loading from 'src/pages/Loading'
+import { Notification as NotificationType } from 'src/types/notification.type'
+import Stomp from 'stompjs'
+import NotificationItem from './NotificationItem/NotificationItem'
 
 interface NotificationProps {
   textColor: string
@@ -148,6 +147,7 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
                   <img
                     src='/assets/images/empty-notification.png'
                     alt='Empty notification'
+                    loading='lazy'
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                   />
                   <Typography variant='h6' sx={{ fontWeight: '800' }}>
@@ -177,22 +177,6 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
             </Box>
           </Box>
         )}
-        <Box sx={{ paddingY: '10px', paddingX: '16px' }}>
-          {/* TODO: Handle see all recent activities API */}
-          <Link to='/'>
-            <Typography
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                color: (theme) => theme.palette.primary.light,
-                fontSize: '14px',
-                '&:hover': { color: (theme) => theme.palette.primary.main }
-              }}
-            >
-              See all recent activities
-            </Typography>
-          </Link>
-        </Box>
       </Menu>
     </Box>
   )

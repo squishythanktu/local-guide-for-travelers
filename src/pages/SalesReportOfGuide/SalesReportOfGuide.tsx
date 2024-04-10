@@ -19,7 +19,7 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 const SalesReportOfGuide: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
-    limit: 7
+    limit: 8
   })
   const { data: statisticsData, isLoading } = useQuery({
     queryKey: [`sales report of guide in page ${pagination.page}`, pagination],

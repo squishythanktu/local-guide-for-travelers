@@ -41,6 +41,7 @@ const LocationCard: React.FC<Props> = ({ city }: Props) => {
           <img
             src={city.image || '/assets/images/city-default.jpg'}
             alt='location img'
+            loading='lazy'
             className='absolute h-full w-full rounded-md object-cover'
           />
           <div className='text-md absolute z-10 flex h-full w-full flex-col items-center justify-end px-4 py-2 text-left font-bold leading-6 text-white drop-shadow-lg'>

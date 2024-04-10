@@ -205,6 +205,7 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
                     <img
                       src='/assets/images/not-found.png'
                       alt='Not Found Page'
+                      loading='lazy'
                       className='mx-auto h-36 w-36 object-cover'
                     />
                     <h2 className='my-4 text-center'>No guide reviews available.</h2>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Divider } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -93,8 +94,8 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
         }
         navigate(path.checkout, { state: { bookingId: data.data.data.bookings.slice(-1)[0].id } })
       },
-      onError: (error) => {
-        toast.error(error.message)
+      onError: (error: any) => {
+        toast.error(error.response.data.message)
       }
     })
   }
@@ -152,12 +153,16 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
         )}
         <div className='participants flex flex-col gap-2'>
           <div className='relative flex'>
-            <div className='text-sm font-medium text-gray-500'>Person 1x ${tour.pricePerTraveler.toLocaleString()}</div>
+            <div className='text-sm font-medium text-gray-500'>
+              Person {bookingFormData.numberTravelers}x ${tour.pricePerTraveler.toLocaleString()}
+            </div>
             <div className='absolute right-2 text-sm font-medium text-gray-500'>${totalPrice.toLocaleString()}</div>
           </div>
           <div className='flex items-center font-normal'>
             <CalendarCheckIcon className='mb-[2px] mr-2 h-6 w-6' />
-            <div className='text-sm font-medium'>Cancel up to 24 hours in advance for a full refund</div>
+            <div className='text-sm font-medium'>
+              Cancel up within 1 hour after booking or more than 7 days in advance for a full refund
+            </div>
           </div>
         </div>
       </div>

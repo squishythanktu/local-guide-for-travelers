@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useMutation } from '@tanstack/react-query'
@@ -39,8 +40,8 @@ export default function Register() {
         setIsAuthenticated(true)
         setProfile(data.data.data?.user)
       },
-      onError: () => {
-        toast.error('Account registration unsuccessful. Please try again later.')
+      onError: (error: any) => {
+        toast.error(error.response.data.message)
       }
     })
   })

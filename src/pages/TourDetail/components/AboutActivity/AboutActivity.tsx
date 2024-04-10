@@ -22,7 +22,7 @@ export default function AboutActivity({ tour }: AboutActivityProps) {
         content={
           <>
             <p className='mb-1 text-sm text-[var(--label-secondary)]'>
-              If canceled within one hour after booking or more than 7 days before Activity: full refund
+              If canceled within 1 hour after booking or more than 7 days before Activity: full refund
             </p>
             <p className='mb-1 text-sm text-[var(--label-secondary)]'>
               If canceled less than 7 days and more than 1 day before Activity: 50% refund
@@ -40,8 +40,8 @@ export default function AboutActivity({ tour }: AboutActivityProps) {
       />
       <ActivityInfo
         icon={<AttachMoneyIcon />}
-        title={'Price per person'}
-        content={`${tour.pricePerTraveler.toLocaleString()} $`}
+        title={'Price per traveler'}
+        content={`$${tour.pricePerTraveler.toLocaleString()}`}
       />
       <ActivityInfo icon={<AlarmOnOutlinedIcon />} title={'Duration'} content={`${tour.duration} ${tour.unit}`} />
       <ActivityInfo icon={<AirportShuttleOutlinedIcon />} title={'Transportation'} content={`${tour.transportation}`} />

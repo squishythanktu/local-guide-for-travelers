@@ -93,6 +93,9 @@ const TourDetail: React.FC = () => {
       top: 0,
       behavior: 'smooth'
     })
+  }, [])
+
+  useEffect(() => {
     if (tourData?.data) {
       setTour(tourData.data.data)
     }

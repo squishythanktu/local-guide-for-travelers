@@ -33,6 +33,7 @@ function SimpleSlider({ itemsData }: Props) {
         showBullets
         showIndex
         thumbnailPosition='right'
+        lazyLoad
       />
     </Box>
   )

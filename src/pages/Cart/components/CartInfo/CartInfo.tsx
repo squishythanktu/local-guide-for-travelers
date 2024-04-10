@@ -26,7 +26,7 @@ export default function CartInfo() {
         </div>
         <div className='flex items-center font-normal'>
           <MessageIcon className='mb-[2px] mr-2 h-6 w-6' />
-          <div className='text-sm font-medium'>24/7 customer support worldwide</div>
+          <div className='text-sm font-medium'>24/7 customer support</div>
         </div>
       </CardContent>
     </Card>
