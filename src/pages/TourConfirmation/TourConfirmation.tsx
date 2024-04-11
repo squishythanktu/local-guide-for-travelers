@@ -16,7 +16,7 @@ const TourConfirmation: React.FC = () => {
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
   const [pagination] = useState<PaginationParams>({
     page: 0,
-    limit: 7
+    limit: 8
   })
   const {
     data: tourRequestsData,

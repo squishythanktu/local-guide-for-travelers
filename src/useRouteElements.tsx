@@ -389,7 +389,7 @@ export default function useRouteElements() {
       children: [
         {
           path: path.home,
-          element: <Navigate to={path.admin} />
+          element: <Navigate to={path.tourList} />
         },
         {
           path: path.admin,

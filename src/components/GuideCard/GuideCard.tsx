@@ -30,7 +30,7 @@ export default function GuideCard({ guideData }: { guideData: Guide }) {
               <h3 className='title capitalize text-[var(--label-primary)] lg:max-h-20 lg:overflow-hidden'>
                 {guideData?.fullName}
               </h3>
-              <h5 className='text-[var(--label-secondary)]'>@{guideData?.fullName || 'N/A username'}</h5>
+              <h5 className='text-[var(--label-secondary)]'>@{guideData.email || 'N/A email'}</h5>
               <h5 className='text-[var(--decorative-orange)]'>from {guideData?.address || 'N/A address'}</h5>
             </div>
             <div className='tour-card__body px-4 py-0 text-center text-sm text-[var(--label-primary)] sm:px-3'>
@@ -42,7 +42,7 @@ export default function GuideCard({ guideData }: { guideData: Guide }) {
           <div className='rating-overall-container flex items-start justify-between gap-2 rounded-md bg-blue-50 px-4 py-2'>
             <div className='flex items-center gap-1'>
               <GradeIcon className='text-yellow-400' fontSize='small' />
-              {guideData?.overallRating}
+              {guideData?.overallRating || 'N/A'}
             </div>
             <div className='language-container inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md text-right'>
               <LanguageIcon className='mr-[2px] text-blue-400' fontSize='small' />

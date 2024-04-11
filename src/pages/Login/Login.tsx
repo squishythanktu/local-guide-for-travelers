@@ -20,7 +20,7 @@ import AuthLayout from 'src/layouts/AuthLayout'
 import { AuthSuccessResponse } from 'src/types/auth.type'
 import { Schema, schema } from 'src/utils/rules'
 import http from 'src/utils/http'
-import { setAccessTokenToLS, setProfileToLS } from 'src/utils/auth'
+import { setAccessTokenToLocalStorage, setProfileToLocalStorage } from 'src/utils/auth'
 import config from 'src/constants/config.constant'
 
 type FormData = Pick<Schema, 'email' | 'password'>
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
     if (!queryParams) return
 
     if (queryParams.token) {
-      setAccessTokenToLS(queryParams.token)
+      setAccessTokenToLocalStorage(queryParams.token)
       http.interceptors.request.use((config) => {
         config.headers.authorization = `Bearer ${queryParams.token}`
         return config
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (profileData?.data.data) {
       setIsAuthenticated(true)
-      setProfileToLS(profileData.data.data)
+      setProfileToLocalStorage(profileData.data.data)
       setProfile(profileData.data.data)
       navigate(path.home)
     }

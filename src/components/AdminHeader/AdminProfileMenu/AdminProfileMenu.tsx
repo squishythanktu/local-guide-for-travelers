@@ -8,7 +8,7 @@ import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { clearLS } from 'src/utils/auth'
+import { clearLocalStorage } from 'src/utils/auth'
 
 const AdminProfileMenu: React.FC = () => {
   const { profile } = useContext(AppContext)
@@ -19,7 +19,7 @@ const AdminProfileMenu: React.FC = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
   const handleLogout = () => {
-    clearLS()
+    clearLocalStorage()
     navigate(path.home)
     window.location.reload()
   }

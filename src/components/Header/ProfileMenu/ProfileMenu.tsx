@@ -12,7 +12,7 @@ import { useContext, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { clearLS } from 'src/utils/auth'
+import { clearLocalStorage } from 'src/utils/auth'
 import ViewListIcon from '@mui/icons-material/ViewList'
 import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined'
 import { Divider } from '@mui/material'
@@ -34,7 +34,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
   const handleClose = () => setAnchorEl(null)
 
   const handleLogout = () => {
-    clearLS()
+    clearLocalStorage()
     navigate(path.home)
     window.location.reload()
     handleClose()

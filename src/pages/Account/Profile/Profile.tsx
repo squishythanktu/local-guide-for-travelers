@@ -15,7 +15,7 @@ import ControlledTextField from 'src/components/ControlledTextField'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { User } from 'src/types/user.type'
-import { clearLS, setProfileToLS } from 'src/utils/auth'
+import { clearLocalStorage, setProfileToLocalStorage } from 'src/utils/auth'
 import { UserSchema, userSchema } from 'src/utils/rules'
 
 type FormData = Pick<UserSchema, 'fullName' | 'address' | 'phone' | 'dateOfBirth'>
@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
       onSuccess: (res) => {
         refetch()
         setProfile(res.data.data)
-        setProfileToLS(res.data.data)
+        setProfileToLocalStorage(res.data.data)
         toast.success('Update profile successfully.')
       },
       onError: (error) => {
@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
       onSuccess: () => {
         window.location.reload()
         setDeleteMode(false)
-        clearLS()
+        clearLocalStorage()
         navigate(path.home)
         toast.success('Delete account successfully.')
       },

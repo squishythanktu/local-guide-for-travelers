@@ -136,7 +136,7 @@ const SalesReportOfGuide: React.FC = () => {
         <MaterialReactTable table={table} />
       </Box>
       <Card className='col-span-12 flex flex-col gap-2 px-3 pb-3 lg:col-span-6'>
-        <h2 className='pt-3 text-xl'>Top 5 popular guides</h2>
+        <h2 className='mb-8 pt-3 text-xl'>Top 5 popular guides</h2>
         <Pie
           options={{
             aspectRatio: 2

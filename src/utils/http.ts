@@ -2,7 +2,12 @@ import axios, { AxiosError, type AxiosInstance } from 'axios'
 import { URL_LOGIN, URL_LOGOUT, URL_REGISTER } from 'src/apis/auth.api'
 import config from 'src/constants/config.constant'
 import { AuthSuccessResponse } from 'src/types/auth.type'
-import { clearLS, getAccessTokenFromLocalStorage, setAccessTokenToLS, setProfileToLS } from './auth'
+import {
+  clearLocalStorage,
+  getAccessTokenFromLocalStorage,
+  setAccessTokenToLocalStorage,
+  setProfileToLocalStorage
+} from './auth'
 
 export class Http {
   instance: AxiosInstance
@@ -34,11 +39,11 @@ export class Http {
         const { url } = response.config
         if (url === URL_LOGIN || url === URL_REGISTER) {
           this.accessToken = (response.data as AuthSuccessResponse).data.accessToken
-          setAccessTokenToLS(this.accessToken)
-          setProfileToLS((response.data as AuthSuccessResponse).data.user)
+          setAccessTokenToLocalStorage(this.accessToken)
+          setProfileToLocalStorage((response.data as AuthSuccessResponse).data.user)
         } else if (url === URL_LOGOUT) {
           this.accessToken = ''
-          clearLS()
+          clearLocalStorage()
         }
         return response
       },

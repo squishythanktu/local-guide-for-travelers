@@ -6,6 +6,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import HikingIcon from '@mui/icons-material/Hiking'
 import HomeWorkIcon from '@mui/icons-material/HomeWork'
+import ListIcon from '@mui/icons-material/List'
 import PersonIcon from '@mui/icons-material/Person'
 import TourIcon from '@mui/icons-material/Tour'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
@@ -20,12 +21,12 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { Theme, styled } from '@mui/material/styles'
 import * as React from 'react'
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { drawerWidth } from 'src/constants/width-height.constant'
+import { useToggle } from 'src/hooks/useToggle'
 import theme from 'src/theme'
-import ListIcon from '@mui/icons-material/List'
 import { isActive } from 'src/utils/active.util'
 
 interface AdminDrawerProps {
@@ -78,24 +79,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 }))
 
 const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: AdminDrawerProps) => {
-  const [openCollapseSalesReport, setOpenCollapseSalesReport] = useState(false)
-  const [openCollapseTourManagement, setOpenCollapseTourManagement] = useState(false)
-  const [openCollapseGuideManagement, setOpenCollapseGuideManagement] = useState(false)
+  const [openCollapseSalesReport, toggleCollapseSalesReport] = useToggle(false)
+  const [openCollapseTourManagement, toggleCollapseTourManagement] = useToggle(false)
+  const [openCollapseGuideManagement, toggleCollapseGuideManagement] = useToggle(false)
   const location = useLocation()
 
   const handleClickSalesReport = (event: SyntheticEvent) => {
     event.stopPropagation()
-    setOpenCollapseSalesReport(!openCollapseSalesReport)
+    toggleCollapseSalesReport()
   }
 
   const handleClickTourManagement = (event: SyntheticEvent) => {
     event.stopPropagation()
-    setOpenCollapseTourManagement(!openCollapseTourManagement)
+    toggleCollapseTourManagement()
   }
 
   const handleClickGuideManagement = (event: SyntheticEvent) => {
     event.stopPropagation()
-    setOpenCollapseGuideManagement(!openCollapseGuideManagement)
+    toggleCollapseGuideManagement()
   }
 
   return (

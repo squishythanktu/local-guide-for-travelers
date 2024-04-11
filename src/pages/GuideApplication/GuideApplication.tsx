@@ -32,6 +32,7 @@ import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { TypeOfTransport } from 'src/enums/type-of-transport.enum'
+import { useToggle } from 'src/hooks/useToggle'
 import { GuideApplicationType } from 'src/types/guide-application.type'
 import { User } from 'src/types/user.type'
 import { convertDateToUTC7 } from 'src/utils/date-time'
@@ -55,7 +56,7 @@ const applicationSchema = guideApplicationSchema.pick([
 
 const GuideApplication: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
-  const [openCollapse, setOpenCollapse] = useState(false)
+  const [openCollapse, toggleCollapse, setOpenCollapse] = useToggle(false)
   const [transportationState, setTransportationState] = useState({
     none: false,
     myOwn: false,
@@ -116,7 +117,7 @@ const GuideApplication: React.FC = () => {
       setOpenCollapse(false)
       return
     }
-    setOpenCollapse((prev) => !prev)
+    toggleCollapse()
   }, [watchIsLicenseGuide])
 
   const createGuideApplicationMutation = useMutation({

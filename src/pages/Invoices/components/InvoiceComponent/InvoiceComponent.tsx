@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import paymentApi from 'src/apis/payment.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
+import { useToggle } from 'src/hooks/useToggle'
 import PassengerInfo from 'src/pages/BookingSuccess/components/PassengerInfo/PassengerInfo'
 import { Invoice } from 'src/types/invoice.type'
 import BookingContent from '../../../Bookings/components/BookingContent/BookingContent'
@@ -17,7 +18,7 @@ interface InvoiceComponentProps {
 }
 
 const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInvoicesData }: InvoiceComponentProps) => {
-  const [openCollapse, setOpenCollapse] = useState<boolean>(false)
+  const [openCollapse, toggleCollapse] = useToggle(false)
   const [isClicked, setIsClicked] = useState<{ confirmRefund: boolean; refund: boolean }>({
     confirmRefund: false,
     refund: false
@@ -85,7 +86,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
               <Button
                 variant='outlined'
                 endIcon={openCollapse ? <ExpandLess /> : <ExpandMore />}
-                onClick={() => setOpenCollapse(!openCollapse)}
+                onClick={() => toggleCollapse()}
                 className='ml-2'
               >
                 {!openCollapse ? 'View Details' : 'Hide Details'}

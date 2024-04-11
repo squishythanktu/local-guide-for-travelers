@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, createContext, useState } from 'react'
 import { User } from 'src/types/user.type'
-import { getAccessTokenFromLocalStorage, getProfileFromLS } from 'src/utils/auth'
+import { getAccessTokenFromLocalStorage, getProfileFromLocalStorage } from 'src/utils/auth'
 
 interface AppContextInterface {
   isAuthenticated: boolean
@@ -13,7 +13,7 @@ interface AppContextInterface {
 const initialAppContext: AppContextInterface = {
   isAuthenticated: Boolean(getAccessTokenFromLocalStorage()),
   setIsAuthenticated: () => null,
-  profile: getProfileFromLS(),
+  profile: getProfileFromLocalStorage(),
   setProfile: () => null,
   reset: () => null
 }

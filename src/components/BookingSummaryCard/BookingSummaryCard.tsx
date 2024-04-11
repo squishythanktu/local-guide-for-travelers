@@ -9,10 +9,10 @@ import CardMedia from '@mui/material/CardMedia'
 import Collapse from '@mui/material/Collapse'
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
 import MainStop from 'src/components/MainStop/MainStop'
+import { useToggle } from 'src/hooks/useToggle'
 import { Booking } from 'src/types/booking.type'
 import { formatDateLocaleString, formatTime } from 'src/utils/date-time'
 
@@ -21,7 +21,7 @@ interface BookingSummaryCardProps {
 }
 
 const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({ booking }: BookingSummaryCardProps) => {
-  const [openCollapse, setOpenCollapse] = useState(false)
+  const [openCollapse, toggleCollapse] = useToggle(false)
 
   return (
     <Card className='mb-4 rounded-lg border-2 shadow-none'>
@@ -75,7 +75,7 @@ const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({ booking }: Book
         <Button
           variant='outlined'
           endIcon={openCollapse ? <ExpandLess /> : <ExpandMore />}
-          onClick={() => setOpenCollapse(!openCollapse)}
+          onClick={() => toggleCollapse()}
           className='ml-auto'
         >
           {!openCollapse ? 'View Details' : 'Hide Details'}

@@ -45,7 +45,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ handleDrawerOpen, open }: Adm
           edge='start'
           sx={{
             marginRight: 5,
-            ...(open && { display: 'none' })
+            ...(open ? { display: 'none' } : {})
           }}
         >
           <MenuIcon />

@@ -25,9 +25,10 @@ import { KeyboardEvent, SyntheticEvent, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { clearLS } from 'src/utils/auth'
+import { clearLocalStorage } from 'src/utils/auth'
 import { UserRole } from 'src/enums/user-role.enum'
 import ReceiptIcon from '@mui/icons-material/Receipt'
+import { useToggle } from 'src/hooks/useToggle'
 
 interface RightDrawerProps {
   textColor: string
@@ -38,12 +39,12 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
   const [state, setState] = useState({
     right: false
   })
-  const [open, setOpen] = useState(false)
+  const [openCollapse, toggleCollapse, setOpenCollapse] = useToggle(false)
   const navigate = useNavigate()
 
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation()
-    setOpen(!open)
+    toggleCollapse()
   }
 
   const toggleDrawer = (anchor: string, open: boolean) => (event: SyntheticEvent | MouseEvent) => {
@@ -58,11 +59,11 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
 
     setState({ ...state, [anchor]: open })
 
-    if (!open) setOpen(false)
+    if (!open) setOpenCollapse(false)
   }
 
   const handleLogout = () => {
-    clearLS()
+    clearLocalStorage()
     navigate(path.home)
     window.location.reload()
   }
@@ -122,10 +123,10 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
                     : 'Profile'
               }
             />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            {openCollapse ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
-        <Collapse in={open} timeout='auto' unmountOnExit>
+        <Collapse in={openCollapse} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={path.profile}>
               <ListItemIcon>
@@ -214,10 +215,10 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
                     : 'Profile'
               }
             />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            {openCollapse ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
-        <Collapse in={open} timeout='auto' unmountOnExit>
+        <Collapse in={openCollapse} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideApplications}>
               <ListItemIcon>
