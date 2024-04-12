@@ -5,7 +5,13 @@ import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { DateObject } from 'react-multi-date-picker'
 import { DayInSchedule } from 'src/types/schedule.type'
-import { DateArrayConvertToDateObjectArray, compareDate, formatDate, isInArr } from 'src/utils/date-time'
+import {
+  DateArrayConvertToDateObjectArray,
+  compareDate,
+  compareDateForDateList,
+  formatDate,
+  isInArr
+} from 'src/utils/date-time'
 
 interface Props {
   busyByGuide: DayInSchedule[]
@@ -64,7 +70,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
     setFutureBookedByHour([])
     busyByGuide.forEach((item) => {
       const busyDate = item.busyDate
-      if (busyDate < new Date()) {
+      if (compareDateForDateList(busyDate, new Date())) {
         pastBusyDates.push(busyDate)
       } else {
         futureBusyDates.push(busyDate)
@@ -73,7 +79,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
 
     busyByDay.forEach((item) => {
       const busyDate = item.busyDate
-      if (busyDate < new Date()) {
+      if (compareDateForDateList(busyDate, new Date())) {
         pastBookedByDay.push(busyDate)
       } else {
         futureBookedByDay.push(busyDate)
@@ -82,7 +88,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
 
     busyByHour.forEach((item) => {
       const busyDate = item.busyDate
-      if (busyDate < new Date()) {
+      if (compareDateForDateList(busyDate, new Date())) {
         pastBookedByHour.push(busyDate)
       } else {
         futureBookedByHour.push(busyDate)
@@ -225,7 +231,12 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
           </Button>
         </Box>
       </Box>
-      <List disablePadding className='rounded-b-md px-2 pt-2' subheader={<li />}>
+      <List
+        style={{ maxHeight: '70%', overflow: 'auto' }}
+        disablePadding
+        className='rounded-b-md px-2 pt-2'
+        subheader={<li />}
+      >
         {displayDates.map((item, index) => (
           <Box
             sx={{ borderColor: (theme) => theme.palette.primary.main }}
@@ -245,7 +256,11 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
                 if (dayState === 'daysOff' && temporalState == 'upcoming') event.stopPropagation(), handleDayClick(item)
               }}
             >
-              <div className='grid justify-center'>{formatDate(new Date(item), 'MM/DD/YYYY')}</div>
+              {dayState.toString() === 'bookedByHour' ? (
+                <div className='grid justify-center'>{formatDate(new Date(item), ' HH:mm - MM/DD/YYYY')}</div>
+              ) : (
+                <div className='grid justify-center'>{formatDate(new Date(item), 'MM/DD/YYYY')}</div>
+              )}
               {dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming' && (
                 <IconButton
                   onClick={(event) => {

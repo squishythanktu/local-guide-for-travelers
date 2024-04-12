@@ -41,3 +41,7 @@ export const DateArrayConvertToDateObjectArray = (dateArr: Date[]) => {
 export const isInArr = (date: Date, arr: Date[]) => {
   return arr.map((item) => new Date(item).getTime()).includes(new Date(date).getTime())
 }
+
+export const compareDateForDateList = (a: Date, b: Date) => {
+  return new Date(a).getTime() - new Date(b).getTime() > 0 ? false : true
+}
