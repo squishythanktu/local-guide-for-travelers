@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Button from '@mui/material/Button'
@@ -63,8 +64,8 @@ export default function CartBookingItem({ booking, refetch }: CartBookingItemPro
         setEditMode(false)
         toast.success('Update booking successfully.')
       },
-      onError: (error) => {
-        toast.error(error.message)
+      onError: (error: any) => {
+        toast.error(error.response.data.message)
       }
     })
   }
