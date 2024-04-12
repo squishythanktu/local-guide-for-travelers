@@ -116,9 +116,13 @@ const RequestTour: React.FC = () => {
       }
       createRequestTourMutation.mutate(formattedData, {
         onSuccess: () => {
-          navigate(path.tourRequest)
-          if (buttonClicked === StatusRequest.PENDING) toast.success('Your request has been sent.')
-          if (buttonClicked === StatusRequest.DRAFT) toast.success('Your request has been saved as a draft.')
+          if (buttonClicked === StatusRequest.PENDING) {
+            toast.success('Your request has been sent.'), navigate(path.tourRequest)
+          }
+          if (buttonClicked === StatusRequest.DRAFT) {
+            toast.success('Your request has been saved as a draft.')
+            navigate(path.tourRequest, { state: { statusRequest: StatusRequest.DRAFT } })
+          }
         },
         onError: () => {
           toast.error('You have a PENDING request for this guide, consider removing the previous before add.')
@@ -186,6 +190,14 @@ const RequestTour: React.FC = () => {
             </div>
           </div>
           <div className='flex gap-3'>
+            <ControlledTextField
+              required
+              className='min-h-[80px] w-1/2 grow'
+              type='number'
+              control={control}
+              name={'duration'}
+              label={'Duration'}
+            />
             <Controller
               control={control}
               name='unit'
@@ -221,14 +233,6 @@ const RequestTour: React.FC = () => {
                   ))}
                 </TextField>
               )}
-            />
-            <ControlledTextField
-              required
-              className='min-h-[80px] w-1/2 grow'
-              type='number'
-              control={control}
-              name={'duration'}
-              label={'Duration'}
             />
           </div>
           <div className='flex gap-3'>
@@ -268,7 +272,7 @@ const RequestTour: React.FC = () => {
               gap: 2
             }}
           >
-            <Button variant='outlined' className='w-fit' size='large'>
+            <Button variant='outlined' className='w-fit' size='large' onClick={() => navigate(-1)}>
               Cancel
             </Button>
             <LoadingButton

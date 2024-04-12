@@ -9,10 +9,12 @@ import { Request } from 'src/types/request.type'
 import ButtonComponent from './components/ButtonComponent'
 import RequestComponent from './components/RequestComponent'
 import { TourStatus } from 'src/enums/tour-status.enum'
+import { useLocation } from 'react-router-dom'
 
 const TourRequestManagement: React.FC = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
   const [isGuide, setIsGuide] = useState<boolean>()
+  const location = useLocation()
 
   const { data: requestsData, refetch } = useQuery({
     queryKey: [`requests of  ${profile?.id}`],
@@ -72,6 +74,12 @@ const TourRequestManagement: React.FC = () => {
     }
     setDisplayData(displayRequestsData)
   }, [requestsData, requestStatus, profile])
+
+  useEffect(() => {
+    if (location.state && location.state.statusRequest === StatusRequest.DRAFT) {
+      setRequestStatus(StatusRequest.DRAFT)
+    }
+  }, [location])
 
   const handleQuantity = (item: StatusRequest) => {
     if (requestsData) {
