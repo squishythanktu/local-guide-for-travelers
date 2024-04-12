@@ -17,7 +17,7 @@ export default function AuthLayout({ children }: Props) {
               <SvgIcon component={LogoIcon} inheritViewBox className='text-5xl' />
             </Link>
           </div>
-          <div className='form mx-auto flex w-full max-w-[550px] flex-grow flex-col justify-center gap-4 px-5 lg:px-7'>
+          <div className='form mx-auto flex h-full w-full flex-grow flex-col justify-center gap-4 px-5 lg:px-7'>
             {children}
           </div>
         </div>

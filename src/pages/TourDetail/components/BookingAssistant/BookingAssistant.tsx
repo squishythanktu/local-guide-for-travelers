@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from '@hookform/resolvers/yup'
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import Button from '@mui/material/Button'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -10,7 +11,6 @@ import { Controller, useForm } from 'react-hook-form'
 import scheduleApi from 'src/apis/schedule.api'
 import { bookingSchema } from 'src/utils/rules'
 import { BookingAssistantFormData } from '../../TourDetail'
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 
 dayjs.extend(isSameOrBefore)
 
@@ -91,16 +91,24 @@ const BookingAssistant: React.FC<BookingAssistantProps> = ({ onSubmit, id, limit
               className='rounded-sm'
               disablePast={true}
               shouldDisableDate={checkBusyDate}
+              onChange={(date) => {
+                field.onChange(date)
+                trigger('startDate')
+              }}
               sx={{
                 bgcolor: 'white',
                 width: '100%',
                 '.MuiOutlinedInput-notchedOutline': {
                   border: 'none'
+                },
+                '& .MuiInputBase-input.Mui-disabled': {
+                  WebkitTextFillColor: 'black'
                 }
               }}
-              onChange={(event) => {
-                field.onChange(event)
-                trigger('startDate')
+              slotProps={{
+                textField: {
+                  disabled: true
+                }
               }}
             />
           )}

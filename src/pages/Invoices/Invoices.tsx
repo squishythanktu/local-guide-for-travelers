@@ -16,7 +16,7 @@ const Invoices: React.FC = () => {
 
   if (!isAuthenticated)
     return (
-      <div className='flex h-[550px] flex-col items-center justify-center'>
+      <div className='flex h-full flex-col items-center justify-center'>
         <img
           loading='lazy'
           src='/assets/images/empty-booking.png'
@@ -28,7 +28,7 @@ const Invoices: React.FC = () => {
     )
 
   return (
-    <Box className='container flex min-h-[550px] flex-col '>
+    <Box className='container flex h-full flex-col'>
       {!invoicesData?.data.data && <Loading />}
       {invoicesData?.data.data && invoicesData.data.data.length > 0 ? (
         <>
@@ -38,7 +38,7 @@ const Invoices: React.FC = () => {
           ))}
         </>
       ) : (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
+        <div className='flex h-full flex-col items-center justify-center'>
           <img
             loading='lazy'
             src='/assets/images/empty-booking.png'

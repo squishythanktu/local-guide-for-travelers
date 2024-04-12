@@ -26,7 +26,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ bookingId }: OrderSummaryPr
   return (
     <>
       <h2 className='pb-3'>Order summary</h2>
-      <Box style={{ maxHeight: 600, overflow: 'auto' }}>
+      <Box>
         {bookingsCartData ? (
           bookingId ? (
             <BookingSummaryCard booking={(bookingsCartData.data.data as BookingsInCart).bookings.slice(-1)[0]} />
@@ -40,10 +40,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ bookingId }: OrderSummaryPr
         )}
       </Box>
       <Box className='mt-4 flex justify-between rounded-b-md  bg-slate-100 px-4 py-2'>
-        <div className='t text-lg font-extrabold'>
-          Total ({bookingId ? 1 : totalBookingLength}
-          item(s))
-        </div>
+        <div className='t text-lg font-extrabold'>Total ({bookingId ? 1 : totalBookingLength} item(s))</div>
         <div className='flex flex-col items-end'>
           <Typography
             className='text-lg font-semibold sm:text-xl md:text-2xl'

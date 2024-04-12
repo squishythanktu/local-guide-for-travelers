@@ -37,7 +37,7 @@ const PassengerInformation: React.FC<Props> = ({
 
   return (
     <>
-      <h3 className='pb-4'>Passenger Information</h3>
+      <h3 className='pb-[0.75rem]'>Passenger Information</h3>
       <form onSubmit={handleSubmit(confirmPassengerInfo)}>
         <Card onClick={() => setIsDisplaySaveButton(true)} className='rounded-lg border-2 p-4 shadow-none'>
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

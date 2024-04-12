@@ -57,6 +57,10 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
   })
 
   useEffect(() => {
+    if (isTransferMoney) setIsTransferMoney(false)
+  }, [])
+
+  useEffect(() => {
     if (paymentUrl?.data.data) {
       window.location.href = paymentUrl.data.data
     }
@@ -81,19 +85,18 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
       }
     })
 
-  useEffect(() => {
-    if (isTransferMoney) {
-      setIsTransferMoney(false)
-    }
-  }, [])
-
   return (
     <>
       <div className='mt-4 rounded-lg border-2 p-4 shadow-none'>
         <h3 className='pb-4'>Payment method</h3>
         <div className='grid grid-cols-2  justify-items-center gap-3'>
           <div className='col-span-1'>
-            <img loading='lazy' src='/assets/images/coin-payment.png' alt='coin-payment' className='h-9' />
+            <img
+              loading='lazy'
+              src='/assets/images/coin-payment.png'
+              alt='coin-payment'
+              className='h-9 w-auto object-contain'
+            />
             <LoadingButton
               loading={cryptoPaymentLoading}
               variant='outlined'
@@ -105,7 +108,12 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
             </LoadingButton>
           </div>
           <div className='col-span-1'>
-            <img loading='lazy' src='/assets/images/vnpay.png' alt='coin-payment' className='h-9' />
+            <img
+              loading='lazy'
+              src='/assets/images/vnpay.png'
+              alt='coin-payment'
+              className='h-9 w-auto object-contain'
+            />
             <LoadingButton
               loading={VNPaymentLoading}
               variant='outlined'

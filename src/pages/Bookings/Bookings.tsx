@@ -47,7 +47,7 @@ const Bookings: React.FC = () => {
 
   if (!isAuthenticated)
     return (
-      <div className='flex h-[550px] flex-col items-center justify-center'>
+      <div className='flex h-full flex-col items-center justify-center'>
         <img
           loading='lazy'
           src='/assets/images/empty-booking.png'
@@ -59,7 +59,7 @@ const Bookings: React.FC = () => {
     )
 
   return (
-    <Box className='container flex min-h-[550px] flex-col '>
+    <Box className='container flex h-full flex-col '>
       {!bookingsHistoryData?.data.data && <Loading />}
       {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
         <>
@@ -98,7 +98,7 @@ const Bookings: React.FC = () => {
           </SwipeableViews>
         </>
       ) : (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
+        <div className='flex h-full flex-col items-center justify-center'>
           <img
             loading='lazy'
             src='/assets/images/empty-booking.png'

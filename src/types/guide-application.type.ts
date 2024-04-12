@@ -1,6 +1,7 @@
 import { GuideApplicationStatus } from 'src/enums/guide-application-status'
 
 export type GuideApplicationType = {
+  userId: number | null
   email: string
   password: string
   fullName: string

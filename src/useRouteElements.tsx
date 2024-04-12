@@ -393,7 +393,7 @@ export default function useRouteElements() {
         },
         {
           path: path.admin,
-          element: <AdminLayout />
+          element: <Navigate to={path.tourList} />
         },
         {
           path: path.tourConfirmation,

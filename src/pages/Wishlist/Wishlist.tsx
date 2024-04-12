@@ -17,7 +17,7 @@ const Wishlist: React.FC = () => {
   })
   if (!isAuthenticated)
     return (
-      <div className='flex h-[550px] flex-col items-center justify-center'>
+      <div className='flex h-full flex-col items-center justify-center'>
         <img
           loading='lazy'
           src='/assets/images/empty-wishlist.png'
@@ -29,7 +29,7 @@ const Wishlist: React.FC = () => {
     )
 
   return (
-    <Box className='container'>
+    <Box className='container h-full'>
       {isAuthenticated && !wishListData?.data.data && <Loading />}
       {isAuthenticated && wishListData?.data.data && wishListData.data.data.length > 0 ? (
         <div className=''>
@@ -41,7 +41,7 @@ const Wishlist: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
+        <div className='flex h-full flex-col items-center justify-center'>
           <img
             loading='lazy'
             src='/assets/images/empty-wishlist.png'

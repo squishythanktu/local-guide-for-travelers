@@ -39,21 +39,29 @@ export const userSchema = yup.object({
 })
 
 export const guideApplicationSchema = userSchema.shape({
-  fullName: yup.string().trim().required().max(100, 'Maximum length of full name is 100 characters'),
-  phone: yup.string().trim().max(20, 'Maximum length is 20 characters').required(),
-  address: yup.string().trim().required().max(160, 'Maximum length is 160 characters'),
-  dateOfBirth: yup.date().required(),
-  email: yup.string().email().required(),
+  fullName: yup
+    .string()
+    .trim()
+    .required('Full name is required')
+    .max(100, 'Maximum length of full name is 100 characters'),
+  phone: yup.string().trim().max(20, 'Maximum length is 20 characters').required('Phone is required'),
+  address: yup.string().trim().required('Address is required').max(160, 'Maximum length is 160 characters'),
+  dateOfBirth: yup.date().required('Date of birth is required').typeError('Date of birth must be a date'),
+  email: yup.string().email().required('Email is required'),
   password: yup
     .string()
     .required('Password is required')
     .min(6, 'Password length from 6 - 160 characters')
     .max(160, 'Password length from 6 - 160 characters'),
-  yearsOfExperience: yup.number().required().min(0).typeError('Year of experience must be positive a number'),
+  yearsOfExperience: yup
+    .number()
+    .required()
+    .min(0, 'Year of experience must be positive a number')
+    .typeError('Year of experience must be positive a number'),
   isLicensedGuide: yup.boolean().required(),
   licenseImages: yup.array().of(yup.string()),
   transportation: yup.object().required(),
-  biography: yup.string().required().max(350, 'Maximum length is 350 characters')
+  biography: yup.string().required('Biography is required').max(350, 'Maximum length is 350 characters')
 })
 
 export const tourSchema = yup.object({
@@ -89,7 +97,7 @@ export const searchSchema = yup.object({
 })
 
 export const bookingSchema = yup.object({
-  startDate: yup.date().required(),
+  startDate: yup.date().required('Start date is required').typeError('Start date must be a date'),
   numberTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number'),
   startTime: yup.string().required()
 })

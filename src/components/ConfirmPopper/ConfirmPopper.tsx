@@ -45,6 +45,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           </IconButton>
         </DialogTitle>
         <DialogContent>
+          <Box sx={{ paddingTop: '1rem' }}>{content}</Box>
           {setReason && currentAction === 'deny' && (
             <TextField
               className='mt-4 w-full'
@@ -59,9 +60,11 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               value={reason}
               onChange={(event) => setReason(event.target.value)}
               variant='outlined'
+              InputLabelProps={{
+                shrink: true
+              }}
             />
           )}
-          <Box sx={{ paddingTop: '1rem' }}>{content}</Box>
         </DialogContent>
         <DialogActions>
           <Stack direction='row' spacing={1} className='flex justify-end'>

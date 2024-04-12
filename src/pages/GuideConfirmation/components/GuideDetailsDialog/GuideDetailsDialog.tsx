@@ -175,7 +175,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       <Typography variant='body1' className='font-semibold'>
                         Biography:
                       </Typography>
-                      <span>{guideApplicationData?.data.data.biography}</span>
+                      <span>{guideApplicationData?.data.data.biography || 'N/A'}</span>
                     </Grid>
                     {guideApplicationData?.data.data.licenseImages &&
                       guideApplicationData?.data.data.licenseImages.length > 0 && (

@@ -24,17 +24,17 @@ export default function Cart() {
 
   if (!isAuthenticated)
     return (
-      <div className='flex h-[550px] flex-col items-center justify-center'>
+      <div className='flex h-full flex-col items-center justify-center'>
         <img loading='lazy' src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
         <h3>You have to sign in first to see your cart.</h3>
       </div>
     )
 
   return (
-    <Box className='container flex min-h-[550px] flex-col'>
+    <Box className='container flex h-full flex-col'>
       {isPending && <Loading />}
       {!isPending && (cartData?.data.data.bookings?.length === 0 || !cartData?.data.data.bookings) && (
-        <div className='flex min-h-[550px] flex-col items-center justify-center'>
+        <div className='flex h-full flex-col items-center justify-center'>
           <img loading='lazy' src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
           <h3>No cart data available.</h3>
         </div>

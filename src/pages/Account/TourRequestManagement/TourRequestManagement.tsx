@@ -197,7 +197,7 @@ const TourRequestManagement: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className='flex h-[550px] flex-col items-center justify-center'>
+        <div className='flex h-full flex-col items-center justify-center'>
           <img
             src='/assets/images/empty-booking.png'
             alt='Empty request'
