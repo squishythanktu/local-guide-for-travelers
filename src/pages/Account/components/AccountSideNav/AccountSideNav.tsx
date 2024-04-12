@@ -20,7 +20,7 @@ export default function AccountSideNav() {
       <AvatarSideNav />
       <div className='account__side-menu'>
         <Paper>
-          <List>
+          <List sx={{ padding: 0 }}>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton component={Link} to={path.profile} selected={isActive(location, path.profile)}>
                 <ListItemIcon>

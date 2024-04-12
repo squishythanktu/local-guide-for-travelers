@@ -33,7 +33,6 @@ import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
 import path from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { TypeOfTransport } from 'src/enums/type-of-transport.enum'
-import { useToggle } from 'src/hooks/useToggle'
 import { GuideApplicationType } from 'src/types/guide-application.type'
 import { User } from 'src/types/user.type'
 import { convertDateToUTC7 } from 'src/utils/date-time'
@@ -57,7 +56,7 @@ const applicationSchema = guideApplicationSchema.pick([
 
 const GuideApplication: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
-  const [openCollapse, toggleCollapse, setOpenCollapse] = useToggle(false)
+  const [openCollapse, setOpenCollapse] = useState(false)
   const [transportationState, setTransportationState] = useState({
     none: false,
     myOwn: false,
@@ -73,7 +72,7 @@ const GuideApplication: React.FC = () => {
     phone: '',
     dateOfBirth: undefined,
     transportation: transportationState,
-    isLicensedGuide: false,
+    isLicensedGuide: true,
     licenseImages: [],
     yearsOfExperience: 0,
     biography: ''
@@ -91,7 +90,7 @@ const GuideApplication: React.FC = () => {
     queryKey: [`get me ${profile?.email}`, profile?.email],
     queryFn: () => userApi.getMe()
   })
-  const watchIsLicenseGuide: boolean = watch('isLicensedGuide')
+  const watchIsLicenseGuide = watch('isLicensedGuide')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -115,13 +114,13 @@ const GuideApplication: React.FC = () => {
   }, [setValue, transportationState])
 
   useEffect(() => {
-    if (watchIsLicenseGuide === false) {
+    if (String(watchIsLicenseGuide) === 'false') {
       setImages([])
       setOpenCollapse(false)
       return
     }
-    toggleCollapse()
-  }, [setOpenCollapse, toggleCollapse, watchIsLicenseGuide])
+    setOpenCollapse(true)
+  }, [watchIsLicenseGuide])
 
   const createGuideApplicationMutation = useMutation({
     mutationFn: (body: GuideApplicationType) => {
@@ -165,15 +164,15 @@ const GuideApplication: React.FC = () => {
   const { none, hired, myOwn, rental } = transportationState
 
   return (
-    <Box className='container relative flex w-full items-center justify-center'>
-      <form onSubmit={handleSubmit(onSubmit)} className='h-full w-full flex-col gap-4 rounded-lg p-8'>
-        <Typography variant='h4' className='mb-2 font-bold'>
+    <Box className='container relative flex h-auto min-h-[100%] w-full justify-center'>
+      <form onSubmit={handleSubmit(onSubmit)} className='h-full w-full flex-col gap-6 rounded-lg p-8'>
+        <Typography variant='h4' className='mb-4 font-bold'>
           Join us as a local guide
         </Typography>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
           Profile Details
         </h2>
-        <div className='field-group flex flex-col gap-6 md:mb-4 md:flex-row md:justify-between'>
+        <div className='field-group flex flex-col gap-6 md:flex-row md:justify-between'>
           <ControlledTextField
             required
             className='min-h-20 w-full'
@@ -214,7 +213,7 @@ const GuideApplication: React.FC = () => {
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
           Contact Details
         </h2>
-        <div className='field-group flex flex-col gap-6 md:mb-4 md:flex-row md:justify-between'>
+        <div className='field-group mb-5 flex flex-col gap-6 md:flex-row md:justify-between'>
           <Controller
             name='address'
             control={control}
@@ -226,7 +225,7 @@ const GuideApplication: React.FC = () => {
                   freeSolo
                   disablePortal
                   id='address'
-                  className='w-full flex-grow'
+                  className='min-h-20 w-full flex-grow'
                   onBlur={onBlur}
                   value={value}
                   onChange={(__event, selectedOptions) => {
@@ -299,7 +298,7 @@ const GuideApplication: React.FC = () => {
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
           Experience
         </h2>
-        <FormControl>
+        <FormControl className='mb-4 w-full'>
           <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='transportation'>
             What type(s) of transportation method will you offer in your tours?
           </Typography>
@@ -333,7 +332,7 @@ const GuideApplication: React.FC = () => {
             />
           </FormGroup>
         </FormControl>
-        <FormControl>
+        <FormControl className='mb-4 w-full'>
           <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
             Are you a licensed tour guide?
             <Typography component='span' sx={{ color: 'red' }}>
@@ -356,7 +355,7 @@ const GuideApplication: React.FC = () => {
             }}
           />
         </FormControl>
-        <Collapse in={openCollapse} timeout='auto' unmountOnExit>
+        <Collapse in={openCollapse} timeout='auto' className='mb-4' unmountOnExit>
           <Box sx={{ marginY: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
               License images
@@ -366,7 +365,7 @@ const GuideApplication: React.FC = () => {
         </Collapse>
         <ControlledTextField
           required
-          className='min-h-20 w-full md:w-[49%]'
+          className='mb-4 min-h-20 w-full md:w-[49%]'
           type='number'
           control={control}
           name={'yearsOfExperience'}

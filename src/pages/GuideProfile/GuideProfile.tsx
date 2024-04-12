@@ -6,11 +6,13 @@ import path from 'src/constants/path.constant'
 import Loading from '../Loading/Loading'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function GuideProfile() {
   const { id } = useParams()
   const navigate = useNavigate()
-
+  const { isAuthenticated } = useContext(AppContext)
   const { data: guideProfileData, isPending } = useQuery({
     queryKey: [`guide profile of ${id}`],
     queryFn: () => guideApi.getProfile(id ? id : ''),
@@ -53,13 +55,15 @@ export default function GuideProfile() {
                     ({guideProfileData?.data.data.numberOfReviews || 0} reviews)
                   </span>
                 </div>
-                <Button
-                  onClick={() => navigate(path.requestTour, { state: { guideId: id } })}
-                  variant='contained'
-                  className=''
-                >
-                  Request a tour
-                </Button>
+                {isAuthenticated && (
+                  <Button
+                    onClick={() => navigate(path.requestTour, { state: { guideId: id } })}
+                    variant='contained'
+                    className=''
+                  >
+                    Request a tour
+                  </Button>
+                )}
               </div>
             </div>
             <div className='md:col-span-3'>

@@ -30,9 +30,7 @@ export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
           <div className='rating mr-2 flex items-center gap-2'>
             <Rating max={5} precision={0.1} value={Number(tour.overallRating.toFixed(2))} size='large' readOnly />
             <div className='text-sm font-medium md:text-[16px]'>{Number(tour.overallRating.toFixed(2))}/5</div>
-            <Link to='' className='text-nowrap text-sm underline md:text-[16px]'>
-              {totalReviews} reviews
-            </Link>
+            <span className='text-nowrap text-sm underline md:text-[16px]'>{totalReviews} reviews</span>
           </div>
           <div className='author mr-2 flex items-center gap-2'>
             <div className='text-nowrap text-sm font-semibold md:text-[16px]'>Activity provider:</div>

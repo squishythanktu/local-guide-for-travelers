@@ -28,7 +28,7 @@ const ManagementSideNav: React.FC = () => {
       <AvatarSideNav />
       <div className='management__side-menu'>
         <Paper>
-          <List>
+          <List sx={{ padding: 0 }}>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton component={Link} to={path.tourRequest} selected={isActive(location, path.tourRequest)}>
                 <ListItemIcon>

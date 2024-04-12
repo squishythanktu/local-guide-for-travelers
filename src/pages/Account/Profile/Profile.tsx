@@ -178,15 +178,6 @@ const Profile: React.FC = () => {
       </div>
       <div className='button-container flex justify-between gap-4'>
         <LoadingButton
-          loading={updateProfileMutation.isPending}
-          type='submit'
-          variant='contained'
-          size='large'
-          className='h-fit w-full md:w-32'
-        >
-          Save
-        </LoadingButton>
-        <LoadingButton
           loading={deleteProfileMutation.isPending}
           variant='outlined'
           size='large'
@@ -195,6 +186,15 @@ const Profile: React.FC = () => {
           onClick={() => setDeleteMode(true)}
         >
           Delete account
+        </LoadingButton>
+        <LoadingButton
+          loading={updateProfileMutation.isPending}
+          type='submit'
+          variant='contained'
+          size='large'
+          className='h-fit w-full md:w-32'
+        >
+          Save
         </LoadingButton>
         {deleteMode && (
           <ConfirmDialog

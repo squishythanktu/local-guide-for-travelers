@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box'
 import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
 import guideApi from 'src/apis/guide.api'
@@ -11,12 +12,14 @@ const BookingManagement: React.FC = () => {
     queryFn: () => guideApi.getBookings()
   })
   return (
-    <>
+    <Box className='h-full'>
       <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
         Booking Management
       </h2>
-      <BookingContent bookingList={bookingsData?.data.data} />
-    </>
+      <Box className='max-h-[1000px] overflow-auto'>
+        <BookingContent bookingList={bookingsData?.data.data} />
+      </Box>
+    </Box>
   )
 }
 export default BookingManagement

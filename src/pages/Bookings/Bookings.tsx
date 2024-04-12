@@ -59,9 +59,9 @@ const Bookings: React.FC = () => {
     )
 
   return (
-    <Box className='container flex h-full flex-col '>
+    <Box className='container flex h-full flex-col'>
       {!bookingsHistoryData?.data.data && <Loading />}
-      {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 ? (
+      {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 && (
         <>
           <h2 className='my-bookings__title pt-5'>My bookings</h2>
           <Tabs
@@ -97,7 +97,8 @@ const Bookings: React.FC = () => {
             </TabPanel>
           </SwipeableViews>
         </>
-      ) : (
+      )}
+      {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length === 0 && (
         <div className='flex h-full flex-col items-center justify-center'>
           <img
             loading='lazy'
