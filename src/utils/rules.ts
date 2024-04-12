@@ -47,7 +47,7 @@ export const guideApplicationSchema = userSchema.shape({
   phone: yup.string().trim().max(20, 'Maximum length is 20 characters').required('Phone is required'),
   address: yup.string().trim().required('Address is required').max(160, 'Maximum length is 160 characters'),
   dateOfBirth: yup.date().required('Date of birth is required').typeError('Date of birth must be a date'),
-  email: yup.string().email().required('Email is required'),
+  email: yup.string().email('Email is invalid').required('Email is required'),
   password: yup
     .string()
     .required('Password is required')
@@ -55,9 +55,9 @@ export const guideApplicationSchema = userSchema.shape({
     .max(160, 'Password length from 6 - 160 characters'),
   yearsOfExperience: yup
     .number()
-    .required()
-    .min(0, 'Year of experience must be positive a number')
-    .typeError('Year of experience must be positive a number'),
+    .required('Year of experience is required')
+    .min(0, 'Year of experience must be greater than or equal to 0')
+    .typeError('Year of experience must greater than or equal to 0'),
   isLicensedGuide: yup.boolean().required(),
   licenseImages: yup.array().of(yup.string()),
   transportation: yup.object().required(),
@@ -65,22 +65,37 @@ export const guideApplicationSchema = userSchema.shape({
 })
 
 export const tourSchema = yup.object({
-  name: yup.string().trim().required().max(100, 'Maximum length is 100 characters'),
+  name: yup.string().trim().required('Name is required').max(100, 'Maximum length is 100 characters'),
   description: yup.string().trim(),
-  transportation: yup.string().trim().required(),
+  transportation: yup.string().trim().required('Transportation is required'),
   includeService: yup.string().trim(),
-  duration: yup.number().positive().required().typeError('Duration must be positive a number'),
-  unit: yup.string().trim().required(),
-  estimatedLocalCashNeeded: yup.string().required().typeError('Estimated local cash needed is required'),
-  pricePerTraveler: yup.number().positive().required().typeError('Price per traveler must be positive a number'),
-  limitTraveler: yup.number().positive().required().typeError('Limit traveler must be positive a number'),
-  itinerary: yup.string().trim().required(),
+  duration: yup
+    .number()
+    .positive('Duration must be a positive number')
+    .required('Duration is required')
+    .typeError('Duration must be positive a number'),
+  unit: yup.string().trim().required('Unit is required'),
+  estimatedLocalCashNeeded: yup
+    .string()
+    .required('Estimated local cash needed is required')
+    .typeError('Estimated local cash needed is required'),
+  pricePerTraveler: yup
+    .number()
+    .positive('Price per traveler must be a positive number')
+    .required('Price per traveler is required')
+    .typeError('Price per traveler must be positive a number'),
+  limitTraveler: yup
+    .number()
+    .positive('Limit traveler must be a positive number')
+    .required('Limit traveler is required')
+    .typeError('Limit traveler must be positive a number'),
+  itinerary: yup.string().trim().required('Itinerary is required'),
   locations: yup
     .array()
-    .test('atLeastOne', 'Locations field must have at least 1 confirmed location & be saved', function (value) {
+    .test('atLeastOne', 'Locations must have at least 1 confirmed location & be saved', function (value) {
       return value && value.length >= 1
     })
-    .required('Locations field must have at least 1 confirmed location & be saved'),
+    .required('Locations must have at least 1 confirmed location & be saved'),
   categories: yup.array().of(
     yup.object().shape({
       id: yup.number(),
@@ -88,7 +103,7 @@ export const tourSchema = yup.object({
     })
   ),
   images: yup.array(),
-  startTimes: yup.array().required()
+  startTimes: yup.array().required('Start times is required')
 })
 
 export const searchSchema = yup.object({
@@ -104,22 +119,30 @@ export const bookingSchema = yup.object({
 
 export const requestTourSchema = yup.object({
   transportation: yup.array().min(1, 'At least one transportation option must be selected'),
-  duration: yup.number().positive().required().typeError('Duration must be positive a number'),
-  unit: yup.string().trim().required(),
-  maxPricePerPerson: yup.number().positive().required().typeError('Max price must be positive a number'),
-  numberOfTravelers: yup.number().positive().required().typeError('Number of travelers must be positive a number'),
-  destination: yup.string().required(),
+  duration: yup
+    .number()
+    .positive('Duration must be a positive number')
+    .required('Duration is required')
+    .typeError('Duration must be positive a number'),
+  unit: yup.string().trim().required('Unit is required'),
+  maxPricePerPerson: yup
+    .number()
+    .positive('Max price per traveler must be a positive number')
+    .required('Max price per traveler is required')
+    .typeError('Max price per traveler must be a positive number'),
+  numberOfTravelers: yup.number().positive().required().typeError('Number of travelers must be a positive number'),
+  destination: yup.string().required('Destination is required'),
   message: yup.string()
 })
 
 export const commentSchema = yup.object({
-  comment: yup.string().trim().required(),
-  rating: yup.number().required().min(1).max(5)
+  comment: yup.string().trim().required('Comment is required'),
+  rating: yup.number().required('Rating is require').min(1).max(5)
 })
 
 export const passengerInformationSchema = yup.object({
-  fullName: yup.string().trim().required(),
-  phone: yup.string().trim().required().typeError('Phone number is required'),
+  fullName: yup.string().trim().required('Full name is required'),
+  phone: yup.string().trim().required('Phone is required').typeError('Phone is required'),
   email: yup
     .string()
     .required('Email is required')

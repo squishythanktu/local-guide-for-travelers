@@ -156,14 +156,12 @@ const Home: React.FC = () => {
           />
         )}
       </div>
-
-      {/* Locations */}
       {!isPendingCities && popularCitiesData?.data.data && popularCitiesData?.data.data.length > 0 && (
         <div className='collection-container container relative mx-auto my-10 max-w-[94%] lg:mx-auto lg:max-w-[1400px]'>
           <div className='collection-header mb-4'>
             <h2 className='text-4xl	leading-10'>Awe-inspiring destinations</h2>
           </div>
-          <div className='scroll flex flex-nowrap gap-2 overflow-x-auto'>
+          <div className='scroll flex flex-nowrap gap-4 overflow-x-auto'>
             {popularCitiesData?.data.data.map((city, index) => (
               <div key={index} className='col-span-1'>
                 <LocationCard city={city} />
