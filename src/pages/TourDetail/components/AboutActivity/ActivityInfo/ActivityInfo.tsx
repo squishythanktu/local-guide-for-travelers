@@ -13,7 +13,7 @@ export default function ActivityInfo({ icon, title, content }: ActivityInfoProps
         </div>
         <div className='col-span-11'>
           <p className='font-semibold'>{title}</p>
-          <p className='mb-1 text-sm text-[var(--label-secondary)]'>{content}</p>
+          <div className='mb-1 text-sm text-[var(--label-secondary)]'>{content}</div>
         </div>
       </div>
     </div>

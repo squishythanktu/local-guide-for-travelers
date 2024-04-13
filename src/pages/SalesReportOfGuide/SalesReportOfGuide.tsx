@@ -136,7 +136,7 @@ const SalesReportOfGuide: React.FC = () => {
         <MaterialReactTable table={table} />
       </Box>
       <Card className='col-span-12 flex flex-col gap-2 px-3 pb-3 lg:col-span-6'>
-        <h2 className='mb-8 pt-3 text-xl'>Top 5 popular guides</h2>
+        <h2 className='mb-8 pt-3 text-xl'>Top 5 most booking guides</h2>
         <Pie
           options={{
             aspectRatio: 2
@@ -146,7 +146,7 @@ const SalesReportOfGuide: React.FC = () => {
             datasets: [
               {
                 label: 'Total revenue ($)',
-                data: popularGuidesData?.data.data.map((data) => data.totalRevenue),
+                data: popularGuidesData?.data.data.map((data) => data.totalBooking),
                 backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',

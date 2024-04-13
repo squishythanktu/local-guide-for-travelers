@@ -50,7 +50,7 @@ export default function Checkout() {
   })
 
   return (
-    <Box className='container flex flex-col'>
+    <Box className='container flex h-auto min-h-[100%] flex-col'>
       <Breadcrumbs className='mt-4' aria-label='breadcrumb'>
         {breadcrumbs}
       </Breadcrumbs>

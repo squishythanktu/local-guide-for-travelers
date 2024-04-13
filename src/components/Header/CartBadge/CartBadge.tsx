@@ -17,13 +17,13 @@ const CartBadge: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(0)
 
   useEffect(() => {
-    if (cartData?.data.data.bookings) setQuantity(cartData?.data.data.bookings.length)
+    if (cartData?.data.data.bookings) setQuantity(cartData?.data.data.bookings?.length)
   }, [cartData])
 
   return (
     <>
       {quantity > 0 && (
-        <Badge badgeContent={cartData?.data.data.bookings.length} color='error'>
+        <Badge badgeContent={cartData?.data.data.bookings?.length} color='error'>
           <ShoppingCartOutlinedIcon sx={{ fontSize: 24 }} />
         </Badge>
       )}

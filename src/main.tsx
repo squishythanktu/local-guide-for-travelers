@@ -7,6 +7,7 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/s
 import theme from './theme.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx'
+import ScrollToTop from './components/ScrollToTop/ScrollToTop.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <CssBaseline />
       <BrowserRouter>
         <ErrorBoundary>
+          <ScrollToTop />
           <App />
         </ErrorBoundary>
       </BrowserRouter>
