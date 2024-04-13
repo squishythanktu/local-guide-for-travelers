@@ -19,7 +19,7 @@ export default function BookingSuccess() {
     <>
       {isPending && <Loading />}
       {!isPending && invoiceData?.data.data && (
-        <div className='container my-6 h-auto min-h-[100%] max-w-[800px]'>
+        <div className='container my-6 max-w-[800px]'>
           <Box className='my-3 rounded-lg' sx={{ backgroundColor: (theme) => theme.palette.grey[100] }}>
             <div className='invoice__header relative p-4'>
               <div className='flex flex-col items-center gap-2'>

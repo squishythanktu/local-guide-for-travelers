@@ -13,7 +13,6 @@ import GuideCard from 'src/components/GuideCard'
 import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Guide } from 'src/types/guide.type'
 import SortIcon from '@mui/icons-material/Sort'
-import Box from '@mui/material/Box'
 
 export default function SearchGuides() {
   const queryConfig: QueryConfig = useQueryConfig()
@@ -56,7 +55,7 @@ export default function SearchGuides() {
   }
 
   return (
-    <Box className='flex h-auto min-h-[100%] flex-col gap-4'>
+    <>
       <div className='search-container__header container mt-4 flex min-w-80 flex-col items-start justify-between gap-4 md:flex-row'>
         <div className='header-title flex w-full'>
           <SvgIcon component={DotsIcon} inheritViewBox className=' mr-2 mt-0 h-20 w-full max-w-12 lg:mt-3' />
@@ -77,7 +76,7 @@ export default function SearchGuides() {
           </div>
         </div>
       </div>
-      <div className='search-container__action mt-4'>
+      <div className='search-container__actions mt-4'>
         <div className='actions-container container'>
           <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All guides</h2>
           <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 pb-2 md:flex-row md:items-center'>
@@ -120,16 +119,16 @@ export default function SearchGuides() {
           </div>
         </div>
       </div>
-      {guidesData && (guidesData.data.data.totalOfPage as unknown as number) > 0 && (
+      {guidesData && (
         <Pagination
           onChange={handlePaginationChange}
           count={guidesData.data.data.totalOfPage as unknown as number}
-          className='my-6 mb-4 flex justify-center'
+          className='my-6 flex justify-center'
           size='large'
           variant='outlined'
           color='primary'
         />
       )}
-    </Box>
+    </>
   )
 }

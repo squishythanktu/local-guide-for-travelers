@@ -29,13 +29,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ bookingId }: OrderSummaryPr
       <Box>
         {bookingsCartData ? (
           bookingId ? (
-            <BookingSummaryCard
-              booking={(bookingsCartData.data.data as BookingsInCart).bookings.slice(-1)[0]}
-              autoOpenDetails
-            />
+            <BookingSummaryCard booking={(bookingsCartData.data.data as BookingsInCart).bookings.slice(-1)[0]} />
           ) : (
             (bookingsCartData.data.data as BookingsInCart).bookings!.map((bookingCartData, index) => (
-              <BookingSummaryCard key={index} booking={bookingCartData} autoOpenDetails />
+              <BookingSummaryCard key={index} booking={bookingCartData} />
             ))
           )
         ) : (

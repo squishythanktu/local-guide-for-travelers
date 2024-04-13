@@ -14,7 +14,6 @@ import SortFilterTours from './components'
 import { isTourInWishlist } from 'src/utils/wishlist'
 import wishlistApi from 'src/apis/wishlist.api'
 import { AppContext } from 'src/contexts/app.context'
-import Box from '@mui/material/Box'
 
 export default function SearchTours() {
   const { profile, isAuthenticated } = useContext(AppContext)
@@ -43,7 +42,7 @@ export default function SearchTours() {
   }
 
   return (
-    <Box className='flex h-auto min-h-[100%] flex-col gap-4'>
+    <>
       <div className='search-container__header container mt-4 flex min-w-80 flex-col items-start justify-between gap-4 md:flex-row'>
         <div className='header-title flex w-full'>
           <SvgIcon component={DotsIcon} inheritViewBox className=' mr-2 mt-0 h-20 w-full max-w-12 lg:mt-3' />
@@ -64,7 +63,7 @@ export default function SearchTours() {
           </div>
         </div>
       </div>
-      <div className='search-container__actions'>
+      <div className='search-container__actions mt-4'>
         <div className='actions-container container'>
           <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All tours</h2>
           <SortFilterTours />
@@ -91,16 +90,16 @@ export default function SearchTours() {
           </div>
         </div>
       </div>
-      {toursData && (toursData.data.data.totalOfPage as unknown as number) > 0 && (
+      {toursData && (
         <Pagination
           onChange={handlePaginationChange}
           count={toursData.data.data.totalOfPage as unknown as number}
-          className='mb-4 flex justify-center'
+          className='my-6 flex justify-center'
           size='large'
           variant='outlined'
           color='primary'
         />
       )}
-    </Box>
+    </>
   )
 }

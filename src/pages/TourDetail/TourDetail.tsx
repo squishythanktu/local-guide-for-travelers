@@ -89,6 +89,13 @@ const TourDetail: React.FC = () => {
   const totalReviews = useMemo(() => reviewsData?.data.data.length || 0, [reviewsData?.data.data])
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, [])
+
+  useEffect(() => {
     if (tourData?.data) {
       setTour(tourData.data.data)
     }

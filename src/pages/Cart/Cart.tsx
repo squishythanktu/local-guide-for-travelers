@@ -31,7 +31,7 @@ export default function Cart() {
     )
 
   return (
-    <Box className='container flex h-auto min-h-[100%] flex-col'>
+    <Box className='container flex h-full flex-col'>
       {isPending && <Loading />}
       {!isPending && (cartData?.data.data.bookings?.length === 0 || !cartData?.data.data.bookings) && (
         <div className='flex h-full flex-col items-center justify-center'>
@@ -40,7 +40,7 @@ export default function Cart() {
         </div>
       )}
       {!isPending && cartData && cartData.data.data.bookings && cartData.data.data.bookings.length > 0 && (
-        <div className='grid grid-cols-1 lg:grid-cols-5 lg:gap-4'>
+        <div className='grid grid-cols-1 gap-5 lg:grid-cols-5 lg:gap-28'>
           <div className='py-5 lg:col-span-3'>
             <h2 className='cart__title pb-2 font-black'>Shopping cart</h2>
             <div className='cart__items'>
@@ -51,7 +51,7 @@ export default function Cart() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col gap-4 pb-8 pt-0 lg:col-span-2 lg:pt-[3.5rem]'>
+          <div className='flex flex-col gap-4 pb-8 pt-0 lg:col-span-2 lg:pt-[60px]'>
             <div className='cart__total'>
               <CartTotal bookings={(cartData?.data.data as BookingsInCart).bookings} />
             </div>

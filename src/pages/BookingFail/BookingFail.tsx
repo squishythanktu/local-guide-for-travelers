@@ -6,7 +6,7 @@ export default function BookingFail() {
   const navigate = useNavigate()
 
   return (
-    <Box className='container flex h-auto min-h-[100%] flex-col justify-center'>
+    <Box className='container flex flex-col'>
       <div className='flex h-full flex-col items-center justify-center gap-2'>
         <img src='/assets/images/payment-failure.png' alt='Payment failure' className='h-52 w-52 object-cover' />
         <div className='text-2xl font-medium'>Your payment failed</div>
