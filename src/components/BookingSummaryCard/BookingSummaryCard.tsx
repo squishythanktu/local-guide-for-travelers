@@ -18,10 +18,14 @@ import { formatDateLocaleString, formatTime } from 'src/utils/date-time'
 
 interface BookingSummaryCardProps {
   booking: Booking
+  autoOpenDetails?: boolean
 }
 
-const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({ booking }: BookingSummaryCardProps) => {
-  const [openCollapse, toggleCollapse] = useToggle(false)
+const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({
+  booking,
+  autoOpenDetails = false
+}: BookingSummaryCardProps) => {
+  const [openCollapse, toggleCollapse] = useToggle(autoOpenDetails)
 
   return (
     <Card className='mb-4 rounded-lg border-2 shadow-none'>
