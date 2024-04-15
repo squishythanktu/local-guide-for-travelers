@@ -29,7 +29,7 @@ const Wishlist: React.FC = () => {
     )
 
   return (
-    <Box className='container h-full'>
+    <Box className='container h-auto min-h-[100%]'>
       {isAuthenticated && !wishListData?.data.data && <Loading />}
       {isAuthenticated && wishListData?.data.data && wishListData.data.data.length > 0 ? (
         <div className=''>

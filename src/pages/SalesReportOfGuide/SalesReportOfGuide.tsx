@@ -145,7 +145,7 @@ const SalesReportOfGuide: React.FC = () => {
             labels: popularGuidesData?.data.data.map((data) => (data.fullName ? data.fullName : data.email)),
             datasets: [
               {
-                label: 'Total revenue ($)',
+                label: 'Total booking',
                 data: popularGuidesData?.data.data.map((data) => data.totalBooking),
                 backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
