@@ -10,10 +10,11 @@ import ButtonComponent from './components/ButtonComponent'
 import RequestComponent from './components/RequestComponent'
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { useLocation } from 'react-router-dom'
+import { UserRole } from 'src/enums/user-role.enum'
 
 const TourRequestManagement: React.FC = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  const [isGuide, setIsGuide] = useState<boolean>()
+  const [isGuide, setIsGuide] = useState<boolean>(profile?.role === UserRole.GUIDER)
   const location = useLocation()
 
   const { data: requestsData, refetch } = useQuery({
@@ -28,13 +29,15 @@ const TourRequestManagement: React.FC = () => {
   useEffect(() => {
     let displayRequestsData: Request[] = []
     if (requestsData && requestsData.data.data.length > 0 && profile) {
+      let checkTraveler = true
       if (parseInt(profile.id) === requestsData.data.data[0].guide.id) {
+        checkTraveler = false
         setIsGuide(true)
       }
       if (profile.id === requestsData.data.data[0].traveler?.id) {
         setIsGuide(false)
       }
-      displayRequestsData = !isGuide
+      displayRequestsData = checkTraveler
         ? requestsData.data.data
             .filter((item) => {
               if (requestStatus === StatusRequest.PENDING)
@@ -56,10 +59,11 @@ const TourRequestManagement: React.FC = () => {
             .map((item) => item)
         : requestsData.data.data
             .filter((item) => {
-              if (requestStatus === StatusRequest.PENDING)
+              if (requestStatus === StatusRequest.PENDING) return item.status === StatusRequest.PENDING.toUpperCase()
+              if (requestStatus === StatusRequest.ACCEPTED)
                 return (
-                  item.status === StatusRequest.PENDING.toUpperCase() ||
-                  (item.tour ? item.tour.status === TourStatus.PENDING : false)
+                  (item.tour ? item.tour.status === TourStatus.PENDING : false) ||
+                  item.status === requestStatus.toUpperCase()
                 )
               if (requestStatus === StatusRequest.DENIED)
                 return (
@@ -87,20 +91,29 @@ const TourRequestManagement: React.FC = () => {
         if (item === StatusRequest.PENDING)
           return requestsData.data.data
             .filter(
-              (data) => data.status === item.toUpperCase() || data.status === StatusRequest.ACCEPTED.toUpperCase()
+              (data) =>
+                data.status === item.toUpperCase() ||
+                data.status === StatusRequest.ACCEPTED.toUpperCase() ||
+                (data.tour ? data.tour.status === TourStatus.PENDING : false)
             )
             .map((item) => item).length
         if (item === StatusRequest.CANCELED)
           return requestsData.data.data
             .filter((data) => data.status === item.toUpperCase() || data.status === StatusRequest.DENIED.toUpperCase())
             .map((item) => item).length
+        if (item === StatusRequest.DONE)
+          return requestsData.data.data
+            .filter((data) => (data.tour ? data.tour.status === TourStatus.ACCEPT : false))
+            .map((item) => item).length
         return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
       }
       if (isGuide) {
         if (item === StatusRequest.PENDING)
+          return requestsData.data.data.filter((data) => data.status === item.toUpperCase()).map((item) => item).length
+        if (item === StatusRequest.ACCEPTED)
           return requestsData.data.data
             .filter(
-              (data) => data.status === item.toUpperCase() || (data.tour && data.tour.status === TourStatus.PENDING)
+              (data) => (data.tour && data.tour.status === TourStatus.PENDING) || data.status === item.toUpperCase()
             )
             .map((item) => item).length
         if (item === StatusRequest.DENIED)
