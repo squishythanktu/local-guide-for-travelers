@@ -17,7 +17,7 @@ export class Http {
     this.accessToken = getAccessTokenFromLocalStorage()
     this.instance = axios.create({
       baseURL: config.baseUrl,
-      timeout: 10 * 1000 * 6 * 5,
+      timeout: 60 * 1000 * 15,
       headers: {
         'Content-Type': 'application/json'
       }

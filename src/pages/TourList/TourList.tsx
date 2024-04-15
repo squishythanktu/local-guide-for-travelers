@@ -20,8 +20,7 @@ const TourList: React.FC = () => {
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
   const { data: toursData, isLoading } = useQuery({
     queryKey: [`tour requests in page ${pagination.page}`, pagination],
-    queryFn: () => tourApi.getToursWithStatus(pagination),
-    staleTime: 10 * 1000
+    queryFn: () => tourApi.getToursWithStatus(pagination)
   })
   const { data: tourDetailsData, isPending: isPendingTourDetail } = useQuery({
     queryKey: [`tour details with id ${selectedTourId}`, selectedTourId],

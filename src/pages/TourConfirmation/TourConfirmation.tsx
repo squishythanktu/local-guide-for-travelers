@@ -24,8 +24,7 @@ const TourConfirmation: React.FC = () => {
     refetch
   } = useQuery({
     queryKey: [`tour requests in page ${pagination.page}`, pagination],
-    queryFn: () => tourApi.getPendingTours(),
-    staleTime: 10 * 1000
+    queryFn: () => tourApi.getPendingTours()
   })
   const { data: pendingTourDetailsData, isPending: isPendingTourDetail } = useQuery({
     queryKey: [`pending tour details with id ${selectedTourId}`, selectedTourId],
