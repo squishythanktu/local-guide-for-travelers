@@ -9,13 +9,10 @@ import Typography from '@mui/material/Typography'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import SockJS from 'sockjs-client'
 import notificationApi from 'src/apis/notifications.api'
-import config from 'src/constants/config.constant'
 import { AppContext } from 'src/contexts/app.context'
 import Loading from 'src/pages/Loading/Loading'
 import { Notification as NotificationType } from 'src/types/notification.type'
-import Stomp from 'stompjs'
 import NotificationItem from './NotificationItem/NotificationItem'
 
 interface NotificationProps {
@@ -23,7 +20,7 @@ interface NotificationProps {
 }
 
 const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationProps) => {
-  const { profile } = useContext(AppContext)
+  const { profile, stompClient } = useContext(AppContext)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [responseRealtime, setResponseRealtime] = useState<NotificationType | null>(null)
   const { ref, inView } = useInView()
@@ -45,15 +42,12 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const open = Boolean(anchorEl)
 
   useEffect(() => {
-    const socket = new SockJS(`${config.baseUrl}/ws`)
-    const stompClient = Stomp.over(socket)
-
-    stompClient.connect({}, () =>
-      stompClient.subscribe(`/topic/${profile?.email}`, (res: any) => {
+    stompClient?.connect({}, () =>
+      stompClient?.subscribe(`/topic/${profile?.email}`, (res: any) => {
         if (res.body != responseRealtime) setResponseRealtime(res.body)
       })
     )
-  }, [profile?.email, responseRealtime])
+  }, [profile?.email, responseRealtime, stompClient])
 
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage()
