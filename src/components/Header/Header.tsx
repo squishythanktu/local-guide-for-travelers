@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import WhiteLogoIcon from 'src/assets/svg/logo-white.svg'
 import MainLogoIcon from 'src/assets/svg/logo.svg'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { headerHeight } from 'src/constants/width-height.constant'
 import { AppContext } from 'src/contexts/app.context'
 import CartBadge from './CartBadge/CartBadge'
@@ -86,15 +86,19 @@ export default function Header({
             className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
             sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
           >
-            <NavLink to={path.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
-            <NavLink to={path.cart} icon={<CartBadge />} text='Cart' />
-            <NavLink
-              to={path.bookings}
-              icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
-              text='Bookings'
-            />
-            <NavLink to={path.invoices} icon={<ReceiptIcon sx={{ fontSize: 24 }} />} text='Invoices' />
-            {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
+            {isAuthenticated && (
+              <>
+                <NavLink to={PATH.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
+                <NavLink to={PATH.cart} icon={<CartBadge />} text='Cart' />
+                <NavLink
+                  to={PATH.bookings}
+                  icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
+                  text='Bookings'
+                />
+                <NavLink to={PATH.invoices} icon={<ReceiptIcon sx={{ fontSize: 24 }} />} text='Invoices' />
+                <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />
+              </>
+            )}
             <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
           </Box>
           <Box className='drawer col-span-2 col-start-11 flex items-center justify-end lg:col-span-1 lg:col-start-12 lg:hidden'>

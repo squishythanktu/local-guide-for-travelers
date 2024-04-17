@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import AuthLayout from 'src/layouts/AuthLayout'
 import { Schema, schema } from 'src/utils/rules'
 
@@ -35,7 +35,7 @@ export default function ResetPassword() {
     resetPasswordMutation.mutate(formData, {
       onSuccess: () => {
         toast.success('The password reset link has been sent to your email.')
-        navigate(path.changePasswordByToken)
+        navigate(PATH.changePasswordByToken)
       },
       onError: (error) => {
         toast.error(error.message)

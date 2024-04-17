@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { StatusRequest } from 'src/enums/status-request.enum'
 import { TourStatus } from 'src/enums/tour-status.enum'
@@ -339,7 +339,7 @@ export default function TourManagement({ guideId }: Props) {
       })
     },
     muiTableBodyRowProps: ({ row }) => ({
-      onClick: () => navigate(`${path.tourDetail.replace(':id', row.original.id.toString())}`),
+      onClick: () => navigate(`${PATH.tourDetail.replace(':id', row.original.id.toString())}`),
       sx: { cursor: 'pointer' }
     }),
     renderTopToolbarCustomActions: () =>

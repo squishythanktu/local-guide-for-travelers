@@ -8,7 +8,7 @@ import { MRT_ColumnDef, MaterialReactTable, useMaterialReactTable } from 'materi
 import { useContext, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import statisticApi from 'src/apis/statistic.api'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { TourInStatistic } from 'src/types/statistic.type'
@@ -123,7 +123,7 @@ const SalesReportOfToursByGuide: React.FC = () => {
       animation: 'wave'
     },
     muiTableBodyRowProps: ({ row }) => ({
-      onClick: () => navigate(`${path.tourDetail.replace(':id', row.original.id.toString())}`),
+      onClick: () => navigate(`${PATH.tourDetail.replace(':id', row.original.id.toString())}`),
 
       sx: { cursor: 'pointer' }
     }),

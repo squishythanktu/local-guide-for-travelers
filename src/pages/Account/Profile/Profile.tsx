@@ -12,7 +12,7 @@ import { toast } from 'react-toastify'
 import userApi from 'src/apis/user.api'
 import ConfirmDialog from 'src/components/ConfirmDialog/ConfirmDialog'
 import ControlledTextField from 'src/components/ControlledTextField'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { User } from 'src/types/user.type'
 import { clearLocalStorage, setProfileToLocalStorage } from 'src/utils/auth'
@@ -85,7 +85,7 @@ const Profile: React.FC = () => {
         window.location.reload()
         setDeleteMode(false)
         clearLocalStorage()
-        navigate(path.home)
+        navigate(PATH.home)
         toast.success('Delete account successfully.')
       },
       onError: (error) => {

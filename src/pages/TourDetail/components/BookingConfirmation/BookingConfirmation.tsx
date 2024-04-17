@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import AlarmOnIcon from '@mui/icons-material/AlarmOn'
+import TimelapseIcon from '@mui/icons-material/Timelapse'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Divider } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -10,11 +12,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
 import CalendarCheckIcon from 'src/assets/svg/calendar-check.svg'
-import ClockDurationIcon from 'src/assets/svg/clock-duration.svg'
 import GuideIcon from 'src/assets/svg/guide.svg'
 import LocationIcon from 'src/assets/svg/location.svg'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import { BookingConfirmationAction } from 'src/enums/booking-confirmation.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
@@ -33,12 +35,10 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   const { isAuthenticated } = useContext(AppContext)
   const [selectedTimeOption, setSelectedTimeOption] = useState<string>('')
   const [totalPrice, setTotalPrice] = useState(0)
-  const navigate = useNavigate()
   const [stateButton, setStateButton] = useState<'bookNow' | 'addCart'>()
+  const navigate = useNavigate()
 
-  const handleOptionClick = (option: string) => {
-    setSelectedTimeOption(option)
-  }
+  const handleOptionClick = (option: string) => setSelectedTimeOption(option)
 
   const [bookingFormData, setBookingFormData] = useState<AddBookingForm>({
     id: tour.id,
@@ -56,9 +56,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
         ? new Date(
             new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + convertHourToUTC7(selectedTimeOption))
           )
-        : new Date(
-            new Date(dayjs(formData.startDate).format('YYYY-MM-DD')).toISOString().substring(0, 11) + tour.startTimes[0]
-          ),
+        : bookingFormData.startDate,
       price: totalPrice
     }
     setBookingFormData(data)
@@ -69,13 +67,12 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   }, [formData])
 
   const addBookingMutation = useMutation({
-    mutationFn: (body: AddBookingForm) => {
-      return cartApi.createBookingInCart(body)
-    }
+    mutationFn: (body: AddBookingForm) => cartApi.createBookingInCart(body)
   })
 
   useEffect(() => {
-    if (stateButton === 'addCart' || stateButton === 'bookNow') handleAddBooking()
+    if (stateButton === BookingConfirmationAction.addCart || stateButton === BookingConfirmationAction.BookNow)
+      handleAddBooking()
   }, [stateButton])
 
   const handleAddBooking = () => {
@@ -87,12 +84,12 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
 
     addBookingMutation.mutate(bookingFormData, {
       onSuccess: (data) => {
-        if (stateButton === 'addCart') {
+        if (stateButton === BookingConfirmationAction.addCart) {
           toast.success('Add booking in cart successfully.')
-          navigate(path.cart)
+          navigate(PATH.cart)
           return
         }
-        navigate(path.checkout, { state: { bookingId: data.data.data.bookings.slice(-1)[0].id } })
+        navigate(PATH.checkout, { state: { bookingId: data.data.data.bookings.slice(-1)[0].id } })
       },
       onError: (error: any) => {
         toast.error(error.response.data.message)
@@ -107,11 +104,19 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           <div className='title font-medium'>{tour.name}</div>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center text-base font-normal'>
-              <ClockDurationIcon className='mb-[2px] mr-2 h-6 w-6' />
+              <TimelapseIcon className='mb-[2px] mr-2 h-6 w-6' />
               <div className='text-sm font-medium text-gray-500'>
                 {tour.duration} {tour.unit}
               </div>
             </div>
+            {!(tour.unit === Unit.HOURS && tour.duration < 5) && (
+              <div className='flex items-center text-base font-normal'>
+                <AlarmOnIcon className='mb-[2px] mr-2 h-6 w-6' />
+                <div className='text-sm font-medium text-gray-500'>
+                  Start from {formatTime(tour.startTimes[0], 'HH:mm:ss', 'HH:mm')}
+                </div>
+              </div>
+            )}
             <div className='flex items-center font-normal'>
               <GuideIcon className='mb-[2px] mr-2 h-6 w-6' />
               <div className='text-sm font-medium text-gray-500'>Guide: {tour.guide['fullName'] || 'N/A'}</div>
@@ -125,7 +130,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           </div>
         </div>
         <Divider />
-        {timeOptions && (
+        {timeOptions && tour.unit === Unit.HOURS && tour.duration < 5 && (
           <>
             <div className='starting-times flex flex-col gap-2'>
               <div className='font-medium'>
@@ -147,7 +152,6 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
             {tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption && (
               <div className='text-xs text-red-500'>Select a time</div>
             )}
-
             <Divider />
           </>
         )}
@@ -178,18 +182,18 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
             className='mr-2 rounded-full pr-7 font-semibold md:inline-block'
             variant='outlined'
             size='large'
-            loading={stateButton === 'bookNow' && addBookingMutation.isPending}
-            onClick={() => setStateButton('bookNow')}
+            loading={stateButton === BookingConfirmationAction.BookNow && addBookingMutation.isPending}
+            onClick={() => setStateButton(BookingConfirmationAction.BookNow)}
           >
             Book now
           </LoadingButton>
           <LoadingButton
             type='submit'
-            loading={stateButton === 'addCart' && addBookingMutation.isPending}
+            loading={stateButton === BookingConfirmationAction.addCart && addBookingMutation.isPending}
             className='mr-2 rounded-full pr-7 font-semibold md:inline-block'
             variant='contained'
             size='large'
-            onClick={() => setStateButton('addCart')}
+            onClick={() => setStateButton(BookingConfirmationAction.addCart)}
           >
             Add to cart
           </LoadingButton>

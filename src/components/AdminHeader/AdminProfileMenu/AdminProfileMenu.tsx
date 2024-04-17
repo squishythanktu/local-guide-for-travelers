@@ -6,7 +6,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLocalStorage } from 'src/utils/auth'
 
@@ -20,7 +20,7 @@ const AdminProfileMenu: React.FC = () => {
 
   const handleLogout = () => {
     clearLocalStorage()
-    navigate(path.home)
+    navigate(PATH.home)
     window.location.reload()
   }
 

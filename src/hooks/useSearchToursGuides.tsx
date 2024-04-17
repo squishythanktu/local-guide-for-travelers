@@ -4,7 +4,7 @@ import { createSearchParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import omit from 'lodash/omit'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { SearchType } from 'src/enums/search-type.enum'
 
 type SearchFormData = Pick<SearchSchema, 'searchValue' | 'searchType'>
@@ -34,7 +34,7 @@ export default function useSearchToursGuides() {
           ...queryConfig,
           searchValue: data.searchValue
         }
-    const searchPath = `../${data.searchType === SearchType.TOUR ? path.searchTour : path.searchGuide}`
+    const searchPath = `../${data.searchType === SearchType.TOUR ? PATH.searchTour : PATH.searchGuide}`
     const searchQuery = createSearchParams(config).toString()
     navigate(`${searchPath}?${searchQuery}`, {
       replace: true

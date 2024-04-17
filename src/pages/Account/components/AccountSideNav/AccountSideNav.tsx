@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Paper from '@mui/material/Paper'
 import { Link, useLocation } from 'react-router-dom'
 import AvatarSideNav from 'src/components/AvatarSideNav/AvatarSideNav'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { isActive } from 'src/utils/active.util'
 
 export default function AccountSideNav() {
@@ -22,7 +22,7 @@ export default function AccountSideNav() {
         <Paper>
           <List sx={{ padding: 0 }}>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton component={Link} to={path.profile} selected={isActive(location, path.profile)}>
+              <ListItemButton component={Link} to={PATH.profile} selected={isActive(location, PATH.profile)}>
                 <ListItemIcon>
                   <PersonIcon fontSize='small' />
                 </ListItemIcon>
@@ -31,7 +31,7 @@ export default function AccountSideNav() {
             </ListItem>
             <Divider />
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton component={Link} to={path.password} selected={isActive(location, path.password)}>
+              <ListItemButton component={Link} to={PATH.password} selected={isActive(location, PATH.password)}>
                 <ListItemIcon>
                   <LockOutlinedIcon fontSize='small' />
                 </ListItemIcon>

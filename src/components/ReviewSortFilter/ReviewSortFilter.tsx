@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import Rating from '@mui/material/Rating'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SortReview } from 'src/enums/sort-review.enum'
 import { ReviewParams } from 'src/types/review.type'
 import MenuButton from '../MenuButton/MenuButton'
@@ -21,22 +21,22 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
   const [ratings, setRatings] = useState<number[]>([])
   const [sortBy, setSortBy] = useState<string>('')
 
-  const castToRatingString = useCallback(() => ratings.map((rating) => rating).join(','), [ratings])
+  const castToRatingString = useMemo(() => ratings.map((rating) => rating).join(','), [ratings])
 
   useEffect(() => {
     const reviewParams: ReviewParams = {
-      ratings: castToRatingString(),
+      ratings: castToRatingString,
       sortBy: sortBy
     }
     onChange(reviewParams)
   }, [castToRatingString, onChange, ratings, sortBy])
 
-  const handleCheckboxChange = useCallback((value: number) => {
+  const handleCheckboxChange = (value: number) => {
     setRatings((prevRatings) => {
       if (prevRatings.includes(value)) return prevRatings.filter((rating) => rating !== value)
       return [...prevRatings, value]
     })
-  }, [])
+  }
 
   const handleCheckAll = useCallback(() => {
     if (ratings.length === 5) {
@@ -121,11 +121,9 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
       >
         <h3 className='reviews-summary__title mb-2'>Filter</h3>
 
-        <MenuButton
-          text='Star ratings'
-          icon={<StarBorderIcon />}
-          jsx={<Box sx={{ padding: '12px' }}>{RatingFormGroup}</Box>}
-        />
+        <MenuButton text='Star ratings' icon={<StarBorderIcon />}>
+          <Box sx={{ padding: '12px' }}>{RatingFormGroup}</Box>
+        </MenuButton>
       </Grid>
     </Grid>
   )

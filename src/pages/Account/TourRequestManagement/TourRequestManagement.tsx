@@ -27,6 +27,8 @@ const TourRequestManagement: React.FC = () => {
   const [displayData, setDisplayData] = useState<Request[]>([])
 
   useEffect(() => {
+    console.log('requestsData: ', requestsData)
+
     let displayRequestsData: Request[] = []
     if (requestsData && requestsData.data.data.length > 0 && profile) {
       let checkTraveler = true

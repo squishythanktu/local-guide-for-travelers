@@ -23,7 +23,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { KeyboardEvent, SyntheticEvent, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLocalStorage } from 'src/utils/auth'
 import { UserRole } from 'src/enums/user-role.enum'
@@ -64,7 +64,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
 
   const handleLogout = () => {
     clearLocalStorage()
-    navigate(path.home)
+    navigate(PATH.home)
     window.location.reload()
   }
 
@@ -76,7 +76,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem disablePadding component={Link} to={path.wishlist}>
+        <ListItem disablePadding component={Link} to={PATH.wishlist}>
           <ListItemButton>
             <ListItemIcon>
               <FavoriteBorderIcon />
@@ -84,7 +84,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Wish list' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding component={Link} to={path.cart}>
+        <ListItem disablePadding component={Link} to={PATH.cart}>
           <ListItemButton>
             <ListItemIcon>
               <ShoppingCartOutlinedIcon />
@@ -92,7 +92,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Cart' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding component={Link} to={path.bookings}>
+        <ListItem disablePadding component={Link} to={PATH.bookings}>
           <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlinedIcon />
@@ -100,7 +100,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Bookings' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding component={Link} to={path.invoices}>
+        <ListItem disablePadding component={Link} to={PATH.invoices}>
           <ListItemButton>
             <ListItemIcon>
               <ReceiptIcon />
@@ -128,20 +128,20 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
         </ListItem>
         <Collapse in={openCollapse} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.profile}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.profile}>
               <ListItemIcon>
                 <SettingsOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary='Settings' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.tourRequest}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.tourRequest}>
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>
               <ListItemText primary='Management' />
             </ListItemButton>
             {profile?.role === UserRole.TRAVELER && (
-              <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideApplications}>
+              <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.guideApplications}>
                 <ListItemIcon>
                   <ContactPageOutlinedIcon />
                 </ListItemIcon>
@@ -176,7 +176,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Wish list' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding component={Link} to={path.cart}>
+        <ListItem disablePadding component={Link} to={PATH.cart}>
           <ListItemButton>
             <ListItemIcon>
               <ShoppingCartOutlinedIcon />
@@ -184,7 +184,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Cart' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding component={Link} to={path.bookings}>
+        <ListItem disablePadding component={Link} to={PATH.bookings}>
           <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlinedIcon />
@@ -192,7 +192,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemText primary='Bookings' />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding component={Link} to={path.invoices}>
+        <ListItem disablePadding component={Link} to={PATH.invoices}>
           <ListItemButton>
             <ListItemIcon>
               <ReceiptIcon />
@@ -220,19 +220,19 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
         </ListItem>
         <Collapse in={openCollapse} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.guideApplications}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.guideApplications}>
               <ListItemIcon>
                 <ContactPageOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary='Become a guide' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.login}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.login}>
               <ListItemIcon>
                 <LoginIcon />
               </ListItemIcon>
               <ListItemText primary='Sign in' />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} component={Link} to={path.register}>
+            <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.register}>
               <ListItemIcon>
                 <PersonAddAlt1Icon />
               </ListItemIcon>

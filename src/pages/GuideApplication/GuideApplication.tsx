@@ -30,7 +30,7 @@ import guideApplicationApi from 'src/apis/guide-application.api'
 import userApi from 'src/apis/user.api'
 import ControlledTextField from 'src/components/ControlledTextField/ControlledTextField'
 import ImagesUploader from 'src/components/ImagesUploader/ImagesUploader'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { TypeOfTransport } from 'src/enums/type-of-transport.enum'
 import { GuideApplicationType } from 'src/types/guide-application.type'
@@ -144,10 +144,12 @@ const GuideApplication: React.FC = () => {
       licenseImages: data.licenseImages as string[]
     }
 
+    console.log('format: ', formattedData)
+
     createGuideApplicationMutation.mutate(formattedData, {
       onSuccess: () => {
         toast.success('Create guide application successfully.')
-        navigate(path.home)
+        navigate(PATH.home)
       },
       onError: (error: any) => {
         toast.error(error.response.data.message)

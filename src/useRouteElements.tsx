@@ -1,6 +1,6 @@
 import { ReactNode, Suspense, lazy, useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import path from './constants/path.constant'
+import PATH from './constants/path.constant'
 import { AppContext } from './contexts/app.context'
 import { UserRole } from './enums/user-role.enum'
 import AdminLayout from './layouts/AdminLayout/AdminLayout'
@@ -45,17 +45,17 @@ const TourRequestManagement = lazy(() => import('./pages/Account/TourRequestMana
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
-  return !isAuthenticated ? <Outlet /> : <Navigate to={path.home} />
+  return !isAuthenticated ? <Outlet /> : <Navigate to={PATH.home} />
 }
 
 const AdminRoute = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  return isAuthenticated && profile?.role === UserRole.ADMIN ? <Outlet /> : <Navigate to={path.home} />
+  return isAuthenticated && profile?.role === UserRole.ADMIN ? <Outlet /> : <Navigate to={PATH.home} />
 }
 
 const UserRoute = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
-  return isAuthenticated && profile?.role !== UserRole.ADMIN ? <Outlet /> : <Navigate to={path.admin} />
+  return isAuthenticated && profile?.role !== UserRole.ADMIN ? <Outlet /> : <Navigate to={PATH.admin} />
 }
 
 const GuideRoute = ({ children }: { children: ReactNode }) => {
@@ -68,7 +68,7 @@ const NonAdminRoute = () => {
   return !isAuthenticated || (isAuthenticated && profile?.role !== UserRole.ADMIN) ? (
     <Outlet />
   ) : (
-    <Navigate to={path.admin} />
+    <Navigate to={PATH.admin} />
   )
 }
 
@@ -77,7 +77,7 @@ const NonAdminGuiderRoute = () => {
   return !isAuthenticated || (isAuthenticated && profile?.role === UserRole.TRAVELER) ? (
     <Outlet />
   ) : (
-    <Navigate to={path.home} />
+    <Navigate to={PATH.home} />
   )
 }
 
@@ -88,7 +88,7 @@ export default function useRouteElements() {
       element: <NonAdminRoute />,
       children: [
         {
-          path: path.home,
+          path: PATH.home,
           element: (
             <HomeLayout>
               <Suspense fallback={<Loading />}>
@@ -98,7 +98,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.tourDetail,
+          path: PATH.tourDetail,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -108,7 +108,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.cart,
+          path: PATH.cart,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -118,7 +118,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.bookings,
+          path: PATH.bookings,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -128,7 +128,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.invoices,
+          path: PATH.invoices,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -138,7 +138,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.guideProfile,
+          path: PATH.guideProfile,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -148,7 +148,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.searchTour,
+          path: PATH.searchTour,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -158,7 +158,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.searchGuide,
+          path: PATH.searchGuide,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -168,7 +168,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.checkout,
+          path: PATH.checkout,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -178,7 +178,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.wishlist,
+          path: PATH.wishlist,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -204,7 +204,7 @@ export default function useRouteElements() {
       element: <NonAdminGuiderRoute />,
       children: [
         {
-          path: path.guideApplications,
+          path: PATH.guideApplications,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -220,7 +220,7 @@ export default function useRouteElements() {
       element: <RejectedRoute />,
       children: [
         {
-          path: path.login,
+          path: PATH.login,
           element: (
             <Suspense fallback={<Loading />}>
               <Login />
@@ -228,7 +228,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.register,
+          path: PATH.register,
           element: (
             <Suspense fallback={<Loading />}>
               <Register />
@@ -236,7 +236,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.reset,
+          path: PATH.reset,
           element: (
             <Suspense fallback={<Loading />}>
               <ResetPassword />
@@ -244,7 +244,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.changePasswordByToken,
+          path: PATH.changePasswordByToken,
           element: (
             <Suspense fallback={<Loading />}>
               <ChangePasswordByToken />
@@ -258,7 +258,7 @@ export default function useRouteElements() {
       element: <UserRoute />,
       children: [
         {
-          path: path.account,
+          path: PATH.account,
           element: (
             <MainLayout>
               <AccountLayout />
@@ -266,7 +266,7 @@ export default function useRouteElements() {
           ),
           children: [
             {
-              path: path.profile,
+              path: PATH.profile,
               element: (
                 <Suspense fallback={<Loading />}>
                   <Profile />
@@ -274,7 +274,7 @@ export default function useRouteElements() {
               )
             },
             {
-              path: path.password,
+              path: PATH.password,
               element: (
                 <Suspense fallback={<Loading />}>
                   <ChangePassword />
@@ -284,7 +284,7 @@ export default function useRouteElements() {
           ]
         },
         {
-          path: path.management,
+          path: PATH.management,
           element: (
             <MainLayout>
               <ManagementLayout />
@@ -292,7 +292,7 @@ export default function useRouteElements() {
           ),
           children: [
             {
-              path: path.tourRequest,
+              path: PATH.tourRequest,
               element: (
                 <Suspense fallback={<Loading />}>
                   <TourRequestManagement />
@@ -300,7 +300,7 @@ export default function useRouteElements() {
               )
             },
             {
-              path: path.tours,
+              path: PATH.tours,
               element: (
                 <GuideRoute>
                   <Suspense fallback={<Loading />}>
@@ -310,7 +310,7 @@ export default function useRouteElements() {
               )
             },
             {
-              path: path.schedule,
+              path: PATH.schedule,
               element: (
                 <GuideRoute>
                   <Suspense fallback={<Loading />}>
@@ -320,7 +320,7 @@ export default function useRouteElements() {
               )
             },
             {
-              path: path.bookingsManagement,
+              path: PATH.bookingsManagement,
               element: (
                 <GuideRoute>
                   <Suspense fallback={<Loading />}>
@@ -330,7 +330,7 @@ export default function useRouteElements() {
               )
             },
             {
-              path: path.salesReport,
+              path: PATH.salesReport,
               element: (
                 <GuideRoute>
                   <Suspense fallback={<Loading />}>
@@ -342,7 +342,7 @@ export default function useRouteElements() {
           ]
         },
         {
-          path: path.bookingSuccess,
+          path: PATH.bookingSuccess,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -352,7 +352,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.bookingFail,
+          path: PATH.bookingFail,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -362,7 +362,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.requestTour,
+          path: PATH.requestTour,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -372,7 +372,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.cryptoPayment,
+          path: PATH.cryptoPayment,
           element: (
             <MainLayout>
               <Suspense fallback={<Loading />}>
@@ -388,15 +388,15 @@ export default function useRouteElements() {
       element: <AdminRoute />,
       children: [
         {
-          path: path.home,
-          element: <Navigate to={path.tourList} />
+          path: PATH.home,
+          element: <Navigate to={PATH.tourList} />
         },
         {
-          path: path.admin,
-          element: <Navigate to={path.tourList} />
+          path: PATH.admin,
+          element: <Navigate to={PATH.tourList} />
         },
         {
-          path: path.tourConfirmation,
+          path: PATH.tourConfirmation,
           element: (
             <AdminLayout>
               <Suspense fallback={<Loading />}>
@@ -406,7 +406,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.tourList,
+          path: PATH.tourList,
           element: (
             <AdminLayout>
               <Suspense fallback={<Loading />}>
@@ -416,7 +416,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.guideConfirmation,
+          path: PATH.guideConfirmation,
           element: (
             <AdminLayout>
               <Suspense fallback={<Loading />}>
@@ -426,7 +426,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.salesReportOfTour,
+          path: PATH.salesReportOfTour,
           element: (
             <AdminLayout>
               <Suspense fallback={<Loading />}>
@@ -436,7 +436,7 @@ export default function useRouteElements() {
           )
         },
         {
-          path: path.salesReportOfGuide,
+          path: PATH.salesReportOfGuide,
           element: (
             <AdminLayout>
               <Suspense fallback={<Loading />}>

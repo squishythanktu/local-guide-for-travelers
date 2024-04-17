@@ -1,6 +1,6 @@
 import ActivityInfo from './ActivityInfo'
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined'
-import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined'
+import TimelapseIcon from '@mui/icons-material/Timelapse'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined'
 import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined'
@@ -43,7 +43,7 @@ export default function AboutActivity({ tour }: AboutActivityProps) {
         title={'Price per traveler'}
         content={`$${tour.pricePerTraveler.toLocaleString()}`}
       />
-      <ActivityInfo icon={<AlarmOnOutlinedIcon />} title={'Duration'} content={`${tour.duration} ${tour.unit}`} />
+      <ActivityInfo icon={<TimelapseIcon />} title={'Duration'} content={`${tour.duration} ${tour.unit}`} />
       <ActivityInfo icon={<AirportShuttleOutlinedIcon />} title={'Transportation'} content={`${tour.transportation}`} />
       <ActivityInfo icon={<FastfoodOutlinedIcon />} title={'Service'} content={`${tour.includeService}`} />
       <ActivityInfo

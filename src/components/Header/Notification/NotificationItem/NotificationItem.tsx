@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import notificationApi from 'src/apis/notifications.api'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { NotificationType } from 'src/enums/notification-type.enum'
 import { Notification } from 'src/types/notification.type'
@@ -29,19 +29,19 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: N
 
     switch (data.notificationType) {
       case NotificationType.addTour: {
-        navigate(`${path.tourDetail.replace(':id', data.associateId.toString())}`)
+        navigate(`${PATH.tourDetail.replace(':id', data.associateId.toString())}`)
         break
       }
       case NotificationType.addReviewForGuide: {
-        navigate(`${path.guideProfile.replace(':id', data.associateId.toString())}`)
+        navigate(`${PATH.guideProfile.replace(':id', data.associateId.toString())}`)
         break
       }
       case NotificationType.addReviewForTour: {
-        navigate(`${path.tourDetail.replace(':id', data.associateId.toString())}`)
+        navigate(`${PATH.tourDetail.replace(':id', data.associateId.toString())}`)
         break
       }
       case NotificationType.bookedTour: {
-        navigate(`${path.bookings}`)
+        navigate(`${PATH.bookings}`)
         break
       }
     }

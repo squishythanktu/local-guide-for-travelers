@@ -1,4 +1,4 @@
-const path = {
+const PATH = {
   home: '/',
   login: '/login',
   register: '/register',
@@ -35,4 +35,4 @@ const path = {
   invoices: '/invoices'
 }
 
-export default path
+export default PATH

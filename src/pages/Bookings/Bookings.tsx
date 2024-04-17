@@ -86,20 +86,20 @@ const Bookings: React.FC = () => {
             index={value}
             onChangeIndex={handleChangeIndex}
           >
-            <TabPanel value={1} index={1} dir={theme.direction}>
+            <TabPanel value={1} index={1} direction={theme.direction}>
               <BookingContent bookingList={bookingsHistoryData?.data.data} />
             </TabPanel>
-            <TabPanel value={2} index={2} dir={theme.direction}>
+            <TabPanel value={2} index={2} direction={theme.direction}>
               <BookingContent bookingList={upcomingBookings} />
             </TabPanel>
-            <TabPanel value={3} index={3} dir={theme.direction}>
+            <TabPanel value={3} index={3} direction={theme.direction}>
               <BookingContent bookingList={pastBookings} />
             </TabPanel>
           </SwipeableViews>
         </>
       )}
       {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length === 0 && (
-        <div className='flex h-full flex-col items-center justify-center'>
+        <div className='mt-48 flex h-full flex-col items-center justify-center'>
           <img
             loading='lazy'
             src='/assets/images/empty-booking.png'

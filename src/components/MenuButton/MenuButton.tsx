@@ -6,24 +6,19 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import theme from 'src/theme'
 
 interface MenuButtonProps {
-  jsx: ReactNode
+  children: ReactNode
   text: string
   icon: ReactNode
 }
 
-const MenuButton = ({ jsx, text, icon }: MenuButtonProps) => {
+const MenuButton = ({ children, text, icon }: MenuButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const isLgBreakpoint = useMediaQuery(theme.breakpoints.up('lg'))
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
   const open = Boolean(anchorEl)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => setAnchorEl(event.currentTarget)
+
+  const handleClose = () => setAnchorEl(null)
 
   return (
     <>
@@ -65,7 +60,7 @@ const MenuButton = ({ jsx, text, icon }: MenuButtonProps) => {
           }
         }}
       >
-        {jsx}
+        {children}
       </Popover>
     </>
   )

@@ -2,7 +2,7 @@ import LocationCityIcon from '@mui/icons-material/LocationCity'
 import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import { Link } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { Tour } from 'src/types/tour.type'
 
 interface TourHeaderProps {
@@ -35,7 +35,7 @@ export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
           <div className='author mr-2 flex items-center gap-2'>
             <div className='text-nowrap text-sm font-semibold md:text-[16px]'>Activity provider:</div>
             <Link
-              to={`${path.guideProfile.replace(':id', tour.guide.id.toString())}`}
+              to={`${PATH.guideProfile.replace(':id', tour.guide.id.toString())}`}
               className='text-sm hover:text-orange-500 md:text-[16px]'
             >
               {tour.guide?.fullName || tour.guide?.email}

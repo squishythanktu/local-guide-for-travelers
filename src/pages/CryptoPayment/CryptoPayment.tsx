@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import paymentApi from 'src/apis/payment.api'
 import ControlledTextField from 'src/components/ControlledTextField'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { CryptoPaymentData } from 'src/types/payment.type'
 import { PassengerInformationSchema, passengerInformationSchema } from 'src/utils/rules'
@@ -42,10 +42,10 @@ const CryptoPayment: React.FC = () => {
       },
       {
         onSuccess: (data) => {
-          navigate(`${path.bookingSuccess.replace(':id', data.data.data.toString())}`)
+          navigate(`${PATH.bookingSuccess.replace(':id', data.data.data.toString())}`)
         },
         onError: () => {
-          navigate(path.bookingFail)
+          navigate(PATH.bookingFail)
         }
       }
     )

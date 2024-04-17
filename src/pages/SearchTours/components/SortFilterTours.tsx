@@ -119,50 +119,46 @@ export default function SortFilterTours() {
   return (
     <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 py-2 md:flex-row md:items-center'>
       <div className='sort-container flex w-full flex-col gap-4 sm:w-fit sm:flex-row'>
-        <MenuButton
-          jsx={
+        <MenuButton text='Price' icon={<AttachMoneyIcon />}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              paddingY: 2,
+              paddingX: 3,
+              gap: 2
+            }}
+          >
+            <Typography variant='subtitle2' sx={{ color: (theme) => theme.palette.secondary.main }}>
+              Filter by price range
+            </Typography>
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                paddingY: 2,
-                paddingX: 3,
-                gap: 2
+                alignItems: 'center',
+                gap: 1
               }}
             >
-              <Typography variant='subtitle2' sx={{ color: (theme) => theme.palette.secondary.main }}>
-                Filter by price range
-              </Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1
-                }}
-              >
-                <CurrencyInput
-                  name='minPrice'
-                  label='Min price'
-                  prefix='$'
-                  value={minPrice}
-                  onChange={handleCurrencyInputChange}
-                  className='w-auto'
-                />
-                -
-                <CurrencyInput
-                  name='maxPrice'
-                  label='Max price'
-                  prefix='$'
-                  value={maxPrice}
-                  onChange={handleCurrencyInputChange}
-                  className='w-auto'
-                />
-              </Box>
+              <CurrencyInput
+                name='minPrice'
+                label='Min price'
+                prefix='$'
+                value={minPrice}
+                onChange={handleCurrencyInputChange}
+                className='w-auto'
+              />
+              -
+              <CurrencyInput
+                name='maxPrice'
+                label='Max price'
+                prefix='$'
+                value={maxPrice}
+                onChange={handleCurrencyInputChange}
+                className='w-auto'
+              />
             </Box>
-          }
-          text='Price'
-          icon={<AttachMoneyIcon />}
-        />
+          </Box>
+        </MenuButton>
 
         <Autocomplete
           multiple

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import omit from 'lodash/omit'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { PopularCity } from 'src/types/booking.type'
 
@@ -27,7 +27,7 @@ const LocationCard: React.FC<Props> = ({ city }: Props) => {
           ...queryConfig,
           searchValue: city.name
         }
-    const searchPath = `../${path.searchTour}`
+    const searchPath = `../${PATH.searchTour}`
     const searchQuery = createSearchParams(config).toString()
     navigate(`${searchPath}?${searchQuery}`, {
       replace: true

@@ -13,7 +13,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import requestApi from 'src/apis/request.api'
 import ControlledTextField from 'src/components/ControlledTextField'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { StatusRequest } from 'src/enums/status-request.enum'
 import { Transportation } from 'src/enums/transportation.enum'
@@ -89,11 +89,11 @@ const RequestTour: React.FC = () => {
       createRequestTourMutation.mutate(formattedData, {
         onSuccess: () => {
           if (buttonClicked === StatusRequest.PENDING) {
-            toast.success('Your request has been sent.'), navigate(path.tourRequest)
+            toast.success('Your request has been sent.'), navigate(PATH.tourRequest)
           }
           if (buttonClicked === StatusRequest.DRAFT) {
             toast.success('Your request has been saved as a draft.')
-            navigate(path.tourRequest, { state: { statusRequest: StatusRequest.DRAFT } })
+            navigate(PATH.tourRequest, { state: { statusRequest: StatusRequest.DRAFT } })
           }
         },
         onError: () => {

@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
 import paymentApi from 'src/apis/payment.api'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { BookingsInCart } from 'src/types/booking.type'
 import { PassengerInformationSchema } from 'src/utils/rules'
+import { totalBookingPrice as totalBookingPriceFunction } from 'src/utils/sum'
 
 interface Props {
   passengerInfo: PassengerInformationSchema
@@ -25,7 +26,7 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
   })
-  const totalBookingPrice = bookingsCartData?.data.data.bookings.reduce((total, booking) => total + booking.price, 0)
+  const totalBookingPrice = totalBookingPriceFunction(bookingsCartData?.data.data.bookings)
   const [isProceedPaymentClicked, setIsProceedPaymentClicked] = useState<boolean>(false)
   const [isTransferMoney, setIsTransferMoney] = useState<boolean>(false)
 
@@ -76,7 +77,7 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
   }
 
   if (isTransferMoney && coinData?.data.data)
-    navigate(path.cryptoPayment, {
+    navigate(PATH.cryptoPayment, {
       state: {
         priceTotal: totalBookingPrice,
         coin: coinData?.data.data,

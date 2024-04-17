@@ -2,7 +2,7 @@ import { Box, Button, Rating } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import guideApi from 'src/apis/guide.api'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import Loading from '../Loading/Loading'
 import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
@@ -57,7 +57,7 @@ export default function GuideProfile() {
                 </div>
                 {isAuthenticated && (
                   <Button
-                    onClick={() => navigate(path.requestTour, { state: { guideId: id } })}
+                    onClick={() => navigate(PATH.requestTour, { state: { guideId: id } })}
                     variant='contained'
                     className=''
                   >

@@ -7,7 +7,8 @@ import Button from '@mui/material/Button'
 import AlertTitle from '@mui/material/AlertTitle'
 import { Booking } from 'src/types/booking.type'
 import { useNavigate } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
+import { totalBookingPrice as TotalBookingPriceFunction } from 'src/utils/sum'
 
 interface CartTotalProps {
   bookings: Booking[]
@@ -15,7 +16,7 @@ interface CartTotalProps {
 
 export default function CartTotal({ bookings }: CartTotalProps) {
   const navigate = useNavigate()
-  const totalBookingPrice = bookings.reduce((total, booking) => total + booking.price, 0)
+  const totalBookingPrice = TotalBookingPriceFunction(bookings)
 
   return (
     <Card className='rounded-lg border p-2'>
@@ -27,7 +28,7 @@ export default function CartTotal({ bookings }: CartTotalProps) {
                 Total ({bookings.length} {bookings.length > 1 ? 'items' : 'item'}):
               </div>
               <div className='flex flex-col items-end gap-1'>
-                <div className='title text-xl font-bold leading-5'>${totalBookingPrice.toLocaleString()}</div>
+                <div className='title text-xl font-bold leading-5'>${totalBookingPrice!.toLocaleString()}</div>
                 <div className='title text-right text-xs font-medium leading-5 text-emerald-700 lg:text-sm'>
                   All taxes and fees included
                 </div>
@@ -41,7 +42,7 @@ export default function CartTotal({ bookings }: CartTotalProps) {
           className='mr-2 w-[100%] rounded-full pr-7 font-semibold md:inline-block'
           variant='contained'
           size='large'
-          onClick={() => navigate(path.checkout)}
+          onClick={() => navigate(PATH.checkout)}
         >
           Go to checkout
         </Button>

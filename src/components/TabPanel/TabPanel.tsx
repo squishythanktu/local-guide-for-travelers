@@ -2,15 +2,13 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
 interface TabPanelProps {
-  children?: React.ReactNode
-  dir?: string
+  children: React.ReactNode
+  direction?: string
   index: number
   value: number
 }
 
-const TabPanel: React.FC<TabPanelProps> = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props
-
+const TabPanel: React.FC<TabPanelProps> = ({ children, value, index, ...other }: TabPanelProps) => {
   return (
     <div
       role='tabpanel'

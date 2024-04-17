@@ -5,7 +5,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 import { useContext, useState } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { PassengerInformationSchema } from 'src/utils/rules'
 import OrderSummary from './components/OrderSummary/OrderSummary'
@@ -22,7 +22,7 @@ export default function Checkout() {
       sx={{ display: 'flex', alignItems: 'center' }}
       color='inherit'
       component={RouterLink}
-      to={path.cart}
+      to={PATH.cart}
     >
       <ShoppingCartOutlinedIcon sx={{ mr: 0.5 }} fontSize='inherit' />
       Cart
@@ -33,7 +33,7 @@ export default function Checkout() {
       sx={{ display: 'flex', alignItems: 'center' }}
       color='inherit'
       component={RouterLink}
-      to={path.checkout}
+      to={PATH.checkout}
     >
       <PaymentOutlinedIcon sx={{ mr: 0.5 }} fontSize='inherit' />
       Checkout

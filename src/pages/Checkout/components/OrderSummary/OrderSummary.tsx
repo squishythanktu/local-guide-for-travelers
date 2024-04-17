@@ -7,6 +7,7 @@ import BookingSummaryCard from 'src/components/BookingSummaryCard/BookingSummary
 import { AppContext } from 'src/contexts/app.context'
 import Loading from 'src/pages/Loading/Loading'
 import { BookingsInCart } from 'src/types/booking.type'
+import { totalBookingPrice as totalBookingPriceFunction } from 'src/utils/sum'
 
 interface OrderSummaryProps {
   bookingId?: number
@@ -20,7 +21,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ bookingId }: OrderSummaryPr
     placeholderData: keepPreviousData,
     staleTime: 6 * 1000
   })
-  const totalBookingPrice = bookingsCartData?.data.data.bookings.reduce((total, booking) => total + booking.price, 0)
+  const totalBookingPrice = totalBookingPriceFunction(bookingsCartData?.data.data.bookings)
   const totalBookingLength = bookingsCartData?.data.data.bookings.length
 
   return (

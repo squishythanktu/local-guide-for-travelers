@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem'
 import classNames from 'classnames'
 import { useContext, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { clearLocalStorage } from 'src/utils/auth'
 import ViewListIcon from '@mui/icons-material/ViewList'
@@ -35,7 +35,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
 
   const handleLogout = () => {
     clearLocalStorage()
-    navigate(path.home)
+    navigate(PATH.home)
     window.location.reload()
     handleClose()
   }
@@ -47,7 +47,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
         className={classNames(
           'ml-0 flex flex-col items-center text-sm font-normal hover:after:w-full md:after:absolute md:after:bottom-[1.5px] md:after:left-0 md:after:h-[2.5px] md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300',
           {
-            'md:after:w-full': location.pathname.includes(path.account) || location.pathname.includes(path.management)
+            'md:after:w-full': location.pathname.includes(PATH.account) || location.pathname.includes(PATH.management)
           }
         )}
         sx={{
@@ -61,11 +61,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
       >
         <AccountCircleOutlinedIcon sx={{ fontSize: 24, color: textColor, marginBottom: '4px' }} />
         <span className='hidden w-full overflow-x-hidden text-ellipsis text-sm md:block'>
-          {isAuthenticated && profile && profile.fullName
-            ? profile.fullName.split(' ')[0]
-            : profile?.email
-              ? profile?.email.split('@')[0]
-              : 'Profile'}
+          {isAuthenticated && profile && (profile.fullName?.split(' ')[0] || profile?.email.split('@')[0])}
         </span>
       </Button>
       {!isAuthenticated && (
@@ -87,20 +83,20 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             }
           }}
         >
-          <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
+          <MenuItem component={Link} to={PATH.guideApplications} onClick={handleClose}>
             <ListItemIcon>
               <ContactPageOutlinedIcon fontSize='small' />
             </ListItemIcon>
             Become a guide
           </MenuItem>
           <Divider />
-          <MenuItem component={Link} to={path.login}>
+          <MenuItem component={Link} to={PATH.login}>
             <ListItemIcon>
               <LoginIcon fontSize='small' />
             </ListItemIcon>
             Sign in
           </MenuItem>
-          <MenuItem component={Link} to={path.register}>
+          <MenuItem component={Link} to={PATH.register}>
             <ListItemIcon>
               <PersonAddAlt1Icon fontSize='small' />
             </ListItemIcon>
@@ -127,20 +123,20 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             }
           }}
         >
-          <MenuItem component={Link} to={path.profile} onClick={handleClose}>
+          <MenuItem component={Link} to={PATH.profile} onClick={handleClose}>
             <ListItemIcon>
               <SettingsOutlinedIcon fontSize='small' />
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem component={Link} to={path.tourRequest} onClick={handleClose}>
+          <MenuItem component={Link} to={PATH.tourRequest} onClick={handleClose}>
             <ListItemIcon>
               <ViewListIcon fontSize='small' />
             </ListItemIcon>
             Management
           </MenuItem>
           {profile?.role !== UserRole.GUIDER && (
-            <MenuItem component={Link} to={path.guideApplications} onClick={handleClose}>
+            <MenuItem component={Link} to={PATH.guideApplications} onClick={handleClose}>
               <ListItemIcon>
                 <ContactPageOutlinedIcon fontSize='small' />
               </ListItemIcon>

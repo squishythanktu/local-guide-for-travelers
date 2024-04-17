@@ -23,7 +23,7 @@ import { Theme, styled } from '@mui/material/styles'
 import * as React from 'react'
 import { SyntheticEvent } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { drawerWidth } from 'src/constants/width-height.constant'
 import { useToggle } from 'src/hooks/useToggle'
 import theme from 'src/theme'
@@ -135,8 +135,8 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemButton
               sx={{ pl: 4 }}
               component={Link}
-              to={path.tourList}
-              selected={isActive(location, path.tourList)}
+              to={PATH.tourList}
+              selected={isActive(location, PATH.tourList)}
             >
               <ListItemIcon>
                 <ListIcon />
@@ -146,8 +146,8 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemButton
               sx={{ pl: 4 }}
               component={Link}
-              to={path.tourConfirmation}
-              selected={isActive(location, path.tourConfirmation)}
+              to={PATH.tourConfirmation}
+              selected={isActive(location, PATH.tourConfirmation)}
             >
               <ListItemIcon>
                 <ConfirmationNumberIcon />
@@ -183,8 +183,8 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemButton
               sx={{ pl: 4 }}
               component={Link}
-              to={path.guideConfirmation}
-              selected={isActive(location, path.guideConfirmation)}
+              to={PATH.guideConfirmation}
+              selected={isActive(location, PATH.guideConfirmation)}
             >
               <ListItemIcon>
                 <ConfirmationNumberIcon />
@@ -220,8 +220,8 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemButton
               sx={{ pl: 4 }}
               component={Link}
-              to={path.salesReportOfTour}
-              selected={isActive(location, path.salesReportOfTour)}
+              to={PATH.salesReportOfTour}
+              selected={isActive(location, PATH.salesReportOfTour)}
             >
               <ListItemIcon>
                 <HomeWorkIcon />
@@ -231,8 +231,8 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             <ListItemButton
               sx={{ pl: 4 }}
               component={Link}
-              to={path.salesReportOfGuide}
-              selected={isActive(location, path.salesReportOfGuide)}
+              to={PATH.salesReportOfGuide}
+              selected={isActive(location, PATH.salesReportOfGuide)}
             >
               <ListItemIcon>
                 <HikingIcon />

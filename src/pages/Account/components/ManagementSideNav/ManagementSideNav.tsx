@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper'
 import { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import AvatarSideNav from 'src/components/AvatarSideNav/AvatarSideNav'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { UserRole } from 'src/enums/user-role.enum'
 import { isActive } from 'src/utils/active.util'
@@ -30,7 +30,7 @@ const ManagementSideNav: React.FC = () => {
         <Paper>
           <List sx={{ padding: 0 }}>
             <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton component={Link} to={path.tourRequest} selected={isActive(location, path.tourRequest)}>
+              <ListItemButton component={Link} to={PATH.tourRequest} selected={isActive(location, PATH.tourRequest)}>
                 <ListItemIcon>
                   <TourIcon fontSize='small' />
                 </ListItemIcon>
@@ -41,7 +41,7 @@ const ManagementSideNav: React.FC = () => {
               <Box>
                 <Divider />
                 <ListItem disablePadding sx={{ display: 'block' }}>
-                  <ListItemButton component={Link} to={path.tours} selected={isActive(location, path.tours)}>
+                  <ListItemButton component={Link} to={PATH.tours} selected={isActive(location, PATH.tours)}>
                     <ListItemIcon>
                       <AddLocationAltOutlinedIcon fontSize='small' />
                     </ListItemIcon>
@@ -52,8 +52,8 @@ const ManagementSideNav: React.FC = () => {
                 <ListItem disablePadding sx={{ display: 'block' }}>
                   <ListItemButton
                     component={Link}
-                    to={path.bookingsManagement}
-                    selected={isActive(location, path.bookingsManagement)}
+                    to={PATH.bookingsManagement}
+                    selected={isActive(location, PATH.bookingsManagement)}
                   >
                     <ListItemIcon>
                       <ConfirmationNumberOutlinedIcon fontSize='small' />
@@ -63,7 +63,7 @@ const ManagementSideNav: React.FC = () => {
                 </ListItem>
                 <Divider />
                 <ListItem disablePadding sx={{ display: 'block' }}>
-                  <ListItemButton component={Link} to={path.schedule} selected={isActive(location, path.schedule)}>
+                  <ListItemButton component={Link} to={PATH.schedule} selected={isActive(location, PATH.schedule)}>
                     <ListItemIcon>
                       <CalendarMonthIcon fontSize='small' />
                     </ListItemIcon>
@@ -74,8 +74,8 @@ const ManagementSideNav: React.FC = () => {
                 <ListItem disablePadding sx={{ display: 'block' }}>
                   <ListItemButton
                     component={Link}
-                    to={path.salesReport}
-                    selected={isActive(location, path.salesReport)}
+                    to={PATH.salesReport}
+                    selected={isActive(location, PATH.salesReport)}
                   >
                     <ListItemIcon>
                       <TrendingUpIcon fontSize='small' />

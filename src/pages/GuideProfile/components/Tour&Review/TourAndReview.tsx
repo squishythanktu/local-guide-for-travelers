@@ -165,10 +165,10 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel value={1} index={1} dir={theme.direction}>
+        <TabPanel value={1} index={1} direction={theme.direction}>
           <TourManagement guideId={guideId} />
         </TabPanel>
-        <TabPanel value={2} index={2} dir={theme.direction}>
+        <TabPanel value={2} index={2} direction={theme.direction}>
           <Divider className='mb-4' />
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             <Grid item xs={4} sm={2} md={3}>

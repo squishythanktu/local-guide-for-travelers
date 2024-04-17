@@ -13,7 +13,6 @@ import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
 import { TourStatus } from 'src/enums/tour-status.enum'
-import { Unit } from 'src/enums/unit.enum'
 import { UserRole } from 'src/enums/user-role.enum'
 import Loading from 'src/pages/Loading/Loading'
 import NotFound from 'src/pages/NotFound/NotFound'
@@ -79,7 +78,7 @@ const TourDetail: React.FC = () => {
   const { data: startTimeData } = useQuery({
     queryKey: [`Start time of id ${id} in ${formData.startDate}`, formData],
     queryFn: () => tourApi.getStartTimeOfTour(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
-    enabled: tourData?.data.data.unit === Unit.HOURS && tourData?.data.data.duration < 5 && checkAvailability
+    enabled: checkAvailability
   })
   const { data: isCanReview } = useQuery({
     queryKey: [`Check user can review for tour of ${id}`, id, reviewsData],
@@ -278,14 +277,6 @@ const TourDetail: React.FC = () => {
             </Grid>
           )}
         </Box>
-        {/* <div className='activity__recommendation mt-10 flex flex-col gap-4 md:gap-6'>
-          <div className='text-[18px] font-semibold md:text-2xl'>You might also like...</div>
-          <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-            TODO: Handle tour detail API 
-            <TourCard />
-            <TourCard />
-          </div>
-        </div> */}
       </div>
     </div>
   )

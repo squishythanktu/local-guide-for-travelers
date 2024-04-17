@@ -34,7 +34,7 @@ export default function Cart() {
     <Box className='container flex h-auto min-h-[100%] flex-col'>
       {isPending && <Loading />}
       {!isPending && (cartData?.data.data.bookings?.length === 0 || !cartData?.data.data.bookings) && (
-        <div className='flex h-full flex-col items-center justify-center'>
+        <div className='mt-48 flex h-full flex-col items-center justify-center'>
           <img loading='lazy' src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
           <h3>No cart data available.</h3>
         </div>

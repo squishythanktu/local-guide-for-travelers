@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
 import ControlledTextField from 'src/components/ControlledTextField'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import AuthLayout from 'src/layouts/AuthLayout'
 import { Schema, schema } from 'src/utils/rules'
@@ -54,7 +54,7 @@ const Register: React.FC = () => {
             <h2>SIGN UP</h2>
             <div className='flex'>
               <span className='text-gray-400'>Already have an account?</span>
-              <Link className='ml-1 font-bold text-orange-500' to={path.login}>
+              <Link className='ml-1 font-bold text-orange-500' to={PATH.login}>
                 Sign in
               </Link>
             </div>

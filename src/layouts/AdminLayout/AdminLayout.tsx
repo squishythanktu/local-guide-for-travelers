@@ -5,7 +5,7 @@ import AdminDrawer from 'src/components/AdminDrawer/AdminDrawer'
 import AdminHeader from 'src/components/AdminHeader/AdminHeader'
 
 interface AdminLayoutProps {
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({

@@ -29,7 +29,7 @@ const Wishlist: React.FC = () => {
     )
 
   return (
-    <Box className='container h-auto min-h-[100%]'>
+    <Box className='container flex h-auto min-h-[100%] flex-col'>
       {isAuthenticated && !wishListData?.data.data && <Loading />}
       {isAuthenticated && wishListData?.data.data && wishListData.data.data.length > 0 ? (
         <div className=''>
@@ -41,7 +41,7 @@ const Wishlist: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className='flex h-full flex-col items-center justify-center'>
+        <div className='mt-48 flex h-full flex-col items-center justify-center'>
           <img
             loading='lazy'
             src='/assets/images/empty-wishlist.png'

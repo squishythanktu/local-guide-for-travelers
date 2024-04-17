@@ -2,7 +2,7 @@ import { Box, Button, Chip, Divider } from '@mui/material'
 import { QueryObserverResult, useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import requestApi from 'src/apis/request.api'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { StatusRequest } from 'src/enums/status-request.enum'
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { Request } from 'src/types/request.type'
@@ -35,7 +35,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
       className='min-h-[250px] rounded-md border py-4 text-black shadow-md'
       onClick={() => {
         if (request.tour && request.tour.status === TourStatus.ACCEPT)
-          navigate(`${path.tourDetail.replace(':id', request.tour.id.toString())}`)
+          navigate(`${PATH.tourDetail.replace(':id', request.tour.id.toString())}`)
       }}
     >
       <div className='request__header flex items-center justify-between px-4'>
@@ -97,7 +97,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               color='primary'
               size='small'
               onClick={(event) => {
-                event.stopPropagation(), navigate(path.tours, { state: { request: request } })
+                event.stopPropagation(), navigate(PATH.tours, { state: { request: request } })
               }}
             >
               Add tour
@@ -128,7 +128,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               variant='outlined'
               onClick={(event) => {
                 event.stopPropagation()
-                navigate(path.requestTour, {
+                navigate(PATH.requestTour, {
                   state: { request: request, guideId: request.guide.id }
                 })
               }}

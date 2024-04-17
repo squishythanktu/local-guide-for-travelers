@@ -13,7 +13,7 @@ import authApi from 'src/apis/auth.api'
 import userApi from 'src/apis/user.api'
 import GoogleIcon from 'src/assets/svg/google.svg'
 import ControlledTextField from 'src/components/ControlledTextField'
-import path from 'src/constants/path.constant'
+import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import useQueryParams from 'src/hooks/useQueryParams'
 import AuthLayout from 'src/layouts/AuthLayout'
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
       setIsAuthenticated(true)
       setProfileToLocalStorage(profileData.data.data)
       setProfile(profileData.data.data)
-      navigate(path.home)
+      navigate(PATH.home)
     }
   }, [navigate, profileData, setIsAuthenticated, setProfile])
 
@@ -99,7 +99,7 @@ const Login: React.FC = () => {
             <h2>SIGN IN</h2>
             <div className='flex'>
               <span className='text-gray-400'>Don't have an account?</span>
-              <Link className='ml-1 font-bold text-orange-500' to={path.register}>
+              <Link className='ml-1 font-bold text-orange-500' to={PATH.register}>
                 Sign up
               </Link>
             </div>

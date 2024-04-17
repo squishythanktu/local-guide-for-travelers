@@ -120,7 +120,7 @@ const Home: React.FC = () => {
       {/* Tours */}
       <div className='collection-container container relative mx-0 my-10 max-w-full lg:mx-auto lg:max-w-[1400px]'>
         <div className='collection-header mb-4'>
-          <h2 className='text-4xl	leading-10'>Unforgettable experiences around the world</h2>
+          <h2 className='text-4xl	leading-10'>Unforgettable experiences around Vietnam</h2>
         </div>
         <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {isPending

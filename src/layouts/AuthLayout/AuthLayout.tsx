@@ -3,11 +3,11 @@ import { Box } from '@mui/material'
 import LogoIcon from 'src/assets/svg/logo.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 
-interface Props {
-  children?: React.ReactNode
+interface AuthLayoutProps {
+  children: React.ReactNode
 }
 
-export default function AuthLayout({ children }: Props) {
+export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className='h-screen w-full'>
       <div className='grid h-full grid-cols-1 overflow-y-auto lg:grid-cols-5'>
