@@ -1,14 +1,18 @@
-import { BusyDate } from 'src/enums/busy-date.enum'
+import { BusyDateEnum } from 'src/enums/busy-date.enum'
 
 export type BusySchedule = {
   id: number
   busyDate: Date
 }
 
-export type ScheduleLists = { busyDayOfGuider: Date[]; busyDayByBooking: Date[] }
-
 export type DayInSchedule = {
   id: number
   busyDate: Date
-  typeBusyDayEnum: BusyDate
+  typeBusyDayEnum: BusyDateEnum
+}
+
+export type ScheduleList = {
+  byDay: DayInSchedule[]
+  byHour: DayInSchedule[]
+  byGuide: DayInSchedule[]
 }

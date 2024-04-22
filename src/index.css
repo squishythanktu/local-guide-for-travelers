@@ -53,6 +53,12 @@
   --label-secondary: #63687a;
   --light-grey-background: #f7f8fa;
   --supportive-over-view: rgba(26, 43, 73, 0.2);
+  --highlight-success-text: #178d46;
+  --highlight-success-background: #e9fbf0;
+  --highlight-error-text: #94000d;
+  --highlight-error-background: #fff0f1;
+  --highlight-warning-text: #ab6800;
+  --highlight-warning-background: #fff9eb;
 }
 
 *::-webkit-scrollbar,

@@ -32,11 +32,7 @@ export const compareDate = (a: Date, b: Date) => {
   return new Date(a).getTime() - new Date(b).getTime()
 }
 
-export const DateArrayConvertToDateObjectArray = (dateArr: Date[]) => {
-  return dateArr.map((item: Date) => {
-    return new DateObject(item)
-  })
-}
+export const ConvertDateArrayToDateObjectArray = (dateArr: Date[]) => dateArr.map((item: Date) => new DateObject(item))
 
 export const isInArr = (date: Date, arr: Date[]) => {
   return arr.map((item) => new Date(item).getTime()).includes(new Date(date).getTime())

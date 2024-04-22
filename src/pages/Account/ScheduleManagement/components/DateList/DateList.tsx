@@ -4,23 +4,24 @@ import List from '@mui/material/List'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { DateObject } from 'react-multi-date-picker'
-import { DayInSchedule } from 'src/types/schedule.type'
+import { DayStateEnum } from 'src/enums/day-state.enum'
+import { EventState } from 'src/enums/event-state.enum'
+import { SortOrder } from 'src/enums/sort-order.enum'
+import { ScheduleList } from 'src/types/schedule.type'
 import {
-  DateArrayConvertToDateObjectArray,
+  ConvertDateArrayToDateObjectArray,
   compareDate,
   compareDateForDateList,
   formatDate,
   isInArr
 } from 'src/utils/date-time'
 
-interface Props {
-  busyByGuide: DayInSchedule[]
-  busyByDay: DayInSchedule[]
-  busyByHour: DayInSchedule[]
+interface DateListProps {
+  schedule: ScheduleList
   handleDateChange: (date: DateObject[]) => void
 }
 
-const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleDateChange }: Props) => {
+const DateList: React.FC<DateListProps> = ({ schedule, handleDateChange }: DateListProps) => {
   const [pastBusyDates, setPastBusyDates] = useState<Date[]>([])
   const [futureBusyDates, setFutureBusyDates] = useState<Date[]>([])
   const [pastBookedByDay, setPastBookedByDay] = useState<Date[]>([])
@@ -28,25 +29,25 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
   const [pastBookedByHour, setPastBookedByHour] = useState<Date[]>([])
   const [futureBookedByHour, setFutureBookedByHour] = useState<Date[]>([])
   const [selectedDates, setSelectedDates] = useState<Date[]>([])
-  const [dayState, setDayState] = useState<'daysOff' | 'bookedByDay' | 'bookedByHour'>('daysOff')
-  const [temporalState, setTemporalState] = useState<'upcoming' | 'past'>('upcoming')
+  const [dayState, setDayState] = useState<DayStateEnum>(DayStateEnum.DaysOff)
+  const [temporaryState, setTemporaryState] = useState<EventState>(EventState.Upcoming)
   const [displayDates, setDisplayDates] = useState<Date[]>([])
 
   const confirmDelete = () => {
     if (selectedDates.length < 1) return
-    const oldDayOff = busyByGuide.map((d) => d.busyDate)
-    handleDateChange(DateArrayConvertToDateObjectArray(oldDayOff.filter((date) => !isInArr(date, selectedDates))))
+    const oldDayOff = schedule.byGuide.map((d) => d.busyDate)
+    handleDateChange(ConvertDateArrayToDateObjectArray(oldDayOff.filter((date) => !isInArr(date, selectedDates))))
     setSelectedDates([])
   }
 
   const handleDeleteDay = (date: Date) => () => {
-    const newBusyDates = busyByGuide.filter((d) => d.busyDate !== date)
+    const newBusyDates = schedule.byGuide.filter((d) => d.busyDate !== date)
     handleDateChange(newBusyDates.map((d) => new DateObject(d.busyDate)))
   }
 
-  const formattedData = (dateArr: Date[], type: 'ASC' | 'DESC') => {
+  const formattedData = (dateArr: Date[], type: SortOrder) => {
     const data = [...new Set(dateArr)]
-    if (type === 'DESC') return data.sort((a, b) => compareDate(b, a))
+    if (type === SortOrder.DESC) return data.sort((a, b) => compareDate(b, a))
     return data.sort((a, b) => compareDate(a, b))
   }
 
@@ -68,7 +69,8 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
     setFutureBookedByDay([])
     setPastBookedByHour([])
     setFutureBookedByHour([])
-    busyByGuide.forEach((item) => {
+
+    schedule.byGuide.forEach((item) => {
       const busyDate = item.busyDate
       if (compareDateForDateList(busyDate, new Date())) {
         pastBusyDates.push(busyDate)
@@ -77,7 +79,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
       }
     })
 
-    busyByDay.forEach((item) => {
+    schedule.byDay.forEach((item) => {
       const busyDate = item.busyDate
       if (compareDateForDateList(busyDate, new Date())) {
         pastBookedByDay.push(busyDate)
@@ -86,7 +88,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
       }
     })
 
-    busyByHour.forEach((item) => {
+    schedule.byHour.forEach((item) => {
       const busyDate = item.busyDate
       if (compareDateForDateList(busyDate, new Date())) {
         pastBookedByHour.push(busyDate)
@@ -95,47 +97,42 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
       }
     })
 
-    if (dayState.toString() === 'daysOff') {
-      if (temporalState.toString() === 'upcoming') {
-        setDisplayDates(formattedData(futureBusyDates, 'ASC'))
+    if (dayState.toString() === DayStateEnum.DaysOff) {
+      if (temporaryState.toString() === EventState.Upcoming) {
+        setDisplayDates(formattedData(futureBusyDates, SortOrder.ASC))
         return
       }
-      setDisplayDates(formattedData(pastBusyDates, 'DESC'))
+      setDisplayDates(formattedData(pastBusyDates, SortOrder.DESC))
       return
     }
 
-    if (dayState.toString() === 'bookedByHour') {
-      if (temporalState.toString() === 'upcoming') {
-        setDisplayDates(formattedData(futureBookedByHour, 'ASC'))
+    if (dayState.toString() === DayStateEnum.BookedByHour) {
+      if (temporaryState.toString() === EventState.Upcoming) {
+        setDisplayDates(formattedData(futureBookedByHour, SortOrder.ASC))
         return
       }
-      setDisplayDates(formattedData(pastBookedByHour, 'DESC'))
+      setDisplayDates(formattedData(pastBookedByHour, SortOrder.DESC))
       return
     }
 
-    if (temporalState.toString() === 'upcoming') {
-      setDisplayDates(formattedData(futureBookedByDay, 'ASC'))
+    if (temporaryState.toString() === EventState.Upcoming) {
+      setDisplayDates(formattedData(futureBookedByDay, SortOrder.ASC))
       return
     }
-    setDisplayDates(formattedData(pastBookedByDay, 'DESC'))
+
+    setDisplayDates(formattedData(pastBookedByDay, SortOrder.DESC))
     setSelectedDates([])
-  }, [busyByGuide, busyByDay, busyByHour, temporalState, dayState])
+  }, [schedule, temporaryState, dayState])
 
-  const handleBookedByDayButton = () => {
-    setDayState('bookedByDay')
-  }
-  const handleBookedByHourButton = () => {
-    setDayState('bookedByHour')
-  }
-  const handleDaysOffButton = () => {
-    setDayState('daysOff')
-  }
-  const handleUpcomingButton = () => {
-    setTemporalState('upcoming')
-  }
-  const handlePastButton = () => {
-    setTemporalState('past')
-  }
+  const handleBookedByDayButton = () => setDayState(DayStateEnum.BookedByDay)
+
+  const handleBookedByHourButton = () => setDayState(DayStateEnum.BookedByHour)
+
+  const handleDaysOffButton = () => setDayState(DayStateEnum.DaysOff)
+
+  const handleUpcomingButton = () => setTemporaryState(EventState.Upcoming)
+
+  const handlePastButton = () => setTemporaryState(EventState.Past)
 
   const shouldDisableButton = () => {
     if (selectedDates.length > 0) return false
@@ -159,7 +156,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
             size='small'
             onClick={handleDaysOffButton}
             className={classNames('w-[33.33%] rounded-none rounded-tl-md border-none', {
-              'bg-[#fff0f1]': dayState.toString() === 'daysOff'
+              'bg-[var(--highlight-error-background)]': dayState.toString() === DayStateEnum.DaysOff
             })}
             sx={{
               flex: '1 1 auto'
@@ -172,7 +169,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
             variant='outlined'
             size='small'
             className={classNames('w-[33.33%] rounded-none border-none ', {
-              'bg-[#fff9eb]': dayState.toString() === 'bookedByDay'
+              'bg-[var(--highlight-warning-background)]': dayState.toString() === DayStateEnum.BookedByDay
             })}
             sx={{
               flex: '1 1 auto'
@@ -185,7 +182,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
             variant='outlined'
             size='small'
             className={classNames('w-[33.33%] rounded-none rounded-tr-md border-none', {
-              'bg-[#e9fbf0]': dayState.toString() === 'bookedByHour'
+              'bg-[var(--highlight-success-background)]': dayState.toString() === DayStateEnum.BookedByHour
             })}
             sx={{
               flex: '1 1 auto'
@@ -196,18 +193,22 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
         </Box>
         <Box
           className={classNames('flex w-full border-y', {
-            'border-t-yellow-500': dayState.toString() === 'bookedByDay',
-            'border-t-green-500': dayState.toString() === 'bookedByHour',
-            'border-t-red-500': dayState.toString() === 'daysOff'
+            'border-t-yellow-500': dayState.toString() === DayStateEnum.BookedByDay,
+            'border-t-green-500': dayState.toString() === DayStateEnum.BookedByHour,
+            'border-t-red-500': dayState.toString() === DayStateEnum.DaysOff
           })}
         >
           <Button
             className={classNames('w-[50%] rounded-none border-none font-normal', {
-              'bg-[#fff9eb] ': dayState.toString() === 'bookedByDay',
-              'bg-transparent ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'past',
-              'bg-[#e9fbf0] ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'upcoming',
-              'bg-[#fff0f1] ': dayState.toString() === 'daysOff',
-              'bg-transparent': temporalState.toString() === 'past'
+              'bg-[var(--highlight-warning-background)]': dayState.toString() === DayStateEnum.BookedByDay,
+              'bg-transparent':
+                (dayState.toString() === DayStateEnum.BookedByDay ||
+                  dayState.toString() === DayStateEnum.BookedByHour ||
+                  dayState.toString() === DayStateEnum.DaysOff) &&
+                temporaryState.toString() === EventState.Past,
+              'bg-[var(--highlight-success-background)]':
+                dayState.toString() === DayStateEnum.BookedByHour && temporaryState.toString() === EventState.Upcoming,
+              'bg-[var(--highlight-error-background)]': dayState.toString() === DayStateEnum.DaysOff
             })}
             variant='outlined'
             size='small'
@@ -218,11 +219,15 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
           <Button
             onClick={handlePastButton}
             className={classNames('w-[50%]', 'rounded-none', 'border-none', 'font-normal', {
-              'bg-[#fff0f1] ': dayState.toString() === 'daysOff',
-              'bg-[#fff9eb] ': dayState.toString() === 'bookedByDay',
-              'bg-transparent ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'upcoming',
-              'bg-[#e9fbf0] ': dayState.toString() === 'bookedByHour' && temporalState.toString() === 'past',
-              'bg-transparent': temporalState.toString() === 'upcoming'
+              'bg-[var(--highlight-error-background)]': dayState.toString() === DayStateEnum.DaysOff,
+              'bg-[var(--highlight-warning-background)]': dayState.toString() === DayStateEnum.BookedByDay,
+              'bg-transparent':
+                (dayState.toString() === DayStateEnum.BookedByDay ||
+                  dayState.toString() === DayStateEnum.BookedByHour ||
+                  dayState.toString() === DayStateEnum.DaysOff) &&
+                temporaryState.toString() === EventState.Upcoming,
+              'bg-[var(--highlight-success-background)]':
+                dayState.toString() === DayStateEnum.BookedByHour && temporaryState.toString() === EventState.Past
             })}
             variant='outlined'
             size='small'
@@ -232,7 +237,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
         </Box>
       </Box>
       <List
-        style={{ maxHeight: '70%', overflow: 'auto' }}
+        style={{ maxHeight: '75%', overflow: 'auto' }}
         disablePadding
         className='rounded-b-md px-2 pt-2'
         subheader={<li />}
@@ -242,26 +247,27 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
             sx={{ borderColor: (theme) => theme.palette.primary.main }}
             key={index}
             className={classNames('mx-4 my-1 rounded-md border py-1 md:mx-0 lg:mx-4', {
-              'bg-[#fff0f1] ': isInArr(item, selectedDates)
+              'bg-[var(--highlight-error-background)]': isInArr(item, selectedDates)
             })}
           >
             <Box
               sx={{ color: (theme) => theme.palette.primary.main }}
               className={classNames('grid items-center  px-3', {
                 'grid-flow-col justify-items-end':
-                  dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming',
+                  dayState.toString() === DayStateEnum.DaysOff && temporaryState.toString() === EventState.Upcoming,
                 'justify-items-center': dayState.toString() === 'bookedDays'
               })}
               onClick={(event) => {
-                if (dayState === 'daysOff' && temporalState == 'upcoming') event.stopPropagation(), handleDayClick(item)
+                if (dayState === DayStateEnum.DaysOff && temporaryState == EventState.Upcoming)
+                  event.stopPropagation(), handleDayClick(item)
               }}
             >
-              {dayState.toString() === 'bookedByHour' ? (
+              {dayState.toString() === DayStateEnum.BookedByHour ? (
                 <div className='grid justify-center'>{formatDate(new Date(item), ' HH:mm - MM/DD/YYYY')}</div>
               ) : (
                 <div className='grid justify-center'>{formatDate(new Date(item), 'MM/DD/YYYY')}</div>
               )}
-              {dayState.toString() === 'daysOff' && temporalState.toString() === 'upcoming' && (
+              {dayState.toString() === DayStateEnum.DaysOff && temporaryState.toString() === EventState.Upcoming && (
                 <IconButton
                   onClick={(event) => {
                     event.stopPropagation(), handleDeleteDay(item)()
@@ -280,7 +286,7 @@ const DateList: React.FC<Props> = ({ busyByGuide, busyByDay, busyByHour, handleD
           </Box>
         ))}
       </List>
-      {dayState === 'daysOff' && temporalState == 'upcoming' && (
+      {dayState === DayStateEnum.DaysOff && temporaryState == EventState.Upcoming && (
         <Button
           disabled={shouldDisableButton()}
           variant='contained'
