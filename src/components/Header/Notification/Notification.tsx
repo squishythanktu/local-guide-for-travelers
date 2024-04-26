@@ -56,7 +56,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
         setResponseRealtime(JSON.parse(payload.notification.body))
         getCountOfIsNotReadNotifications()
       })
-      .catch((err: any) => console.log('Received notificaiton failed:', err))
+      .catch((err: any) => console.log('Received notification failed:', err))
   }, [profile?.email, responseRealtime])
 
   const getCountOfIsNotReadNotificationsMutation = useMutation({
