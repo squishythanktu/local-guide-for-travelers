@@ -1,6 +1,6 @@
 const config = {
   baseUrl: 'https://local-guide.azurewebsites.net',
-  frontEndUrl: 'https://interns-local-guide.vercel.app'
+  frontEndUrl: 'https://local-guide-for-travelers.vercel.app/'
 }
 
 export default config
