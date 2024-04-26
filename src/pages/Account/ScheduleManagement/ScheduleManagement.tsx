@@ -58,10 +58,6 @@ const ScheduleManagement: React.FC = () => {
     })
   }
 
-  useEffect(() => {
-    console.log(schedule.byGuide)
-  }, [schedule.byGuide])
-
   return (
     <>
       {addMode && <ScheduleDialog schedule={schedule} setAddMode={setAddMode} handleDateChange={handleDateChange} />}

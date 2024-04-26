@@ -17,6 +17,7 @@ import NotificationItem from './NotificationItem/NotificationItem'
 import { AxiosResponse } from 'axios'
 import { SuccessResponse } from 'src/types/utils.type'
 import { onMessageListener } from 'src/firebaseInit'
+import { toast } from 'react-toastify'
 
 interface NotificationProps {
   textColor: string
@@ -68,7 +69,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
         setCountOfUnReadNotification(data.data.data)
       },
       onError: (error: any) => {
-        console.log('error:', error)
+        toast.error(error.message)
       }
     })
   }
