@@ -144,8 +144,6 @@ const GuideApplication: React.FC = () => {
       licenseImages: data.licenseImages as string[]
     }
 
-    console.log('format: ', formattedData)
-
     createGuideApplicationMutation.mutate(formattedData, {
       onSuccess: () => {
         toast.success('Create guide application successfully.')

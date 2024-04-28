@@ -22,14 +22,12 @@ import { Schema, schema } from 'src/utils/rules'
 import http from 'src/utils/http'
 import { setAccessTokenToLocalStorage, setProfileToLocalStorage } from 'src/utils/auth'
 import config from 'src/constants/config.constant'
-import SockJS from 'sockjs-client'
-import Stomp from 'stompjs'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
 
 const Login: React.FC = () => {
-  const { setIsAuthenticated, setProfile, setStompClient } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const [isOauthTokenExists, setOauthTokenExists] = useState<boolean>(false)
   const queryParams: { token?: string; error?: string } = useQueryParams()
   const navigate = useNavigate()
@@ -78,12 +76,8 @@ const Login: React.FC = () => {
   const onSubmit = handleSubmit((body) => {
     loginMutation.mutate(body, {
       onSuccess: (data: AxiosResponse<AuthSuccessResponse, any>) => {
-        const socket = new SockJS(`${config.baseUrl}/ws`)
-        const stompClient = Stomp.over(socket)
-
         setIsAuthenticated(true)
         setProfile(data.data.data.user)
-        setStompClient(stompClient)
       },
       onError: (error: any) => {
         toast.error(error.response.data.message)

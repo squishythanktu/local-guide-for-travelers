@@ -10,7 +10,10 @@ const notificationApi = {
   },
   updateReadNotificationStatus(id: number) {
     return http.patch<SuccessResponse<void>>(`${URL_NOTIFICATIONS}/${id}`)
-  }
+  },
+  getCountOfIsNotReadNotifications() {
+    return http.get<SuccessResponse<number>>(`${URL_NOTIFICATIONS}/is-not-read`)
+  } 
 }
 
 export default notificationApi

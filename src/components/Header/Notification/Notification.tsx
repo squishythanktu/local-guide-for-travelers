@@ -6,23 +6,28 @@ import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import Skeleton from '@mui/material/Skeleton'
 import Typography from '@mui/material/Typography'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
+import { useContext, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import notificationApi from 'src/apis/notifications.api'
 import { AppContext } from 'src/contexts/app.context'
 import Loading from 'src/pages/Loading/Loading'
 import { Notification as NotificationType } from 'src/types/notification.type'
 import NotificationItem from './NotificationItem/NotificationItem'
+import { AxiosResponse } from 'axios'
+import { SuccessResponse } from 'src/types/utils.type'
+import { onMessageListener } from 'src/firebaseInit'
+import { toast } from 'react-toastify'
 
 interface NotificationProps {
   textColor: string
 }
 
 const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationProps) => {
-  const { profile, stompClient } = useContext(AppContext)
+  const { profile } = useContext(AppContext)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [responseRealtime, setResponseRealtime] = useState<NotificationType | null>(null)
+  const [countOfUnReadNotification, setCountOfUnReadNotification] = useState<number>(0)
   const { ref, inView } = useInView()
   const {
     data: notificationsData,
@@ -42,12 +47,32 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const open = Boolean(anchorEl)
 
   useEffect(() => {
-    stompClient?.connect({}, () =>
-      stompClient?.subscribe(`/topic/${profile?.email}`, (res: any) => {
-        if (res.body != responseRealtime) setResponseRealtime(res.body)
+    getCountOfIsNotReadNotifications()
+  }, [])
+
+  useEffect(() => {
+    onMessageListener()
+      .then((payload: any) => {
+        setResponseRealtime(JSON.parse(payload.notification.body))
+        getCountOfIsNotReadNotifications()
       })
-    )
-  }, [profile?.email, responseRealtime, stompClient])
+      .catch((err: any) => console.log('Received notification failed:', err))
+  }, [profile?.email, responseRealtime])
+
+  const getCountOfIsNotReadNotificationsMutation = useMutation({
+    mutationFn: () => notificationApi.getCountOfIsNotReadNotifications()
+  })
+
+  const getCountOfIsNotReadNotifications = () => {
+    getCountOfIsNotReadNotificationsMutation.mutate(undefined, {
+      onSuccess: (data: AxiosResponse<SuccessResponse<number>, any>) => {
+        setCountOfUnReadNotification(data.data.data)
+      },
+      onError: (error: any) => {
+        toast.error(error.message)
+      }
+    })
+  }
 
   useEffect(() => {
     if (inView && hasNextPage) fetchNextPage()
@@ -56,15 +81,6 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
   const handleClose = () => setAnchorEl(null)
-
-  const getUnreadNotifications = useCallback(() => {
-    if (!notificationsData) return 0
-
-    const totalCount = notificationsData.pages.reduce((count, page) => {
-      return count + page.data.data.filter((notification) => !notification.isRead).length
-    }, 0)
-    return totalCount
-  }, [notificationsData])
 
   return (
     <Box
@@ -86,7 +102,7 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
           }
         }}
       >
-        <Badge badgeContent={getUnreadNotifications()} color='error'>
+        <Badge badgeContent={countOfUnReadNotification} color='error'>
           <NotificationsIcon sx={{ color: textColor }} />
         </Badge>
         <span className='mt-[5px] hidden lg:block lg:text-sm'>Notifications</span>
