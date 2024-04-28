@@ -32,6 +32,8 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const {
     data: notificationsData,
     isPending,
+    // fetchPreviousPage,
+    // hasPreviousPage,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -43,21 +45,12 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
       if (lastPage.data.data.length === 0) return undefined
       return lastPageParam + 1
     }
+    // getPreviousPageParam: (firstPage, allPages, firstPageParam, allPageParams) => {
+    //   if (firstPageParam > 0) return firstPageParam - 1
+    //   return undefined
+    // }
   })
   const open = Boolean(anchorEl)
-
-  useEffect(() => {
-    getCountOfIsNotReadNotifications()
-  }, [])
-
-  useEffect(() => {
-    onMessageListener()
-      .then((payload: any) => {
-        setResponseRealtime(JSON.parse(payload.notification.body))
-        getCountOfIsNotReadNotifications()
-      })
-      .catch((err: any) => console.log('Received notification failed:', err))
-  }, [profile?.email, responseRealtime])
 
   const getCountOfIsNotReadNotificationsMutation = useMutation({
     mutationFn: () => notificationApi.getCountOfIsNotReadNotifications()
@@ -75,8 +68,27 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   }
 
   useEffect(() => {
+    getCountOfIsNotReadNotifications()
+  }, [])
+
+  useEffect(() => {
+    onMessageListener()
+      .then((payload: any) => {
+        console.log('payload: ', payload)
+
+        setResponseRealtime(JSON.parse(payload.notification.body))
+        getCountOfIsNotReadNotifications()
+      })
+      .catch((err: any) => console.log('Received notification failed:', err))
+  }, [profile?.email, responseRealtime])
+
+  useEffect(() => {
     if (inView && hasNextPage) fetchNextPage()
   }, [inView, hasNextPage, fetchNextPage])
+
+  // useEffect(() => {
+  //   if (inView && hasPreviousPage) fetchPreviousPage()
+  // }, [inView, hasPreviousPage, fetchPreviousPage])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
@@ -85,14 +97,14 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   return (
     <Box
       className='relative ml-2 flex w-8 cursor-pointer flex-col items-center text-base 
-sm:w-full md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] 
-md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:hover:after:w-full'
+md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] md:after:w-0 
+md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full lg:hover:after:w-full'
     >
       <Button
         aria-label='notification'
         size='small'
         onClick={handleClick}
-        className='flex flex-col text-inherit'
+        className='flex flex-col pr-0 text-inherit'
         disableRipple
         disableFocusRipple
         sx={{

@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/messaging'
+import { initializeApp } from 'firebase/app'
+import { getToken, getMessaging, onMessage } from 'firebase/messaging'
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -13,17 +12,15 @@ const firebaseConfig = {
   measurementId: 'G-D91DZWSKNW'
 }
 
-firebase.initializeApp(firebaseConfig)
-
-const messaging = firebase.messaging()
+const messaging = getMessaging(initializeApp(firebaseConfig))
 
 const REACT_APP_VAPID_KEY = 'BBQQ1zChnWRNAXHJNLs0-3cE9NbKb5jYM0-60hXibuLnZqAqWZFTpPi4u3OQQQWxPk89VsfHogPKl_jDvr_yI8Y'
 const publicKey = REACT_APP_VAPID_KEY
 
-export const getToken = async () => {
+export const getToken1 = async () => {
   let currentToken = ''
   try {
-    currentToken = await messaging.getToken({ vapidKey: publicKey })
+    currentToken = await getToken(messaging, { vapidKey: publicKey })
   } catch (error) {
     console.log('An error occurred while retrieving token. ', error)
   }
@@ -32,7 +29,7 @@ export const getToken = async () => {
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
-    messaging.onMessage((payload: any) => {
+    onMessage(messaging, (payload) => {
       resolve(payload)
     })
   })

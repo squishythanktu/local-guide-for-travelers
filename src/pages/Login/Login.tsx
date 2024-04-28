@@ -13,15 +13,16 @@ import authApi from 'src/apis/auth.api'
 import userApi from 'src/apis/user.api'
 import GoogleIcon from 'src/assets/svg/google.svg'
 import ControlledTextField from 'src/components/ControlledTextField'
+import config from 'src/constants/config.constant'
 import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
+import { getToken1 } from 'src/firebaseInit'
 import useQueryParams from 'src/hooks/useQueryParams'
 import AuthLayout from 'src/layouts/AuthLayout'
-import { AuthSuccessResponse } from 'src/types/auth.type'
-import { Schema, schema } from 'src/utils/rules'
-import http from 'src/utils/http'
+import { AuthSuccessResponse, SubscribeTopicSuccessResponse } from 'src/types/auth.type'
 import { setAccessTokenToLocalStorage, setProfileToLocalStorage } from 'src/utils/auth'
-import config from 'src/constants/config.constant'
+import http from 'src/utils/http'
+import { Schema, schema } from 'src/utils/rules'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const signInSchema = schema.pick(['email', 'password'])
@@ -78,12 +79,34 @@ const Login: React.FC = () => {
       onSuccess: (data: AxiosResponse<AuthSuccessResponse, any>) => {
         setIsAuthenticated(true)
         setProfile(data.data.data.user)
+        onSubscribeTopic(data.data.data.user.email)
       },
       onError: (error: any) => {
         toast.error(error.response.data.message)
       }
     })
   })
+
+  const subscribeTopicMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const deviceToken = await getToken1() // Wait for the token to be retrieved
+      console.log(deviceToken)
+      const body = { deviceToken, topicName: email }
+      return authApi.subscribeTopic(body)
+    }
+  })
+
+  const onSubscribeTopic = (email: string) => {
+    subscribeTopicMutation.mutate(email, {
+      onSuccess: (data: AxiosResponse<SubscribeTopicSuccessResponse, any>) => {
+        console.log('subcribed to ', email)
+        toast.info(data.data.data.message)
+      },
+      onError: (error: any) => {
+        toast.error(error.response.data.message)
+      }
+    })
+  }
 
   return (
     <AuthLayout>
