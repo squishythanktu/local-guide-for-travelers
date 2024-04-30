@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { getFirebaseToken } from 'src/FirebaseConfig'
 import authApi from 'src/apis/auth.api'
 import userApi from 'src/apis/user.api'
 import GoogleIcon from 'src/assets/svg/google.svg'
@@ -16,7 +17,6 @@ import ControlledTextField from 'src/components/ControlledTextField'
 import config from 'src/constants/config.constant'
 import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
-import { getToken1 } from 'src/firebaseInit'
 import useQueryParams from 'src/hooks/useQueryParams'
 import AuthLayout from 'src/layouts/AuthLayout'
 import { AuthSuccessResponse, SubscribeTopicSuccessResponse } from 'src/types/auth.type'
@@ -89,9 +89,9 @@ const Login: React.FC = () => {
 
   const subscribeTopicMutation = useMutation({
     mutationFn: async (email: string) => {
-      const deviceToken = await getToken1() // Wait for the token to be retrieved
+      const deviceToken = await getFirebaseToken(); // Wait for the token to be retrieved
       console.log(deviceToken)
-      const body = { deviceToken, topicName: email }
+      const body = { deviceToken: deviceToken as string, topicName: email }
       return authApi.subscribeTopic(body)
     }
   })
@@ -172,3 +172,4 @@ const Login: React.FC = () => {
 }
 
 export default Login
+

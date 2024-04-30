@@ -16,8 +16,9 @@ import { Notification as NotificationType } from 'src/types/notification.type'
 import NotificationItem from './NotificationItem/NotificationItem'
 import { AxiosResponse } from 'axios'
 import { SuccessResponse } from 'src/types/utils.type'
-import { onMessageListener } from 'src/firebaseInit'
+import { messaging } from 'src/FirebaseConfig'
 import { toast } from 'react-toastify'
+import { onMessage } from 'firebase/messaging'
 
 interface NotificationProps {
   textColor: string
@@ -68,18 +69,35 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   }
 
   useEffect(() => {
-    getCountOfIsNotReadNotifications()
+    setTimeout(() => {
+      getCountOfIsNotReadNotifications()
+    }, 1000)
   }, [])
 
-  useEffect(() => {
-    onMessageListener()
-      .then((payload: any) => {
-        console.log('payload: ', payload)
+  // const onMessageListener = (async () => {
+  //   const messagingResolve = await messaging;
+  //   if (messagingResolve) {
+  //     onMessage(messagingResolve, (payload: any) => {
+  //       console.log('payload: ', payload.notification)
+  //       setResponseRealtime(JSON.parse(payload.notification.body))
+  //       getCountOfIsNotReadNotifications()
+  //     });
+  //   }
+  // })();
 
-        setResponseRealtime(JSON.parse(payload.notification.body))
-        getCountOfIsNotReadNotifications()
-      })
-      .catch((err: any) => console.log('Received notification failed:', err))
+  useEffect(() => {
+    const onMessageListener = async () => {
+      const messagingResolve = await messaging;
+      if (messagingResolve) {
+        onMessage(messagingResolve, (payload: any) => {
+          setResponseRealtime(JSON.parse(payload.notification.body))
+          setTimeout(() => {
+            getCountOfIsNotReadNotifications()
+          }, 500);
+        });
+      }
+    };
+    onMessageListener()
   }, [profile?.email, responseRealtime])
 
   useEffect(() => {
