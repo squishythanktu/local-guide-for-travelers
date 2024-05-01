@@ -14,9 +14,14 @@ import { getRelativeTime } from 'src/utils/date-time'
 interface NotificationItemProps {
   data: Notification
   innerRef?: React.Ref<HTMLParagraphElement>
+  getNotificationCount: () => void
 }
 
-const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: NotificationItemProps) => {
+const NotificationItem: React.FC<NotificationItemProps> = ({
+  data,
+  innerRef,
+  getNotificationCount
+}: NotificationItemProps) => {
   const { profile } = useContext(AppContext)
   const navigate = useNavigate()
 
@@ -25,7 +30,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, innerRef }: N
   })
 
   const handleNavigate = () => {
-    updateReadNotificationStatusMutation.mutate(data.id, {})
+    updateReadNotificationStatusMutation.mutate(data.id, {
+      onSuccess: () => {
+        getNotificationCount()
+        data.isRead = true
+      }
+    })
 
     switch (data.notificationType) {
       case NotificationType.addTour: {

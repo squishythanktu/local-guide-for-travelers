@@ -13,7 +13,7 @@ const notificationApi = {
   },
   getCountOfIsNotReadNotifications() {
     return http.get<SuccessResponse<number>>(`${URL_NOTIFICATIONS}/is-not-read`)
-  } 
+  }
 }
 
 export default notificationApi

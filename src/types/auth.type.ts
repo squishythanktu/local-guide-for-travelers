@@ -5,3 +5,7 @@ export type AuthSuccessResponse = SuccessResponse<{
   accessToken: string
   user: User
 }>
+
+export type SubscribeTopicSuccessResponse = SuccessResponse<{
+  message: string
+}>

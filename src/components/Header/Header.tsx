@@ -81,13 +81,16 @@ export default function Header({
               className='h-8 w-8 sm:h-10 sm:w-10 md:h-14 md:w-14'
             />
           </Link>
-          <SearchBar className='search-bar col-span-9 col-start-2 mx-4 flex h-[48px] items-center md:col-span-7 md:col-start-3 md:h-[60px] lg:col-span-6 lg:mr-6' />
+          <SearchBar className='search-bar col-span-8 col-start-2 mx-4 flex h-[48px] items-center md:h-[60px] lg:col-span-6 lg:mr-6' />
           <Box
-            className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
+            className='col-span-3 col-start-10 flex items-center justify-end'
             sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
           >
             {isAuthenticated && (
-              <>
+              <Box
+                className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
+                sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
+              >
                 <NavLink to={PATH.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
                 <NavLink to={PATH.cart} icon={<CartBadge />} text='Cart' />
                 <NavLink
@@ -96,14 +99,15 @@ export default function Header({
                   text='Bookings'
                 />
                 <NavLink to={PATH.invoices} icon={<ReceiptIcon sx={{ fontSize: 24 }} />} text='Invoices' />
-                <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />
-              </>
+              </Box>
             )}
-            <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
-          </Box>
-          <Box className='drawer col-span-2 col-start-11 flex items-center justify-end lg:col-span-1 lg:col-start-12 lg:hidden'>
             {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
-            <RightDrawer textColor={scroll && isEnableScroll ? 'black' : textColor} />
+            <Box className='hidden lg:block'>
+              <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
+            </Box>
+            <Box className='drawer col-span-1 col-start-12 flex items-center justify-end lg:hidden'>
+              <RightDrawer textColor={scroll && isEnableScroll ? 'black' : textColor} />
+            </Box>
           </Box>
         </div>
       </Box>
