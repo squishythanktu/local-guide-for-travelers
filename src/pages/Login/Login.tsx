@@ -89,8 +89,7 @@ const Login: React.FC = () => {
 
   const subscribeTopicMutation = useMutation({
     mutationFn: async (email: string) => {
-      const deviceToken = await getFirebaseToken(); // Wait for the token to be retrieved
-      console.log(deviceToken)
+      const deviceToken = await getFirebaseToken()
       const body = { deviceToken: deviceToken as string, topicName: email }
       return authApi.subscribeTopic(body)
     }
@@ -99,7 +98,6 @@ const Login: React.FC = () => {
   const onSubscribeTopic = (email: string) => {
     subscribeTopicMutation.mutate(email, {
       onSuccess: (data: AxiosResponse<SubscribeTopicSuccessResponse, any>) => {
-        console.log('subcribed to ', email)
         toast.info(data.data.data.message)
       },
       onError: (error: any) => {
@@ -172,4 +170,3 @@ const Login: React.FC = () => {
 }
 
 export default Login
-

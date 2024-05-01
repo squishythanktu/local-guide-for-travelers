@@ -33,8 +33,8 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const {
     data: notificationsData,
     isPending,
-    // fetchPreviousPage,
-    // hasPreviousPage,
+    fetchPreviousPage,
+    hasPreviousPage,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -45,11 +45,11 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     getNextPageParam: (lastPage, __allPages, lastPageParam) => {
       if (lastPage.data.data.length === 0) return undefined
       return lastPageParam + 1
+    },
+    getPreviousPageParam: (__firstPage, __allPages, firstPageParam, __allPageParams) => {
+      if (firstPageParam > 0) return firstPageParam - 1
+      return undefined
     }
-    // getPreviousPageParam: (firstPage, allPages, firstPageParam, allPageParams) => {
-    //   if (firstPageParam > 0) return firstPageParam - 1
-    //   return undefined
-    // }
   })
   const open = Boolean(anchorEl)
 
@@ -74,29 +74,18 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     }, 1000)
   }, [])
 
-  // const onMessageListener = (async () => {
-  //   const messagingResolve = await messaging;
-  //   if (messagingResolve) {
-  //     onMessage(messagingResolve, (payload: any) => {
-  //       console.log('payload: ', payload.notification)
-  //       setResponseRealtime(JSON.parse(payload.notification.body))
-  //       getCountOfIsNotReadNotifications()
-  //     });
-  //   }
-  // })();
-
   useEffect(() => {
     const onMessageListener = async () => {
-      const messagingResolve = await messaging;
+      const messagingResolve = await messaging
       if (messagingResolve) {
         onMessage(messagingResolve, (payload: any) => {
           setResponseRealtime(JSON.parse(payload.notification.body))
           setTimeout(() => {
             getCountOfIsNotReadNotifications()
-          }, 500);
-        });
+          }, 500)
+        })
       }
-    };
+    }
     onMessageListener()
   }, [profile?.email, responseRealtime])
 
@@ -104,9 +93,9 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     if (inView && hasNextPage) fetchNextPage()
   }, [inView, hasNextPage, fetchNextPage])
 
-  // useEffect(() => {
-  //   if (inView && hasPreviousPage) fetchPreviousPage()
-  // }, [inView, hasPreviousPage, fetchPreviousPage])
+  useEffect(() => {
+    if (inView && hasPreviousPage) fetchPreviousPage()
+  }, [inView, hasPreviousPage, fetchPreviousPage])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
@@ -201,8 +190,21 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full l
             }
             return page.data.data.map((notification: NotificationType, index) => {
               if (page.data.data.length === index + 1)
-                return <NotificationItem innerRef={ref} key={notification.id} data={notification} />
-              return <NotificationItem key={notification.id} data={notification} />
+                return (
+                  <NotificationItem
+                    innerRef={ref}
+                    key={notification.id}
+                    data={notification}
+                    getNotificationCount={getCountOfIsNotReadNotifications}
+                  />
+                )
+              return (
+                <NotificationItem
+                  key={notification.id}
+                  data={notification}
+                  getNotificationCount={getCountOfIsNotReadNotifications}
+                />
+              )
             })
           })}
         {isFetchingNextPage && (

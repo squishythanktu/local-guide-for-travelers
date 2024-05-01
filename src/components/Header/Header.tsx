@@ -86,7 +86,6 @@ export default function Header({
             className='col-span-3 col-start-10 flex items-center justify-end'
             sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
           >
-            {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
             {isAuthenticated && (
               <Box
                 className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
@@ -102,6 +101,7 @@ export default function Header({
                 <NavLink to={PATH.invoices} icon={<ReceiptIcon sx={{ fontSize: 24 }} />} text='Invoices' />
               </Box>
             )}
+            {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
             <Box className='hidden lg:block'>
               <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
             </Box>
