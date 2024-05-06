@@ -18,7 +18,13 @@ const paymentApi = {
   },
   cryptoTransaction(body: CryptoPaymentData) {
     return http.post<SuccessResponse<{ status: number; invoiceId: number }>>(`${URL_PAYMENT}/transaction`, body)
-  }
+  },
+  transferDollarToEth(params: { totalPrice: number }) {
+    return http.get<SuccessResponse<number>>(`etherscan/get-eth-price`, { params })
+  },
+  makeInvoiceByMetamask(body: any){
+    return http.post<SuccessResponse<{ status: number; invoiceId: number }>>(`etherscan/make-invoice`, body)
+  },
 }
 
 export default paymentApi
