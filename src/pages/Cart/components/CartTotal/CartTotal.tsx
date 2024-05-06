@@ -37,7 +37,7 @@ export default function CartTotal({ bookings }: CartTotalProps) {
           </>
         }
       />
-      <CardActions className='relative mt-7'>
+      <CardActions className='relative mt-2'>
         <Button
           className='mr-2 w-[100%] rounded-full pr-7 font-semibold md:inline-block'
           variant='contained'

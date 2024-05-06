@@ -169,39 +169,6 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
     >
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <FavoriteBorderIcon />
-            </ListItemIcon>
-            <ListItemText primary='Wish list' />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding component={Link} to={PATH.cart}>
-          <ListItemButton>
-            <ListItemIcon>
-              <ShoppingCartOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary='Cart' />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding component={Link} to={PATH.bookings}>
-          <ListItemButton>
-            <ListItemIcon>
-              <ConfirmationNumberOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary='Bookings' />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding component={Link} to={PATH.invoices}>
-          <ListItemButton>
-            <ListItemIcon>
-              <ReceiptIcon />
-            </ListItemIcon>
-            <ListItemText primary='Invoices' />
-          </ListItemButton>
-        </ListItem>
-        <Divider />
-        <ListItem disablePadding>
           <ListItemButton onClick={handleClick}>
             <ListItemIcon>
               <AccountCircleOutlinedIcon />

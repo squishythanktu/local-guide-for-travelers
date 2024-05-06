@@ -16,8 +16,9 @@ import { Notification as NotificationType } from 'src/types/notification.type'
 import NotificationItem from './NotificationItem/NotificationItem'
 import { AxiosResponse } from 'axios'
 import { SuccessResponse } from 'src/types/utils.type'
-import { onMessageListener } from 'src/firebaseInit'
+import { messaging } from 'src/FirebaseConfig'
 import { toast } from 'react-toastify'
+import { onMessage } from 'firebase/messaging'
 
 interface NotificationProps {
   textColor: string
@@ -32,6 +33,8 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const {
     data: notificationsData,
     isPending,
+    fetchPreviousPage,
+    hasPreviousPage,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -42,22 +45,13 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     getNextPageParam: (lastPage, __allPages, lastPageParam) => {
       if (lastPage.data.data.length === 0) return undefined
       return lastPageParam + 1
+    },
+    getPreviousPageParam: (__firstPage, __allPages, firstPageParam, __allPageParams) => {
+      if (firstPageParam > 0) return firstPageParam - 1
+      return undefined
     }
   })
   const open = Boolean(anchorEl)
-
-  useEffect(() => {
-    getCountOfIsNotReadNotifications()
-  }, [])
-
-  useEffect(() => {
-    onMessageListener()
-      .then((payload: any) => {
-        setResponseRealtime(JSON.parse(payload.notification.body))
-        getCountOfIsNotReadNotifications()
-      })
-      .catch((err: any) => console.log('Received notification failed:', err))
-  }, [profile?.email, responseRealtime])
 
   const getCountOfIsNotReadNotificationsMutation = useMutation({
     mutationFn: () => notificationApi.getCountOfIsNotReadNotifications()
@@ -75,8 +69,33 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      getCountOfIsNotReadNotifications()
+    }, 1000)
+  }, [])
+
+  useEffect(() => {
+    const onMessageListener = async () => {
+      const messagingResolve = await messaging
+      if (messagingResolve) {
+        onMessage(messagingResolve, (payload: any) => {
+          setResponseRealtime(JSON.parse(payload.notification.body))
+          setTimeout(() => {
+            getCountOfIsNotReadNotifications()
+          }, 500)
+        })
+      }
+    }
+    onMessageListener()
+  }, [profile?.email, responseRealtime])
+
+  useEffect(() => {
     if (inView && hasNextPage) fetchNextPage()
   }, [inView, hasNextPage, fetchNextPage])
+
+  useEffect(() => {
+    if (inView && hasPreviousPage) fetchPreviousPage()
+  }, [inView, hasPreviousPage, fetchPreviousPage])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
@@ -85,14 +104,14 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   return (
     <Box
       className='relative ml-2 flex w-8 cursor-pointer flex-col items-center text-base 
-sm:w-full md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] 
-md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:hover:after:w-full'
+md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] md:after:w-0 
+md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full lg:hover:after:w-full'
     >
       <Button
         aria-label='notification'
         size='small'
         onClick={handleClick}
-        className='flex flex-col text-inherit'
+        className='flex flex-col pr-0 text-inherit'
         disableRipple
         disableFocusRipple
         sx={{
@@ -171,8 +190,21 @@ md:after:w-0 md:after:bg-orange-500 md:after:transition-all md:after:duration-30
             }
             return page.data.data.map((notification: NotificationType, index) => {
               if (page.data.data.length === index + 1)
-                return <NotificationItem innerRef={ref} key={notification.id} data={notification} />
-              return <NotificationItem key={notification.id} data={notification} />
+                return (
+                  <NotificationItem
+                    innerRef={ref}
+                    key={notification.id}
+                    data={notification}
+                    getNotificationCount={getCountOfIsNotReadNotifications}
+                  />
+                )
+              return (
+                <NotificationItem
+                  key={notification.id}
+                  data={notification}
+                  getNotificationCount={getCountOfIsNotReadNotifications}
+                />
+              )
             })
           })}
         {isFetchingNextPage && (
