@@ -1,8 +1,6 @@
 const config = {
-  // baseUrl: 'https://local-guide-be.azurewebsites.net',
-  // frontEndUrl: 'https://local-guide-for-travelers.vercel.app/'
-  baseUrl: 'http://localhost:8080',
-  frontEndUrl: 'http://localhost:3000'
+  baseUrl: 'https://local-guide-be.azurewebsites.net',
+  frontEndUrl: 'https://local-guide-for-travelers.vercel.app/'
 }
 
 export default config
