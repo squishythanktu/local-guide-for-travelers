@@ -1,5 +1,5 @@
 import LoadingButton from '@mui/lab/LoadingButton'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -10,11 +10,21 @@ import { AppContext } from 'src/contexts/app.context'
 import { BookingsInCart } from 'src/types/booking.type'
 import { PassengerInformationSchema } from 'src/utils/rules'
 import { totalBookingPrice as totalBookingPriceFunction } from 'src/utils/sum'
+import { ethers } from "ethers"
+import MetaMaskOnboarding from '@metamask/onboarding'
+import config from 'src/constants/config.constant'
+import { Backdrop, CircularProgress } from '@mui/material'
 
 interface Props {
   passengerInfo: PassengerInformationSchema
   isDisplaySaveButton: boolean
   bookingId?: number
+}
+
+declare global {
+  interface Window {
+    ethereum?: any
+  }
 }
 
 const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bookingId }: Props) => {
@@ -29,6 +39,8 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
   const totalBookingPrice = totalBookingPriceFunction(bookingsCartData?.data.data.bookings)
   const [isProceedPaymentClicked, setIsProceedPaymentClicked] = useState<boolean>(false)
   const [isTransferMoney, setIsTransferMoney] = useState<boolean>(false)
+  const [isTransferEthCoin, setIsTransferEthCoin] = useState<boolean>(false)
+  const [openBackdrop, setOpenBackdrop] = useState<boolean>(false);
 
   const getFormattedBookingIds = useCallback(() => {
     return (bookingsCartData?.data.data as BookingsInCart).bookings!.map((booking) => booking.id).join(',') as string
@@ -51,10 +63,14 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
     enabled: !!isProceedPaymentClicked
   })
 
-  const { data: coinData, isLoading: cryptoPaymentLoading } = useQuery({
-    queryKey: [`Convert ${totalBookingPrice} dollars to coins `],
-    queryFn: () => paymentApi.transferMoney(totalBookingPrice as number),
-    enabled: !!isTransferMoney
+  const { data: metaMaskData, isLoading: metaMaskPaymentLoading } = useQuery({
+    queryKey: [`Convert ${totalBookingPrice} dollars to seth coins `],
+    queryFn: () => paymentApi.transferDollarToEth({ totalPrice: (totalBookingPrice as number) }),
+    enabled: !!isTransferEthCoin
+  })
+
+  const makeInvoiceByMetaMask = useMutation({
+    mutationFn: (body: any) => paymentApi.makeInvoiceByMetamask(body)
   })
 
   useEffect(() => {
@@ -72,42 +88,77 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
     else toast.error('Please fill in the complete Passenger Information and save.')
   }
 
-  const handleCryptoPayment = () => {
-    setIsTransferMoney(true)
+  const handleMetaMaskPayment = () => {
+    setIsTransferEthCoin(true)
+    setOpenBackdrop(true)
   }
 
-  if (isTransferMoney && coinData?.data.data)
-    navigate(PATH.cryptoPayment, {
-      state: {
-        priceTotal: totalBookingPrice,
-        coin: coinData?.data.data,
-        bookingIds: getFormattedBookingIds(),
-        passengerInfo: passengerInfo
+  const installMetaMask = () => {
+    const onboarding = new MetaMaskOnboarding({ forwarderOrigin: config.frontEndUrl });
+    onboarding.startOnboarding();
+  }
+
+  const startPayment = async (metaMaskData: any) => {
+    try {
+      if (!window?.ethereum) {
+        console.log("Not found wallet")
+        installMetaMask()
       }
-    })
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const addr = "0x80C7b8fcCA7bDF81Fb8993c1D5Ee992A87EBa470";
+      const amount = metaMaskData.sepoliaEthPrice
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      ethers.utils.getAddress(addr);
+      const tx = await signer.sendTransaction({
+        to: addr,
+        value: ethers.utils.parseEther(amount)
+      });
+      console.log("bookingids: ", getFormattedBookingIds())
+      // Make invoice
+      const cryptoPayData = {
+        priceTotal: totalBookingPrice,
+        txHash: tx.hash,
+        sepoliaEthPrice: amount,
+        usdRate: metaMaskData.usdRate,
+        senderAddress: accounts[0],
+        bookingIds: getFormattedBookingIds().split(',').map(num => num.trim()),
+        travelerEmail: profile?.email,
+        email: passengerInfo.fullName,
+        fullName: passengerInfo.email,
+        phone: passengerInfo.phone
+      };
+
+      makeInvoiceByMetaMask.mutate(cryptoPayData,
+        {
+          onSuccess: (data) => {
+            setOpenBackdrop(false)
+            navigate(`${PATH.bookingSuccess.replace(':id', data.data.data.toString())}`)
+          },
+          onError: () => {
+            setOpenBackdrop(false)
+            navigate(PATH.bookingFail)
+          }
+        }
+      )
+    } catch (err: any) {
+      setOpenBackdrop(false)
+      setIsTransferEthCoin(false)
+      toast.error("You rejected transaction!")
+    }
+  };
+
+  useEffect(() => {
+    if (isTransferEthCoin && metaMaskData?.data.data) {
+      startPayment(metaMaskData?.data.data)
+    }
+  }, [metaMaskData])
 
   return (
     <>
       <div className='mt-4 rounded-lg border-2 p-4 shadow-none'>
         <h3 className='pb-4'>Payment method</h3>
         <div className='grid grid-cols-2  justify-items-center gap-3'>
-          <div className='col-span-1'>
-            <img
-              loading='lazy'
-              src='/assets/images/coin-payment.png'
-              alt='coin-payment'
-              className='h-9 w-auto object-contain'
-            />
-            <LoadingButton
-              loading={cryptoPaymentLoading}
-              variant='outlined'
-              className='mt-4'
-              size='large'
-              onClick={handleCryptoPayment}
-            >
-              Payment with crypto
-            </LoadingButton>
-          </div>
           <div className='col-span-1'>
             <img
               loading='lazy'
@@ -122,11 +173,35 @@ const PaymentMethod: React.FC<Props> = ({ passengerInfo, isDisplaySaveButton, bo
               size='large'
               onClick={handlePayment}
             >
-              Payment with VNPay
+              Pay with VNPay
+            </LoadingButton>
+          </div>
+          <div className='col-span-1'>
+            <img
+              loading='lazy'
+              src='/assets/images/meta-mask-fox.png'
+              alt='coin-payment'
+              className='h-9 w-auto object-contain'
+            />
+            <LoadingButton
+              loading={metaMaskPaymentLoading}
+              variant='outlined'
+              className='mt-4'
+              size='large'
+              onClick={handleMetaMaskPayment}
+            >
+              Pay with Meta Mask
             </LoadingButton>
           </div>
         </div>
       </div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+      >
+        <div style={{ marginRight: '10px' }}>Please verify transaction</div>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   )
 }
