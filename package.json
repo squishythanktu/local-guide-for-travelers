@@ -15,7 +15,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@ethersproject/providers": "^5.7.2",
     "@hookform/resolvers": "^3.3.4",
+    "@metamask/onboarding": "^1.0.1",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.166",
     "@mui/material": "^5.13.0",
@@ -27,6 +29,7 @@
     "chart.js": "^4.0.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
+    "ethers": "^5.7.2",
     "firebase": "^10.11.1",
     "leaflet": "^1.9.4",
     "leaflet-geosearch": "^3.11.1",
