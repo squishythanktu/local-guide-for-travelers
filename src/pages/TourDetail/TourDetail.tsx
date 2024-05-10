@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -27,10 +27,12 @@ import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
+import { AppContext } from 'src/contexts/app.context'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
 const TourDetail: React.FC = () => {
+  const { profile } = useContext(AppContext)
   const [tour, setTour] = useState<Tour>({
     id: 0,
     name: '',
@@ -81,9 +83,9 @@ const TourDetail: React.FC = () => {
     enabled: checkAvailability
   })
   const { data: isCanReview } = useQuery({
-    queryKey: [`Check user can review for tour of ${id}`, id, reviewsData],
+    queryKey: [`Check user can review for tour of ${id}`, id, profile],
     queryFn: () => reviewApi.checkCanReviewOfTour(Number(id)),
-    enabled: id !== undefined
+    enabled: id !== undefined && profile != null
   })
   const totalReviews = useMemo(() => reviewsData?.data.data.length || 0, [reviewsData?.data.data])
 

@@ -4,7 +4,7 @@ import { StartTimeParams } from 'src/types/start-time-params.type'
 import { SuccessResponse, SuccessResponseWithPagination } from 'src/types/utils.type'
 import http from 'src/utils/http'
 import { TourSchema } from 'src/utils/rules'
-import { PaginationParams } from './../types/pagination-params.type'
+import { PaginationParamWithCoordinates, PaginationParams } from './../types/pagination-params.type'
 import { Tour, TourSuccessResponse, ToursResult } from './../types/tour.type'
 
 type TourFormData = TourSchema
@@ -12,6 +12,9 @@ const URL_TOURS = 'tours'
 
 const tourApi = {
   getTours(params: PaginationParams) {
+    return http.get<SuccessResponse<ToursResult>>(URL_TOURS, { params })
+  },
+  getNearestTours(params: PaginationParamWithCoordinates) {
     return http.get<SuccessResponse<ToursResult>>(URL_TOURS, { params })
   },
   getTourById(id: string | number) {

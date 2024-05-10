@@ -63,7 +63,7 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
   }
 
   return (
-    <Box className='tour-card__wrapper relative'>
+    <Box className='tour-card__wrapper relative h-full'>
       <Box
         sx={{
           boxShadow: 'rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px',
@@ -73,10 +73,10 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
         onMouseEnter={() => setIsCardHovered(true)}
         onMouseLeave={() => setIsCardHovered(false)}
       >
-        <Link to={`/tours/${tourData.id}`}>
-          <div className='tour-card__top-wrapper'>
-            <div className='tour-card__top relative'>
-              <div className='tour-card__photo h-64 overflow-hidden'>
+        <Link to={`/tours/${tourData.id}`} className='h-full'>
+          <div className='tour-card__top-wrapper mx-0'>
+            <div className='tour-card__top relative mx-0'>
+              <div className='tour-card__photo mx-0 h-64 overflow-hidden'>
                 <img
                   src={tourData.images[0]?.imageLink || '/assets/images/default-cover.jpg'}
                   alt='Tour img'
