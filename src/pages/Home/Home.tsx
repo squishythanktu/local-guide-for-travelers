@@ -1,7 +1,7 @@
 import { Box, Pagination } from '@mui/material'
 import Skeleton from '@mui/material/Skeleton'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import bookingApi from 'src/apis/booking.api'
@@ -17,9 +17,11 @@ import TourCard from '../../components/TourCard/TourCard'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 import { useTheme } from '@mui/material/styles'
+import { Location } from 'src/types/location.type'
+import { toast } from 'react-toastify'
+import Slider from 'react-slick'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
-
 const images = [
   {
     label: 'homepage-cover-1',
@@ -34,14 +36,53 @@ const images = [
     imgPath: '/assets/images/homepage-cover3.webp'
   }
 ]
+const options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+}
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+}
 
 const Home: React.FC = () => {
   const theme = useTheme()
   const { profile, isAuthenticated } = useContext(AppContext)
   const [activeStep, setActiveStep] = useState<number>(0)
   const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, limit: 12 })
+  const [geoLocation, setGeoLocation] = useState<Location | null>(null)
   const { data: toursData, isPending } = useQuery({
-    queryKey: ['tours', paginationParams],
+    queryKey: [`tours in page ${paginationParams.page}`, paginationParams],
     queryFn: () => tourApi.getTours(paginationParams),
     placeholderData: keepPreviousData,
     staleTime: 5 * 1000
@@ -51,6 +92,18 @@ const Home: React.FC = () => {
     queryFn: () => bookingApi.getPopularCities(),
     placeholderData: keepPreviousData,
     staleTime: 5 * 1000
+  })
+  const { data: nearestToursData, isPending: isPendingNearestTours } = useQuery({
+    queryKey: [`nearest tours`, geoLocation],
+    queryFn: () =>
+      tourApi.getNearestTours({
+        page: 0,
+        limit: 12,
+        ...(geoLocation as Location)
+      }),
+    placeholderData: keepPreviousData,
+    staleTime: 5 * 1000,
+    enabled: geoLocation != null
   })
   const {
     data: wishListData,
@@ -62,6 +115,30 @@ const Home: React.FC = () => {
     staleTime: 5 * 1000,
     enabled: isAuthenticated
   })
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      toast.warn('Geolocation is not supported by this browser.')
+      return
+    }
+
+    navigator.permissions.query({ name: 'geolocation' }).then(function (result) {
+      if (result.state === 'granted' || result.state === 'prompt') {
+        navigator.geolocation.getCurrentPosition(getGeoLocationSuccess, errors, options)
+        return
+      }
+      if (result.state === 'denied') {
+        toast.warn('Geolocation is denied.')
+      }
+    })
+  }, [])
+
+  const getGeoLocationSuccess = (pos: GeolocationPosition) => {
+    const crd = pos.coords
+    setGeoLocation({ latitude: crd.latitude, longitude: crd.longitude })
+  }
+
+  const errors = (err: { code: number; message: string }) => toast.warn(`ERROR(${err.code}): ${err.message}`)
 
   const handleStepChange = (step: number) => setActiveStep(step)
 
@@ -118,7 +195,7 @@ const Home: React.FC = () => {
         </Box>
       </Box>
       {/* Tours */}
-      <div className='collection-container container relative mx-0 my-10 max-w-full lg:mx-auto lg:max-w-[1400px]'>
+      <div className='tour-container container relative mx-0 my-10 max-w-full lg:mx-auto lg:max-w-[1400px]'>
         <div className='collection-header mb-4'>
           <h2 className='text-4xl	leading-10'>Unforgettable experiences around Vietnam</h2>
         </div>
@@ -156,6 +233,32 @@ const Home: React.FC = () => {
           />
         )}
       </div>
+      {/* Nearest Tours */}
+      {geoLocation && (
+        <div className='nearest-tour-container container relative mx-0 my-10 max-w-full lg:mx-auto lg:max-w-[1400px]'>
+          <div className='collection-header mb-4'>
+            <h2 className='text-4xl	leading-10'>Tours near your location</h2>
+          </div>
+          <Slider {...settings}>
+            {isPendingNearestTours
+              ? renderSkeletons()
+              : isAuthenticated
+                ? isWishlistDataPending
+                  ? renderSkeletons()
+                  : nearestToursData?.data.data.tourDTOS.map((tourData: Tour) => (
+                      <TourCard
+                        key={tourData.id}
+                        tourData={tourData}
+                        isTourInWishList={!!isTourInWishlist(wishListData?.data.data as Tour[], tourData.id)}
+                        refetch={refetch}
+                      />
+                    ))
+                : nearestToursData?.data.data.tourDTOS.map((tourData: Tour) => (
+                    <TourCard key={tourData.id} tourData={tourData} refetch={refetch} />
+                  ))}
+          </Slider>
+        </div>
+      )}
       {!isPendingCities && popularCitiesData?.data.data && popularCitiesData?.data.data.length > 0 && (
         <div className='collection-container container relative mx-auto my-10 max-w-[94%] lg:mx-auto lg:max-w-[1400px]'>
           <div className='collection-header mb-4'>
