@@ -20,7 +20,7 @@ import { BookingConfirmationAction } from 'src/enums/booking-confirmation.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
-import { convertDateToUTC7, convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
+import { convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
 
 interface Props {
@@ -33,7 +33,7 @@ export type AddBookingForm = Omit<Booking, 'status' | 'tour'>
 
 export default function BookingConfirmation({ timeOptions, formData, tour }: Props) {
   const { isAuthenticated } = useContext(AppContext)
-  const [selectedTimeOption, setSelectedTimeOption] = useState<string>('')
+  const [selectedTimeOption, setSelectedTimeOption] = useState<string | undefined>(undefined)
   const [totalPrice, setTotalPrice] = useState(0)
   const [stateButton, setStateButton] = useState<'bookNow' | 'addCart'>()
   const navigate = useNavigate()
@@ -42,9 +42,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
 
   const [bookingFormData, setBookingFormData] = useState<AddBookingForm>({
     id: tour.id,
-    startDate: selectedTimeOption
-      ? new Date(dayjs(formData.startDate).format('YYYY-MM-DD') + 'T' + convertHourToUTC7(selectedTimeOption))
-      : convertDateToUTC7(formData.startDate),
+    startDate: formData.startDate,
     numberTravelers: formData.numberTravelers,
     price: totalPrice
   })
@@ -80,7 +78,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
       toast.error('Please sign in before adding tour to your cart.')
       return
     }
-    if (tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption) return
+    if (selectedTimeOption === undefined) return
 
     addBookingMutation.mutate(bookingFormData, {
       onSuccess: (data) => {
@@ -130,7 +128,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           </div>
         </div>
         <Divider />
-        {timeOptions && tour.unit === Unit.HOURS && tour.duration < 5 && (
+        {timeOptions && (
           <>
             <div className='starting-times flex flex-col gap-2'>
               <div className='font-medium'>
@@ -149,9 +147,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
                 ))}
               </div>
             </div>
-            {tour.unit === Unit.HOURS && tour.duration < 5 && !selectedTimeOption && (
-              <div className='text-xs text-red-500'>Select a time</div>
-            )}
+            {!selectedTimeOption && <div className='text-xs text-red-500'>Select a time</div>}
             <Divider />
           </>
         )}
