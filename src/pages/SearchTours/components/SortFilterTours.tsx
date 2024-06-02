@@ -10,6 +10,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import isEmpty from 'lodash/isEmpty'
 import omitBy from 'lodash/omitBy'
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import categoryApi from 'src/apis/category.api'
 import CurrencyInput from 'src/components/CurrencyInput/CurrencyInput'
@@ -20,6 +21,7 @@ import { TourCategory } from 'src/types/tour.type'
 export default function SortFilterTours() {
   const queryConfig: QueryConfig = useQueryConfig()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoryApi.getCategories(),
@@ -119,7 +121,7 @@ export default function SortFilterTours() {
   return (
     <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 py-2 md:flex-row md:items-center'>
       <div className='sort-container flex w-full flex-col gap-4 sm:w-fit sm:flex-row'>
-        <MenuButton text='Price' icon={<AttachMoneyIcon />}>
+        <MenuButton text={t('pages.search.searchTours.price')} icon={<AttachMoneyIcon />}>
           <Box
             sx={{
               display: 'flex',
@@ -130,7 +132,7 @@ export default function SortFilterTours() {
             }}
           >
             <Typography variant='subtitle2' sx={{ color: (theme) => theme.palette.secondary.main }}>
-              Filter by price range
+              {t('pages.search.searchTours.filterByPriceRange')}
             </Typography>
             <Box
               sx={{
@@ -141,7 +143,7 @@ export default function SortFilterTours() {
             >
               <CurrencyInput
                 name='minPrice'
-                label='Min price'
+                label={t('pages.search.searchTours.minPrice')}
                 prefix='$'
                 value={minPrice}
                 onChange={handleCurrencyInputChange}
@@ -150,7 +152,7 @@ export default function SortFilterTours() {
               -
               <CurrencyInput
                 name='maxPrice'
-                label='Max price'
+                label={t('pages.search.searchTours.maxPrice')}
                 prefix='$'
                 value={maxPrice}
                 onChange={handleCurrencyInputChange}
@@ -169,7 +171,7 @@ export default function SortFilterTours() {
           getOptionLabel={(option: TourCategory) => option.name}
           isOptionEqualToValue={(option, value) => option && option.id === value.id}
           onChange={handleCategoriesChange}
-          renderInput={(params) => <TextField {...params} label='Categories' />}
+          renderInput={(params) => <TextField {...params} label={t('pages.search.searchTours.categories')} />}
           renderTags={(value, getTagProps) => {
             const numTags = value.length
             const limitTags = 1
@@ -208,11 +210,11 @@ export default function SortFilterTours() {
         >
           <MenuItem disabled value=''>
             <em>
-              <strong>Sort</strong>
+              <strong>{t('pages.search.sort')}</strong>
             </em>
           </MenuItem>
-          <MenuItem value='overallRating-asc'>Rating - Low to high</MenuItem>
-          <MenuItem value='overallRating-desc'>Rating - High to low</MenuItem>
+          <MenuItem value='overallRating-asc'>{t('pages.search.ratingLTH')}</MenuItem>
+          <MenuItem value='overallRating-desc'>{t('pages.search.ratingHTL')}</MenuItem>
         </Select>
       </div>
     </div>

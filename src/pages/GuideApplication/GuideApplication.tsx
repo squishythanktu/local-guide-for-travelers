@@ -23,6 +23,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import addressApi from 'src/apis/address.api'
@@ -57,6 +58,7 @@ const applicationSchema = guideApplicationSchema.pick([
 const GuideApplication: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
   const [openCollapse, setOpenCollapse] = useState(false)
+  const { t } = useTranslation()
   const [transportationState, setTransportationState] = useState({
     none: false,
     myOwn: false,
@@ -167,10 +169,10 @@ const GuideApplication: React.FC = () => {
     <Box className='container relative flex h-auto min-h-[100%] w-full justify-center'>
       <form onSubmit={handleSubmit(onSubmit)} className='h-full w-full flex-col gap-6 rounded-lg p-8'>
         <Typography variant='h4' className='mb-4 font-bold'>
-          Join us as a local guide
+          {t('pages.guideApplication.title')}
         </Typography>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Profile Details
+          {t('pages.guideApplication.profileDetails')}
         </h2>
         <div className='field-group flex flex-col gap-6 md:flex-row md:justify-between'>
           <ControlledTextField
@@ -178,7 +180,7 @@ const GuideApplication: React.FC = () => {
             className='min-h-20 w-full'
             control={control}
             name={'fullName'}
-            label={'Full name'}
+            label={t('pages.guideApplication.fullName')}
           />
           <Controller
             control={control}
@@ -189,7 +191,7 @@ const GuideApplication: React.FC = () => {
                   disableFuture
                   label={
                     <Typography sx={{ fontWeight: 600 }}>
-                      Date of birth
+                      {t('pages.guideApplication.dateOfBirth')}
                       <Typography component='span' sx={{ color: 'red' }}>
                         {' '}
                         *
@@ -211,7 +213,7 @@ const GuideApplication: React.FC = () => {
           />
         </div>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Contact Details
+          {t('pages.guideApplication.contactDetails')}
         </h2>
         <div className='field-group mb-5 flex flex-col gap-6 md:flex-row md:justify-between'>
           <Controller
@@ -246,7 +248,7 @@ const GuideApplication: React.FC = () => {
                       {...params}
                       label={
                         <Typography sx={{ fontWeight: 600 }}>
-                          Address{' '}
+                          {t('pages.guideApplication.address')}{' '}
                           <Typography component='span' sx={{ color: 'red' }}>
                             {' '}
                             *
@@ -264,7 +266,13 @@ const GuideApplication: React.FC = () => {
               )
             }}
           />
-          <ControlledTextField required className='min-h-20 w-full' control={control} name={'phone'} label={'Phone'} />
+          <ControlledTextField
+            required
+            className='min-h-20 w-full'
+            control={control}
+            name={'phone'}
+            label={t('pages.guideApplication.phone')}
+          />
         </div>
         <Grid
           container
@@ -279,7 +287,7 @@ const GuideApplication: React.FC = () => {
               className='min-h-20 w-full'
               control={control}
               name={'email'}
-              label={'Email'}
+              label={t('pages.guideApplication.email')}
             />
           </Grid>
           <Grid item xs={4} sm={8} md={6} className='field-group flex items-center gap-6'>
@@ -290,17 +298,17 @@ const GuideApplication: React.FC = () => {
                 type='password'
                 control={control}
                 name={'password'}
-                label={'Password'}
+                label={t('pages.guideApplication.password')}
               />
             )}
           </Grid>
         </Grid>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Experience
+          {t('pages.guideApplication.experience')}
         </h2>
         <FormControl className='mb-4 w-full'>
           <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='transportation'>
-            What type(s) of transportation method will you offer in your tours?
+            {t('pages.guideApplication.offerTransportationQuestion')}
           </Typography>
           <FormGroup aria-labelledby='transportation'>
             <Controller
@@ -312,19 +320,19 @@ const GuideApplication: React.FC = () => {
                   <FormGroup aria-labelledby='transportation' onChange={onChange}>
                     <FormControlLabel
                       control={<Checkbox checked={none} onChange={handleTransportationChange} name='none' />}
-                      label='None (e.g., walking tour, public transportation)'
+                      label={t('pages.guideApplication.offerTransportationNone')}
                     />
                     <FormControlLabel
                       control={<Checkbox checked={myOwn} onChange={handleTransportationChange} name='myOwn' />}
-                      label="My own vehicle and I'm the main driver"
+                      label={t('pages.guideApplication.offerTransportationMyOwn')}
                     />
                     <FormControlLabel
                       control={<Checkbox checked={rental} onChange={handleTransportationChange} name='rental' />}
-                      label="A rental vehicle and I'm the main driver"
+                      label={t('pages.guideApplication.offerTransportationRental')}
                     />
                     <FormControlLabel
                       control={<Checkbox checked={hired} onChange={handleTransportationChange} name='hired' />}
-                      label='Hired driver in a private vehicle'
+                      label={t('pages.guideApplication.offerTransportationHired')}
                     />
                   </FormGroup>
                 )
@@ -334,7 +342,7 @@ const GuideApplication: React.FC = () => {
         </FormControl>
         <FormControl className='mb-4 w-full'>
           <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
-            Are you a licensed tour guide?
+            {t('pages.guideApplication.licensedTourGuideQuestion')}
             <Typography component='span' sx={{ color: 'red' }}>
               {' '}
               *
@@ -347,8 +355,16 @@ const GuideApplication: React.FC = () => {
               const { value, onChange } = field
               return (
                 <RadioGroup aria-labelledby='isLicensedGuide' value={value} onChange={onChange}>
-                  <FormControlLabel value={true} control={<Radio />} label="Yes, I'm a licensed tour guide" />
-                  <FormControlLabel value={false} control={<Radio />} label="No, I'm a passionate local" />
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio />}
+                    label={t('pages.guideApplication.licensedTourGuideYes')}
+                  />
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio />}
+                    label={t('pages.guideApplication.licensedTourGuideNo')}
+                  />
                   {error && <FormHelperText error>{error.message}</FormHelperText>}
                 </RadioGroup>
               )
@@ -358,7 +374,7 @@ const GuideApplication: React.FC = () => {
         <Collapse in={openCollapse} timeout='auto' className='mb-4' unmountOnExit>
           <Box sx={{ marginY: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: '600' }} id='isLicensedGuide'>
-              License images
+              {t('pages.guideApplication.licenseImages')}
             </Typography>
             <ImagesUploader images={images} setImages={setImages as any} />
           </Box>
@@ -369,7 +385,7 @@ const GuideApplication: React.FC = () => {
           type='number'
           control={control}
           name={'yearsOfExperience'}
-          label={'Years of Experience'}
+          label={t('pages.guideApplication.yearsOfExperience')}
         />
         <ControlledTextField
           multiline
@@ -378,11 +394,11 @@ const GuideApplication: React.FC = () => {
           className='min-h-20 w-full md:w-full'
           control={control}
           name={'biography'}
-          label={'Biography'}
+          label={t('pages.guideApplication.biography')}
         />
         <Alert severity='info' className='my-4'>
-          <AlertTitle>Info</AlertTitle>
-          You will receive an email once your registration is accepted.
+          <AlertTitle>{t('pages.guideApplication.info')}</AlertTitle>
+          {t('pages.guideApplication.receiveEmail')}
         </Alert>
         <Box className='guide-applications__actions mt-4 flex items-center justify-end'>
           <LoadingButton
@@ -391,7 +407,7 @@ const GuideApplication: React.FC = () => {
             variant='contained'
             size='large'
           >
-            {isAuthenticated ? 'Submit' : 'Create a guide account'}
+            {t('pages.guideApplication.submit')}
           </LoadingButton>
         </Box>
       </form>

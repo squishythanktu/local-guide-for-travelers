@@ -1,0 +1,130 @@
+{
+  "pages": {
+    "homepage": {
+      "title": "Tạo những kỷ niệm trong chuyến đi tiếp theo của bạn",
+      "allTours": "Trải nghiệm khó quên tại Việt Nam",
+      "nearestTours": "Tour gần vị trí của bạn",
+      "popularLocations": "Điểm đến gây ấn tượng sâu sắc"
+    },
+    "authLayout": {
+      "title": "Tạo những kỷ niệm tuyệt vời trong chuyến đi tiếp theo của bạn",
+      "signIn": "Đăng nhập",
+      "signUp": "Đăng ký",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "login": {
+        "haveAccountQuestion": "Chưa có tài khoản?",
+        "forgetPassword": "Quên mật khẩu?",
+        "orContinue": "hoặc tiếp tục với"
+      },
+      "register": {
+        "alreadyHaveAccountQuestion": "Đã có tài khoản?",
+        "confirmPassword": "Xác nhận mật khẩu"
+      }
+    },
+    "search": {
+      "sort": "Sắp xếp",
+      "ratingLTH": "Đánh giá - Thấp đến cao",
+      "ratingHTL": "Đánh giá - Cao đến thấp",
+      "searchTours": {
+        "title": "Những hoạt động tại",
+        "allTours": "Tất cả tour",
+        "price": "Giá",
+        "categories": "Danh mục",
+        "filterByPriceRange": "Lọc theo mức giá",
+        "minPrice": "Giá tối thiểu",
+        "maxPrice": "Giá tối đa",
+        "toursFound": "tour được tìm thấy."
+      },
+      "searchGuides": {
+        "guidesMatch": "Hướng dẫn viên địa phương phù hợp",
+        "allGuides": "Tất cả hướng dẫn viên",
+        "guidesFound": "hướng dẫn viên được tìm thấy."
+      }
+    },
+    "tourDetails": {
+      "addReviewSuccess": "Thêm đánh giá về tour thành công.",
+      "updateReviewSuccess": "Cập nhật đánh giá về tour thành công.",
+      "deleteReviewSuccess": "Xóa đánh giá về tour thành công.",
+      "reviews": "đánh giá",
+      "activityProvider": "Nhà cung cấp hoạt động",
+      "aboutThisActivity": "Về hoạt động này",
+      "cancellation": "Hủy tour",
+      "cancel7daysBefore": "Nếu hủy trong vòng 1 giờ sau khi đặt hoặc trước ít nhất 7 ngày trước ngày hoạt động: hoàn tiền đầy đủ",
+      "cancel1daysBefore": "Nếu hủy ít hơn 7 ngày và nhiều hơn 1 ngày trước ngày hoạt động: hoàn 50% tiền",
+      "cancel24hours": "Nếu hủy 24 giờ hoặc ít hơn trước ngày hoạt động hoặc trường hợp không tham gia: không hoàn tiền",
+      "group": "Nhóm",
+      "mainStops": "Điểm dừng chính",
+      "itinerary": "Lịch trình",
+      "startingLocation": "Vị trí bắt đầu",
+      "finishAt": "Kết thúc tại",
+      "duration": "Thời lượng",
+      "transportation": "Phương tiện vận chuyển",
+      "service": "Dịch vụ",
+      "localCashNeeded": "Tiền mặt địa phương cần thiết",
+      "selectParticipantsDate": "Chọn số người tham gia & ngày",
+      "checkAvailability": "Kiểm tra tình trạng",
+      "customerReviews": "Đánh giá của khách hàng",
+      "customerReviewsTooltip": "Tất cả các đánh giá đều từ khách hàng đã xác minh và đã mua hoạt động. Chỉ có thể gửi đánh giá sau khi hoạt động diễn ra.",
+      "overallRating": "Đánh giá tổng thể"
+    },
+    "guideApplication": {
+      "title": "Tham gia với chúng tôi với vai trò hướng dẫn viên địa phương",
+      "profileDetails": "Chi tiết hồ sơ",
+      "fullName": "Họ và tên đầy đủ",
+      "dateOfBirth": "Ngày sinh",
+      "contactDetails": "Thông tin liên hệ",
+      "address": "Địa chỉ",
+      "phone": "Số điện thoại",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "experience": "Kinh nghiệm",
+      "offerTransportationQuestion": "Bạn sẽ cung cấp phương tiện giao thông nào trong các tour du lịch?",
+      "offerTransportationNone": "Không có (ví dụ: tour đi bộ, sử dụng phương tiện công cộng)",
+      "offerTransportationMyOwn": "Phương tiện cá nhân và tôi là tài xế chính",
+      "offerTransportationRental": "Xe thuê và tôi là tài xế chính",
+      "offerTransportationHired": "Tài xế thuê trong xe riêng",
+      "licensedTourGuideQuestion": "Bạn có phải là hướng dẫn viên du lịch có giấy phép không?",
+      "licensedTourGuideYes": "Có, tôi là hướng dẫn viên du lịch có giấy phép",
+      "licensedTourGuideNo": "Không, tôi là hướng dẫn viên địa phương nhiệt tình",
+      "licenseImages": "Ảnh giấy phép",
+      "uploadImages": "Tải ảnh lên",
+      "upTo5Images": "Tối đa 5 ảnh",
+      "yearsOfExperience": "Số năm kinh nghiệm",
+      "biography": "Tiểu sử",
+      "info": "Thông tin",
+      "receiveEmail": "Bạn sẽ nhận được email khi đơn đăng ký của bạn được chấp nhận.",
+      "submit": "Nộp đơn đăng ký"
+    }
+  },
+  "components": {
+    "profileMenu": {
+      "becomeAGuide": "Trở thành hướng dẫn viên",
+      "signIn": "Đăng nhập",
+      "signUp": "Đăng ký"
+    },
+    "searchBar": {
+      "tour": "Tour",
+      "guide": "Hướng dẫn viên",
+      "searchTours": "Tìm tour",
+      "searchGuides": "Tìm hướng dẫn viên"
+    },
+    "footer": {
+      "contactInfo": "Thông tin liên hệ",
+      "headOffice": "Trụ sở chính",
+      "email": "Email",
+      "hotline": "Hotline",
+      "subscribeUs": "Đăng ký nhận bản tin từ chúng tôi",
+      "getLatest": "Để nhận những thông tin và chương trình khuyến mãi mới nhất!",
+      "enterEmail": "Nhập email của bạn",
+      "subscribe": "Đăng ký",
+      "followUs": "Theo dõi chúng tôi trên các mạng xã hội",
+      "policy": "Chính sách",
+      "bookingPolicy": "Chính sách đặt tour",
+      "customerRight": "Quyền lợi của khách hàng",
+      "privacyPolicy": "Chính sách bảo mật",
+      "baggageRegulations": "Quy định về hành lý",
+      "feq": "Các câu hỏi thường gặp"
+    }
+  }
+}

@@ -20,6 +20,7 @@ import { useTheme } from '@mui/material/styles'
 import { Location } from 'src/types/location.type'
 import { toast } from 'react-toastify'
 import Slider from 'react-slick'
+import { useTranslation } from 'react-i18next'
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews)
 const images = [
@@ -77,6 +78,7 @@ const settings = {
 
 const Home: React.FC = () => {
   const theme = useTheme()
+  const { t } = useTranslation()
   const { profile, isAuthenticated } = useContext(AppContext)
   const [activeStep, setActiveStep] = useState<number>(0)
   const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, limit: 12 })
@@ -190,14 +192,14 @@ const Home: React.FC = () => {
         </Box>
         <Box className='hero-section__content m-auto flex max-w-[1400px] flex-col items-center justify-start px-4 py-4 md:py-8 lg:px-24 '>
           <h1 className='hero-section__header mb-10 mt-32 w-1/2 self-start text-4xl leading-none text-white drop-shadow-2xl md:text-5xl lg:text-6xl'>
-            Make memories on your next trip
+            {t('pages.homepage.title')}
           </h1>
         </Box>
       </Box>
       {/* Tours */}
       <div className='tour-container container relative mx-0 my-10 max-w-full lg:mx-auto lg:max-w-[1400px]'>
         <div className='collection-header mb-4'>
-          <h2 className='text-4xl	leading-10'>Unforgettable experiences around Vietnam</h2>
+          <h2 className='text-4xl	leading-10'>{t('pages.homepage.allTours')}</h2>
         </div>
         <div className='collection-body grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {isPending
@@ -237,7 +239,7 @@ const Home: React.FC = () => {
       {geoLocation && (
         <div className='nearest-tour-container container relative mx-0 my-10 max-w-full lg:mx-auto lg:max-w-[1400px]'>
           <div className='collection-header mb-4'>
-            <h2 className='text-4xl	leading-10'>Tours near your location</h2>
+            <h2 className='text-4xl	leading-10'>{t('pages.homepage.nearestTours')}</h2>
           </div>
           <Slider {...settings}>
             {isPendingNearestTours
@@ -262,7 +264,7 @@ const Home: React.FC = () => {
       {!isPendingCities && popularCitiesData?.data.data && popularCitiesData?.data.data.length > 0 && (
         <div className='collection-container container relative mx-auto my-10 max-w-[94%] lg:mx-auto lg:max-w-[1400px]'>
           <div className='collection-header mb-4'>
-            <h2 className='text-4xl	leading-10'>Awe-inspiring destinations</h2>
+            <h2 className='text-4xl	leading-10'>{t('pages.homepage.popularLocations')}</h2>
           </div>
           <div className='scroll flex flex-nowrap gap-4 overflow-x-auto'>
             {popularCitiesData?.data.data.map((city, index) => (

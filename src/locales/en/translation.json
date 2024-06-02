@@ -1,0 +1,130 @@
+{
+  "pages": {
+    "homepage": {
+      "title": "Make memories on your next trip",
+      "allTours": "Unforgettable experiences around Vietnam",
+      "nearestTours": "Tours near your location",
+      "popularLocations": "Awe-inspiring destinations"
+    },
+    "authLayout": {
+      "title": "Make memories on your next trip",
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "email": "Email",
+      "password": "Password",
+      "login": {
+        "haveAccountQuestion": "Don't have an account?",
+        "forgetPassword": "Forget password?",
+        "orContinue": "or continue with"
+      },
+      "register": {
+        "alreadyHaveAccountQuestion": "Already have an account?",
+        "confirmPassword": "Confirm password"
+      }
+    },
+    "search": {
+      "sort": "Sort",
+      "ratingLTH": "Rating - Low to high",
+      "ratingHTL": "Rating - High to low",
+      "searchTours": {
+        "title": "Things to do in",
+        "allTours": "All tours",
+        "price": "Price",
+        "categories": "Categories",
+        "filterByPriceRange": "Filter by price range",
+        "minPrice": "Min price",
+        "maxPrice": "Max price",
+        "toursFound": "tour(s) found."
+      },
+      "searchGuides": {
+        "guidesMatch": "Local guides match",
+        "allGuides": "All guides",
+        "guidesFound": "guide(s) found."
+      }
+    },
+    "tourDetails": {
+      "addReviewSuccess": "Add review of tour successfully.",
+      "updateReviewSuccess": "Update review of tour successfully.",
+      "deleteReviewSuccess": "Delete review of tour successfully.",
+      "reviews": "reviews",
+      "activityProvider": "Activity provider",
+      "aboutThisActivity": "About this activity",
+      "cancellation": "Cancellation",
+      "cancel7daysBefore": "If canceled within 1 hour after booking or more than 7 days before Activity: full refund",
+      "cancel1daysBefore": "If canceled less than 7 days and more than 1 day before Activity: 50% refund",
+      "cancel24hours": "If canceled 24 hours or less before Activity or in case of no-show: no refund",
+      "group": "Group",
+      "mainStops": "Main stops",
+      "itinerary": "Itinerary",
+      "startingLocation": "Starting location",
+      "finishAt": "Finish at",
+      "duration": "Duration",
+      "transportation": "Transportation",
+      "service": "Service",
+      "localCashNeeded": "Local cash needed",
+      "selectParticipantsDate": "Select participants & date",
+      "checkAvailability": "Check availability",
+      "customerReviews": "Customer reviews",
+      "customerReviewsTooltip": "All reviews are from verified customers who purchased the activity. Reviews can only be submitted after the activity takes place.",
+      "overallRating": "Overall rating"
+    },
+    "guideApplication": {
+      "title": "Join us as a local guide",
+      "profileDetails": "Profile Details",
+      "fullName": "Full name",
+      "dateOfBirth": "Date of Birth",
+      "contactDetails": "Contact Details",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "password": "Password",
+      "experience": "Experience",
+      "offerTransportationQuestion": "What type(s) of transportation method will you offer in your tours?",
+      "offerTransportationNone": "None (e.g., walking tour, public transportation)",
+      "offerTransportationMyOwn": "My own vehicle and I'm the main driver",
+      "offerTransportationRental": "A rental vehicle and I'm the main driver",
+      "offerTransportationHired": "Hired driver in a private vehicle",
+      "licensedTourGuideQuestion": "Are you a licensed tour guide?",
+      "licensedTourGuideYes": "Yes, I'm a licensed tour guide",
+      "licensedTourGuideNo": "No, I'm a passionate local guide",
+      "licenseImages": "License images",
+      "uploadImages": "Upload images",
+      "upTo5Images": "Up to 5 images",
+      "yearsOfExperience": "Years of experience",
+      "biography": "Biography",
+      "info": "Info",
+      "receiveEmail": "You will receive an email once your registration is accepted.",
+      "submit": "Submit"
+    }
+  },
+  "components": {
+    "profileMenu": {
+      "becomeAGuide": "Become a guide",
+      "signIn": "Sign in",
+      "signUp": "Sign up"
+    },
+    "searchBar": {
+      "tour": "Tour",
+      "guide": "Guide",
+      "searchTours": "Search tours",
+      "searchGuides": "Search guides"
+    },
+    "footer": {
+      "contactInfo": "Contact information",
+      "headOffice": "Head office",
+      "email": "Email",
+      "hotline": "Hotline",
+      "subscribeUs": "Subscribe us",
+      "getLatest": "To get the latest news and promotion!",
+      "enterEmail": "Enter your email",
+      "subscribe": "Subscribe",
+      "followUs": "Follow us on social media",
+      "policy": "Policy",
+      "bookingPolicy": "Bookinbg policy",
+      "customerRight": "Customer's rights",
+      "privacyPolicy": "Privacy policy",
+      "baggageRegulations": "Baggage regulations",
+      "feq": "Frequently asked questions"
+    }
+  }
+}

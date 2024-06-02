@@ -11,6 +11,7 @@ import { Controller, useForm } from 'react-hook-form'
 import scheduleApi from 'src/apis/schedule.api'
 import { bookingSchema } from 'src/utils/rules'
 import { BookingAssistantFormData } from '../../TourDetail'
+import { useTranslation } from 'react-i18next'
 
 dayjs.extend(isSameOrBefore)
 
@@ -23,6 +24,7 @@ interface BookingAssistantProps {
 }
 
 const BookingAssistant: React.FC<BookingAssistantProps> = ({ onSubmit, id, limitTraveler }: BookingAssistantProps) => {
+  const { t } = useTranslation()
   const {
     trigger,
     control,
@@ -53,7 +55,7 @@ const BookingAssistant: React.FC<BookingAssistantProps> = ({ onSubmit, id, limit
       onSubmit={handleSubmit(onSubmit)}
       className='flex flex-col gap-4 rounded-3xl bg-[var(--decorative-midnight-blue)] px-3 py-5 text-white'
     >
-      <div className='font-semibold'>Select participants & date</div>
+      <div className='font-semibold'>{t('pages.tourDetails.selectParticipantsDate')}</div>
       <div className='flex flex-col gap-4'>
         <Controller
           control={control}
@@ -121,7 +123,7 @@ const BookingAssistant: React.FC<BookingAssistantProps> = ({ onSubmit, id, limit
         variant='contained'
         size='large'
       >
-        Check availability
+        {t('pages.tourDetails.checkAvailability')}
       </Button>
     </form>
   )

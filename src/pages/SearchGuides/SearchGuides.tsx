@@ -14,9 +14,11 @@ import useQueryConfig, { QueryConfig } from 'src/hooks/useQueryConfig'
 import { Guide } from 'src/types/guide.type'
 import SortIcon from '@mui/icons-material/Sort'
 import Box from '@mui/material/Box'
+import { useTranslation } from 'react-i18next'
 
 export default function SearchGuides() {
   const queryConfig: QueryConfig = useQueryConfig()
+  const { t } = useTranslation()
   const { data: guidesData, isPending } = useQuery({
     queryKey: ['guidesSearch', queryConfig],
     queryFn: () => guideApi.searchGuides(queryConfig),
@@ -61,7 +63,7 @@ export default function SearchGuides() {
         <div className='header-title flex w-full'>
           <SvgIcon component={DotsIcon} inheritViewBox className=' mr-2 mt-0 h-20 w-full max-w-12 lg:mt-3' />
           <div className='search-container__header-content flex w-full flex-col'>
-            <span className='text-base font-semibold sm:text-2xl'>Local guides match</span>
+            <span className='text-base font-semibold sm:text-2xl'>{t('pages.search.searchGuides.guidesMatch')}</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
                 <h2 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
@@ -79,7 +81,9 @@ export default function SearchGuides() {
       </div>
       <div className='search-container__action mt-4'>
         <div className='actions-container container'>
-          <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All guides</h2>
+          <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>
+            {t('pages.search.searchGuides.allGuides')}
+          </h2>
           <div className='sort-filter-container flex flex-col flex-nowrap items-start justify-between gap-4 pb-2 md:flex-row md:items-center'>
             <div className='sort-container flex items-center'>
               <Select
@@ -95,10 +99,10 @@ export default function SearchGuides() {
                 sx={{ color: (theme) => theme.palette.primary.main, fontWeight: 800 }}
               >
                 <MenuItem disabled value=''>
-                  <em>Sort</em>
+                  <em>{t('pages.search.sort')}</em>
                 </MenuItem>
-                <MenuItem value='overallRating-asc'>Rating - Low to high</MenuItem>
-                <MenuItem value='overallRating-desc'>Rating - High to low</MenuItem>
+                <MenuItem value='overallRating-asc'>{t('pages.search.ratingLTH')}</MenuItem>
+                <MenuItem value='overallRating-desc'>{t('pages.search.ratingHTL')}</MenuItem>
               </Select>
             </div>
           </div>
@@ -106,7 +110,7 @@ export default function SearchGuides() {
             {isPending ? (
               <Skeleton variant='text' sx={{ fontSize: '1rem' }} width={100} />
             ) : (
-              `${guidesData?.data.data.totalOfResult} guides found.`
+              `${guidesData?.data.data.totalOfResult} ${t('pages.search.searchGuides.guidesFound')}`
             )}
           </div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>

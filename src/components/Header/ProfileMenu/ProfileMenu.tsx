@@ -17,6 +17,7 @@ import ViewListIcon from '@mui/icons-material/ViewList'
 import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined'
 import { Divider } from '@mui/material'
 import { UserRole } from 'src/enums/user-role.enum'
+import { useTranslation } from 'react-i18next'
 
 interface ProfileMenuProps {
   textColor: string
@@ -24,6 +25,7 @@ interface ProfileMenuProps {
 
 export default function ProfileMenu({ textColor }: ProfileMenuProps) {
   const { isAuthenticated, profile } = useContext(AppContext)
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const location = useLocation()
   const navigate = useNavigate()
@@ -87,20 +89,20 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             <ListItemIcon>
               <ContactPageOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            Become a guide
+            {t('components.profileMenu.becomeAGuide')}
           </MenuItem>
           <Divider />
           <MenuItem component={Link} to={PATH.login}>
             <ListItemIcon>
               <LoginIcon fontSize='small' />
             </ListItemIcon>
-            Sign in
+            {t('components.profileMenu.signIn')}
           </MenuItem>
           <MenuItem component={Link} to={PATH.register}>
             <ListItemIcon>
               <PersonAddAlt1Icon fontSize='small' />
             </ListItemIcon>
-            Sign up
+            {t('components.profileMenu.signUp')}
           </MenuItem>
         </Menu>
       )}

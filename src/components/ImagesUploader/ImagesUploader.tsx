@@ -5,6 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { Grid } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { ImageWithLink } from 'src/types/tour.type'
+import { useTranslation } from 'react-i18next'
 
 type ImagesUploaderProps = {
   images: (string | ImageWithLink)[]
@@ -14,6 +15,7 @@ type ImagesUploaderProps = {
 const ImagesUploader: React.FC<ImagesUploaderProps> = memo(({ images, setImages }: ImagesUploaderProps) => {
   const maxImagesUpload = 5
   const inputId = Math.random().toString(32).substring(2)
+  const { t } = useTranslation()
 
   const handleOnAddImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
@@ -93,9 +95,9 @@ const ImagesUploader: React.FC<ImagesUploaderProps> = memo(({ images, setImages 
           component='span'
           startIcon={<CloudUploadIcon />}
         >
-          Upload Images
+          {t('pages.guideApplication.uploadImages')}
         </Button>
-        <span className='text-sm'>Up to 5 images</span>
+        <span className='text-sm'> {t('pages.guideApplication.upTo5Images')}</span>
         <input
           id={inputId}
           type='file'
