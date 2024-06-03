@@ -18,6 +18,7 @@ import ProfileMenu from './ProfileMenu'
 import RightDrawer from './RightDrawer/RightDrawer'
 import SearchBar from './SearchBar/SearchBar'
 import ReceiptIcon from '@mui/icons-material/Receipt'
+import LanguageSelector from './LanguageSelector/LanguageSelector'
 
 interface HeaderProps {
   bgColor?: string
@@ -88,7 +89,7 @@ export default function Header({
           >
             {isAuthenticated && (
               <Box
-                className='col-span-3 col-start-10 hidden lg:flex lg:items-center lg:justify-end'
+                className='col-span-3 col-start-10 hidden xl:flex xl:items-center xl:justify-end'
                 sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
               >
                 <NavLink to={PATH.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
@@ -102,10 +103,12 @@ export default function Header({
               </Box>
             )}
             {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}
-            <Box className='hidden lg:block'>
+            <Box className='hidden xl:flex'>
               <ProfileMenu textColor={scroll && isEnableScroll ? 'black' : textColor} />
+              <LanguageSelector />
             </Box>
-            <Box className='drawer col-span-1 col-start-12 flex items-center justify-end lg:hidden'>
+            <Box className='drawer col-span-1 col-start-12 flex items-center justify-end xl:hidden'>
+              <LanguageSelector />
               <RightDrawer textColor={scroll && isEnableScroll ? 'black' : textColor} />
             </Box>
           </Box>

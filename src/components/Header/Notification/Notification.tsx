@@ -105,7 +105,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     <Box
       className='relative ml-2 flex w-8 cursor-pointer flex-col items-center text-base 
 md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] md:after:w-0 
-md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full lg:hover:after:w-full'
+md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:w-full xl:hover:after:w-full'
     >
       <Button
         aria-label='notification'
@@ -124,7 +124,7 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full l
         <Badge badgeContent={countOfUnReadNotification} color='error'>
           <NotificationsIcon sx={{ color: textColor }} />
         </Badge>
-        <span className='mt-[5px] hidden lg:block lg:text-sm'>Notifications</span>
+        <span className='mt-[5px] hidden xl:block xl:text-sm'>Notifications</span>
       </Button>
       <Menu
         disableScrollLock
