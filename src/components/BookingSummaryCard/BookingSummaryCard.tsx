@@ -9,6 +9,7 @@ import CardMedia from '@mui/material/CardMedia'
 import Collapse from '@mui/material/Collapse'
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
+import { useTranslation } from 'react-i18next'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
 import MainStop from 'src/components/MainStop/MainStop'
@@ -26,6 +27,7 @@ const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({
   autoOpenDetails = false
 }: BookingSummaryCardProps) => {
   const [openCollapse, toggleCollapse] = useToggle(autoOpenDetails)
+  const { t } = useTranslation()
 
   return (
     <Card className='mb-4 rounded-lg border-2 shadow-none'>
@@ -44,7 +46,8 @@ const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({
             <div className='item-card__header'>
               <div className='title text-lg font-medium'>{booking.tour.name}</div>
               <div className='text-sm'>
-                Provided by <span className='text-sm underline'>{booking.guide?.fullName || booking.guide?.email}</span>
+                {t('components.bookingSummaryCard.providedBy')}{' '}
+                <span className='text-sm underline'>{booking.guide?.fullName || booking.guide?.email}</span>
               </div>
               <div className='rating flex'>
                 <div className='activity-rating flex items-center gap-1 '>
@@ -66,14 +69,16 @@ const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({
         <div className='flex flex-wrap gap-2'>
           <div className='mr-4 flex items-center font-normal'>
             <ClockIcon className='mb-[2px] mr-2 h-4 w-4' />
-            <div className='text-sm font-medium'>
+            <div className='text-sm font-medium capitalize'>
               {formatDateLocaleString(booking.startDate)} -{' '}
               {formatTime(booking.startDate.toString().split('T')[1], 'HH:mm:ss', 'HH:mm')}
             </div>
           </div>
           <div className='mr-4 flex items-center font-normal'>
             <UsersIcon className='mb-[2px] mr-2 h-4 w-4' />
-            <div className='text-sm font-medium'>{booking.numberTravelers} person(s)</div>
+            <div className='text-sm font-medium'>
+              {booking.numberTravelers} {t('components.bookingSummaryCard.persons')}
+            </div>
           </div>
         </div>
         <Button
@@ -82,7 +87,9 @@ const BookingSummaryCard: React.FC<BookingSummaryCardProps> = ({
           onClick={() => toggleCollapse()}
           className='ml-auto'
         >
-          {!openCollapse ? 'View Details' : 'Hide Details'}
+          {!openCollapse
+            ? t('components.bookingSummaryCard.viewDetails')
+            : t('components.bookingSummaryCard.hideDetails')}
         </Button>
       </CardContent>
       <Collapse in={openCollapse} timeout='auto' unmountOnExit>

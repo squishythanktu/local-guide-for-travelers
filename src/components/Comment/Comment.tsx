@@ -77,7 +77,9 @@ const Comment: React.FC<CommentProps> = memo(({ comment, index, setEditReviewId,
             <span className='user-adrress text-sm font-semibold'>{comment.traveler.address || 'N/A'}</span>
           </div>
           <div className='review-card__user-name-address mt-[-2px] text-slate-500'>
-            <span className='user-name text-sm font-semibold'>{formatDateLocaleString(comment.createAt)}</span>
+            <span className='user-name text-sm font-semibold capitalize'>
+              {formatDateLocaleString(comment.createAt)}
+            </span>
           </div>
         </div>
         {profile?.id === comment.traveler.id && (

@@ -171,7 +171,8 @@
       "guideDenied": "Hướng dẫn viên từ chối",
       "selfCanceled": "Tự hủy",
       "guideAccepted": "Hướng dẫn viên chấp nhận",
-      "awaitingAdmin": "Đang chờ quản trị viên duyệt"
+      "awaitingAdmin": "Đang chờ quản trị viên duyệt",
+      "noRequest": "Không có dữ liệu yêu cầu nào."
     },
     "tourManagement": {
       "tourManagement": "Quản lý tour",
@@ -210,7 +211,35 @@
       "hereAreDefault": "Đây là tên địa điểm mặc định, bạn có thể thay đổi tên này bằng cách chỉnh sửa trên các trường nhập và nhấn nút 'Lưu'"
     },
     "bookingManagement": {
-      "bookingManagement": "Quản lý đặt chỗ"
+      "bookingManagement": "Quản lý đặt chỗ",
+      "noBooking": "Không có dữ liệu đặt chỗ."
+    },
+    "scheduleManagement": {
+      "scheduleManagement": "Quản lý lịch trình",
+      "addBusyDay": "Thêm ngày bận",
+      "dayOff": "Ngày nghỉ",
+      "bookedByDay": "Đặt theo ngày",
+      "bookedByHour": "Đặt theo giờ",
+      "delete": "Xóa",
+      "clearAll": "Xóa tất cả",
+      "add": "Thêm",
+      "selectYourBusyDay": "Chọn ngày bận của bạn",
+      "selectedDays": "Ngày đã chọn",
+      "upcoming": "Sắp tới",
+      "past": "Đã qua"
+    },
+    "salesReport": {
+      "salesReport": "Báo cáo doanh thu",
+      "selectYear": "Chọn năm",
+      "revenueByYear": "Doanh thu theo năm",
+      "numberOfBookings": "Số lượng đặt chỗ",
+      "numberOfBookingsByYear": "Số lượng đặt chỗ theo năm",
+      "revenue": "Doanh thu ($)",
+      "name": "Tên",
+      "limitTravelers": "Giới hạn người",
+      "totalRevenue": "Tổng doanh thu",
+      "overallRating": "Đánh giá chung",
+      "totalBooked": "Tổng số đã đặt"
     }
   },
   "components": {
@@ -269,6 +298,12 @@
       "bookingManagement": "Quản lý Đặt chỗ",
       "scheduleManagement": "Quản lý Lịch trình",
       "salesReport": "Báo cáo Doanh thu"
+    },
+    "bookingSummaryCard": {
+      "providedBy": "Cung cấp bởi",
+      "viewDetails": "Xem chi tiết",
+      "hideDetails": "Ẩn chi tiết",
+      "persons": "người"
     }
   },
   "enums": {

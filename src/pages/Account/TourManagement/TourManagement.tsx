@@ -10,6 +10,7 @@ import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_Cell, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
@@ -23,10 +24,8 @@ import { UserRole } from 'src/enums/user-role.enum'
 import { Request } from 'src/types/request.type'
 import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
-import { capitalizeString } from 'src/utils/string'
 import TourForm from '../components/TourForm'
 import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
-import { useTranslation } from 'react-i18next'
 
 type TourFormData = TourSchema
 export type UpdateTourFormData = TourSchema & {

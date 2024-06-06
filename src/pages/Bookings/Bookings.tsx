@@ -13,6 +13,7 @@ import { compareDate } from 'src/utils/date-time'
 import { a11yProps } from 'src/utils/tab-panel'
 import Loading from '../Loading/Loading'
 import BookingContent from './components/BookingContent/BookingContent'
+import { useTranslation } from 'react-i18next'
 
 const Bookings: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
@@ -22,7 +23,7 @@ const Bookings: React.FC = () => {
     queryFn: () => bookingApi.getBookingsHistory(),
     staleTime: 10 * 1000
   })
-
+  const { t } = useTranslation()
   const [upcomingBookings, setUpcomingBookings] = useState<Booking[]>([])
   const [pastBookings, setPastBookings] = useState<Booking[]>([])
 
@@ -106,7 +107,7 @@ const Bookings: React.FC = () => {
             alt='Empty booking'
             className='h-52 w-52 object-cover'
           />
-          <h3>No bookings data available.</h3>
+          <h3>{t('pages.bookingManagement.noBooking')}</h3>
         </div>
       )}
     </Box>

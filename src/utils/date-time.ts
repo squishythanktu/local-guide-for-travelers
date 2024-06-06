@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { DateObject } from 'react-multi-date-picker'
+import 'dayjs/locale/vi'
 
 dayjs.extend(relativeTime)
 
@@ -9,8 +10,14 @@ export const formatDate = (date: Date | string, format: string) => dayjs(date).f
 export const formatTime = (timeString: string, currentFormat: string, desiredFormat: string) =>
   dayjs(timeString, currentFormat).format(desiredFormat)
 
-export const formatDateLocaleString = (dateTime: Date | string) =>
-  dayjs(dateTime).locale('en').format('dddd, MMMM D, YYYY')
+export const formatDateLocaleString = (dateTime: Date | string) => {
+  const language = localStorage.getItem('language') || 'en'
+  const locale = language === 'vi' ? 'vi-VN' : language
+
+  return dayjs(dateTime)
+    .locale(locale)
+    .format(locale === 'vi-VN' ? 'dddd, D MMMM YYYY' : 'dddd, MMMM D, YYYY')
+}
 
 export const convertHourToUTC7 = (hour: string) => {
   return parseInt(hour.substring(0, 2)) + 7 + hour.substring(2)

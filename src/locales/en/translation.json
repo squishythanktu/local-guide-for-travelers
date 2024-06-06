@@ -171,7 +171,8 @@
       "guideDenied": "Guide denied",
       "selfCanceled": "Self canceled",
       "guideAccepted": "Guide accepted",
-      "awaitingAdmin": "Awaiting admin"
+      "awaitingAdmin": "Awaiting admin",
+      "noRequest": "No request data available."
     },
     "tourManagement": {
       "tourManagement": "Tour Management",
@@ -210,7 +211,35 @@
       "hereAreDefault": "Here are default location names, you can change these names by changing on the inputs & click 'Save' button"
     },
     "bookingManagement": {
-      "bookingManagement": "Booking Management"
+      "bookingManagement": "Booking Management",
+      "noBooking": "No bookings data available."
+    },
+    "scheduleManagement": {
+      "scheduleManagement": "Schedule Management",
+      "addBusyDay": "Add busy day",
+      "dayOff": "Day off",
+      "bookedByDay": "Booked by day",
+      "bookedByHour": "Booked by hour",
+      "delete": "Delete",
+      "clearAll": "Clear all",
+      "add": "Add",
+      "selectYourBusyDay": "Select your busy day",
+      "selectedDays": "Selected day(s)",
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "salesReport": {
+      "salesReport": "Sales Report",
+      "selectYear": "Select year",
+      "revenueByYear": "Revenue by year",
+      "numberOfBookings": "Number of bookings",
+      "numberOfBookingsByYear": "Number of bookings by year",
+      "revenue": "Revenue ($)",
+      "name": "Name",
+      "limitTravelers": "Limit traveler(s)",
+      "totalRevenue": "Total revenue",
+      "overallRating": "Overall rating",
+      "totalBooked": "Total booked"
     }
   },
   "components": {
@@ -269,6 +298,12 @@
       "bookingManagement": "Booking Management",
       "scheduleManagement": "Schedule Management",
       "salesReport": "Sales Report"
+    },
+    "bookingSummaryCard": {
+      "providedBy": "Provided by",
+      "viewDetails": "View Details",
+      "hideDetails": "Hide Details",
+      "persons": "person(s)"
     }
   },
   "enums": {

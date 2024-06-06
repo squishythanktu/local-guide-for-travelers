@@ -15,12 +15,13 @@ import ScheduleDialog from './components/ScheduleDialog/ScheduleDialog'
 import './schedule-management.style.scss'
 import { AxiosResponse } from 'axios'
 import { SuccessResponse } from 'src/types/utils.type'
+import { useTranslation } from 'react-i18next'
 
 const ScheduleManagement: React.FC = () => {
   const { profile } = useContext(AppContext)
   const [schedule, setSchedule] = useState<ScheduleList>({ byDay: [], byHour: [], byGuide: [] })
   const [addMode, setAddMode] = useState<boolean>(false)
-
+  const { t } = useTranslation()
   const { data: busySchedulesData } = useQuery({
     queryKey: [`busy schedules of ${profile?.id}`],
     queryFn: () => scheduleApi.getBusySchedulesOfGuide(),
@@ -62,11 +63,11 @@ const ScheduleManagement: React.FC = () => {
     <>
       {addMode && <ScheduleDialog schedule={schedule} setAddMode={setAddMode} handleDateChange={handleDateChange} />}
       <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-        Schedule Management
+        {t('pages.scheduleManagement.scheduleManagement')}
       </h2>
       <div className='mb-3 flex items-center justify-between gap-6'>
         <Button variant='outlined' onClick={() => setAddMode(true)}>
-          Add busy days
+          {t('pages.scheduleManagement.addBusyDay')}
         </Button>
         <Notes />
       </div>

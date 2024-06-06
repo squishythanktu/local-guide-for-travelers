@@ -32,11 +32,13 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import GradeIcon from '@mui/icons-material/Grade'
 import PersonIcon from '@mui/icons-material/Person'
+import { useTranslation } from 'react-i18next'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
 const SalesReportOfToursByGuide: React.FC = () => {
   const { profile } = useContext(AppContext)
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [currentYear, setCurrentYear] = useState<Dayjs>(dayjs())
   const [pagination, setPagination] = useState<PaginationParams>({
@@ -63,12 +65,12 @@ const SalesReportOfToursByGuide: React.FC = () => {
       },
       {
         accessorKey: 'name',
-        header: 'Name',
+        header: t('pages.salesReport.name'),
         size: 200
       },
       {
         accessorKey: 'limitTraveler',
-        header: 'Limit traveler(s)',
+        header: t('pages.salesReport.limitTravelers'),
         Cell: ({ cell }) => (
           <div className='flex items-center gap-1'>
             <PersonIcon className='text-blue-400' fontSize='small' />
@@ -79,13 +81,13 @@ const SalesReportOfToursByGuide: React.FC = () => {
       },
       {
         accessorKey: 'totalRevenue',
-        header: 'Total revenue',
+        header: t('pages.salesReport.totalRevenue'),
         size: 30,
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       },
       {
         accessorKey: 'overallRating',
-        header: 'Overall rating',
+        header: t('pages.salesReport.overallRating'),
         Cell: ({ cell }) => (
           <div className='flex items-center gap-1'>
             <GradeIcon className='text-yellow-400' fontSize='small' />
@@ -96,7 +98,7 @@ const SalesReportOfToursByGuide: React.FC = () => {
       },
       {
         accessorKey: 'totalTravelerNumber',
-        header: 'Total booked',
+        header: t('pages.salesReport.totalBooked'),
         size: 30
       }
     ],
@@ -160,12 +162,12 @@ const SalesReportOfToursByGuide: React.FC = () => {
   return (
     <>
       <h2 className='border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-        Sales Report
+        {t('pages.salesReport.salesReport')}
       </h2>
       <Box className='flex flex-col gap-2'>
         <Card className='col-span-12 flex flex-col gap-2 p-3 lg:col-span-6'>
           <Box className='flex items-center gap-4'>
-            <strong>Select year: </strong>
+            <strong>{t('pages.salesReport.selectYear')}: </strong>
             <DatePicker
               views={['year']}
               className='h-fit w-fit'
@@ -180,10 +182,10 @@ const SalesReportOfToursByGuide: React.FC = () => {
             <Grid item xs={6}>
               <Line
                 className='w-1/2'
-                options={chartOptions('Revenue by year')}
+                options={chartOptions(t('pages.salesReport.revenueByYear'))}
                 data={chartData(
                   months,
-                  'Revenue ($)',
+                  t('pages.salesReport.revenue'),
                   generateChartData(statisticsByYearData?.data.data.monthDTOS, 'revenue'),
                   'rgb(255, 99, 132)',
                   'rgba(255, 99, 132, 0.5)'
@@ -193,10 +195,10 @@ const SalesReportOfToursByGuide: React.FC = () => {
             <Grid item xs={6}>
               <Bar
                 className='w-1/2'
-                options={chartOptions('Number of bookings by year')}
+                options={chartOptions(t('pages.salesReport.numberOfBookingsByYear'))}
                 data={chartData(
                   months,
-                  'Number of bookings',
+                  t('pages.salesReport.numberOfBookings'),
                   generateChartData(statisticsByYearData?.data.data.monthDTOS, 'bookingOfNumber'),
                   'rgb(53, 162, 235)',
                   'rgba(53, 162, 235, 0.5)'

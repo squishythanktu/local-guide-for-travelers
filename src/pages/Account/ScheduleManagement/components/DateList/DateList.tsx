@@ -3,6 +3,7 @@ import { Box, Button, IconButton } from '@mui/material'
 import List from '@mui/material/List'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DateObject } from 'react-multi-date-picker'
 import { DayStateEnum } from 'src/enums/day-state.enum'
 import { EventState } from 'src/enums/event-state.enum'
@@ -32,6 +33,7 @@ const DateList: React.FC<DateListProps> = ({ schedule, handleDateChange }: DateL
   const [dayState, setDayState] = useState<DayStateEnum>(DayStateEnum.DaysOff)
   const [temporaryState, setTemporaryState] = useState<EventState>(EventState.Upcoming)
   const [displayDates, setDisplayDates] = useState<Date[]>([])
+  const { t } = useTranslation()
 
   const confirmDelete = () => {
     if (selectedDates.length < 1) return
@@ -155,40 +157,40 @@ const DateList: React.FC<DateListProps> = ({ schedule, handleDateChange }: DateL
             variant='outlined'
             size='small'
             onClick={handleDaysOffButton}
-            className={classNames('w-[33.33%] rounded-none rounded-tl-md border-none', {
+            className={classNames('w-[33.33%] rounded-none rounded-tl-md border-none uppercase', {
               'bg-[var(--highlight-error-background)]': dayState.toString() === DayStateEnum.DaysOff
             })}
             sx={{
               flex: '1 1 auto'
             }}
           >
-            DAYS OFF
+            {t('pages.scheduleManagement.dayOff')}
           </Button>
           <Button
             onClick={handleBookedByDayButton}
             variant='outlined'
             size='small'
-            className={classNames('w-[33.33%] rounded-none border-none ', {
+            className={classNames('w-[33.33%] rounded-none border-none uppercase', {
               'bg-[var(--highlight-warning-background)]': dayState.toString() === DayStateEnum.BookedByDay
             })}
             sx={{
               flex: '1 1 auto'
             }}
           >
-            BOOKED BY DAY
+            {t('pages.scheduleManagement.bookedByDay')}
           </Button>
           <Button
             onClick={handleBookedByHourButton}
             variant='outlined'
             size='small'
-            className={classNames('w-[33.33%] rounded-none rounded-tr-md border-none', {
+            className={classNames('w-[33.33%] rounded-none rounded-tr-md border-none uppercase', {
               'bg-[var(--highlight-success-background)]': dayState.toString() === DayStateEnum.BookedByHour
             })}
             sx={{
               flex: '1 1 auto'
             }}
           >
-            BOOKED BY HOUR
+            {t('pages.scheduleManagement.bookedByHour')}
           </Button>
         </Box>
         <Box
@@ -214,7 +216,7 @@ const DateList: React.FC<DateListProps> = ({ schedule, handleDateChange }: DateL
             size='small'
             onClick={handleUpcomingButton}
           >
-            Upcoming
+            {t('pages.scheduleManagement.upcoming')}
           </Button>
           <Button
             onClick={handlePastButton}
@@ -232,7 +234,7 @@ const DateList: React.FC<DateListProps> = ({ schedule, handleDateChange }: DateL
             variant='outlined'
             size='small'
           >
-            Past
+            {t('pages.scheduleManagement.past')}
           </Button>
         </Box>
       </Box>
@@ -293,7 +295,7 @@ const DateList: React.FC<DateListProps> = ({ schedule, handleDateChange }: DateL
           className='absolute bottom-0 w-full rounded-none rounded-b-md'
           onClick={confirmDelete}
         >
-          Delete
+          {t('pages.scheduleManagement.delete')}
         </Button>
       )}
     </Box>

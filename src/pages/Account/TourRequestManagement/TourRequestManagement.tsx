@@ -18,13 +18,11 @@ const TourRequestManagement: React.FC = () => {
   const [isGuide, setIsGuide] = useState<boolean>(profile?.role === UserRole.GUIDER)
   const location = useLocation()
   const { t } = useTranslation()
-
   const { data: requestsData, refetch } = useQuery({
     queryKey: [`requests of  ${profile?.id}`],
     queryFn: () => requestApi.getRequests(),
     staleTime: 6 * 1000
   })
-
   const [requestStatus, setRequestStatus] = useState<StatusRequest>(StatusRequest.PENDING)
   const [displayData, setDisplayData] = useState<Request[]>([])
 
@@ -219,7 +217,7 @@ const TourRequestManagement: React.FC = () => {
             loading='lazy'
             className='mb-2 h-72 w-72 object-cover'
           />
-          <h3>No request data available.</h3>
+          <h3>{t('pages.tourRequestManagement.noRequest')}</h3>
         </div>
       )}
     </div>
