@@ -12,14 +12,26 @@
       "signUp": "Đăng ký",
       "email": "Email",
       "password": "Mật khẩu",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu",
       "login": {
         "haveAccountQuestion": "Chưa có tài khoản?",
         "forgetPassword": "Quên mật khẩu?",
         "orContinue": "hoặc tiếp tục với"
       },
       "register": {
-        "alreadyHaveAccountQuestion": "Đã có tài khoản?",
-        "confirmPassword": "Xác nhận mật khẩu"
+        "alreadyHaveAccountQuestion": "Đã có tài khoản?"
+      },
+      "resetPassword": {
+        "resetPassword": "Đặt lại mật khẩu",
+        "resetPasswordDescription": "Nhập địa chỉ email liên kết với tài khoản của bạn và chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu.",
+        "sendResetLink": "Gửi liên kết đặt lại",
+        "sendResetLinkSuccess": "Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.",
+        "emailNotSignUp": "Email chưa được đăng ký"
+      },
+      "changePassword": {
+        "changePassword": "Đổi mật khẩu",
+        "changePasswordSuccess": "Đổi mật khẩu thành công."
       }
     },
     "search": {
@@ -66,7 +78,42 @@
       "checkAvailability": "Kiểm tra tình trạng",
       "customerReviews": "Đánh giá của khách hàng",
       "customerReviewsTooltip": "Tất cả các đánh giá đều từ khách hàng đã xác minh và đã mua hoạt động. Chỉ có thể gửi đánh giá sau khi hoạt động diễn ra.",
-      "overallRating": "Đánh giá tổng thể"
+      "overallRating": "Đánh giá tổng thể",
+      "from": "Từ",
+      "perPerson": "mỗi người",
+      "limitParticipants": "Giới hạn tối đa {{limitTraveler}} người tham gia",
+      "day(s)": "ngày",
+      "hour(s)": "giờ",
+      "baseOnReviews": "Dựa trên {{totalReviews}} đánh giá",
+      "filter": "Lọc",
+      "allStarRatings": "Tất cả đánh giá sao",
+      "stars": "sao",
+      "sort": "Sắp xếp",
+      "sortBy": "Sắp xếp theo",
+      "startFrom": "Bắt đầu từ",
+      "guide": "Hướng dẫn viên",
+      "meetAt": "Gặp tại",
+      "selectTime": "Chọn thời gian bắt đầu trong ngày",
+      "selectATime": "Chọn một thời gian",
+      "person": "Người",
+      "cancelUp": "Hủy trong vòng 1 giờ sau khi đặt hoặc trước 7 ngày để được hoàn tiền đầy đủ",
+      "totalPrice": "Tổng giá",
+      "allTaxesAndFees": "Đã bao gồm tất cả thuế và phí",
+      "bookNow": "Đặt ngay",
+      "addToCart": "Thêm vào giỏ hàng"
+    },
+    "profile": {
+      "profileDetails": "Thông tin cá nhân",
+      "fullName": "Họ và tên",
+      "dateOfBirth": "Ngày sinh",
+      "contactDetails": "Thông tin liên hệ",
+      "address": "Địa chỉ",
+      "phone": "Điện thoại",
+      "email": "Email",
+      "deleteAccount": "Xóa tài khoản",
+      "save": "Lưu",
+      "deleteAccountConfirm": "Xác nhận xóa tài khoản",
+      "deleteAccountConfirmQuestion": "Bạn có chắc chắn muốn xóa tài khoản này?"
     },
     "guideApplication": {
       "title": "Tham gia với chúng tôi với vai trò hướng dẫn viên địa phương",
@@ -95,13 +142,39 @@
       "info": "Thông tin",
       "receiveEmail": "Bạn sẽ nhận được email khi đơn đăng ký của bạn được chấp nhận.",
       "submit": "Nộp đơn đăng ký"
+    },
+    "tourRequestManagement": {
+      "tourRequestManagement": "Quản lý yêu cầu Tour",
+      "destination": "Điểm đến",
+      "duration": "Thời lượng",
+      "unit": "Đơn vị",
+      "maxPrice": "Giá tối đa",
+      "numberOfTravelers": "Số lượng khách",
+      "transportation": "Phương tiện",
+      "message": "Lời nhắn",
+      "day(s)": "ngày",
+      "hour(s)": "giờ",
+      "addTour": "Thêm tour",
+      "selfDenied": "Tự từ chối",
+      "cancel": "Hủy bỏ",
+      "accept": "Chấp nhận",
+      "reject": "Từ chối",
+      "edit": "Chỉnh sửa",
+      "adminDenied": "Quản trị viên từ chối",
+      "guideDenied": "Hướng dẫn viên từ chối",
+      "selfCanceled": "Tự hủy",
+      "guideAccepted": "Hướng dẫn viên chấp nhận",
+      "awaitingAdmin": "Đang chờ quản trị viên duyệt"
     }
   },
   "components": {
     "profileMenu": {
       "becomeAGuide": "Trở thành hướng dẫn viên",
       "signIn": "Đăng nhập",
-      "signUp": "Đăng ký"
+      "signUp": "Đăng ký",
+      "settings": "Cài đặt",
+      "management": "Quản lý",
+      "logOut": "Đăng xuất"
     },
     "searchBar": {
       "tour": "Tour",
@@ -125,6 +198,51 @@
       "privacyPolicy": "Chính sách bảo mật",
       "baggageRegulations": "Quy định về hành lý",
       "feq": "Các câu hỏi thường gặp"
+    },
+    "tourCard": {
+      "by": "bởi",
+      "day(s)": "ngày",
+      "hour(s)": "giờ",
+      "reviews": "đánh giá",
+      "fromPerPerson": "Từ ${{price}} mỗi người",
+      "signInFirst": "Vui lòng đăng nhập trước.",
+      "removeWishlistSuccess": "Đã xóa tour khỏi danh sách yêu thích thành công.",
+      "addWishlistSuccess": "Đã thêm tour vào danh sách yêu thích thành công."
+    },
+    "confirmDialog": {
+      "cancel": "Hủy bỏ",
+      "ok": "OK"
+    },
+    "accountSideNav": {
+      "profile": "Hồ sơ",
+      "password": "Mật khẩu"
+    },
+    "managementSideNav": {
+      "tourRequestManagement": "Quản lý yêu cầu tour",
+      "tourManagement": "Quản lý tour",
+      "bookingManagement": "Quản lý Đặt chỗ",
+      "scheduleManagement": "Quản lý Lịch trình",
+      "salesReport": "Báo cáo Doanh thu"
+    }
+  },
+  "enums": {
+    "sortReview": {
+      "MOST_RECENT": "Mới nhất",
+      "HIGHEST_RATED": "Đánh giá cao nhất",
+      "LOWEST_RATED": "Đánh giá thấp nhất"
+    },
+    "userRole": {
+      "GUIDER": "Hướng dẫn viên",
+      "TRAVELER": "Khách du lịch",
+      "ADMIN": "Quản trị viên"
+    },
+    "statusRequest": {
+      "PENDING": "Chờ duyệt",
+      "ACCEPTED": "Đã chấp nhận",
+      "DENIED": "Đã từ chối",
+      "DONE": "Hoàn thành",
+      "CANCELED": "Đã hủy",
+      "DRAFT": "Nháp"
     }
   }
 }

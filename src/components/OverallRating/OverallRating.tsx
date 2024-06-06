@@ -26,7 +26,11 @@ const OverallRating: React.FC<OverallRatingProps> = ({ ratingReviewsAverage, tot
           value={ratingReviewsAverage}
           readOnly
         />
-        <span className='mt-2 text-center font-semibold text-slate-500'>based on {totalReviews} reviews</span>
+        <span className='mt-2 text-center font-semibold text-slate-500'>
+          {t('pages.tourDetails.baseOnReviews', {
+            totalReviews
+          })}
+        </span>
       </div>
     </div>
   )

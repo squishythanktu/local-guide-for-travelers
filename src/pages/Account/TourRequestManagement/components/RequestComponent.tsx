@@ -1,5 +1,6 @@
 import { Box, Button, Chip, Divider } from '@mui/material'
 import { QueryObserverResult, useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import requestApi from 'src/apis/request.api'
 import PATH from 'src/constants/path.constant'
@@ -16,6 +17,7 @@ interface Props {
 
 const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setRequestStatus }: Props) => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const updateStatusRequestMutation = useMutation({
     mutationFn: (body: string) => requestApi.updateRequestStatus(request.id, { status: body })
@@ -52,7 +54,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
           {isGuide &&
             (request.status === StatusRequest.DENIED.toUpperCase() ? (
               <>
-                <Chip label='Self-denied' color='error' size='small' />
+                <Chip label={t('pages.tourRequestManagement.selfDenied')} color='error' size='small' />
               </>
             ) : (
               request.tour &&
@@ -83,7 +85,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
                   color='error'
                   size='small'
                 >
-                  Reject
+                  {t('pages.tourRequestManagement.reject')}
                 </Button>
               </>
             ) : (
@@ -100,7 +102,7 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
                 event.stopPropagation(), navigate(PATH.tours, { state: { request: request } })
               }}
             >
-              Add tour
+              {t('pages.tourRequestManagement.addTour')}
             </Button>
           )}
           {!isGuide &&
@@ -115,13 +117,15 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
                 color='error'
                 size='small'
               >
-                Cancel
+                {t('pages.tourRequestManagement.cancel')}
               </Button>
             ) : request.status === StatusRequest.ACCEPTED.toUpperCase() ? (
-              <Chip label='Guide accepted' color='success' size='small' />
+              <Chip label={t('pages.tourRequestManagement.guideAccepted')} color='success' size='small' />
             ) : (
               request.tour &&
-              request.tour.status === TourStatus.PENDING && <Chip label='Awaiting admin' color='warning' size='small' />
+              request.tour.status === TourStatus.PENDING && (
+                <Chip label={t('pages.tourRequestManagement.awaitingAdmin')} color='warning' size='small' />
+              )
             ))}
           {!isGuide && request.status === StatusRequest.DRAFT.toUpperCase() && (
             <Button
@@ -136,49 +140,52 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
               color='primary'
               size='small'
             >
-              Edit
+              {t('pages.tourRequestManagement.edit')}
             </Button>
           )}
           {!isGuide &&
             (request.status === StatusRequest.CANCELED.toUpperCase() ? (
-              <Chip label='Self-canceled' color='error' size='small' />
+              <Chip label={t('pages.tourRequestManagement.selfCanceled')} color='error' size='small' />
             ) : request.status === StatusRequest.DENIED.toUpperCase() ? (
-              <Chip label='Guide denied' color='error' size='small' />
+              <Chip label={t('pages.tourRequestManagement.guideDenied')} color='error' size='small' />
             ) : (
               request.tour &&
-              request.tour.status === TourStatus.DENY && <Chip label='Admin denied' color='error' size='small' />
+              request.tour.status === TourStatus.DENY && (
+                <Chip label={t('pages.tourRequestManagement.adminDenied')} color='error' size='small' />
+              )
             ))}
         </div>
       </div>
       <Divider className='my-2' />
       <div className='grid grid-cols-2 gap-1 px-4'>
         <div className='col-span-2 flex gap-1 text-sm font-medium'>
-          Destination:<div className='text-sm'>{request.destination}</div>
+          {t('pages.tourRequestManagement.destination')}:<div className='text-sm'>{request.destination}</div>
         </div>
         <div className='col-span-1 flex gap-1 text-sm font-medium'>
-          Duration:
+          {t('pages.tourRequestManagement.duration')}:
           <div className='flex gap-1 text-sm'>
             {request.duration}
             <span className='text-sm md:hidden'>{request.unit}</span>
           </div>
         </div>
         <div className='col-span-1 flex gap-1 text-sm font-medium sm:hidden lg:inline-block '>
-          Unit:
-          <span className='ml-1 text-sm'>{request.unit}</span>
+          {t('pages.tourRequestManagement.unit')}:<span className='ml-1 text-sm'>{request.unit}</span>
         </div>
         <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2  lg:col-span-1'>
-          Max price:<div className='text-sm'>${request.maxPricePerPerson.toLocaleString()}</div>
+          {t('pages.tourRequestManagement.maxPrice')}:
+          <div className='text-sm'>${request.maxPricePerPerson.toLocaleString()}</div>
         </div>
         <div className='col-span-1 flex gap-1 text-sm font-medium sm:col-span-2 lg:col-span-1'>
-          Number of travelers:<div className='text-sm'>{request.numberOfTravelers}</div>
+          {t('pages.tourRequestManagement.numberOfTravelers')}:
+          <div className='text-sm'>{request.numberOfTravelers}</div>
         </div>
         <div className='col-span-2 flex gap-1 text-sm font-medium'>
-          Transportation:
+          {t('pages.tourRequestManagement.transportation')}:
           <div className='text-sm'>{request.transportation.join(', ')}</div>
         </div>
 
         <div className='col-span-2 flex gap-2 text-sm font-medium'>
-          Message:<div className='text-sm'>{request.message}</div>
+          {t('pages.tourRequestManagement.message')}:<div className='text-sm'>{request.message}</div>
         </div>
       </div>
     </Box>

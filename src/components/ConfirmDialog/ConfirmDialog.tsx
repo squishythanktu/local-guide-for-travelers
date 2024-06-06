@@ -4,6 +4,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmDialogProps {
   handleClose: () => void
@@ -18,6 +19,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   title,
   content
 }: ConfirmDialogProps) => {
+  const { t } = useTranslation()
+
   return (
     <Dialog open={true} aria-labelledby='dialog'>
       <DialogTitle style={{ cursor: 'move' }} id='dialog-title'>
@@ -27,8 +30,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <DialogContentText>{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleConfirm}>OK</Button>
+        <Button onClick={handleClose}>{t('components.confirmDialog.cancel')}</Button>
+        <Button onClick={handleConfirm}>{t('components.confirmDialog.ok')}</Button>
       </DialogActions>
     </Dialog>
   )

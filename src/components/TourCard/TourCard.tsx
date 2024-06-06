@@ -8,6 +8,7 @@ import { QueryObserverResult, RefetchOptions, useMutation } from '@tanstack/reac
 import { AxiosResponse } from 'axios'
 import classNames from 'classnames'
 import { useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import wishlistApi from 'src/apis/wishlist.api'
@@ -26,6 +27,7 @@ interface TourCardProps {
 export default function TourCard({ tourData, isTourInWishList = false, refetch }: TourCardProps) {
   const { isAuthenticated } = useContext(AppContext)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
+  const { t } = useTranslation()
 
   const addTourToWishlistMutation = useMutation({
     mutationFn: (tourId: number) => wishlistApi.addTourToWishlistById(tourId)
@@ -36,12 +38,12 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
   })
 
   const handleAddToWishlist = () => {
-    if (!isAuthenticated) return toast.info('Please sign in first to add to wishlist.')
+    if (!isAuthenticated) return toast.info(t('components.tourCard.signInFirst'))
 
     if (isTourInWishList) {
       deleteTourFromWishlistMutation.mutate(tourData.id, {
         onSuccess: () => {
-          toast.success('Remove tour from wishlist successfully.')
+          toast.success(t('components.tourCard.removeWishlistSuccess'))
           refetch()
         },
         onError: (error) => {
@@ -53,7 +55,7 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
 
     addTourToWishlistMutation.mutate(tourData.id, {
       onSuccess: () => {
-        toast.success('Add tour to wishlist successfully.')
+        toast.success(t('components.tourCard.addWishlistSuccess'))
         refetch()
       },
       onError: (error) => {
@@ -94,13 +96,13 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
                   {tourData?.name}
                 </h3>
                 <h5 className='text-[var(--label-secondary)]'>
-                  by {tourData?.guide?.fullName || tourData?.guide?.email || 'N/A'}
+                  {t('components.tourCard.by')} {tourData?.guide?.fullName || tourData?.guide?.email || 'N/A'}
                 </h5>
               </div>
               <div className='tour-card__body mb-2 px-2 py-0 text-sm text-[var(--label-primary)] sm:px-3'>
                 <ul className='flex flex-wrap gap-4'>
                   <li className='text-sm font-semibold'>
-                    {tourData?.duration} {tourData?.unit}
+                    {tourData?.duration} {t(`components.tourCard.${tourData?.unit}`)}
                   </li>
                   <li className='relative flex items-center whitespace-nowrap text-sm font-semibold'>
                     <span className='absolute left-[-10px] top-1/2 -translate-y-1/2 transform'>•</span>
@@ -115,11 +117,11 @@ export default function TourCard({ tourData, isTourInWishList = false, refetch }
               <Rating defaultValue={tourData?.overallRating} precision={0.1} size='small' readOnly />
               <span className='rating-overall__number text-sm font-semibold'>{tourData?.overallRating.toFixed(2)}</span>
               <span className='rating-overall__reviews text-sm font-semibold  text-[var(--label-secondary)]'>
-                ({tourData.reviewDTOS?.length} reviews)
+                ({tourData.reviewDTOS?.length} {t(`components.tourCard.reviews`)})
               </span>
             </div>
             <div className='pricing-container font-semibold'>
-              From $ {tourData?.pricePerTraveler.toLocaleString()} per person
+              {t(`components.tourCard.fromPerPerson`, { price: tourData?.pricePerTraveler.toLocaleString() })}
             </div>
           </div>
         </Link>

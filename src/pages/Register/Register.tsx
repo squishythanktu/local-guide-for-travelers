@@ -74,7 +74,7 @@ const Register: React.FC = () => {
             control={control}
             type='password'
             name='confirmPassword'
-            label={t('pages.authLayout.register.confirmPassword')}
+            label={t('pages.authLayout.confirmPassword')}
           />
         </div>
         <div className='form__actions flex'>

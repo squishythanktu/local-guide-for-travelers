@@ -33,7 +33,9 @@ export default function AboutActivity({ tour }: AboutActivityProps) {
       <ActivityInfo
         icon={<GroupsOutlinedIcon />}
         title={t('pages.tourDetails.group')}
-        content={`Limited to ${tour.limitTraveler} participants`}
+        content={t('pages.tourDetails.limitParticipants', {
+          limitTraveler: tour.limitTraveler
+        })}
       />
       <ActivityInfo
         icon={<AttachMoneyIcon />}
@@ -43,7 +45,7 @@ export default function AboutActivity({ tour }: AboutActivityProps) {
       <ActivityInfo
         icon={<TimelapseIcon />}
         title={t('pages.tourDetails.duration')}
-        content={`${tour.duration} ${tour.unit}`}
+        content={`${tour.duration} ${t(`pages.tourDetails.${tour.unit}`)}`}
       />
       <ActivityInfo
         icon={<AirportShuttleOutlinedIcon />}

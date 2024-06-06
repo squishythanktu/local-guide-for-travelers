@@ -11,11 +11,13 @@ import RequestComponent from './components/RequestComponent'
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { useLocation } from 'react-router-dom'
 import { UserRole } from 'src/enums/user-role.enum'
+import { useTranslation } from 'react-i18next'
 
 const TourRequestManagement: React.FC = () => {
   const { profile, isAuthenticated } = useContext(AppContext)
   const [isGuide, setIsGuide] = useState<boolean>(profile?.role === UserRole.GUIDER)
   const location = useLocation()
+  const { t } = useTranslation()
 
   const { data: requestsData, refetch } = useQuery({
     queryKey: [`requests of  ${profile?.id}`],
@@ -136,7 +138,7 @@ const TourRequestManagement: React.FC = () => {
       {isAuthenticated && requestsData?.data.data && requestsData.data.data.length > 0 ? (
         <div className=''>
           <h2 className='border-b-1 mb-2 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-            Tour Request Management
+            {t('pages.tourRequestManagement.tourRequestManagement')}
           </h2>
           {isGuide && (
             <ButtonGroup

@@ -12,14 +12,26 @@
       "signUp": "Sign up",
       "email": "Email",
       "password": "Password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
       "login": {
         "haveAccountQuestion": "Don't have an account?",
         "forgetPassword": "Forget password?",
         "orContinue": "or continue with"
       },
       "register": {
-        "alreadyHaveAccountQuestion": "Already have an account?",
-        "confirmPassword": "Confirm password"
+        "alreadyHaveAccountQuestion": "Already have an account?"
+      },
+      "resetPassword": {
+        "resetPassword": "Reset password",
+        "resetPasswordDescription": "Enter the email address associated with your account and we'll send you a link to reset your password.",
+        "sendResetLink": "Send reset link",
+        "sendResetLinkSuccess": "The password reset link has been sent to your email.",
+        "emailNotSignUp": "Email has not been sign up"
+      },
+      "changePassword": {
+        "changePassword": "Change password",
+        "changePasswordSuccess": "Change password successfully."
       }
     },
     "search": {
@@ -66,7 +78,42 @@
       "checkAvailability": "Check availability",
       "customerReviews": "Customer reviews",
       "customerReviewsTooltip": "All reviews are from verified customers who purchased the activity. Reviews can only be submitted after the activity takes place.",
-      "overallRating": "Overall rating"
+      "overallRating": "Overall rating",
+      "from": "From",
+      "perPerson": "per person",
+      "limitParticipants": "Limit to {{limitTraveler}} participants",
+      "day(s)": "day(s)",
+      "hour(s)": "hour(s)",
+      "baseOnReviews": "Based on {{totalReviews}} review",
+      "filter": "Filter",
+      "allStarRatings": "All star ratings",
+      "stars": "stars",
+      "sort": "Sort",
+      "sortBy": "Sort by",
+      "startFrom": "Start from",
+      "guide": "Guide",
+      "meetAt": "Meet at",
+      "selectTime": "Select a starting time of",
+      "selectATime": "Select a time",
+      "person": "Person",
+      "cancelUp": "Cancel up within 1 hour after booking or more than 7 days in advance for a full refund",
+      "totalPrice": "Total price",
+      "allTaxesAndFees": "All taxes and fees included",
+      "bookNow": "Book now",
+      "addToCart": "Add to cart"
+    },
+    "profile": {
+      "profileDetails": "Profile Details",
+      "fullName": "Full name",
+      "dateOfBirth": "Date of birth",
+      "contactDetails": "Contact Details",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "deleteAccount": "Delete account",
+      "save": "Save",
+      "deleteAccountConfirm": "Delete account confirmation",
+      "deleteAccountConfirmQuestion": "Are you sure want to delete this account?"
     },
     "guideApplication": {
       "title": "Join us as a local guide",
@@ -95,13 +142,39 @@
       "info": "Info",
       "receiveEmail": "You will receive an email once your registration is accepted.",
       "submit": "Submit"
+    },
+    "tourRequestManagement": {
+      "tourRequestManagement": "Tour Request Management",
+      "destination": "Destination",
+      "duration": "Duration",
+      "unit": "Unit",
+      "maxPrice": "Max price",
+      "numberOfTravelers": "Number of travelers",
+      "transportation": "Transportation",
+      "message": "Message",
+      "day(s)": "day(s)",
+      "hour(s)": "hour(s)",
+      "addTour": "Add tour",
+      "selfDenied": "Self denied",
+      "cancel": "Cancel",
+      "accept": "Accept",
+      "reject": "Reject",
+      "edit": "Edit",
+      "adminDenied": "Admin denied",
+      "guideDenied": "Guide denied",
+      "selfCanceled": "Self canceled",
+      "guideAccepted": "Guide accepted",
+      "awaitingAdmin": "Awaiting admin"
     }
   },
   "components": {
     "profileMenu": {
       "becomeAGuide": "Become a guide",
       "signIn": "Sign in",
-      "signUp": "Sign up"
+      "signUp": "Sign up",
+      "settings": "Settings",
+      "management": "Management",
+      "logOut": "Log out"
     },
     "searchBar": {
       "tour": "Tour",
@@ -125,6 +198,51 @@
       "privacyPolicy": "Privacy policy",
       "baggageRegulations": "Baggage regulations",
       "feq": "Frequently asked questions"
+    },
+    "tourCard": {
+      "by": "by",
+      "day(s)": "day(s)",
+      "hour(s)": "hour(s)",
+      "reviews": "reviews",
+      "fromPerPerson": "From ${{price}} per person",
+      "signInFirst": "Please sign in first.",
+      "removeWishlistSuccess": "Remove tour from wishlist successfully.",
+      "addWishlistSuccess": "Add tour to wishlist successfully."
+    },
+    "confirmDialog": {
+      "cancel": "Cancel",
+      "ok": "OK"
+    },
+    "accountSideNav": {
+      "profile": "Profile",
+      "password": "Password"
+    },
+    "managementSideNav": {
+      "tourRequestManagement": "Tour Request Management",
+      "tourManagement": "Tour Management",
+      "bookingManagement": "Booking Management",
+      "scheduleManagement": "Schedule Management",
+      "salesReport": "Sales Report"
+    }
+  },
+  "enums": {
+    "sortReview": {
+      "MOST_RECENT": "Most recent",
+      "HIGHEST_RATED": "Highest rated",
+      "LOWEST_RATED": "Lowest rated"
+    },
+    "userRole": {
+      "GUIDER": "guider",
+      "TRAVELER": "traveler",
+      "ADMIN": "admin"
+    },
+    "statusRequest": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "DENIED": "Denied",
+      "DONE": "Done",
+      "CANCELED": "Canceled",
+      "DRAFT": "Draft"
     }
   }
 }

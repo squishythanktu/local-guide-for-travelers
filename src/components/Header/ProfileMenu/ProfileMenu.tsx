@@ -129,20 +129,20 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             <ListItemIcon>
               <SettingsOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            Settings
+            {t('components.profileMenu.settings')}
           </MenuItem>
           <MenuItem component={Link} to={PATH.tourRequest} onClick={handleClose}>
             <ListItemIcon>
               <ViewListIcon fontSize='small' />
             </ListItemIcon>
-            Management
+            {t('components.profileMenu.management')}
           </MenuItem>
           {profile?.role !== UserRole.GUIDER && (
             <MenuItem component={Link} to={PATH.guideApplications} onClick={handleClose}>
               <ListItemIcon>
                 <ContactPageOutlinedIcon fontSize='small' />
               </ListItemIcon>
-              Become a guide
+              {t('components.profileMenu.becomeAGuide')}
             </MenuItem>
           )}
           <Divider />
@@ -150,7 +150,7 @@ export default function ProfileMenu({ textColor }: ProfileMenuProps) {
             <ListItemIcon>
               <LogoutIcon fontSize='small' />
             </ListItemIcon>
-            Log out
+            {t('components.profileMenu.logOut')}
           </MenuItem>
         </Menu>
       )}

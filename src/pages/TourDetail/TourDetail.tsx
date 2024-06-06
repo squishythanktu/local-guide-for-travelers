@@ -207,11 +207,11 @@ const TourDetail: React.FC = () => {
             <div className='col-span-1 flex flex-col gap-2'>
               <Box className='check-availability-box flex flex-col gap-4'>
                 <span className='font-bold'>
-                  From{' '}
+                  {t('pages.tourDetails.from')}{' '}
                   <span className='text-2xl font-extrabold text-[var(--decorative-orange)]'>
                     ${tour.pricePerTraveler.toLocaleString()}
                   </span>{' '}
-                  per person
+                  {t('pages.tourDetails.perPerson')}
                 </span>
                 <BookingAssistant
                   id={tour.id}

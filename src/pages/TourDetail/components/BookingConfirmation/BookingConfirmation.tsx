@@ -22,6 +22,7 @@ import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
 import { convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   timeOptions?: string[]
@@ -37,6 +38,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
   const [totalPrice, setTotalPrice] = useState(0)
   const [stateButton, setStateButton] = useState<'bookNow' | 'addCart'>()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const handleOptionClick = (option: string) => setSelectedTimeOption(option)
 
@@ -104,25 +106,27 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
             <div className='flex items-center text-base font-normal'>
               <TimelapseIcon className='mb-[2px] mr-2 h-6 w-6' />
               <div className='text-sm font-medium text-gray-500'>
-                {tour.duration} {tour.unit}
+                {tour.duration} {t(`pages.tourDetails.${tour.unit}`)}
               </div>
             </div>
             {!(tour.unit === Unit.HOURS && tour.duration < 5) && (
               <div className='flex items-center text-base font-normal'>
                 <AlarmOnIcon className='mb-[2px] mr-2 h-6 w-6' />
                 <div className='text-sm font-medium text-gray-500'>
-                  Start from {formatTime(tour.startTimes[0], 'HH:mm:ss', 'HH:mm')}
+                  {t('pages.tourDetails.startFrom')} {formatTime(tour.startTimes[0], 'HH:mm:ss', 'HH:mm')}
                 </div>
               </div>
             )}
             <div className='flex items-center font-normal'>
               <GuideIcon className='mb-[2px] mr-2 h-6 w-6' />
-              <div className='text-sm font-medium text-gray-500'>Guide: {tour.guide['fullName'] || 'N/A'}</div>
+              <div className='text-sm font-medium text-gray-500'>
+                {t('pages.tourDetails.guide')}: {tour.guide['fullName'] || 'N/A'}
+              </div>
             </div>
             <div className='flex items-center font-normal'>
               <LocationIcon className='mb-[2px] mr-2 h-6 w-6' />
               <p className='text-sm font-medium  underline'>
-                Meet at {tour.locations[0].name} ({tour.locations[0].address})
+                {t('pages.tourDetails.meetAt')} {tour.locations[0].name} ({tour.locations[0].address})
               </p>
             </div>
           </div>
@@ -132,7 +136,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
           <>
             <div className='starting-times flex flex-col gap-2'>
               <div className='font-medium'>
-                Select a starting time of {formatDate(formData.startDate, 'MM/DD/YYYY')}
+                {t('pages.tourDetails.selectTime')} {formatDate(formData.startDate, 'MM/DD/YYYY')}
               </div>
               <div className='flex flex-wrap gap-2'>
                 {timeOptions.map((option) => (
@@ -147,30 +151,29 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
                 ))}
               </div>
             </div>
-            {!selectedTimeOption && <div className='text-xs text-red-500'>Select a time</div>}
+            {!selectedTimeOption && <div className='text-xs text-red-500'>{t('pages.tourDetails.selectATime')}</div>}
             <Divider />
           </>
         )}
         <div className='participants flex flex-col gap-2'>
           <div className='relative flex'>
             <div className='text-sm font-medium text-gray-500'>
-              Person {bookingFormData.numberTravelers}x ${tour.pricePerTraveler.toLocaleString()}
+              {t('pages.tourDetails.person')} {bookingFormData.numberTravelers}x $
+              {tour.pricePerTraveler.toLocaleString()}
             </div>
             <div className='absolute right-2 text-sm font-medium text-gray-500'>${totalPrice.toLocaleString()}</div>
           </div>
           <div className='flex items-center font-normal'>
             <CalendarCheckIcon className='mb-[2px] mr-2 h-6 w-6' />
-            <div className='text-sm font-medium'>
-              Cancel up within 1 hour after booking or more than 7 days in advance for a full refund
-            </div>
+            <div className='text-sm font-medium'>{t('pages.tourDetails.cancelUp')}</div>
           </div>
         </div>
       </div>
       <div className='bg-slate-100 p-4 md:grid md:grid-cols-2 md:items-center'>
         <div className='md:col-span-1'>
-          <div className='text-sm font-medium text-gray-600'>Total price</div>
+          <div className='text-sm font-medium text-gray-600'>{t('pages.tourDetails.totalPrice')}</div>
           <div className='text-xl font-extrabold'>${totalPrice.toLocaleString()}</div>
-          <div className='text-xs font-medium'>All taxes and fees included</div>
+          <div className='text-xs font-medium'>{t('pages.tourDetails.allTaxesAndFees')}</div>
         </div>
         <div className='flex flex-col gap-2 pt-2 md:col-span-1 md:flex-row md:justify-self-end '>
           <LoadingButton
@@ -181,7 +184,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
             loading={stateButton === BookingConfirmationAction.BookNow && addBookingMutation.isPending}
             onClick={() => setStateButton(BookingConfirmationAction.BookNow)}
           >
-            Book now
+            {t('pages.tourDetails.bookNow')}
           </LoadingButton>
           <LoadingButton
             type='submit'
@@ -191,7 +194,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
             size='large'
             onClick={() => setStateButton(BookingConfirmationAction.addCart)}
           >
-            Add to cart
+            {t('pages.tourDetails.addToCart')}
           </LoadingButton>
         </div>
       </div>
