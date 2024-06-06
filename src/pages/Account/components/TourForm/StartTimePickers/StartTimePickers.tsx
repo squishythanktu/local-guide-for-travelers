@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Unit } from 'src/enums/unit.enum'
 import Tooltip from '@mui/material/Tooltip'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { useTranslation } from 'react-i18next'
 
 interface StartTimePickers {
   times: string[]
@@ -22,6 +23,7 @@ const StartTimePickers: React.FC<StartTimePickers> = ({
   watchUnitDuration,
   onStartTimesChange
 }: StartTimePickers) => {
+  const { t } = useTranslation()
   const [isMultipleStartTime, setIsMultipleStartTime] = useState<boolean>(true)
   const getInitialStartTimes = useCallback(
     () => (times ? times.map((time) => dayjs(time, 'HH:mm:ss')) : [dayjs('2022-04-17T00:00')]),
@@ -72,19 +74,20 @@ const StartTimePickers: React.FC<StartTimePickers> = ({
     <Box className='flex flex-col gap-2'>
       <Box className='flex items-center gap-2'>
         <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>
-          Select {isMultipleStartTime ? 'start times' : 'start time'}
+          {t('pages.tourManagement.selectStartTime')}
+
           <Typography component='span' sx={{ color: 'red' }}>
             *
           </Typography>
         </Typography>
-        <Tooltip title='Tours with a duration of 5 hours or less can have multiple start times, unless there is only one start time'>
+        <Tooltip title={t('pages.tourManagement.selectStartTimeToolTip')}>
           <IconButton>
             <InfoOutlinedIcon />
           </IconButton>
         </Tooltip>
         {isMultipleStartTime && (
           <Button variant='outlined' endIcon={<MoreTimeIcon />} onClick={handleAddMoreStartTime}>
-            Add
+            {t('pages.tourManagement.add')}
           </Button>
         )}
       </Box>

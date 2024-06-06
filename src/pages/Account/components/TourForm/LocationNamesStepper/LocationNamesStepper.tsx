@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { DebouncedFunc } from 'lodash'
 import { ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface LocationNamesStepper {
   locationNames: string[]
@@ -25,13 +26,15 @@ const LocationNamesStepper: React.FC<LocationNamesStepper> = ({
   handleChangeLocationName,
   isSaveUpdatedLocations
 }: LocationNamesStepper) => {
+  const { t } = useTranslation()
+
   return (
     <Paper className='p-4'>
       <Typography
         variant='subtitle2'
         sx={{ fontWeight: 600, color: (theme) => theme.palette.primary.main, marginBottom: '16px' }}
       >
-        Here are default location names, you can change these names by changing on the inputs & click 'Save' button
+        {t('pages.tourManagement.hereAreDefault')}
       </Typography>
 
       <Stepper orientation='horizontal' activeStep={-1}>
@@ -61,7 +64,7 @@ const LocationNamesStepper: React.FC<LocationNamesStepper> = ({
           variant='outlined'
           onClick={handleSaveLocationNames}
         >
-          Save
+          {t('pages.tourManagement.save')}
         </Button>
       </Box>
     </Paper>

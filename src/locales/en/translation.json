@@ -115,6 +115,13 @@
       "deleteAccountConfirm": "Delete account confirmation",
       "deleteAccountConfirmQuestion": "Are you sure want to delete this account?"
     },
+    "changePassword": {
+      "changePassword": "Change Password",
+      "password": "Password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "save": "Save"
+    },
     "guideApplication": {
       "title": "Join us as a local guide",
       "profileDetails": "Profile Details",
@@ -165,6 +172,45 @@
       "selfCanceled": "Self canceled",
       "guideAccepted": "Guide accepted",
       "awaitingAdmin": "Awaiting admin"
+    },
+    "tourManagement": {
+      "tourManagement": "Tour Management",
+      "createTour": "Create tour",
+      "updateTour": "Update tour",
+      "id": "id",
+      "name": "Name",
+      "transportation": "Transportation",
+      "trans": "Transportation",
+      "duration": "Duration",
+      "unit": "Unit",
+      "price": "Price",
+      "status": "Status",
+      "actions": "Actions",
+      "day(s)": "day(s)",
+      "hour(s)": "hour(s)",
+      "rowsPerPage": "Rows per page",
+      "service": "Service",
+      "estimatedLocalCashNeeded": "Estimated local cash needed",
+      "pricePerTraveler": "Price per traveler",
+      "limitTraveler": "Limit traveler",
+      "categories": "Categories",
+      "itinerary": "Itinerary",
+      "description": "Description",
+      "selectSequentialLocations": "Select sequential locations",
+      "selectSequentialLocationsToolTip": "By default, the location will be named based on the place you click on the map. If you want to change it, click 'Confirm locations'",
+      "confirmLocations": "Confirm locations",
+      "includeService": "Include service",
+      "selectImages": "Select images",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "selectStartTime": "Select start time(s)",
+      "selectStartTimeToolTip": "'Tours with a duration of 5 hours or less can have multiple start times, unless there is only one start time'",
+      "save": "Save",
+      "add": "Add",
+      "hereAreDefault": "Here are default location names, you can change these names by changing on the inputs & click 'Save' button"
+    },
+    "bookingManagement": {
+      "bookingManagement": "Booking Management"
     }
   },
   "components": {
@@ -243,6 +289,11 @@
       "DONE": "Done",
       "CANCELED": "Canceled",
       "DRAFT": "Draft"
+    },
+    "tourStatus": {
+      "PENDING": "Pending",
+      "DENY": "Deny",
+      "ACCEPT": "Accept"
     }
   }
 }

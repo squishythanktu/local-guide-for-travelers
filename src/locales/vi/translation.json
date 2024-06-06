@@ -115,6 +115,13 @@
       "deleteAccountConfirm": "Xác nhận xóa tài khoản",
       "deleteAccountConfirmQuestion": "Bạn có chắc chắn muốn xóa tài khoản này?"
     },
+    "changePassword": {
+      "changePassword": "Đổi mật khẩu",
+      "password": "Mật khẩu",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "save": "Lưu"
+    },
     "guideApplication": {
       "title": "Tham gia với chúng tôi với vai trò hướng dẫn viên địa phương",
       "profileDetails": "Chi tiết hồ sơ",
@@ -165,6 +172,45 @@
       "selfCanceled": "Tự hủy",
       "guideAccepted": "Hướng dẫn viên chấp nhận",
       "awaitingAdmin": "Đang chờ quản trị viên duyệt"
+    },
+    "tourManagement": {
+      "tourManagement": "Quản lý tour",
+      "createTour": "Tạo tour",
+      "updateTour": "Cập nhật tour",
+      "id": "ID",
+      "name": "Tên",
+      "transportation": "Phương tiện vận chuyển",
+      "trans": "Phương tiện",
+      "duration": "Thời lượng",
+      "unit": "Đơn vị",
+      "price": "Giá",
+      "status": "Trạng thái",
+      "actions": "Hành động",
+      "day(s)": "ngày",
+      "hour(s)": "giờ",
+      "rowsPerPage": "Số dòng trên mỗi trang",
+      "service": "Dịch vụ",
+      "estimatedLocalCashNeeded": "Tiền mặt địa phương cần thiết",
+      "pricePerTraveler": "Giá mỗi khách hành khách",
+      "limitTraveler": "Giới hạn khách hành khách",
+      "categories": "Danh mục",
+      "itinerary": "Lịch trình",
+      "description": "Mô tả",
+      "selectSequentialLocations": "Chọn vị trí liên tiếp",
+      "selectSequentialLocationsToolTip": "Theo mặc định, vị trí sẽ được đặt tên dựa trên địa điểm bạn nhấp vào bản đồ. Nếu bạn muốn thay đổi, hãy nhấp vào 'Xác nhận vị trí'",
+      "confirmLocations": "Xác nhận vị trí",
+      "includeService": "Bao gồm dịch vụ",
+      "selectImages": "Chọn hình ảnh",
+      "cancel": "Hủy",
+      "submit": "Gửi",
+      "selectStartTime": "Chọn thời gian bắt đầu",
+      "selectStartTimeToolTip": "Các tour có thời lượng 5 giờ trở xuống có thể có nhiều thời gian bắt đầu, ngược lại chỉ có một thời gian bắt đầu",
+      "save": "Lưu",
+      "add": "Thêm",
+      "hereAreDefault": "Đây là tên địa điểm mặc định, bạn có thể thay đổi tên này bằng cách chỉnh sửa trên các trường nhập và nhấn nút 'Lưu'"
+    },
+    "bookingManagement": {
+      "bookingManagement": "Quản lý đặt chỗ"
     }
   },
   "components": {
@@ -243,6 +289,11 @@
       "DONE": "Hoàn thành",
       "CANCELED": "Đã hủy",
       "DRAFT": "Nháp"
+    },
+    "tourStatus": {
+      "PENDING": "Đang chờ xử lý",
+      "DENY": "Từ chối",
+      "ACCEPT": "Chấp nhận"
     }
   }
 }
