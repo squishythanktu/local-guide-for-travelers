@@ -87,6 +87,7 @@
       "baseOnReviews": "Based on {{totalReviews}} review",
       "filter": "Filter",
       "allStarRatings": "All star ratings",
+      "noGuideReviews": "No guide reviews available.",
       "stars": "stars",
       "sort": "Sort",
       "sortBy": "Sort by",
@@ -240,6 +241,85 @@
       "totalRevenue": "Total revenue",
       "overallRating": "Overall rating",
       "totalBooked": "Total booked"
+    },
+    "invoices": {
+      "myInvoices": "My invoices",
+      "signInFirst": "You have to sign in first to see your invoices.",
+      "noData": "No invoice data available.",
+      "passengerInformation": "Passenger Information",
+      "name": "Name",
+      "invoice": "Invoice",
+      "email": "Email",
+      "phoneNumber": "Phone number",
+      "refund": "Refund",
+      "REFUNDED": "Refunded",
+      "viewDetails": "View Details",
+      "hideDetails": "Hide Details",
+      "toursInformation": "Tour(s) Information",
+      "refundSuccessful": "Refund Successful",
+      "confirmCancel": "Confirm cancel",
+      "areYouSure": "Are you sure you want to cancel and refund this tour?",
+      "refundFail": "Cancellation and refund failure."
+    },
+    "bookings": {
+      "myBookings": "My bookings",
+      "all": "All",
+      "upcomingBookings": "Upcoming bookings",
+      "pastBookings": "Past bookings",
+      "signInFirst": "You have to sign in first to see your bookings."
+    },
+    "wishlist": {
+      "wishlist": "Wishlist",
+      "signInFirst": "You have to sign in first to see your wishlist.",
+      "noData": "No wishlist data available."
+    },
+    "cart": {
+      "shoppingCart": "Shopping cart",
+      "total": "Total",
+      "items": "item(s)",
+      "allTaxesFees": "All taxes and fees included",
+      "goToCheckout": "Go to checkout",
+      "freeCancellation": "Free cancellation",
+      "within": "Within 1 hour after booking or more than 7 days before activity",
+      "whyBook": "Why book with us?",
+      "securePayment": "Secure payment",
+      "noHiddenCosts": "No hidden costs",
+      "support247": "24/7 customer support",
+      "save": "Save",
+      "cancel": "Cancel",
+      "signInFirst": "You have to sign in first to see your cart.",
+      "noData": "No cart data available."
+    },
+    "checkout": {
+      "cart": "Cart",
+      "checkout": "Checkout",
+      "orderSummary": "Order summary",
+      "passengerInformation": "Passenger Information",
+      "fullName": "Full name",
+      "phoneNumber": "Phone number",
+      "email": "Email",
+      "save": "Save",
+      "total": "Total",
+      "items": "item(s)",
+      "allTaxesFees": "All taxes and fees included"
+    },
+    "bookingSuccess": {
+      "bookingSuccess": "Booking Success",
+      "moreInformation": "For more information, please refer to confirmation email, sent to your mailbox!",
+      "passengerInformation": "Passenger Information",
+      "toursInformation": "Tour(s) Information",
+      "paymentInformation": "Payment Information",
+      "total": "Total",
+      "tourName": "Tour name",
+      "startDate": "Start date",
+      "numberOfTravelers": "Number of travelers",
+      "price": "Price",
+      "trip": "Trip"
+    },
+    "bookingFail": {
+      "yourPaymentFailed": "Your payment failed",
+      "tryLater": "There was an issue with your payment. Please try again later.",
+      "goHome": "Go home"
     }
   },
   "components": {
@@ -304,6 +384,11 @@
       "viewDetails": "View Details",
       "hideDetails": "Hide Details",
       "persons": "person(s)"
+    },
+    "notifications": {
+      "notifications": "Notifications",
+      "noNotificationsYet": "No notifications yet",
+      "comebackLater": "Come back later"
     }
   },
   "enums": {

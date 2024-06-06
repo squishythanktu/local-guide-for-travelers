@@ -85,9 +85,6 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         </Box>
         <Box className='notification-item__content' sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <Typography sx={{ fontSize: '14px', maxWidth: '17.5rem' }} noWrap>
-            {data.notificationType !== NotificationType.receivedBooking && (
-              <strong>{data.sender && (data.sender?.fullName || data.sender?.email)} </strong>
-            )}
             {data.message}
           </Typography>
           <Typography className='notification-item__content-message' sx={{ fontSize: '0.75rem', color: 'grey' }}>

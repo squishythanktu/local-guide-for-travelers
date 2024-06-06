@@ -11,6 +11,7 @@ import { useToggle } from 'src/hooks/useToggle'
 import PassengerInfo from 'src/pages/BookingSuccess/components/PassengerInfo/PassengerInfo'
 import { Invoice } from 'src/types/invoice.type'
 import BookingContent from '../../../Bookings/components/BookingContent/BookingContent'
+import { useTranslation } from 'react-i18next'
 
 interface InvoiceComponentProps {
   invoice: Invoice
@@ -24,6 +25,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
     refund: false
   })
   const [refundSuccess, setRefundSuccess] = useState<boolean>(false)
+  const { t } = useTranslation()
 
   const { data: refundData, isLoading } = useQuery({
     queryKey: [`refund ${invoice.id}`],
@@ -38,7 +40,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
         refetchInvoicesData()
       }
       if (!isLoading && Number(refundData?.data.statusCode) !== 200) {
-        toast.error(`Cancellation and refund failure.`)
+        toast.error(t('pages.invoices.refundFail'))
         setIsClicked((prevState) => ({
           ...prevState,
           confirmRefund: false
@@ -49,15 +51,17 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
 
   return (
     <div className='mb-7 mt-3 rounded-lg border-2 '>
-      <h2 className='pl-3 pt-3 text-2xl text-[var(--primary-color)]'>Invoice #{invoice.id}</h2>
+      <h2 className='pl-3 pt-3 text-2xl text-[var(--primary-color)]'>
+        {t('pages.invoices.invoice')} #{invoice.id}
+      </h2>
       <div className='flex flex-col justify-between p-3 sm:flex-row'>
         <div className='col-span-1'>
-          <div className='pb-3 text-lg font-medium'>Passenger Information</div>
+          <div className='pb-3 text-lg font-medium'>{t('pages.invoices.passengerInformation')}</div>
           <PassengerInfo email={invoice.email} fullName={invoice.fullName} phone={invoice.phone} />
         </div>
         <div className='col-span-1 flex flex-col items-end justify-between gap-4'>
           {invoice.status === 'REFUNDED' && (
-            <Chip className='' label='REFUNDED' color='error' size='small' variant='filled' />
+            <Chip className='' label={t('pages.invoices.REFUNDED')} color='error' size='small' variant='filled' />
           )}
           <Typography
             className='text-2xl font-extrabold'
@@ -80,7 +84,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
                   color='error'
                   size='medium'
                 >
-                  Refund
+                  {t('pages.invoices.refund')}
                 </Button>
               )}
               <Button
@@ -89,7 +93,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
                 onClick={() => toggleCollapse()}
                 className='ml-2'
               >
-                {!openCollapse ? 'View Details' : 'Hide Details'}
+                {!openCollapse ? t('pages.invoices.viewDetails') : t('pages.invoices.hideDetails')}
               </Button>
             </Box>
           </div>
@@ -97,7 +101,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
       </div>
       <div className='invoice__tour-information'>
         <Collapse in={openCollapse} timeout='auto' unmountOnExit>
-          <span className='px-3 text-lg font-medium'>Tours Information</span>
+          <span className='px-3 text-lg font-medium'>{t('pages.invoices.toursInformation')}</span>
 
           <Box sx={{ padding: '0.75rem', background: 'var(--light-grey-background)' }}>
             <BookingContent bookingList={invoice.tours} />
@@ -106,8 +110,8 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
       </div>
       {isClicked.refund && (
         <ConfirmDialog
-          title='Confirm cancel'
-          content='Are you sure you want to cancel and refund this tour?'
+          title={t('pages.invoices.confirmCancel')}
+          content={t('pages.invoices.areYouSure')}
           handleClose={() =>
             setIsClicked((prevState) => ({
               ...prevState,
@@ -122,7 +126,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, refetchInv
       {refundSuccess && (
         <Dialog open={true}>
           <DialogTitle sx={{ m: 0, p: 2 }} id='customized-dialog-title'>
-            Refund Successful
+            {t('pages.invoices.refundSuccessful')}
             <img src='/assets/images/refund.png' alt='Refund success img' />
             <p>Refund of {refundData?.data.data.vndPrice.toLocaleString()} VNĐ has been successfully processed.</p>
           </DialogTitle>

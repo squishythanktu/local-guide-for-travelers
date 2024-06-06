@@ -19,6 +19,7 @@ import { SuccessResponse } from 'src/types/utils.type'
 import { messaging } from 'src/FirebaseConfig'
 import { toast } from 'react-toastify'
 import { onMessage } from 'firebase/messaging'
+import { useTranslation } from 'react-i18next'
 
 interface NotificationProps {
   textColor: string
@@ -30,6 +31,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const [responseRealtime, setResponseRealtime] = useState<NotificationType | null>(null)
   const [countOfUnReadNotification, setCountOfUnReadNotification] = useState<number>(0)
   const { ref, inView } = useInView()
+  const { t } = useTranslation()
   const {
     data: notificationsData,
     isPending,
@@ -151,7 +153,7 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:w-full x
       >
         <Box sx={{ background: (theme) => theme.palette.primary.main, paddingY: '10px', paddingX: '16px' }}>
           <Typography variant='subtitle2' sx={{ color: 'white', fontSize: '1.1rem' }}>
-            Notifications
+            {t('components.notifications.notifications')}
           </Typography>
         </Box>
         {isPending && (
@@ -180,10 +182,10 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:w-full x
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                   />
                   <Typography variant='h6' sx={{ fontWeight: '800' }}>
-                    No notifications Yet
+                    {t('components.notifications.noNotificationsYet')}
                   </Typography>
                   <Typography variant='body1' sx={{ textAlign: 'center', fontSize: '14px' }}>
-                    You have no notifications right now. <br /> Come back later
+                    {t('components.notifications.comebackLater')}
                   </Typography>
                 </Box>
               )

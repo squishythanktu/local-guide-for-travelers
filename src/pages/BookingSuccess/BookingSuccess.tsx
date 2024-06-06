@@ -7,9 +7,11 @@ import Loading from '../Loading/Loading'
 import NotFound from '../NotFound/NotFound'
 import ContentInvoice from './components/ContentInvoice'
 import PassengerInfo from './components/PassengerInfo/PassengerInfo'
+import { useTranslation } from 'react-i18next'
 
 export default function BookingSuccess() {
   const { id: invoiceId } = useParams()
+  const { t } = useTranslation()
   const { data: invoiceData, isPending } = useQuery({
     queryKey: [`Get invoice by ${invoiceId}`],
     queryFn: () => invoiceApi.getInvoice(invoiceId as string)
@@ -24,10 +26,8 @@ export default function BookingSuccess() {
             <div className='invoice__header relative p-4'>
               <div className='flex flex-col items-center gap-2'>
                 <CheckIcon className='h-12 w-12' />
-                <div className='text-2xl font-medium'>Booking Success</div>
-                <span className='text-center text-gray-400'>
-                  For more information, please refer to confirmation email, sent to your mailbox!{' '}
-                </span>
+                <div className='text-2xl font-medium capitalize'>{t('pages.bookingSuccess.bookingSuccess')}</div>
+                <span className='text-center text-gray-400'>{t('pages.bookingSuccess.moreInformation')}</span>
               </div>
               <div className='absolute bottom-[-0.75rem] left-[-0.75rem] h-6 w-6 rounded-full bg-white'></div>
               <div className='absolute bottom-[-0.75rem] right-[-0.75rem]  h-6 w-6 rounded-full bg-white'></div>
@@ -39,7 +39,7 @@ export default function BookingSuccess() {
                   sx={{ backgroundColor: (theme) => theme.palette.primary.light }}
                   className='mb-2 rounded-lg px-4 py-2 font-medium'
                 >
-                  Passenger Information
+                  {t('pages.bookingSuccess.passengerInformation')}
                 </Box>
                 <PassengerInfo
                   email={invoiceData.data.data.email}
@@ -52,7 +52,7 @@ export default function BookingSuccess() {
                   sx={{ backgroundColor: (theme) => theme.palette.primary.light }}
                   className='mb-2 rounded-lg px-4 py-2 font-medium'
                 >
-                  Tours Information
+                  {t('pages.bookingSuccess.toursInformation')}
                 </Box>
                 <ContentInvoice bookings={invoiceData.data.data.tours} />
               </div>
@@ -61,12 +61,12 @@ export default function BookingSuccess() {
                   sx={{ backgroundColor: (theme) => theme.palette.primary.light }}
                   className='mb-2 rounded-lg px-4 py-2 font-medium'
                 >
-                  Payment Information
+                  {t('pages.bookingSuccess.paymentInformation')}
                 </Box>
                 <div className='payment-info__content'>
                   <div className='total'>
                     <div className='ml-4 flex flex-col text-sm font-medium'>
-                      <span>Total</span>
+                      <span> {t('pages.bookingSuccess.total')}</span>
                       <span className='text-xl font-light'>
                         {'$' + invoiceData.data.data.priceTotal.toLocaleString()}
                       </span>
