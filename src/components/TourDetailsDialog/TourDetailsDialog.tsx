@@ -30,6 +30,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
 import ConfirmPopper from 'src/components/ConfirmPopper/ConfirmPopper'
@@ -54,6 +55,7 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
 }: TourDetailsDialogProps) => {
   const [openPopper, setOpenPopper] = useState<boolean>(false)
   const [currentAction, setCurrentAction] = useState<'deny' | 'accept' | undefined>(undefined)
+  const { t } = useTranslation()
 
   const denyPendingTourMutation = useMutation({
     mutationFn: (tourId: number) => tourApi.denyPendingTour(tourId)
@@ -106,7 +108,9 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
         style={{ cursor: 'move', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
         id='dialog-title'
       >
-        <Typography sx={{ fontWeight: '800', fontSize: '1.2rem' }}>Tour Details</Typography>
+        <Typography sx={{ fontWeight: '800', fontSize: '1.2rem' }}>
+          {t('components.tourDetailsDialog.tourDetails')}
+        </Typography>
         <IconButton onClick={handleCloseTourDetailDialog}>
           <CloseIcon />
         </IconButton>
@@ -134,14 +138,14 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <ApartmentIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Address:
+                      {t('components.tourDetailsDialog.address')}:
                     </Typography>
                     <span>{tourData.locations.length > 0 ? tourData.locations[0]?.name : 'N/A'}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <HikingIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Guide:
+                      {t('components.tourDetailsDialog.guide')}:
                     </Typography>
                     <span>
                       {tourData.guide.fullName
@@ -152,7 +156,7 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <TimelapseIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Duration:
+                      {t('components.tourDetailsDialog.duration')}:
                     </Typography>
                     <span>
                       {tourData.duration} {tourData.unit}
@@ -161,7 +165,7 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <AccessTimeIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Start time(s):
+                      {t('components.tourDetailsDialog.startTimes')}:
                     </Typography>
                     <Stack direction='row' spacing={1}>
                       {tourData.startTimes.map((startTime) => (
@@ -172,28 +176,28 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <AttachMoneyIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Price per traveler:
+                      {t('components.tourDetailsDialog.pricePerTraveler')}:
                     </Typography>
                     <span>${tourData.pricePerTraveler.toLocaleString()}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <LocalAtmIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Estimated local cash needed:
+                      {t('components.tourDetailsDialog.estimatedLocalCashNeeded')}:
                     </Typography>
                     <span>{tourData.estimatedLocalCashNeeded.toLocaleString()}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <GroupsIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Limit traveler(s):
+                      {t('components.tourDetailsDialog.limitTravelers')}:
                     </Typography>
                     <span>{tourData.limitTraveler}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <CategoryIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Categories:
+                      {t('components.tourDetailsDialog.categories')}: :
                     </Typography>
                     <Box className='flex w-full flex-nowrap items-center gap-1'>
                       {tourData.categories.length === 0
@@ -209,28 +213,28 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                   <Grid item xs={4} sm={8} md={6} className='tour-details__description flex items-center gap-2'>
                     <DirectionsBusIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Transportation:
+                      {t('components.tourDetailsDialog.transportation')}:
                     </Typography>
                     <span>{tourData.transportation}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={12} className='tour-details__description flex items-center gap-2'>
                     <SupportAgentIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Include services:
+                      {t('components.tourDetailsDialog.includeServices')}:
                     </Typography>
                     <span>{tourData.includeService}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={12} className='tour-details__description flex items-center gap-2'>
                     <EventNoteIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Itinerary:
+                      {t('components.tourDetailsDialog.itinerary')}:
                     </Typography>
                     <span>{tourData.itinerary}</span>
                   </Grid>
                   <Grid item xs={4} sm={8} md={12} className='tour-details__description flex items-center gap-2'>
                     <DescriptionIcon />
                     <Typography variant='body1' className='font-semibold'>
-                      Description:
+                      {t('components.tourDetailsDialog.description')}:
                     </Typography>
                     <span>{tourData.description}</span>
                   </Grid>
@@ -239,7 +243,7 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
                       <Box className='flex gap-2'>
                         <ImageIcon />
                         <Typography variant='body1' className='font-semibold'>
-                          Image(s)
+                          {t('components.tourDetailsDialog.images')}
                         </Typography>
                       </Box>
                     )}
@@ -293,7 +297,7 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
               size='large'
               color='error'
             >
-              Deny
+              {t('components.tourDetailsDialog.deny')}
             </LoadingButton>
             <LoadingButton
               loading={acceptPendingTourMutation.isPending}
@@ -301,17 +305,19 @@ const TourDetailsDialog: React.FC<TourDetailsDialogProps> = ({
               variant='contained'
               size='large'
             >
-              Accept
+              {t('components.tourDetailsDialog.accept')}
             </LoadingButton>
           </DialogActions>
           <ConfirmPopper
             icon={currentAction === 'accept' ? <InfoOutlinedIcon /> : <WarningAmberIcon />}
-            title={currentAction === 'accept' ? 'Accept tour' : 'Deny tour'}
-            content={
+            title={
               currentAction === 'accept'
-                ? 'Are you sure want to accept this tour?'
-                : 'Are you sure want to deny this tour?'
+                ? `${t('components.tourDetailsDialog.accept')} tour`
+                : `${t('components.tourDetailsDialog.deny')} tour`
             }
+            content={t('components.tourDetailsDialog.areYouSure', {
+              action: t(`components.tourDetailsDialog.${currentAction}`).toLowerCase()
+            })}
             openDialog={openPopper}
             handleClickYes={currentAction === 'accept' ? handleSubmitAccept : handleSubmitDeny}
             handleClickNo={handleCancel}

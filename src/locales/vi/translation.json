@@ -346,6 +346,46 @@
       "cancel": "Hủy",
       "saveDraft": "Lưu nháp",
       "submit": "Gửi"
+    },
+    "tourList": {
+      "tourList": "Danh sách Tour",
+      "name": "Tên",
+      "guide": "Hướng dẫn viên",
+      "address": "Địa chỉ",
+      "duration": "Thời lượng",
+      "unit": "Đơn vị",
+      "price": "Giá",
+      "limitTravelers": "Giới hạn khách",
+      "pricePerTraveler": "Giá mỗi hành khách"
+    },
+    "guideConfirmation": {
+      "name": "Tên",
+      "email": "Email",
+      "address": "Địa chỉ",
+      "experience": "Kinh nghiệm",
+      "transportation": "Phương tiện"
+    },
+    "salesReportOfTours": {
+      "salesReportOfTours": "Báo cáo doanh số tours",
+      "name": "Tên",
+      "totalTravelers": "Tổng số khách",
+      "revenue": "Doanh thu",
+      "selectYear": "Chọn năm",
+      "revenueByYear": "Doanh thu theo năm",
+      "numberOfBookings": "Số lượng đặt tour",
+      "numberOfBookingsByYear": "Số lượng đặt tour trong năm",
+      "revenue$": "Doanh thu ($)"
+    },
+    "salesReportOfGuide": {
+      "salesReportOfGuide": "Báo cáo doanh số hướng dẫn viên",
+      "name": "Tên",
+      "email": "Email",
+      "address": "Địa chỉ",
+      "rating": "Đánh giá",
+      "totalBookings": "Tổng số đặt tour",
+      "totalTravelers": "Tổng số khách",
+      "revenue": "Doanh thu",
+      "top5Guide": "Top 5 hướng dẫn viên được đặt nhiều nhất"
     }
   },
   "components": {
@@ -448,6 +488,46 @@
       "cart": "Giỏ hàng",
       "bookings": "Đặt chỗ",
       "invoices": "Hóa đơn"
+    },
+    "tourDetailsDialog": {
+      "tourDetails": "Thông tin của tour",
+      "address": "Địa chỉ",
+      "guide": "Hướng dẫn viên",
+      "startTimes": "Thời gian khởi hành",
+      "pricePerTraveler": "Giá mỗi khách",
+      "duration": "Thời lượng",
+      "transportation": "Phương tiện",
+      "includeServices": "Dịch vụ bao gồm",
+      "estimatedLocalCashNeeded": "Ước tính tiền mặt địa phương cần thiết",
+      "limitTravelers": "Giới hạn khách",
+      "categories": "Danh mục",
+      "itinerary": "Lịch trình",
+      "description": "Mô tả",
+      "images": "Ảnh",
+      "day(s)": "ngày",
+      "hour(s)": "giờ",
+      "deny": "Từ chối",
+      "accept": "Chấp nhận",
+      "areYouSure": "Bạn có chắc muốn {{action}} tour này không?"
+    },
+    "confirmPopper": {
+      "yes": "Có",
+      "no": "Không"
+    },
+    "guideDetailsDialog": {
+      "guideDetails": "Thông tin của hướng dẫn viên",
+      "name": "Tên",
+      "address": "Địa chỉ",
+      "experience": "Kinh nghiệm",
+      "phoneNumber": "Số điện thoại",
+      "dateOfBirth": "Ngày sinh",
+      "transportation": "Phương tiện",
+      "biography": "Tiểu sử",
+      "years": "năm",
+      "deny": "Từ chối",
+      "accept": "Chấp nhận",
+      "areYouSure": "Bạn có chắc muốn {{action}} hướng dẫn viên này không?",
+      "reason": "Lý do"
     }
   },
   "enums": {

@@ -61,7 +61,7 @@ export const guideApplicationSchema = userSchema.shape({
   isLicensedGuide: yup.boolean().required(),
   licenseImages: yup.array().of(yup.string()),
   transportation: yup.object().required(),
-  biography: yup.string().required('Biography is required').max(350, 'Maximum length is 350 characters')
+  biography: yup.string().required('Biography is required').max(600, 'Maximum length is 600 characters')
 })
 
 export const tourSchema = yup.object({

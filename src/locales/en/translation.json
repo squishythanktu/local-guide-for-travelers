@@ -347,6 +347,46 @@
       "cancel": "Cancel",
       "saveDraft": "Save draft",
       "submit": "Submit"
+    },
+    "tourList": {
+      "tourList": "Tour List",
+      "name": "Name",
+      "guide": "Guide",
+      "address": "Address",
+      "duration": "Duration",
+      "unit": "Unit",
+      "price": "Price",
+      "limitTravelers": "Limit traveler(s)",
+      "pricePerTraveler": "Price per traveler"
+    },
+    "guideConfirmation": {
+      "name": "Name",
+      "email": "Email",
+      "address": "Address",
+      "experience": "Experience",
+      "transportation": "Transportation"
+    },
+    "salesReportOfTours": {
+      "salesReportOfTours": "Sales Report of Tours",
+      "name": "Name",
+      "totalTravelers": "Total Traveler(s)",
+      "revenue": "Revenue",
+      "selectYear": "Select year",
+      "revenueByYear": "Revenue by year",
+      "numberOfBookings": "Number of bookings",
+      "numberOfBookingsByYear": "Number of bookings by year",
+      "revenue$": "Revenue ($)"
+    },
+    "salesReportOfGuide": {
+      "salesReportOfGuide": "Sales Report of Guide",
+      "name": "Name",
+      "email": "Email",
+      "address": "Address",
+      "rating": "Rating",
+      "totalBookings": "Total booking(s)",
+      "totalTravelers": "Total Traveler(s)",
+      "revenue": "Revenue",
+      "top5Guide": "Top 5 most booking guides"
     }
   },
   "components": {
@@ -449,6 +489,46 @@
       "cart": "Cart",
       "bookings": "Bookings",
       "invoices": "Invoices"
+    },
+    "tourDetailsDialog": {
+      "tourDetails": "Tour Details",
+      "address": "Address",
+      "guide": "Guide",
+      "startTimes": "Start time(s)",
+      "pricePerTraveler": "Price per traveler",
+      "duration": "Duration",
+      "transportation": "Transportation",
+      "includeServices": "Include services",
+      "estimatedLocalCashNeeded": "Estimated local cash needed",
+      "limitTravelers": "Limit traveler(s)",
+      "categories": "Categories",
+      "itinerary": "Itinerary",
+      "description": "Description",
+      "images": "Image(s)",
+      "day(s)": "day(s)",
+      "hour(s)": "hour(s)",
+      "deny": "Deny",
+      "accept": "Accept",
+      "areYouSure": "Are you sure want to {{action}} this tour?"
+    },
+    "confirmPopper": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "guideDetailsDialog": {
+      "guideDetails": "Guide Details",
+      "name": "Name",
+      "address": "Address",
+      "experience": "Experience",
+      "phoneNumber": "Phone number",
+      "dateOfBirth": "Date of birth",
+      "transportation": "Transportation",
+      "biography": "Biography",
+      "years": "year(s)",
+      "deny": "Deny",
+      "accept": "Accept",
+      "areYouSure": "Are you sure want to {{action}} this guide?",
+      "reason": "Reason"
     }
   },
   "enums": {

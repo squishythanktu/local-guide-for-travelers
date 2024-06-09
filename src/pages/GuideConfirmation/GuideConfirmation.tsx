@@ -5,8 +5,10 @@ import { useEffect, useMemo, useState } from 'react'
 import guideApi from 'src/apis/guide.api'
 import { GuideApplication } from 'src/types/guide.type'
 import GuideDetailsDialog from './components/GuideDetailsDialog/GuideDetailsDialog'
+import { useTranslation } from 'react-i18next'
 
 const GuideConfirmation: React.FC = () => {
+  const { t } = useTranslation()
   const {
     data: guideApplicationsData,
     isLoading,
@@ -23,27 +25,27 @@ const GuideConfirmation: React.FC = () => {
       },
       {
         accessorKey: 'user.fullName',
-        header: 'Name',
+        header: t('pages.guideConfirmation.name'),
         size: 20
       },
       {
         accessorKey: 'user.email',
-        header: 'Email',
+        header: t('pages.guideConfirmation.email'),
         size: 20
       },
       {
         accessorKey: 'user.address',
-        header: 'Address',
+        header: t('pages.guideConfirmation.address'),
         size: 20
       },
       {
         accessorKey: 'yearsOfExperience',
-        header: 'Experience',
+        header: t('pages.guideConfirmation.experience'),
         size: 20
       },
       {
         accessorKey: 'transportation',
-        header: 'Transportation',
+        header: t('pages.guideConfirmation.transportation'),
         size: 30
       }
     ],
