@@ -8,11 +8,14 @@ import NotFound from '../NotFound/NotFound'
 import TourAndReview from './components/Tour&Review'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import { useTranslation } from 'react-i18next'
+import { formatDate } from 'src/utils/date-time'
 
 export default function GuideProfile() {
   const { id } = useParams()
-  const navigate = useNavigate()
   const { isAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+  const { t } = useTranslation()
   const { data: guideProfileData, isPending } = useQuery({
     queryKey: [`guide profile of ${id}`],
     queryFn: () => guideApi.getProfile(id ? id : ''),
@@ -52,7 +55,7 @@ export default function GuideProfile() {
                     {guideProfileData?.data.data.overallRating || 0}
                   </span>
                   <span className='rating-overall__reviews text-sm font-semibold  text-[var(--label-secondary)]'>
-                    ({guideProfileData?.data.data.numberOfReviews || 0} reviews)
+                    ({guideProfileData?.data.data.numberOfReviews || 0} {t('pages.guideDetails.reviews')})
                   </span>
                 </div>
                 {isAuthenticated && (
@@ -61,7 +64,7 @@ export default function GuideProfile() {
                     variant='contained'
                     className=''
                   >
-                    Request a tour
+                    {t('pages.guideDetails.requestATour')}
                   </Button>
                 )}
               </div>
@@ -72,23 +75,30 @@ export default function GuideProfile() {
                   sx={{ backgroundColor: (theme) => theme.palette.primary.light }}
                   className='mb-2 flex justify-center rounded-lg px-4  py-2'
                 >
-                  <span className='font-bold'>Personal information</span>
+                  <span className='font-bold'>{t('pages.guideDetails.personalInformation')}</span>
                 </Box>
                 <Box className='grid grid-cols-2 gap-1 px-4'>
                   <div className='text-sm font-bold'>
-                    Full name: <span className='text-sm'>{guideProfileData?.data.data.fullName || 'N/A'}</span>
+                    {t('pages.guideDetails.fullName')}:{' '}
+                    <span className='text-sm'>{guideProfileData?.data.data.fullName || 'N/A'}</span>
                   </div>
                   <div className='text-sm font-bold'>
-                    Email: <span className='text-sm'>{guideProfileData?.data.data.email || 'N/A'}</span>
+                    {t('pages.guideDetails.email')}:{' '}
+                    <span className='text-sm'>{guideProfileData?.data.data.email || 'N/A'}</span>
                   </div>
                   <div className='text-sm font-bold'>
-                    Date of birth: <span className='text-sm'>{'N/A'}</span>
+                    {t('pages.guideDetails.dateOfBirth')}:{' '}
+                    <span className='text-sm'>
+                      {formatDate(guideProfileData?.data.data.dateOfBirth, 'DD/MM/YYYY') || 'N/A'}
+                    </span>
                   </div>
                   <div className='text-sm font-bold'>
-                    Phone number: <span className='text-sm'>{guideProfileData?.data.data.phone || 'N/A'}</span>
+                    {t('pages.guideDetails.phoneNumber')}:{' '}
+                    <span className='text-sm'>{guideProfileData?.data.data.phone || 'N/A'}</span>
                   </div>
                   <div className='text-sm font-bold'>
-                    Address: <span className='text-sm'>{guideProfileData?.data.data.address || 'N/A'}</span>
+                    {t('pages.guideDetails.address')}:{' '}
+                    <span className='text-sm'>{guideProfileData?.data.data.address || 'N/A'}</span>
                   </div>
                 </Box>
               </div>
@@ -97,10 +107,10 @@ export default function GuideProfile() {
                   sx={{ backgroundColor: (theme) => theme.palette.primary.light }}
                   className='mb-2 flex  justify-center rounded-lg px-4 py-2'
                 >
-                  <span className='font-bold'>Skills & Credentials </span>
+                  <span className='font-bold'>{t('pages.guideDetails.skillsCredentials')}</span>
                 </Box>
                 <Box className='px-4 text-sm font-bold'>
-                  Language skills:{' '}
+                  {t('pages.guideDetails.languageSkills')}:{' '}
                   <span className='text-sm'>
                     {Array.isArray(guideProfileData?.data?.data?.languageSkill) &&
                     guideProfileData?.data?.data?.languageSkill.length > 0
@@ -109,7 +119,8 @@ export default function GuideProfile() {
                   </span>
                 </Box>
                 <Box className='px-4 text-sm font-bold'>
-                  Biography: <span className='text-sm'>{guideProfileData?.data.data.biography || 'N/A'}</span>
+                  {t('pages.guideDetails.biography')}:{' '}
+                  <span className='text-sm'>{guideProfileData?.data.data.biography || 'N/A'}</span>
                 </Box>
               </div>
             </div>

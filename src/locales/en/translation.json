@@ -320,6 +320,33 @@
       "yourPaymentFailed": "Your payment failed",
       "tryLater": "There was an issue with your payment. Please try again later.",
       "goHome": "Go home"
+    },
+    "guideDetails": {
+      "fullName": "Full name",
+      "dateOfBirth": "Date of birth",
+      "address": "Address",
+      "phoneNumber": "Phone number",
+      "email": "Email",
+      "languageSkills": "Language skills",
+      "biography": "Biography",
+      "requestATour": "Request a tour",
+      "reviews": "review(s)",
+      "tours": "tour(s)",
+      "personalInformation": "Personal information",
+      "skillsCredentials": "Skills & Credentials"
+    },
+    "tourRequestForm": {
+      "tourRequestForm": "Tour request form",
+      "destination": "Destination",
+      "transportation": "Transportation",
+      "duration": "Duration",
+      "unit": "Unit",
+      "maxPricePerTraveler": "Max price per traveler",
+      "numberOfTravelers": "Number of travelers",
+      "message": "Message",
+      "cancel": "Cancel",
+      "saveDraft": "Save draft",
+      "submit": "Submit"
     }
   },
   "components": {
@@ -389,6 +416,39 @@
       "notifications": "Notifications",
       "noNotificationsYet": "No notifications yet",
       "comebackLater": "Come back later"
+    },
+    "header": {
+      "wishList": "Wishlist",
+      "cart": "Cart",
+      "bookings": "Bookings",
+      "invoices": "Invoices",
+      "notifications": "Notifications"
+    },
+    "guideCard": {
+      "from": "From"
+    },
+    "adminDrawer": {
+      "tourManagement": "Tour Management",
+      "tourList": "Tour List",
+      "tourConfirmation": "Tour Confirmation",
+      "guideManagement": "Guide Management",
+      "guideConfirmation": "Guide Confirmation",
+      "salesReport": "Sales Report",
+      "tour": "Tour",
+      "guide": "Guide"
+    },
+    "rightDrawer": {
+      "profile": "Profile",
+      "becomeAGuide": "Become a guide",
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "settings": "Settings",
+      "management": "Management",
+      "logOut": "Log out",
+      "wishlist": "Wishlist",
+      "cart": "Cart",
+      "bookings": "Bookings",
+      "invoices": "Invoices"
     }
   },
   "enums": {
@@ -414,6 +474,17 @@
       "PENDING": "Pending",
       "DENY": "Deny",
       "ACCEPT": "Accept"
+    },
+    "transportation": {
+      "BUS": "Bus",
+      "BICYCLE": "Bicycle",
+      "BOAT": "Boat",
+      "CAR": "Car",
+      "LIMOUSINE": "Limousine",
+      "MINIVAN": "Minivan",
+      "MOTORCYCLE": "Motorcycle",
+      "TRAIN": "Train",
+      "WALKING": "Walking"
     }
   }
 }

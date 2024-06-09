@@ -47,7 +47,7 @@ const Invoices: React.FC = () => {
             alt='Empty booking'
             className='h-52 w-52 object-cover'
           />
-          <h3>{t('pages.invoices.noInvoices')}</h3>
+          <h3>{t('pages.invoices.noData')}</h3>
         </div>
       )}
     </Box>

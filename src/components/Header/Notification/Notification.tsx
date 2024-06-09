@@ -126,7 +126,7 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:w-full x
         <Badge badgeContent={countOfUnReadNotification} color='error'>
           <NotificationsIcon sx={{ color: textColor }} />
         </Badge>
-        <span className='mt-[5px] hidden xl:block xl:text-sm'>Notifications</span>
+        <span className='mt-[5px] hidden text-nowrap xl:block xl:text-sm'>{t('components.header.notifications')}</span>
       </Button>
       <Menu
         disableScrollLock

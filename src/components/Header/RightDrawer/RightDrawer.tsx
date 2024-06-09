@@ -29,6 +29,7 @@ import { clearLocalStorage } from 'src/utils/auth'
 import { UserRole } from 'src/enums/user-role.enum'
 import ReceiptIcon from '@mui/icons-material/Receipt'
 import { useToggle } from 'src/hooks/useToggle'
+import { useTranslation } from 'react-i18next'
 
 interface RightDrawerProps {
   textColor: string
@@ -41,6 +42,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
   })
   const [openCollapse, toggleCollapse, setOpenCollapse] = useToggle(false)
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation()
@@ -81,7 +83,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemIcon>
               <FavoriteBorderIcon />
             </ListItemIcon>
-            <ListItemText primary='Wish list' />
+            <ListItemText primary={t('components.rightDrawer.wishlist')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding component={Link} to={PATH.cart}>
@@ -89,7 +91,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemIcon>
               <ShoppingCartOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary='Cart' />
+            <ListItemText primary={t('components.rightDrawer.cart')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding component={Link} to={PATH.bookings}>
@@ -97,7 +99,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemIcon>
               <ConfirmationNumberOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary='Bookings' />
+            <ListItemText primary={t('components.rightDrawer.bookings')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding component={Link} to={PATH.invoices}>
@@ -105,7 +107,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
             <ListItemIcon>
               <ReceiptIcon />
             </ListItemIcon>
-            <ListItemText primary='Invoices' />
+            <ListItemText primary={t('components.rightDrawer.invoices')} />
           </ListItemButton>
         </ListItem>
         <Divider />
@@ -120,7 +122,7 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
                   ? profile.fullName
                   : profile?.email
                     ? profile?.email.split('@')[0]
-                    : 'Profile'
+                    : t('components.rightDrawer.profile')
               }
             />
             {openCollapse ? <ExpandLess /> : <ExpandMore />}
@@ -132,27 +134,27 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               <ListItemIcon>
                 <SettingsOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary='Settings' />
+              <ListItemText primary={t('components.rightDrawer.settings')} />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.tourRequest}>
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>
-              <ListItemText primary='Management' />
+              <ListItemText primary={t('components.rightDrawer.management')} />
             </ListItemButton>
             {profile?.role === UserRole.TRAVELER && (
               <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.guideApplications}>
                 <ListItemIcon>
                   <ContactPageOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary='Become a guide' />
+                <ListItemText primary={t('components.rightDrawer.becomeAGuide')} />
               </ListItemButton>
             )}
             <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary='Log out' />
+              <ListItemText primary={t('components.rightDrawer.logOut')} />
             </ListItemButton>
           </List>
         </Collapse>
@@ -191,19 +193,19 @@ const RightDrawer: React.FC<RightDrawerProps> = ({ textColor = 'white' }: RightD
               <ListItemIcon>
                 <ContactPageOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary='Become a guide' />
+              <ListItemText primary={t('components.rightDrawer.becomeAGuide')} />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.login}>
               <ListItemIcon>
                 <LoginIcon />
               </ListItemIcon>
-              <ListItemText primary='Sign in' />
+              <ListItemText primary={t('components.rightDrawer.signIn')} />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} component={Link} to={PATH.register}>
               <ListItemIcon>
                 <PersonAddAlt1Icon />
               </ListItemIcon>
-              <ListItemText primary='Sign up' />
+              <ListItemText primary={t('components.rightDrawer.signUp')} />
             </ListItemButton>
           </List>
         </Collapse>

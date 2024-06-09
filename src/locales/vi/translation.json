@@ -319,6 +319,33 @@
       "yourPaymentFailed": "Thanh toán của bạn không thành công",
       "tryLater": "Có vấn đề với thanh toán của bạn. Vui lòng thử lại sau.",
       "goHome": "Về trang chủ"
+    },
+    "guideDetails": {
+      "fullName": "Họ và tên",
+      "dateOfBirth": "Ngày sinh",
+      "address": "Địa chỉ",
+      "phoneNumber": "Số điện thoại",
+      "email": "Email",
+      "languageSkills": "Kỹ năng ngôn ngữ",
+      "biography": "Tiểu sử",
+      "requestATour": "Yêu cầu một tour",
+      "reviews": "đánh giá",
+      "tours": "tour",
+      "personalInformation": "Thông tin cá nhân",
+      "skillsCredentials": "Kỹ năng & Chứng chỉ"
+    },
+    "tourRequestForm": {
+      "tourRequestForm": "Mẫu yêu cầu tour",
+      "destination": "Điểm đến",
+      "transportation": "Phương tiện",
+      "duration": "Thời lượng",
+      "unit": "Đơn vị",
+      "maxPricePerTraveler": "Giá tối đa mỗi khách",
+      "numberOfTravelers": "Số lượng khách",
+      "message": "Tin nhắn",
+      "cancel": "Hủy",
+      "saveDraft": "Lưu nháp",
+      "submit": "Gửi"
     }
   },
   "components": {
@@ -388,6 +415,39 @@
       "notifications": "Thông báo",
       "noNotificationsYet": "Chưa có thông báo nào",
       "comebackLater": "Hãy quay lại sau"
+    },
+    "header": {
+      "wishlist": "Yêu thích",
+      "cart": "Giỏ hàng",
+      "bookings": "Đặt chỗ",
+      "invoices": "Hóa đơn",
+      "notifications": "Thông báo"
+    },
+    "guideCard": {
+      "from": "Từ"
+    },
+    "adminDrawer": {
+      "tourManagement": "Quản lý tour",
+      "tourList": "Danh sách tour",
+      "tourConfirmation": "Xác nhận tour",
+      "guideManagement": "Quản lý guide",
+      "guideConfirmation": "Xác nhận guide",
+      "salesReport": "Báo cáo Doanh thu",
+      "tour": "Tour",
+      "guide": "Guide"
+    },
+    "rightDrawer": {
+      "profile": "Hồ sơ",
+      "becomeAGuide": "Trở thành hướng dẫn viên",
+      "signIn": "Đăng nhập",
+      "signUp": "Đăng ký",
+      "settings": "Cài đặt",
+      "management": "Quản lý",
+      "logOut": "Đăng xuất",
+      "wishlist": "Danh sách yêu thích",
+      "cart": "Giỏ hàng",
+      "bookings": "Đặt chỗ",
+      "invoices": "Hóa đơn"
     }
   },
   "enums": {
@@ -413,6 +473,17 @@
       "PENDING": "Đang chờ xử lý",
       "DENY": "Từ chối",
       "ACCEPT": "Chấp nhận"
+    },
+    "transportation": {
+      "BUS": "Xe buýt",
+      "BICYCLE": "Xe đạp",
+      "BOAT": "Thuyền",
+      "CAR": "Xe ô tô",
+      "LIMOUSINE": "Limousine",
+      "MINIVAN": "Minivan",
+      "MOTORCYCLE": "Xe mô tô",
+      "TRAIN": "Tàu hỏa",
+      "WALKING": "Đi bộ"
     }
   }
 }

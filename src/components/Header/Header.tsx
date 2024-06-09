@@ -19,6 +19,7 @@ import RightDrawer from './RightDrawer/RightDrawer'
 import SearchBar from './SearchBar/SearchBar'
 import ReceiptIcon from '@mui/icons-material/Receipt'
 import LanguageSelector from './LanguageSelector/LanguageSelector'
+import { useTranslation } from 'react-i18next'
 
 interface HeaderProps {
   bgColor?: string
@@ -35,6 +36,7 @@ export default function Header({
 }: HeaderProps) {
   const { isAuthenticated } = useContext(AppContext)
   const [scroll, setScroll] = useState<boolean>(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!isEnableScroll) return
@@ -92,14 +94,22 @@ export default function Header({
                 className='col-span-3 col-start-10 hidden xl:flex xl:items-center xl:justify-end'
                 sx={{ color: `${scroll && isEnableScroll ? 'black' : textColor}` }}
               >
-                <NavLink to={PATH.wishlist} icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />} text='Wishlist' />
-                <NavLink to={PATH.cart} icon={<CartBadge />} text='Cart' />
+                <NavLink
+                  to={PATH.wishlist}
+                  icon={<FavoriteBorderIcon sx={{ fontSize: 24 }} />}
+                  text={t('components.header.wishlist')}
+                />
+                <NavLink to={PATH.cart} icon={<CartBadge />} text={t('components.header.cart')} />
                 <NavLink
                   to={PATH.bookings}
                   icon={<ConfirmationNumberOutlinedIcon sx={{ fontSize: 24 }} />}
-                  text='Bookings'
+                  text={t('components.header.bookings')}
                 />
-                <NavLink to={PATH.invoices} icon={<ReceiptIcon sx={{ fontSize: 24 }} />} text='Invoices' />
+                <NavLink
+                  to={PATH.invoices}
+                  icon={<ReceiptIcon sx={{ fontSize: 24 }} />}
+                  text={t('components.header.invoices')}
+                />
               </Box>
             )}
             {isAuthenticated && <Notification textColor={scroll && isEnableScroll ? 'black' : textColor} />}

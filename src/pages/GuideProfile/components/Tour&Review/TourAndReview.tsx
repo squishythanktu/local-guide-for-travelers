@@ -158,8 +158,8 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
             borderRadius: '12px'
           }}
         >
-          <Tab label={`Tour(s)`} {...a11yProps(1)} />
-          <Tab label={`Review(s)`} {...a11yProps(2)} />
+          <Tab label={t('pages.guideDetails.tours')} {...a11yProps(1)} />
+          <Tab label={t('pages.guideDetails.reviews')} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
