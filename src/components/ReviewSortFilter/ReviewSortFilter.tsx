@@ -12,6 +12,7 @@ import { SortReview } from 'src/enums/sort-review.enum'
 import { ReviewParams } from 'src/types/review.type'
 import MenuButton from '../MenuButton/MenuButton'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
+import { useTranslation } from 'react-i18next'
 
 interface ReviewSortFilter {
   onChange: (reviewParams: ReviewParams) => void
@@ -20,6 +21,7 @@ interface ReviewSortFilter {
 const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFilter) => {
   const [ratings, setRatings] = useState<number[]>([])
   const [sortBy, setSortBy] = useState<string>('')
+  const { t } = useTranslation()
 
   const castToRatingString = useMemo(() => ratings.map((rating) => rating).join(','), [ratings])
 
@@ -50,17 +52,17 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
 
   const RatingFormGroup = (
     <>
-      <h3 className='reviews-summary__title'>Filter</h3>
+      <h3 className='reviews-summary__title'>{t('pages.tourDetails.filter')}</h3>
       <FormGroup>
         <FormControlLabel
           control={<Checkbox checked={ratings.length === 5} onChange={() => handleCheckAll()} />}
-          label='All star ratings'
+          label={t('pages.tourDetails.allStarRatings')}
         />
         {[5, 4, 3, 2, 1].map((value, index) => (
           <Box className='flex items-center' key={index}>
             <FormControlLabel
               control={<Checkbox checked={ratings.includes(value)} onChange={() => handleCheckboxChange(value)} />}
-              label={`${value} stars`}
+              label={`${value} ${t('pages.tourDetails.stars')}`}
               classes={{ label: 'sm:hidden lg:block' }}
             />
             <Rating max={5} value={value} readOnly />
@@ -73,7 +75,7 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
   return (
     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} className='sort-filter-reviews'>
       <Grid item xs={2} sm={3} md={12} className='sort-by'>
-        <h3 className='reviews-summary__title mb-2'>Sort by</h3>
+        <h3 className='reviews-summary__title mb-2'>{t('pages.tourDetails.sortBy')}</h3>
         <FormControl fullWidth>
           <Select
             labelId='demo-simple-select-label'
@@ -86,12 +88,12 @@ const ReviewSortFilter: React.FC<ReviewSortFilter> = ({ onChange }: ReviewSortFi
           >
             <MenuItem disabled value=''>
               <em>
-                <strong>Sort</strong>
+                <strong>{t('pages.tourDetails.sort')}</strong>
               </em>
             </MenuItem>
-            {Object.values(SortReview).map((value) => (
+            {Object.keys(SortReview).map((value) => (
               <MenuItem key={value} value={value}>
-                {value}
+                {t(`enums.sortReview.${value}`)}
               </MenuItem>
             ))}
           </Select>

@@ -23,12 +23,12 @@ export default function NavLink({ to, icon, text }: Props) {
           })}
         >
           {icon}
-          <span className='hidden pt-1 md:block md:text-sm'>{text}</span>
+          <span className='hidden text-nowrap pt-1 md:block md:text-sm'>{text}</span>
         </Link>
       ) : (
         <div className={styles}>
           {icon}
-          <span className='hidden pt-1 md:block md:text-sm'>{text}</span>
+          <span className='hidden text-nowrap pt-1 md:block md:text-sm'>{text}</span>
         </div>
       )}
     </>

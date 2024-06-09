@@ -20,6 +20,7 @@ import Map from 'src/components/Map/Map'
 import { Location } from 'src/types/location.type'
 import { Tour } from 'src/types/tour.type'
 import LocationNamesStepper from '../LocationNamesStepper/LocationNamesStepper'
+import { useTranslation } from 'react-i18next'
 
 interface MapTourFormProps {
   defaultValue: Tour
@@ -29,6 +30,7 @@ interface MapTourFormProps {
 
 const MapTourForm: React.FC<MapTourFormProps> = memo(
   ({ errors, handleSaveUpdatedLocations, defaultValue }: MapTourFormProps) => {
+    const { t } = useTranslation()
     const [locations, setLocations] = useState<Location[]>([])
     const [openCollapse, setOpenCollapse] = useState(false)
     const [isConfirmLocations, setIsConfirmLocations] = useState<boolean>(false)
@@ -99,11 +101,11 @@ const MapTourForm: React.FC<MapTourFormProps> = memo(
       <Box sx={{ marginTop: 2 }}>
         <Box className='flex justify-between'>
           <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>
-            Select sequential locations{' '}
+            {t('pages.tourManagement.selectSequentialLocations')}{' '}
             <Typography component='span' sx={{ color: 'red' }}>
               *
             </Typography>
-            <Tooltip title='By default, the location will be named based on the place you click on the map. If you want to change it, click "Confirm locations"'>
+            <Tooltip title={t('pages.tourManagement.selectSequentialLocationsToolTip')}>
               <IconButton>
                 <InfoOutlinedIcon />
               </IconButton>
@@ -115,7 +117,7 @@ const MapTourForm: React.FC<MapTourFormProps> = memo(
             onClick={handleConfirmLocationLatLon}
             endIcon={isConfirmLocations ? <CheckIcon /> : null}
           >
-            Confirm locations
+            {t('pages.tourManagement.confirmLocations')}
           </Button>
         </Box>
         {locations.length > 0 && isUpdateMode ? (

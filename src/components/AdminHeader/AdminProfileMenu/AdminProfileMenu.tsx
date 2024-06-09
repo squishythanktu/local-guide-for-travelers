@@ -5,6 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
@@ -15,6 +16,7 @@ const AdminProfileMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const navigate = useNavigate()
   const open = Boolean(anchorEl)
+  const { t } = useTranslation()
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
 
@@ -67,7 +69,7 @@ const AdminProfileMenu: React.FC = () => {
           <ListItemIcon>
             <LogoutIcon fontSize='small' />
           </ListItemIcon>
-          Log out
+          {t('components.profileMenu.logOut')}
         </MenuItem>
       </Menu>
     </>

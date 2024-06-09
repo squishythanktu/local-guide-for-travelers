@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import tourApi from 'src/apis/tour.api'
 import ClockIcon from 'src/assets/svg/clock.svg'
 import UsersIcon from 'src/assets/svg/users.svg'
@@ -28,6 +29,7 @@ interface Props {
 
 export default function CartBookingForm({ setEditMode, booking, onSubmit }: Props) {
   const initialStartTime = formatTime(booking?.startDate.toString().split('T')[1] as string, 'HH:mm:ss', 'HH:mm')
+  const { t } = useTranslation()
   const {
     trigger,
     control,
@@ -147,14 +149,14 @@ export default function CartBookingForm({ setEditMode, booking, onSubmit }: Prop
             className='flex h-10 w-10 cursor-pointer gap-1 rounded-full border-none'
             variant='contained'
           >
-            <span className='text-sm font-medium'>Save</span>
+            <span className='text-sm font-medium'>{t('pages.cart.save')}</span>
           </Button>
           <Button
             onClick={handleCancel}
             className='flex h-10 w-10 cursor-pointer gap-1 rounded-full'
             variant='outlined'
           >
-            <span className='text-sm font-medium'>Cancel</span>
+            <span className='text-sm font-medium'>{t('pages.cart.cancel')}</span>
           </Button>
         </div>
       )}

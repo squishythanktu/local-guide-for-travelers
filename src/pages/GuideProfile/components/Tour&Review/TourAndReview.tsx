@@ -7,6 +7,7 @@ import Tabs from '@mui/material/Tabs'
 import { useTheme } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { SyntheticEvent, useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import SwipeableViews from 'react-swipeable-views'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -28,6 +29,7 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
   const [value, setValue] = useState(0)
   const [editReviewId, setEditReviewId] = useState<number | null>(null)
   const [reviewParams, setReviewParams] = useState<ReviewParams>({})
+  const { t } = useTranslation()
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -156,8 +158,8 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
             borderRadius: '12px'
           }}
         >
-          <Tab label={`Tour(s)`} {...a11yProps(1)} />
-          <Tab label={`Review(s)`} {...a11yProps(2)} />
+          <Tab label={t('pages.guideDetails.tours')} {...a11yProps(1)} />
+          <Tab label={t('pages.guideDetails.reviews')} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -208,7 +210,7 @@ export default function TourAndReview({ guideId }: TourAndReviewProps) {
                       loading='lazy'
                       className='mx-auto h-36 w-36 object-cover'
                     />
-                    <h2 className='my-4 text-center'>No guide reviews available.</h2>
+                    <h2 className='my-4 text-center'>{t('pages.tourDetails.noGuideReviews')}</h2>
                   </>
                 ))}
             </Grid>

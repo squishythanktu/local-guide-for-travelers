@@ -29,6 +29,7 @@ import { TourInStatistic } from 'src/types/statistic.type'
 import { Tour } from 'src/types/tour.type'
 import { chartData, chartOptions, generateChartData } from 'src/utils/chart'
 import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
+import { useTranslation } from 'react-i18next'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
 
@@ -36,6 +37,7 @@ const SalesReportOfTour: React.FC = () => {
   const [currentYear, setCurrentYear] = useState<Dayjs>(dayjs())
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
+  const { t } = useTranslation()
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
     limit: 8
@@ -71,17 +73,17 @@ const SalesReportOfTour: React.FC = () => {
       },
       {
         accessorKey: 'name',
-        header: 'Name',
+        header: t('pages.salesReportOfTours.name'),
         size: 200
       },
       {
         accessorKey: 'totalTravelerNumber',
-        header: 'Total travelers',
+        header: t('pages.salesReportOfTours.totalTravelers'),
         size: 30
       },
       {
         accessorKey: 'totalRevenue',
-        header: 'Revenue',
+        header: t('pages.salesReportOfTours.revenue'),
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>,
         size: 30
       }
@@ -158,7 +160,7 @@ const SalesReportOfTour: React.FC = () => {
       </Box>
       <Card className='col-span-12 flex flex-col gap-2 p-3 lg:col-span-6'>
         <Box className='flex items-center gap-4'>
-          <strong>Select year: </strong>
+          <strong>{t('pages.salesReportOfTours.selectYear')}: </strong>
           <DatePicker
             views={['year']}
             className='h-fit w-fit'
@@ -170,20 +172,20 @@ const SalesReportOfTour: React.FC = () => {
           />
         </Box>
         <Line
-          options={chartOptions('Revenue by year')}
+          options={chartOptions(t('pages.salesReportOfTours.revenueByYear'))}
           data={chartData(
             months,
-            'Revenue ($)',
+            t('pages.salesReportOfTours.revenue$'),
             generateChartData(statisticsByYearData?.data.data.monthDTOS, 'revenue'),
             'rgb(255, 99, 132)',
             'rgba(255, 99, 132, 0.5)'
           )}
         />
         <Bar
-          options={chartOptions('Number of bookings by year')}
+          options={chartOptions(t('pages.salesReportOfTours.numberOfBookingsByYear'))}
           data={chartData(
             months,
-            'Number of bookings',
+            t('pages.salesReportOfTours.numberOfBookings'),
             generateChartData(statisticsByYearData?.data.data.monthDTOS, 'bookingOfNumber'),
             'rgb(53, 162, 235)',
             'rgba(53, 162, 235, 0.5)'

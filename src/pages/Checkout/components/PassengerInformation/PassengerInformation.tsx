@@ -4,6 +4,7 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import ControlledTextField from 'src/components/ControlledTextField'
 import { AppContext } from 'src/contexts/app.context'
 import { PassengerInformationSchema, passengerInformationSchema } from 'src/utils/rules'
@@ -20,7 +21,7 @@ const PassengerInformation: React.FC<Props> = ({
   setIsDisplaySaveButton
 }: Props) => {
   const { profile } = useContext(AppContext)
-
+  const { t } = useTranslation()
   const { control, handleSubmit } = useForm<PassengerInformationSchema>({
     defaultValues: {
       fullName: profile?.fullName,
@@ -37,7 +38,7 @@ const PassengerInformation: React.FC<Props> = ({
 
   return (
     <>
-      <h3 className='pb-[0.75rem]'>Passenger Information</h3>
+      <h3 className='pb-[0.75rem]'> {t('pages.checkout.passengerInformation')}</h3>
       <form onSubmit={handleSubmit(confirmPassengerInfo)}>
         <Card onClick={() => setIsDisplaySaveButton(true)} className='rounded-lg border-2 p-4 shadow-none'>
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -45,7 +46,7 @@ const PassengerInformation: React.FC<Props> = ({
               <Box className='flex items-center gap-2'>
                 <ControlledTextField
                   required
-                  label='Full name'
+                  label={t('pages.checkout.fullName')}
                   className=' grow lg:w-1/2'
                   control={control}
                   name={'fullName'}
@@ -56,7 +57,7 @@ const PassengerInformation: React.FC<Props> = ({
               <Box className='flex items-center gap-2'>
                 <ControlledTextField
                   required
-                  label='Phone number'
+                  label={t('pages.checkout.phoneNumber')}
                   className=' grow lg:w-1/2'
                   control={control}
                   name={'phone'}
@@ -67,7 +68,7 @@ const PassengerInformation: React.FC<Props> = ({
               <Box className='flex items-center gap-2'>
                 <ControlledTextField
                   required
-                  label='Email'
+                  label={t('pages.checkout.email')}
                   className=' grow lg:w-1/2'
                   control={control}
                   name={'email'}
@@ -77,7 +78,7 @@ const PassengerInformation: React.FC<Props> = ({
           </Grid>
           {isDisplaySaveButton && (
             <Button type='submit' variant='contained' className='mt-4 w-full' size='large'>
-              Save
+              {t('pages.checkout.save')}
             </Button>
           )}
         </Card>

@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { useContext, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import userApi from 'src/apis/user.api'
@@ -25,6 +26,7 @@ const Profile: React.FC = () => {
   const { profile, setProfile } = useContext(AppContext)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { data: profileData, refetch } = useQuery({
     queryKey: [`get me ${profile?.email}`, profile?.email],
     queryFn: () => userApi.getMe()
@@ -99,14 +101,14 @@ const Profile: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className='account-profile-form'>
       <div className='form-details flex flex-col'>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Profile Details
+          {t('pages.profile.profileDetails')}
         </h2>
         <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row'>
           <ControlledTextField
             className='min-h-20 w-full  md:w-1/2'
             control={control}
             name={'fullName'}
-            label={'Full name'}
+            label={t('pages.profile.fullName')}
             required
           />
           <Controller
@@ -119,7 +121,7 @@ const Profile: React.FC = () => {
                     disableFuture
                     label={
                       <Box sx={{ fontWeight: '600' }}>
-                        Date of birth
+                        {t('pages.profile.dateOfBirth')}
                         <Typography component='span' sx={{ color: 'red' }}>
                           *
                         </Typography>
@@ -140,14 +142,14 @@ const Profile: React.FC = () => {
           />
         </div>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Contact Details
+          {t('pages.profile.contactDetails')}
         </h2>
         <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
           <TextField
             disabled
             id='email'
             variant='outlined'
-            label='Email'
+            label={t('pages.profile.email')}
             value={profileData?.data.data.email || profile?.email}
             className='min-h-20 grow'
             InputLabelProps={{
@@ -160,11 +162,11 @@ const Profile: React.FC = () => {
             type='number'
             control={control}
             name={'phone'}
-            label={'Phone'}
+            label={t('pages.profile.phone')}
           />
         </div>
         <h2 className='account-profile__header border-b-1 mb-5 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-          Address
+          {t('pages.profile.address')}
         </h2>
         <div className='account-profile__field-group mb-4 flex flex-col gap-6 md:flex-row md:justify-between'>
           <ControlledTextField
@@ -172,7 +174,7 @@ const Profile: React.FC = () => {
             className='min-h-20 grow'
             control={control}
             name={'address'}
-            label={'Address'}
+            label={t('pages.profile.address')}
           />
         </div>
       </div>
@@ -185,7 +187,7 @@ const Profile: React.FC = () => {
           className='h-fit w-full whitespace-nowrap md:w-32'
           onClick={() => setDeleteMode(true)}
         >
-          Delete account
+          {t('pages.profile.deleteAccount')}
         </LoadingButton>
         <LoadingButton
           loading={updateProfileMutation.isPending}
@@ -194,12 +196,12 @@ const Profile: React.FC = () => {
           size='large'
           className='h-fit w-full md:w-32'
         >
-          Save
+          {t('pages.profile.save')}
         </LoadingButton>
         {deleteMode && (
           <ConfirmDialog
-            title='Delete account confirmation'
-            content='Are you sure want to delete this account?'
+            title={t('pages.profile.deleteAccountConfirm')}
+            content={t('pages.profile.deleteAccountConfirmQuestion')}
             handleClose={() => setDeleteMode(false)}
             handleConfirm={handleConfirmDeleteAccount}
           />

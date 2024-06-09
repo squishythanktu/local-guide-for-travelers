@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { Dispatch, SetStateAction } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmDialogProps {
   icon: React.ReactNode
@@ -32,6 +33,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   setReason,
   currentAction
 }: ConfirmDialogProps) => {
+  const { t } = useTranslation()
+
   return (
     <>
       <Dialog fullWidth maxWidth='xs' open={openDialog}>
@@ -51,7 +54,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               className='mt-4 w-full'
               label={
                 <Box sx={{ fontWeight: '500' }}>
-                  Reason
+                  {t('components.guideDetailsDialog.reason')}
                   <Typography component='span' sx={{ color: 'red' }}>
                     *
                   </Typography>
@@ -69,10 +72,10 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <DialogActions>
           <Stack direction='row' spacing={1} className='flex justify-end'>
             <Button onClick={handleClickNo} size='large' color='error'>
-              No
+              {t('components.confirmPopper.no')}
             </Button>
             <LoadingButton loading={loading} onClick={handleClickYes} variant='outlined' size='large'>
-              Yes
+              {t('components.confirmPopper.yes')}
             </LoadingButton>
           </Stack>
         </DialogActions>

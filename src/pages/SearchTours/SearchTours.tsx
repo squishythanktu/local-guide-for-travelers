@@ -15,11 +15,13 @@ import { isTourInWishlist } from 'src/utils/wishlist'
 import wishlistApi from 'src/apis/wishlist.api'
 import { AppContext } from 'src/contexts/app.context'
 import Box from '@mui/material/Box'
+import { useTranslation } from 'react-i18next'
 
 export default function SearchTours() {
   const { profile, isAuthenticated } = useContext(AppContext)
   const queryConfig: QueryConfig = useQueryConfig()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { data: toursData, isPending } = useQuery({
     queryKey: ['toursSearch', queryConfig],
     queryFn: () => tourApi.searchTours(queryConfig),
@@ -48,7 +50,7 @@ export default function SearchTours() {
         <div className='header-title flex w-full'>
           <SvgIcon component={DotsIcon} inheritViewBox className=' mr-2 mt-0 h-20 w-full max-w-12 lg:mt-3' />
           <div className='search-container__header-content flex w-full flex-col'>
-            <span className='text-base font-semibold sm:text-2xl'>Things to do in</span>
+            <span className='text-base font-semibold sm:text-2xl'>{t('pages.search.searchTours.title')}</span>
             <div className='search-container__header-content--noodle flex flex-row justify-between gap-8'>
               <div className='flex pt-2'>
                 <h2 className='pr-4 text-[2rem] leading-[3rem] sm:text-[2.75rem] lg:text-[4rem] lg:leading-[5.25rem]'>
@@ -66,13 +68,15 @@ export default function SearchTours() {
       </div>
       <div className='search-container__actions'>
         <div className='actions-container container'>
-          <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>All tours</h2>
+          <h2 className='my-4 text-3xl leading-8 lg:text-4xl lg:leading-[2.75rem]'>
+            {t('pages.search.searchTours.allTours')}
+          </h2>
           <SortFilterTours />
           <div className='my-4 text-sm font-semibold  text-[var(--label-secondary)]'>
             {isPending ? (
               <Skeleton variant='text' sx={{ fontSize: '1rem' }} width={100} />
             ) : (
-              `${toursData?.data.data.totalOfResult} tour(s) found.`
+              `${toursData?.data.data.totalOfResult} ${t('pages.search.searchTours.toursFound')}`
             )}
           </div>
           <div className='collection-body mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>

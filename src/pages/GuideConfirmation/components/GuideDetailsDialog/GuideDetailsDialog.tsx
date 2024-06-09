@@ -31,6 +31,7 @@ import { GuideApplicationStatus } from 'src/enums/guide-application-status'
 import { GuideApplicationData } from 'src/types/guide-application.type'
 import { GuideApplication } from 'src/types/guide.type'
 import { SuccessResponse } from 'src/types/utils.type'
+import { useTranslation } from 'react-i18next'
 
 interface GuideDetailsDialogProps {
   selectedId: number
@@ -48,6 +49,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
   const [currentAction, setCurrentAction] = useState<'deny' | 'accept' | undefined>(undefined)
   const [openPopper, setOpenPopper] = useState<boolean>(false)
   const [reason, setReason] = useState<string>()
+  const { t } = useTranslation()
 
   const handleAction = (action: 'accept' | 'deny') => {
     setOpenPopper((prev) => !prev)
@@ -100,7 +102,9 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
           style={{ cursor: 'move', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           id='dialog-title'
         >
-          <Typography sx={{ fontWeight: '800', fontSize: '1.2rem' }}>Guide Details</Typography>
+          <Typography sx={{ fontWeight: '800', fontSize: '1.2rem' }}>
+            {t('components.guideDetailsDialog.guideDetails')}
+          </Typography>
           <IconButton
             onClick={() => {
               setSelectedId(null)
@@ -127,7 +131,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                     <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
                       <HikingIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Name:
+                        {t('components.guideDetailsDialog.name')}:
                       </Typography>
                       <span>
                         {guideApplicationData?.data.data.user.fullName
@@ -138,42 +142,44 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                     <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
                       <ApartmentIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Address:
+                        {t('components.guideDetailsDialog.address')}:
                       </Typography>
                       <span>{guideApplicationData?.data.data.user.address || 'N/A'}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
                       <TimelapseIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Experience:
+                        {t('components.guideDetailsDialog.experience')}:
                       </Typography>
-                      <span>{guideApplicationData?.data.data.yearsOfExperience} year(s)</span>
+                      <span>
+                        {guideApplicationData?.data.data.yearsOfExperience} {t('components.guideDetailsDialog.years')}
+                      </span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
                       <SmartphoneIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Phone number:
+                        {t('components.guideDetailsDialog.phoneNumber')}:
                       </Typography>
                       <span>{guideApplicationData?.data.data.user.phone}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={6} className='guide-details__description flex items-center gap-2'>
                       <CakeIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Date of birth:
+                        {t('components.guideDetailsDialog.dateOfBirth')}:
                       </Typography>
                       <span>{guideApplicationData?.data.data.user.dateOfBirth?.slice(0, 10)}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
                       <DirectionsBusIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Transportation:
+                        {t('components.guideDetailsDialog.transportation')}:
                       </Typography>
                       <span>{guideApplicationData?.data.data.transportation}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={12} className='guide-biography flex items-center gap-2'>
                       <DescriptionIcon />
                       <Typography variant='body1' className='font-semibold'>
-                        Biography:
+                        {t('components.guideDetailsDialog.biography')}:
                       </Typography>
                       <span>{guideApplicationData?.data.data.biography || 'N/A'}</span>
                     </Grid>
@@ -183,7 +189,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                           <Box className='flex gap-2'>
                             <ImageIcon />
                             <Typography variant='body1' className='font-semibold'>
-                              Image(s)
+                              {t('components.guideDetailsDialog.images')}
                             </Typography>
                           </Box>
                           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
@@ -230,7 +236,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
             size='large'
             color='error'
           >
-            Deny
+            {t('components.guideDetailsDialog.deny')}
           </LoadingButton>
           <LoadingButton
             loading={currentAction === 'accept' ? updateStatusGuideApplicationMutation.isPending : false}
@@ -238,17 +244,19 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
             size='large'
             onClick={() => handleAction('accept')}
           >
-            Accept
+            {t('components.guideDetailsDialog.accept')}
           </LoadingButton>
         </DialogActions>
         <ConfirmPopper
           icon={currentAction === 'accept' ? <InfoOutlinedIcon /> : <WarningAmberIcon />}
-          title={currentAction === 'accept' ? 'Accept guide' : 'Deny guide'}
-          content={
+          title={
             currentAction === 'accept'
-              ? 'Are you sure want to accept this guide?'
-              : 'Are you sure want to deny this guide?'
+              ? `${t('components.guideDetailsDialog.accept')} guide`
+              : `${t('components.guideDetailsDialog.deny')} guide`
           }
+          content={t('components.guideDetailsDialog.areYouSure', {
+            action: t(`components.guideDetailsDialog.${currentAction}`).toLowerCase()
+          })}
           openDialog={openPopper}
           handleClickYes={handleSubmit}
           handleClickNo={handleCancel}

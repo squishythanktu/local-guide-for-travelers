@@ -13,16 +13,17 @@ import { compareDate } from 'src/utils/date-time'
 import { a11yProps } from 'src/utils/tab-panel'
 import Loading from '../Loading/Loading'
 import BookingContent from './components/BookingContent/BookingContent'
+import { useTranslation } from 'react-i18next'
 
 const Bookings: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
   const [value, setValue] = useState<number>(0)
+  const { t } = useTranslation()
   const { data: bookingsHistoryData } = useQuery({
     queryKey: [`get bookings history of user ${profile?.email}`],
     queryFn: () => bookingApi.getBookingsHistory(),
     staleTime: 10 * 1000
   })
-
   const [upcomingBookings, setUpcomingBookings] = useState<Booking[]>([])
   const [pastBookings, setPastBookings] = useState<Booking[]>([])
 
@@ -54,7 +55,7 @@ const Bookings: React.FC = () => {
           alt='Empty booking'
           className='h-52 w-52 object-cover'
         />
-        <h3>You have to sign in first to see your bookings.</h3>
+        <h3>{t('pages.bookings.signInFirst')}</h3>
       </div>
     )
 
@@ -63,7 +64,7 @@ const Bookings: React.FC = () => {
       {!bookingsHistoryData?.data.data && <Loading />}
       {bookingsHistoryData?.data.data && bookingsHistoryData.data.data.length > 0 && (
         <>
-          <h2 className='my-bookings__title pt-5'>My bookings</h2>
+          <h2 className='my-bookings__title pt-5'>{t('pages.bookings.myBookings')}</h2>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -77,9 +78,9 @@ const Bookings: React.FC = () => {
             }}
             centered
           >
-            <Tab className='w-1/3' label={`All`} {...a11yProps(1)} />
-            <Tab className='w-1/3' label={`Upcoming bookings`} {...a11yProps(2)} />
-            <Tab className='w-1/3' label={`Past bookings`} {...a11yProps(3)} />
+            <Tab className='w-1/3' label={t('pages.bookings.all')} {...a11yProps(1)} />
+            <Tab className='w-1/3' label={t('pages.bookings.upcomingBookings')} {...a11yProps(2)} />
+            <Tab className='w-1/3' label={t('pages.bookings.pastBookings')} {...a11yProps(3)} />
           </Tabs>
           <SwipeableViews
             axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -106,7 +107,7 @@ const Bookings: React.FC = () => {
             alt='Empty booking'
             className='h-52 w-52 object-cover'
           />
-          <h3>No bookings data available.</h3>
+          <h3>{t('pages.bookingManagement.noBooking')}</h3>
         </div>
       )}
     </Box>

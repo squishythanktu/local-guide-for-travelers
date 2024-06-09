@@ -13,10 +13,12 @@ import statisticApi from 'src/apis/statistic.api'
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { GuideInStatistic } from 'src/types/statistic.type'
 import GradeIcon from '@mui/icons-material/Grade'
+import { useTranslation } from 'react-i18next'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 const SalesReportOfGuide: React.FC = () => {
+  const { t } = useTranslation()
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
     limit: 8
@@ -40,22 +42,22 @@ const SalesReportOfGuide: React.FC = () => {
       },
       {
         accessorKey: 'fullName',
-        header: 'Name',
+        header: t('pages.salesReportOfGuide.name'),
         size: 30
       },
       {
         accessorKey: 'email',
-        header: 'Email',
+        header: t('pages.salesReportOfGuide.email'),
         size: 30
       },
       {
         accessorKey: 'address',
-        header: 'Address',
+        header: t('pages.salesReportOfGuide.address'),
         size: 30
       },
       {
         accessorKey: 'overallRating',
-        header: 'Rating',
+        header: t('pages.salesReportOfGuide.rating'),
         Cell: ({ cell }) => (
           <div className='flex items-center gap-1'>
             <GradeIcon className='text-yellow-400' fontSize='small' />
@@ -66,17 +68,17 @@ const SalesReportOfGuide: React.FC = () => {
       },
       {
         accessorKey: 'totalBooking',
-        header: 'Total booking',
+        header: t('pages.salesReportOfGuide.totalBookings'),
         size: 30
       },
       {
         accessorKey: 'totalTravelerNumber',
-        header: 'Total travelers',
+        header: t('pages.salesReportOfGuide.totalTravelers'),
         size: 30
       },
       {
         accessorKey: 'totalRevenue',
-        header: 'Revenue',
+        header: t('pages.salesReportOfGuide.revenue'),
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>,
         size: 30
       }
@@ -127,7 +129,9 @@ const SalesReportOfGuide: React.FC = () => {
         shape='rounded'
       />
     ),
-    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Sales Report of Guide</h2>
+    renderTopToolbarCustomActions: () => (
+      <h2 className='pt-3 text-xl'>{t('pages.salesReportOfGuide.salesReportOfGuide')}</h2>
+    )
   })
 
   return (
@@ -136,7 +140,7 @@ const SalesReportOfGuide: React.FC = () => {
         <MaterialReactTable table={table} />
       </Box>
       <Card className='col-span-12 flex flex-col gap-2 px-3 pb-3 lg:col-span-6'>
-        <h2 className='mb-8 pt-3 text-xl'>Top 5 most booking guides</h2>
+        <h2 className='mb-8 pt-3 text-xl'>{t('pages.salesReportOfGuide.top5Guide')}</h2>
         <Pie
           options={{
             aspectRatio: 2

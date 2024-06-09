@@ -9,6 +9,7 @@ import { Booking } from 'src/types/booking.type'
 import ToursInfo from '../ToursInfo'
 import TabPanel from 'src/components/TabPanel/TabPanel'
 import { a11yProps } from 'src/utils/tab-panel'
+import { useTranslation } from 'react-i18next'
 
 interface ContentInvoiceProps {
   bookings?: Booking[]
@@ -17,6 +18,7 @@ interface ContentInvoiceProps {
 export default function ContentInvoice({ bookings }: ContentInvoiceProps) {
   const theme = useTheme()
   const [value, setValue] = useState(0)
+  const { t } = useTranslation()
 
   const handleChange = (_: SyntheticEvent, newValue: number) => setValue(newValue)
 
@@ -43,7 +45,7 @@ export default function ContentInvoice({ bookings }: ContentInvoiceProps) {
       >
         <Tabs value={value} onChange={handleChange} indicatorColor='secondary' textColor='inherit'>
           {bookings?.map((_: Booking, index: number) => (
-            <Tab key={index} label={`Trip ${index + 1}`} {...a11yProps(index)} />
+            <Tab key={index} label={`${t('pages.bookingSuccess.trip')} ${index + 1}`} {...a11yProps(index)} />
           ))}
         </Tabs>
       </AppBar>

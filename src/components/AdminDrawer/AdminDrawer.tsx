@@ -22,6 +22,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { Theme, styled } from '@mui/material/styles'
 import * as React from 'react'
 import { SyntheticEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import PATH from 'src/constants/path.constant'
 import { drawerWidth } from 'src/constants/width-height.constant'
@@ -83,6 +84,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
   const [openCollapseTourManagement, toggleCollapseTourManagement] = useToggle(false)
   const [openCollapseGuideManagement, toggleCollapseGuideManagement] = useToggle(false)
   const location = useLocation()
+  const { t } = useTranslation()
 
   const handleClickSalesReport = (event: SyntheticEvent) => {
     event.stopPropagation()
@@ -126,7 +128,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             >
               <TourIcon />
             </ListItemIcon>
-            <ListItemText primary='Tour Management' sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText primary={t('components.adminDrawer.tourManagement')} sx={{ opacity: open ? 1 : 0 }} />
             {openCollapseTourManagement ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
@@ -141,7 +143,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <ListItemIcon>
                 <ListIcon />
               </ListItemIcon>
-              <ListItemText primary='Tour List' />
+              <ListItemText primary={t('components.adminDrawer.tourList')} />
             </ListItemButton>
             <ListItemButton
               sx={{ pl: 4 }}
@@ -152,7 +154,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <ListItemIcon>
                 <ConfirmationNumberIcon />
               </ListItemIcon>
-              <ListItemText primary='Tour Confirmation' />
+              <ListItemText primary={t('components.adminDrawer.tourConfirmation')} />
             </ListItemButton>
           </List>
         </Collapse>
@@ -174,7 +176,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             >
               <PersonIcon />
             </ListItemIcon>
-            <ListItemText primary='Guide Management' sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText primary={t('components.adminDrawer.guideManagement')} sx={{ opacity: open ? 1 : 0 }} />
             {openCollapseGuideManagement ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
@@ -189,7 +191,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <ListItemIcon>
                 <ConfirmationNumberIcon />
               </ListItemIcon>
-              <ListItemText primary='Guide Confirmation' />
+              <ListItemText primary={t('components.adminDrawer.guideConfirmation')} />
             </ListItemButton>
           </List>
         </Collapse>
@@ -211,7 +213,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
             >
               <TrendingUpIcon />
             </ListItemIcon>
-            <ListItemText primary='Sales Report' sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText primary={t('components.adminDrawer.salesReport')} sx={{ opacity: open ? 1 : 0 }} />
             {openCollapseSalesReport ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
@@ -226,7 +228,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <ListItemIcon>
                 <HomeWorkIcon />
               </ListItemIcon>
-              <ListItemText primary='Tour' />
+              <ListItemText primary={t('components.adminDrawer.tour')} />
             </ListItemButton>
             <ListItemButton
               sx={{ pl: 4 }}
@@ -237,7 +239,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ handleDrawerClose, open }: Ad
               <ListItemIcon>
                 <HikingIcon />
               </ListItemIcon>
-              <ListItemText primary='Guide' />
+              <ListItemText primary={t('components.adminDrawer.guide')} />
             </ListItemButton>
           </List>
         </Collapse>

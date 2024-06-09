@@ -10,6 +10,7 @@ import { lighten } from '@mui/material/styles'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_Cell, MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import { useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import tourApi from 'src/apis/tour.api'
@@ -23,7 +24,6 @@ import { UserRole } from 'src/enums/user-role.enum'
 import { Request } from 'src/types/request.type'
 import { Tour } from 'src/types/tour.type'
 import { TourSchema } from 'src/utils/rules'
-import { capitalizeString } from 'src/utils/string'
 import TourForm from '../components/TourForm'
 import UpdateTourForm from '../components/TourForm/UpdateTourForm/UpdateTourForm'
 
@@ -38,6 +38,7 @@ interface Props {
 
 export default function TourManagement({ guideId }: Props) {
   const { profile } = useContext(AppContext)
+  const { t } = useTranslation()
   const [createMode, setCreateMode] = useState<boolean>(false)
   const [updateMode, setUpdateMode] = useState<boolean>(false)
   const [deleteMode, setDeleteMode] = useState<boolean>(false)
@@ -219,27 +220,28 @@ export default function TourManagement({ guideId }: Props) {
       },
       {
         accessorKey: 'name',
-        header: 'Name',
+        header: t('pages.tourManagement.name'),
         size: 200
       },
       {
         accessorKey: 'transportation',
-        header: 'Transportation',
+        header: t('pages.tourManagement.trans'),
         size: 50
       },
       {
         accessorKey: 'duration',
-        header: 'Duration',
+        header: t('pages.tourManagement.duration'),
         size: 20
       },
       {
         accessorKey: 'unit',
-        header: 'Unit',
-        size: 20
+        header: t('pages.tourManagement.unit'),
+        size: 20,
+        Cell: ({ cell }) => <span>{t(`pages.tourManagement.${cell.getValue<string>()}`)}</span>
       },
       {
         accessorKey: 'pricePerTraveler',
-        header: 'Price',
+        header: t('pages.tourManagement.price'),
         size: 100,
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       }
@@ -249,16 +251,16 @@ export default function TourManagement({ guideId }: Props) {
 
   const statusColumn = {
     accessorKey: 'status',
-    header: 'Status',
+    header: t('pages.tourManagement.status'),
     size: 20,
     Cell: ({ cell }: { cell: MRT_Cell<Tour> }) => {
       switch (cell.getValue() as string) {
         case 'PENDING':
-          return <Chip label={capitalizeString(cell.getValue() as string)} color='warning' size='small' />
+          return <Chip label={t('enums.tourStatus.PENDING')} color='warning' size='small' />
         case 'ACCEPT':
-          return <Chip label={capitalizeString(cell.getValue() as string)} color='success' size='small' />
+          return <Chip label={t('enums.tourStatus.ACCEPT')} color='success' size='small' />
         case 'DENY':
-          return <Chip label={capitalizeString(cell.getValue() as string)} color='error' size='small' />
+          return <Chip label={t('enums.tourStatus.DENY')} color='error' size='small' />
         default:
           return
       }
@@ -267,7 +269,7 @@ export default function TourManagement({ guideId }: Props) {
 
   const actionColumn = {
     accessorKey: 'action',
-    header: 'Actions',
+    header: t('pages.tourManagement.actions'),
     size: 100,
     Cell: ({ cell }: { cell: MRT_Cell<Tour> }) => (
       <>
@@ -345,7 +347,7 @@ export default function TourManagement({ guideId }: Props) {
     renderTopToolbarCustomActions: () =>
       isOwner ? (
         <Button startIcon={<AddIcon />} variant='contained' className='w-fit' onClick={() => setCreateMode(true)}>
-          Create Tour
+          {t('pages.tourManagement.createTour')}
         </Button>
       ) : (
         ''
@@ -358,7 +360,7 @@ export default function TourManagement({ guideId }: Props) {
         <>
           {isOwner && (
             <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-              Tour Management
+              {t('pages.tourManagement.tourManagement')}
             </h2>
           )}
           <MaterialReactTable table={table} />
@@ -367,7 +369,7 @@ export default function TourManagement({ guideId }: Props) {
       {createMode && (
         <>
           <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-            Create Tour
+            {t('pages.tourManagement.createTour')}
           </h2>
           <TourForm
             onSubmit={handleCreateTourForm}
@@ -379,8 +381,8 @@ export default function TourManagement({ guideId }: Props) {
       )}
       {updateMode && (
         <>
-          <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1'>
-            Update Tour
+          <h2 className='account-profile__header border-b-1 mb-6 border-b-[0.5px] border-solid border-[var(--border-primary)] pb-1 capitalize'>
+            {t('pages.tourManagement.updateTour')}
           </h2>
           <UpdateTourForm
             tourId={selectedId}

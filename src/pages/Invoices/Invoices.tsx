@@ -5,10 +5,11 @@ import InvoiceComponent from './components/InvoiceComponent/InvoiceComponent'
 import { AppContext } from 'src/contexts/app.context'
 import Box from '@mui/material/Box'
 import Loading from '../Loading/Loading'
+import { useTranslation } from 'react-i18next'
 
 const Invoices: React.FC = () => {
   const { isAuthenticated, profile } = useContext(AppContext)
-
+  const { t } = useTranslation()
   const { data: invoicesData, refetch: refetchInvoicesData } = useQuery({
     queryKey: [`Get invoices by user with id ${profile?.id}`],
     queryFn: () => invoiceApi.getInvoices()
@@ -23,7 +24,7 @@ const Invoices: React.FC = () => {
           alt='Empty booking'
           className='h-52 w-52 object-cover'
         />
-        <h3>You have to sign in first to see your invoices.</h3>
+        <h3>{t('pages.invoices.signInFirst')}</h3>
       </div>
     )
 
@@ -32,7 +33,7 @@ const Invoices: React.FC = () => {
       {!invoicesData?.data.data && <Loading />}
       {invoicesData?.data.data && invoicesData.data.data.length > 0 && (
         <Box className='max-h-[1000px] overflow-auto'>
-          <h2 className='my-invoices mt-6'>My invoices</h2>
+          <h2 className='my-invoices mt-6'>{t('pages.invoices.myInvoices')}</h2>
           {invoicesData?.data.data.map((invoice, index) => (
             <InvoiceComponent key={index} invoice={invoice} refetchInvoicesData={refetchInvoicesData} />
           ))}
@@ -46,7 +47,7 @@ const Invoices: React.FC = () => {
             alt='Empty booking'
             className='h-52 w-52 object-cover'
           />
-          <h3>No invoice data available.</h3>
+          <h3>{t('pages.invoices.noData')}</h3>
         </div>
       )}
     </Box>

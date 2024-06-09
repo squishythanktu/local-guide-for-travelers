@@ -20,6 +20,7 @@ import { Transportation } from 'src/enums/transportation.enum'
 import { Unit } from 'src/enums/unit.enum'
 import { RequestTourSchema, requestTourSchema } from 'src/utils/rules'
 import NotFound from '../NotFound/NotFound'
+import { useTranslation } from 'react-i18next'
 
 export type RequestTourFormData = RequestTourSchema & {
   guideId: string
@@ -32,6 +33,7 @@ const RequestTour: React.FC = () => {
   const [buttonClicked, setButtonClicked] = useState<StatusRequest.DRAFT | StatusRequest.PENDING>()
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useTranslation()
   const {
     trigger,
     control,
@@ -110,7 +112,7 @@ const RequestTour: React.FC = () => {
   return (
     <Box className='container relative flex min-h-[550px] w-full items-center justify-center'>
       <div className='w-full py-4'>
-        <h2 className='pb-4'>Tour request form</h2>
+        <h2 className='pb-4'>{t('pages.tourRequestForm.tourRequestForm')}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
           <div className='destination-field'>
             <ControlledTextField
@@ -120,12 +122,12 @@ const RequestTour: React.FC = () => {
               rows={2}
               control={control}
               name={'destination'}
-              label={'Destination'}
+              label={t('pages.tourRequestForm.destination')}
             />
           </div>
           <div className='transportation-field'>
             <Box sx={{ color: (theme) => theme.palette.primary.main }} className='text-xs font-bold'>
-              Transportation <span className='text-sm text-red-500'>*</span>
+              {t('pages.tourRequestForm.transportation')} <span className='text-sm text-red-500'>*</span>
             </Box>
             <div className='grid grid-cols-3'>
               {Object.values(Transportation).map((item) => (
@@ -151,7 +153,7 @@ const RequestTour: React.FC = () => {
                       )}
                     />
                   }
-                  label={item}
+                  label={t(`enums.transportation.${item.toUpperCase()}`)}
                 />
               ))}
             </div>
@@ -166,7 +168,7 @@ const RequestTour: React.FC = () => {
               type='number'
               control={control}
               name={'duration'}
-              label={'Duration'}
+              label={t('pages.tourRequestForm.duration')}
             />
             <Controller
               control={control}
@@ -176,7 +178,7 @@ const RequestTour: React.FC = () => {
                   select
                   label={
                     <Typography sx={{ fontWeight: 600 }}>
-                      Unit{' '}
+                      {t('pages.tourRequestForm.unit')}{' '}
                       <Typography component='span' sx={{ color: 'red' }}>
                         *
                       </Typography>
@@ -212,7 +214,7 @@ const RequestTour: React.FC = () => {
               type='number'
               control={control}
               name={'maxPricePerPerson'}
-              label={'Max price per traveler'}
+              label={t('pages.tourRequestForm.maxPricePerTraveler')}
               prefix='$'
             />
             <ControlledTextField
@@ -221,7 +223,7 @@ const RequestTour: React.FC = () => {
               type='number'
               control={control}
               name={'numberOfTravelers'}
-              label={'Number of travelers'}
+              label={t('pages.tourRequestForm.numberOfTravelers')}
             />
           </div>
           <ControlledTextField
@@ -230,7 +232,7 @@ const RequestTour: React.FC = () => {
             rows={3}
             control={control}
             name={'message'}
-            label={'Message'}
+            label={t('pages.tourRequestForm.message')}
             className='min-h-32'
           />
           <Box
@@ -241,7 +243,7 @@ const RequestTour: React.FC = () => {
             }}
           >
             <Button variant='outlined' className='w-fit' size='large' onClick={() => navigate(-1)}>
-              Cancel
+              {t('pages.tourRequestForm.cancel')}
             </Button>
             <LoadingButton
               onClick={() => setButtonClicked(StatusRequest.DRAFT)}
@@ -250,7 +252,7 @@ const RequestTour: React.FC = () => {
               size='large'
               type='submit'
             >
-              <span>Save draft</span>
+              <span>{t('pages.tourRequestForm.saveDraft')}</span>
             </LoadingButton>
             <LoadingButton
               onClick={() => setButtonClicked(StatusRequest.PENDING)}
@@ -259,7 +261,7 @@ const RequestTour: React.FC = () => {
               size='large'
               type='submit'
             >
-              <span>Submit</span>
+              <span>{t('pages.tourRequestForm.submit')}</span>
             </LoadingButton>
           </Box>
         </form>

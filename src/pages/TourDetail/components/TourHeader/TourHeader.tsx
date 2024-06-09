@@ -1,6 +1,7 @@
 import LocationCityIcon from '@mui/icons-material/LocationCity'
 import { Box } from '@mui/material'
 import Rating from '@mui/material/Rating'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import PATH from 'src/constants/path.constant'
 import { Tour } from 'src/types/tour.type'
@@ -11,6 +12,8 @@ interface TourHeaderProps {
 }
 
 export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
+  const { t } = useTranslation()
+
   return (
     <>
       <Box
@@ -30,10 +33,14 @@ export default function TourHeader({ tour, totalReviews }: TourHeaderProps) {
           <div className='rating mr-2 flex items-center gap-2'>
             <Rating max={5} precision={0.1} value={Number(tour.overallRating.toFixed(2))} size='large' readOnly />
             <div className='text-sm font-medium md:text-[16px]'>{Number(tour.overallRating.toFixed(2))}/5</div>
-            <span className='text-nowrap text-sm underline md:text-[16px]'>{totalReviews} reviews</span>
+            <span className='text-nowrap text-sm underline md:text-[16px]'>
+              {totalReviews} {t('pages.tourDetails.reviews')}
+            </span>
           </div>
           <div className='author mr-2 flex items-center gap-2'>
-            <div className='text-nowrap text-sm font-semibold md:text-[16px]'>Activity provider:</div>
+            <div className='text-nowrap text-sm font-semibold md:text-[16px]'>
+              {t('pages.tourDetails.activityProvider')}:
+            </div>
             <Link
               to={`${PATH.guideProfile.replace(':id', tour.guide.id.toString())}`}
               className='text-sm hover:text-orange-500 md:text-[16px]'

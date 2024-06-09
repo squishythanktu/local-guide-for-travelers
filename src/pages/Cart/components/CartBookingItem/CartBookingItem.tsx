@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import EditIcon from '@mui/icons-material/Edit'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -8,6 +10,8 @@ import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import Rating from '@mui/material/Rating'
 import { QueryObserverResult, useMutation } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
@@ -18,9 +22,6 @@ import { Booking } from 'src/types/booking.type'
 import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
 import CartBookingForm from '../CartBookingForm'
-import utc from 'dayjs/plugin/utc'
-import dayjs from 'dayjs'
-import LoadingButton from '@mui/lab/LoadingButton'
 
 dayjs.extend(utc)
 type BookingFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate' | 'startTime'>
@@ -33,6 +34,7 @@ interface CartBookingItemProps {
 
 export default function CartBookingItem({ booking, refetch }: CartBookingItemProps) {
   const [editMode, setEditMode] = useState(false)
+
   const handleUpdate = () => {
     setEditMode(true)
   }
@@ -120,7 +122,7 @@ export default function CartBookingItem({ booking, refetch }: CartBookingItemPro
                     className='flex h-10 w-20 cursor-pointer gap-1 rounded-full border-none  px-4 py-3'
                     variant='contained'
                   >
-                    <span className='text-sm font-medium'>Update</span>
+                    <EditIcon className='h-4 w-4' />
                   </Button>
                   <LoadingButton
                     loading={deleteBookingMutation.isPending}

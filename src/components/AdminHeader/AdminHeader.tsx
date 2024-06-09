@@ -9,6 +9,7 @@ import WhiteLogoIcon from 'src/assets/svg/logo-white.svg'
 import { drawerWidth } from 'src/constants/width-height.constant'
 import AdminProfileMenu from './AdminProfileMenu/AdminProfileMenu'
 import Box from '@mui/material/Box'
+import LanguageSelector from '../Header/LanguageSelector/LanguageSelector'
 
 interface AdminHeaderProps {
   handleDrawerOpen: () => void
@@ -50,8 +51,9 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ handleDrawerOpen, open }: Adm
           <MenuIcon />
         </IconButton>
         <SvgIcon component={WhiteLogoIcon} inheritViewBox className='h-8 w-8 sm:h-12 sm:w-12' />
-        <Box sx={{ marginLeft: 'auto' }}>
+        <Box sx={{ marginLeft: 'auto', display: 'flex' }}>
           <AdminProfileMenu />
+          <LanguageSelector />
         </Box>
       </Toolbar>
     </AppBar>

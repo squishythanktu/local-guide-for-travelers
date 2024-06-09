@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import { AppContext } from 'src/contexts/app.context'
 import { useContext } from 'react'
+import { t } from 'i18next'
 
 const AvatarSideNav: React.FC = () => {
   const { profile } = useContext(AppContext)
@@ -13,7 +14,9 @@ const AvatarSideNav: React.FC = () => {
       <h2 className='account__header-name mb-1 text-2xl font-bold'>
         {profile?.fullName || profile?.email.split('@')[0]}
       </h2>
-      <h4 className='account__header-subheading font-bold tracking-wide'>{profile?.role}</h4>
+      <h4 className='account__header-subheading font-bold uppercase tracking-wide'>
+        {t(`enums.userRole.${profile?.role}`)}
+      </h4>
       <img
         src='/assets/svg/top-line.svg'
         className='absolute right-[-130px] top-[-10px]'

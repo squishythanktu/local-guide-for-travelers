@@ -8,6 +8,7 @@ import { DayInSchedule, ScheduleList } from 'src/types/schedule.type'
 import { ConvertDateArrayToDateObjectArray } from 'src/utils/date-time'
 import '../../schedule-management.style.scss'
 import Notes from '../Notes/Notes'
+import { useTranslation } from 'react-i18next'
 
 interface ScheduleDialogProps {
   schedule: ScheduleList
@@ -21,6 +22,7 @@ const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
   handleDateChange
 }: ScheduleDialogProps) => {
   const [selectedDates, setSelectedDates] = useState<DateObject[]>([])
+  const { t } = useTranslation()
 
   const confirmAdd = () => {
     const oldDayOff = schedule.byGuide.map((d) => d.busyDate)
@@ -36,7 +38,7 @@ const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
   return (
     <Dialog open={true} fullWidth maxWidth='md'>
       <DialogTitle sx={{ m: 0, p: 2 }} className='flex items-center justify-between'>
-        <div className='text-lg font-semibold'>Select your busy days</div>
+        <div className='text-lg font-semibold'>{t('pages.scheduleManagement.selectYourBusyDay')}</div>
         <Notes />
         <IconButton
           onClick={() => {
@@ -108,7 +110,7 @@ const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
                 }}
                 className='my-3 grid items-center justify-center font-medium'
               >
-                Selected day(s)
+                {t('pages.scheduleManagement.selectedDays')}
               </Box>
               <List disablePadding className='rounded-b-md p-2' subheader={<li />}>
                 {selectedDates.map((item, index) => (
@@ -131,10 +133,10 @@ const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
       <DialogActions>
         <div className='mb-2 mr-4 flex gap-4'>
           <Button variant='outlined' onClick={() => setSelectedDates([])}>
-            Clear all
+            {t('pages.scheduleManagement.clearAll')}
           </Button>
           <Button variant='contained' onClick={handleAddBusyDates}>
-            Add
+            {t('pages.scheduleManagement.add')}
           </Button>
         </div>
       </DialogActions>

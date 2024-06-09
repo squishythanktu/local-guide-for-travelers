@@ -10,8 +10,10 @@ import TourDetailsDialog from 'src/components/TourDetailsDialog/TourDetailsDialo
 import { PaginationParams } from 'src/types/pagination-params.type'
 import { Tour } from 'src/types/tour.type'
 import PersonIcon from '@mui/icons-material/Person'
+import { useTranslation } from 'react-i18next'
 
 const TourList: React.FC = () => {
+  const { t } = useTranslation()
   const [pagination, setPagination] = useState<PaginationParams>({
     page: 0,
     limit: 8
@@ -43,42 +45,42 @@ const TourList: React.FC = () => {
       },
       {
         accessorKey: 'name',
-        header: 'Name',
+        header: t('pages.tourList.name'),
         size: 200
       },
       {
         accessorKey: 'guide',
         accessorFn: (originalRow) => originalRow.guide.fullName || originalRow.guide.email,
-        header: 'Guide',
+        header: t('pages.tourList.guide'),
         size: 100
       },
       {
         accessorKey: 'address',
         accessorFn: (originalRow) => (originalRow.locations.length > 0 ? originalRow.locations[0]?.name : 'N/A'),
-        header: 'Address',
+        header: t('pages.tourList.address'),
         size: 100
       },
       {
         accessorKey: 'duration',
         accessorFn: (originalRow) => originalRow.duration,
-        header: 'Duration',
+        header: t('pages.tourList.duration'),
         size: 30
       },
       {
         accessorKey: 'unit',
         accessorFn: (originalRow) => originalRow.unit,
-        header: 'Unit',
+        header: t('pages.tourList.unit'),
         size: 30
       },
       {
         accessorKey: 'pricePerTraveler',
-        header: 'Price',
+        header: t('pages.tourList.pricePerTraveler'),
         size: 30,
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       },
       {
         accessorKey: 'limitTraveler',
-        header: 'Limit traveler(s)',
+        header: t('pages.tourList.limitTravelers'),
         Cell: ({ cell }) => (
           <div className='flex items-center gap-1'>
             <PersonIcon className='text-blue-400' fontSize='small' />
@@ -144,7 +146,7 @@ const TourList: React.FC = () => {
         shape='rounded'
       />
     ),
-    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>Tour List</h2>
+    renderTopToolbarCustomActions: () => <h2 className='pt-3 text-xl'>{t('pages.tourList.tourList')}</h2>
   })
 
   return (

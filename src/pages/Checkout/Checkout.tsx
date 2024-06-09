@@ -11,10 +11,11 @@ import { PassengerInformationSchema } from 'src/utils/rules'
 import OrderSummary from './components/OrderSummary/OrderSummary'
 import PassengerInformation from './components/PassengerInformation/PassengerInformation'
 import PaymentMethod from './components/PaymentMethod/PaymentMethod'
+import { useTranslation } from 'react-i18next'
 
 export default function Checkout() {
   const location = useLocation()
-
+  const { t } = useTranslation()
   const breadcrumbs = [
     <Link
       key='1'
@@ -25,7 +26,7 @@ export default function Checkout() {
       to={PATH.cart}
     >
       <ShoppingCartOutlinedIcon sx={{ mr: 0.5 }} fontSize='inherit' />
-      Cart
+      {t('pages.checkout.cart')}
     </Link>,
     <Link
       key='2'
@@ -36,7 +37,7 @@ export default function Checkout() {
       to={PATH.checkout}
     >
       <PaymentOutlinedIcon sx={{ mr: 0.5 }} fontSize='inherit' />
-      Checkout
+      {t('pages.checkout.checkout')}
     </Link>
   ]
 

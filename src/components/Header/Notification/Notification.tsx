@@ -19,6 +19,7 @@ import { SuccessResponse } from 'src/types/utils.type'
 import { messaging } from 'src/FirebaseConfig'
 import { toast } from 'react-toastify'
 import { onMessage } from 'firebase/messaging'
+import { useTranslation } from 'react-i18next'
 
 interface NotificationProps {
   textColor: string
@@ -30,6 +31,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
   const [responseRealtime, setResponseRealtime] = useState<NotificationType | null>(null)
   const [countOfUnReadNotification, setCountOfUnReadNotification] = useState<number>(0)
   const { ref, inView } = useInView()
+  const { t } = useTranslation()
   const {
     data: notificationsData,
     isPending,
@@ -105,7 +107,7 @@ const Notification: React.FC<NotificationProps> = ({ textColor }: NotificationPr
     <Box
       className='relative ml-2 flex w-8 cursor-pointer flex-col items-center text-base 
 md:after:absolute md:after:bottom-[0px] md:after:left-0 md:after:h-[2.25px] md:after:w-0 
-md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full lg:hover:after:w-full'
+md:after:bg-orange-500 md:after:transition-all md:after:duration-300 xl:w-full xl:hover:after:w-full'
     >
       <Button
         aria-label='notification'
@@ -124,7 +126,7 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full l
         <Badge badgeContent={countOfUnReadNotification} color='error'>
           <NotificationsIcon sx={{ color: textColor }} />
         </Badge>
-        <span className='mt-[5px] hidden lg:block lg:text-sm'>Notifications</span>
+        <span className='mt-[5px] hidden text-nowrap xl:block xl:text-sm'>{t('components.header.notifications')}</span>
       </Button>
       <Menu
         disableScrollLock
@@ -151,7 +153,7 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full l
       >
         <Box sx={{ background: (theme) => theme.palette.primary.main, paddingY: '10px', paddingX: '16px' }}>
           <Typography variant='subtitle2' sx={{ color: 'white', fontSize: '1.1rem' }}>
-            Notifications
+            {t('components.notifications.notifications')}
           </Typography>
         </Box>
         {isPending && (
@@ -180,10 +182,10 @@ md:after:bg-orange-500 md:after:transition-all md:after:duration-300 lg:w-full l
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                   />
                   <Typography variant='h6' sx={{ fontWeight: '800' }}>
-                    No notifications Yet
+                    {t('components.notifications.noNotificationsYet')}
                   </Typography>
                   <Typography variant='body1' sx={{ textAlign: 'center', fontSize: '14px' }}>
-                    You have no notifications right now. <br /> Come back later
+                    {t('components.notifications.comebackLater')}
                   </Typography>
                 </Box>
               )

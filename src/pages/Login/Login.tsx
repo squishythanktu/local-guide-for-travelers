@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getFirebaseToken } from 'src/FirebaseConfig'
@@ -29,6 +30,7 @@ const signInSchema = schema.pick(['email', 'password'])
 
 const Login: React.FC = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const { t } = useTranslation()
   const [isOauthTokenExists, setOauthTokenExists] = useState<boolean>(false)
   const queryParams: { token?: string; error?: string } = useQueryParams()
   const navigate = useNavigate()
@@ -111,23 +113,28 @@ const Login: React.FC = () => {
       <form onSubmit={onSubmit} className='flex flex-col gap-4'>
         <div className='form__header flex items-center'>
           <div className='form flex flex-col gap-2 bg-white'>
-            <h2>SIGN IN</h2>
+            <h2 className='uppercase'>{t('pages.authLayout.signIn')}</h2>
             <div className='flex'>
-              <span className='text-gray-400'>Don't have an account?</span>
+              <span className='text-gray-400'>{t('pages.authLayout.login.haveAccountQuestion')}</span>
               <Link className='ml-1 font-bold text-orange-500' to={PATH.register}>
-                Sign up
+                {t('pages.authLayout.signUp')}
               </Link>
             </div>
           </div>
         </div>
         <div className='form__inputs mt-4 flex flex-col gap-4'>
-          <ControlledTextField control={control} name='email' label='Email' />
-          <ControlledTextField control={control} type='password' name='password' label='Password' />
+          <ControlledTextField control={control} name='email' label={t('pages.authLayout.email')} />
+          <ControlledTextField
+            control={control}
+            type='password'
+            name='password'
+            label={t('pages.authLayout.password')}
+          />
         </div>
         <div className='form__actions flex flex-col gap-4'>
           <div className='flex justify-end'>
             <Link className='ml-1 font-bold text-orange-500' to='/reset'>
-              Forget password?
+              {t('pages.authLayout.login.forgetPassword')}
             </Link>
           </div>
           <LoadingButton
@@ -137,7 +144,7 @@ const Login: React.FC = () => {
             size='large'
             sx={{ fontWeight: 600 }}
           >
-            <span>Sign In</span>
+            <span>{t('pages.authLayout.signIn')}</span>
           </LoadingButton>
         </div>
       </form>
@@ -145,7 +152,7 @@ const Login: React.FC = () => {
       <div className='form__oauth flex flex-col items-center gap-4'>
         <div className='flex w-full items-center gap-4'>
           <div className='block h-[0.5px] w-full border-none bg-gray-400' />
-          <p className='whitespace-nowrap	'>or continue with</p>
+          <p className='whitespace-nowrap	'>{t('pages.authLayout.login.orContinue')}</p>
           <div className='block h-[0.5px] w-full border-none bg-gray-400' />
         </div>
 
@@ -160,9 +167,6 @@ const Login: React.FC = () => {
           >
             <SvgIcon component={GoogleIcon} inheritViewBox className='text-3xl' />
           </Button>
-          {/* <Button type='button' variant='outlined' className='grow'>
-            <SvgIcon component={FacebookIcon} inheritViewBox className='text-3xl' />
-          </Button> */}
         </div>
       </div>
     </AuthLayout>

@@ -28,11 +28,13 @@ import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
 import { AppContext } from 'src/contexts/app.context'
+import { useTranslation } from 'react-i18next'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
 const TourDetail: React.FC = () => {
   const { profile } = useContext(AppContext)
+  const { t } = useTranslation()
   const [tour, setTour] = useState<Tour>({
     id: 0,
     name: '',
@@ -112,7 +114,7 @@ const TourDetail: React.FC = () => {
       addReviewOfTourMutation.mutate(data, {
         onSuccess: () => {
           refetchReviewsData()
-          toast.success('Add review of tour successfully.')
+          toast.success(t('pages.tourDetails.addReviewSuccess'))
         },
         onError: (error) => {
           toast.error(error.message)
@@ -129,7 +131,7 @@ const TourDetail: React.FC = () => {
           onSuccess: () => {
             setEditReviewId(null)
             refetchReviewsData()
-            toast.success('Update review of tour successfully.')
+            toast.success(t('pages.tourDetails.updateReviewSuccess'))
           },
           onError: (error) => {
             toast.error(error.message)
@@ -145,7 +147,7 @@ const TourDetail: React.FC = () => {
       deleteReviewOfTourMutation.mutate(id, {
         onSuccess: () => {
           refetchReviewsData()
-          toast.success('Delete review of tour successfully.')
+          toast.success(t('pages.tourDetails.deleteReviewSuccess'))
         },
         onError: (error) => {
           toast.error(error.message)
@@ -205,11 +207,11 @@ const TourDetail: React.FC = () => {
             <div className='col-span-1 flex flex-col gap-2'>
               <Box className='check-availability-box flex flex-col gap-4'>
                 <span className='font-bold'>
-                  From{' '}
+                  {t('pages.tourDetails.from')}{' '}
                   <span className='text-2xl font-extrabold text-[var(--decorative-orange)]'>
                     ${tour.pricePerTraveler.toLocaleString()}
                   </span>{' '}
-                  per person
+                  {t('pages.tourDetails.perPerson')}
                 </span>
                 <BookingAssistant
                   id={tour.id}
@@ -232,7 +234,7 @@ const TourDetail: React.FC = () => {
             <MainStop locations={tour.locations} orientation='vertical' isShowAddress={false} />
           </div>
           <div className='map col-span-2'>
-            <div className='text-[18px] font-semibold md:text-2xl'>Itinerary</div>
+            <div className='text-[18px] font-semibold md:text-2xl'>{t('pages.tourDetails.itinerary')}</div>
             <Map onMarkersUpdate={() => {}} locations={tour.locations} selectMode={false} />
           </div>
         </div>

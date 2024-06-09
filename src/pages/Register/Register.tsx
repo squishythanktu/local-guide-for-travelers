@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import omit from 'lodash/omit'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
@@ -19,6 +20,7 @@ const signUpSchema = schema.pick(['email', 'password', 'confirmPassword'])
 
 const Register: React.FC = () => {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const { t } = useTranslation()
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
       email: '',
@@ -51,19 +53,29 @@ const Register: React.FC = () => {
       <form onSubmit={onSubmit} className='flex flex-col gap-4'>
         <div className='form__header flex items-center'>
           <div className='form flex flex-col gap-2 bg-white'>
-            <h2>SIGN UP</h2>
+            <h2 className='uppercase'>{t('pages.authLayout.signUp')}</h2>
             <div className='flex'>
-              <span className='text-gray-400'>Already have an account?</span>
+              <span className='text-gray-400'>{t('pages.authLayout.register.alreadyHaveAccountQuestion')}</span>
               <Link className='ml-1 font-bold text-orange-500' to={PATH.login}>
-                Sign in
+                {t('pages.authLayout.signIn')}
               </Link>
             </div>
           </div>
         </div>
         <div className='form__inputs mt-4 flex flex-col gap-4'>
-          <ControlledTextField control={control} name='email' label='Email' />
-          <ControlledTextField control={control} type='password' name='password' label='Password' />
-          <ControlledTextField control={control} type='password' name='confirmPassword' label='Confirm password' />
+          <ControlledTextField control={control} name='email' label={t('pages.authLayout.email')} />
+          <ControlledTextField
+            control={control}
+            type='password'
+            name='password'
+            label={t('pages.authLayout.password')}
+          />
+          <ControlledTextField
+            control={control}
+            type='password'
+            name='confirmPassword'
+            label={t('pages.authLayout.confirmPassword')}
+          />
         </div>
         <div className='form__actions flex'>
           <LoadingButton
@@ -74,7 +86,7 @@ const Register: React.FC = () => {
             className='grow'
             sx={{ fontWeight: 600 }}
           >
-            Sign Up
+            {t('pages.authLayout.signUp')}
           </LoadingButton>
         </div>
       </form>

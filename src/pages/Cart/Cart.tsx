@@ -8,9 +8,11 @@ import { Booking, BookingsInCart } from 'src/types/booking.type'
 import CartBookingItem from './components/CartBookingItem'
 import CartInfo from './components/CartInfo'
 import CartTotal from './components/CartTotal'
+import { useTranslation } from 'react-i18next'
 
 export default function Cart() {
   const { isAuthenticated, profile } = useContext(AppContext)
+  const { t } = useTranslation()
   const {
     data: cartData,
     refetch,
@@ -26,7 +28,7 @@ export default function Cart() {
     return (
       <div className='flex h-full flex-col items-center justify-center'>
         <img loading='lazy' src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
-        <h3>You have to sign in first to see your cart.</h3>
+        <h3>{t('pages.cart.signInFirst')}</h3>
       </div>
     )
 
@@ -36,13 +38,13 @@ export default function Cart() {
       {!isPending && (cartData?.data.data.bookings?.length === 0 || !cartData?.data.data.bookings) && (
         <div className='mt-48 flex h-full flex-col items-center justify-center'>
           <img loading='lazy' src='/assets/images/empty-cart.png' alt='Empty cart' className='h-52 w-52 object-cover' />
-          <h3>No cart data available.</h3>
+          <h3>{t('pages.cart.noData')}</h3>
         </div>
       )}
       {!isPending && cartData && cartData.data.data.bookings && cartData.data.data.bookings.length > 0 && (
         <div className='grid grid-cols-1 lg:grid-cols-5 lg:gap-4'>
           <div className='py-5 lg:col-span-3'>
-            <h2 className='cart__title pb-2 font-black'>Shopping cart</h2>
+            <h2 className='cart__title pb-2 font-black'>{t('pages.cart.shoppingCart')}</h2>
             <div className='cart__items'>
               <div className='flex flex-col gap-4'>
                 {cartData.data.data.bookings.map((booking: Booking) => (

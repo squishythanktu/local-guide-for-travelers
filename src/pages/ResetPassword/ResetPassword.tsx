@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
 import TextField from '@mui/material/TextField'
 import { useMutation } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authApi from 'src/apis/auth.api'
@@ -15,6 +17,7 @@ const resetPasswordSchema = schema.pick(['email'])
 
 export default function ResetPassword() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const {
     control,
     trigger,
@@ -34,11 +37,11 @@ export default function ResetPassword() {
   const onSubmit = (formData: ResetPasswordFormData) => {
     resetPasswordMutation.mutate(formData, {
       onSuccess: () => {
-        toast.success('The password reset link has been sent to your email.')
+        toast.success(t('pages.authLayout.resetPassword.sendResetLinkSuccess'))
         navigate(PATH.changePasswordByToken)
       },
-      onError: (error) => {
-        toast.error(error.message)
+      onError: (__error) => {
+        toast.error(t('pages.authLayout.resetPassword.emailNotSignUp'))
       }
     })
   }
@@ -48,10 +51,8 @@ export default function ResetPassword() {
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
         <div className='flex items-center'>
           <div className='flex flex-col gap-6  bg-white'>
-            <h2>RESET PASSWORD</h2>
-            <div className='text-gray-400'>
-              Enter the email address associated with your account and we'll send you a link to reset your password.
-            </div>
+            <h2 className='uppercase'>{t('pages.authLayout.resetPassword.resetPassword')}</h2>
+            <div className='text-gray-400'>{t('pages.authLayout.resetPassword.resetPasswordDescription')} </div>
           </div>
         </div>
         <div className='mt-4 flex flex-col gap-6'>
@@ -61,7 +62,7 @@ export default function ResetPassword() {
             render={({ field }) => (
               <TextField
                 variant='outlined'
-                label='Email'
+                label={t('pages.authLayout.email')}
                 className='min-h-20'
                 error={!!errors.email?.message}
                 helperText={errors.email?.message}
@@ -83,7 +84,7 @@ export default function ResetPassword() {
             size='large'
             sx={{ fontWeight: 600 }}
           >
-            Send reset link
+            {t('pages.authLayout.resetPassword.sendResetLink')}
           </LoadingButton>
         </div>
       </form>

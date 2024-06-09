@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import BookingSummaryCard from 'src/components/BookingSummaryCard/BookingSummaryCard'
 import Loading from 'src/pages/Loading/Loading'
 import { Booking } from 'src/types/booking.type'
@@ -8,6 +9,7 @@ interface BookingContentProps {
 }
 
 const BookingContent: React.FC<BookingContentProps> = ({ bookingList }: BookingContentProps) => {
+  const { t } = useTranslation()
   return (
     <Box>
       {!bookingList ? (
@@ -22,7 +24,7 @@ const BookingContent: React.FC<BookingContentProps> = ({ bookingList }: BookingC
             loading='lazy'
             className='h-52 w-52 object-cover'
           />
-          <h3>No bookings data available.</h3>
+          <h3>{t('pages.bookingManagement.noBooking')}</h3>
         </div>
       )}
     </Box>

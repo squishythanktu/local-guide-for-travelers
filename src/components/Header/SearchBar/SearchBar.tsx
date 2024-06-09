@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import debounce from 'lodash/debounce'
 import { useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import searchSuggestionApi from 'src/apis/suggestion.api'
 import { SearchType } from 'src/enums/search-type.enum'
@@ -27,6 +28,7 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const queryConfig = useQueryConfig()
   const location = useLocation()
+  const { t } = useTranslation()
   const { onSubmitSearch, control, trigger, register, setValue } = useSearchToursGuides()
   const [search, setSearch] = useState({
     searchType: (location.pathname.includes(SearchType.GUIDE) ? SearchType.GUIDE : SearchType.TOUR) as string,
@@ -96,8 +98,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                 }}
                 MenuProps={{ disableScrollLock: true }}
               >
-                <MenuItem value={SearchType.TOUR}>Tour</MenuItem>
-                <MenuItem value={SearchType.GUIDE}>Guide</MenuItem>
+                <MenuItem value={SearchType.TOUR}>{t('components.searchBar.tour')}</MenuItem>
+                <MenuItem value={SearchType.GUIDE}>{t('components.searchBar.guide')}</MenuItem>
               </Select>
             )}
           />
@@ -123,7 +125,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                     trigger('searchValue')
                     handleSearchValueChange(event.target.value, 'type')
                   }}
-                  placeholder={search.searchType === SearchType.TOUR ? 'Search tours' : 'Search guides'}
+                  placeholder={
+                    search.searchType === SearchType.TOUR
+                      ? t('components.searchBar.searchTours')
+                      : t('components.searchBar.searchGuides')
+                  }
                   fullWidth
                   sx={{ '& fieldset': { border: 'none' } }}
                 />

@@ -18,10 +18,12 @@ import { AppContext } from 'src/contexts/app.context'
 import { UserRole } from 'src/enums/user-role.enum'
 import { isActive } from 'src/utils/active.util'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
+import { useTranslation } from 'react-i18next'
 
 const ManagementSideNav: React.FC = () => {
   const { profile } = useContext(AppContext)
   const location = useLocation()
+  const { t } = useTranslation()
 
   return (
     <div className='management__container flex-auto md:m-0'>
@@ -34,7 +36,7 @@ const ManagementSideNav: React.FC = () => {
                 <ListItemIcon>
                   <TourIcon fontSize='small' />
                 </ListItemIcon>
-                <ListItemText primary='Tour Request Management' />
+                <ListItemText primary={t('components.managementSideNav.tourRequestManagement')} />
               </ListItemButton>
             </ListItem>
             {profile?.role === UserRole.GUIDER && (
@@ -45,7 +47,7 @@ const ManagementSideNav: React.FC = () => {
                     <ListItemIcon>
                       <AddLocationAltOutlinedIcon fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText primary='Tour Management' />
+                    <ListItemText primary={t('components.managementSideNav.tourManagement')} />
                   </ListItemButton>
                 </ListItem>
                 <Divider />
@@ -58,7 +60,7 @@ const ManagementSideNav: React.FC = () => {
                     <ListItemIcon>
                       <ConfirmationNumberOutlinedIcon fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText primary='Booking Management' />
+                    <ListItemText primary={t('components.managementSideNav.bookingManagement')} />
                   </ListItemButton>
                 </ListItem>
                 <Divider />
@@ -67,7 +69,7 @@ const ManagementSideNav: React.FC = () => {
                     <ListItemIcon>
                       <CalendarMonthIcon fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText primary='Schedule Management' />
+                    <ListItemText primary={t('components.managementSideNav.scheduleManagement')} />
                   </ListItemButton>
                 </ListItem>
                 <Divider />
@@ -80,7 +82,7 @@ const ManagementSideNav: React.FC = () => {
                     <ListItemIcon>
                       <TrendingUpIcon fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText primary='Sales Report' />
+                    <ListItemText primary={t('components.managementSideNav.salesReport')} />
                   </ListItemButton>
                 </ListItem>
               </Box>

@@ -1,5 +1,6 @@
 import { Button } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
+import { useTranslation } from 'react-i18next'
 import { StatusRequest } from 'src/enums/status-request.enum'
 
 interface Props {
@@ -15,6 +16,8 @@ const ButtonComponent: React.FC<Props> = ({
   currentRequestStatus,
   quantity
 }: Props) => {
+  const { t } = useTranslation()
+
   return (
     <Button
       onClick={() => setRequestStatus(requestStatus)}
@@ -26,7 +29,7 @@ const ButtonComponent: React.FC<Props> = ({
         })
       }}
     >
-      {requestStatus}
+      {t(`enums.statusRequest.${requestStatus.toLocaleUpperCase()}`)}
       <div className='ml-1 text-sm'>({quantity})</div>
     </Button>
   )

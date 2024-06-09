@@ -10,10 +10,12 @@ import { PaginationParams } from 'src/types/pagination-params.type'
 import { Tour } from 'src/types/tour.type'
 import TourDetailsDialog from '../../components/TourDetailsDialog/TourDetailsDialog'
 import PersonIcon from '@mui/icons-material/Person'
+import { useTranslation } from 'react-i18next'
 
 const TourConfirmation: React.FC = () => {
   const [openTourDetailDialog, setOpenTourDetailDialog] = useState(false)
   const [selectedTourId, setSelectedTourId] = useState<number | undefined>(undefined)
+  const { t } = useTranslation()
   const [pagination] = useState<PaginationParams>({
     page: 0,
     limit: 8
@@ -47,42 +49,42 @@ const TourConfirmation: React.FC = () => {
       },
       {
         accessorKey: 'name',
-        header: 'Name',
+        header: t('pages.tourList.name'),
         size: 200
       },
       {
         accessorKey: 'guide',
         accessorFn: (originalRow) => originalRow.guide.fullName || originalRow.guide.email,
-        header: 'Guide',
+        header: t('pages.tourList.guide'),
         size: 100
       },
       {
         accessorKey: 'address',
         accessorFn: (originalRow) => originalRow.locations[0].name,
-        header: 'Address',
+        header: t('pages.tourList.address'),
         size: 100
       },
       {
         accessorKey: 'duration',
         accessorFn: (originalRow) => originalRow.duration,
-        header: 'Duration',
+        header: t('pages.tourList.duration'),
         size: 30
       },
       {
         accessorKey: 'unit',
         accessorFn: (originalRow) => originalRow.unit,
-        header: 'Unit',
+        header: t('pages.tourList.unit'),
         size: 30
       },
       {
         accessorKey: 'pricePerTraveler',
-        header: 'Price',
+        header: t('pages.tourList.pricePerTraveler'),
         size: 30,
         Cell: ({ cell }) => <span>${cell.getValue<number>()?.toLocaleString()}</span>
       },
       {
         accessorKey: 'limitTraveler',
-        header: 'Limit traveler(s)',
+        header: t('pages.tourList.limitTravelers'),
         Cell: ({ cell }) => (
           <div className='flex items-center gap-1'>
             <PersonIcon className='text-blue-400' fontSize='small' />

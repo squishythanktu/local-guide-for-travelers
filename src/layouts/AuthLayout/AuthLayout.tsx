@@ -2,12 +2,15 @@ import { Link } from 'react-router-dom'
 import { Box } from '@mui/material'
 import LogoIcon from 'src/assets/svg/logo.svg'
 import SvgIcon from '@mui/material/SvgIcon'
+import { useTranslation } from 'react-i18next'
 
 interface AuthLayoutProps {
   children: React.ReactNode
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
+  const { t } = useTranslation()
+
   return (
     <div className='h-screen w-full'>
       <div className='grid h-full grid-cols-1 overflow-y-auto lg:grid-cols-5'>
@@ -29,7 +32,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           }}
         >
           <div className='flex h-full items-center justify-center text-center text-5xl font-bold text-white'>
-            Make memories on your next trip
+            {t('pages.authLayout.title')}
           </div>
         </Box>
       </div>

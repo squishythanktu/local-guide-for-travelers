@@ -17,6 +17,7 @@ import { User } from 'src/types/user.type'
 import { TourSchema, tourSchema } from 'src/utils/rules'
 import MapTourForm from './MapTourForm/MapTourForm'
 import StartTimePickers from './StartTimePickers/StartTimePickers'
+import { useTranslation } from 'react-i18next'
 
 interface TourFormProps {
   onSubmit: (data: TourFormData) => void
@@ -29,6 +30,7 @@ interface TourFormProps {
 export type TourFormData = TourSchema
 
 export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation, request }: TourFormProps) {
+  const { t } = useTranslation()
   const {
     trigger,
     control,
@@ -104,7 +106,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
               className='min-h-[80px] grow lg:w-1/2'
               control={control}
               name={'name'}
-              label={'Name'}
+              label={t('pages.tourManagement.name')}
             />
           </div>
           <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
@@ -114,7 +116,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
               type='number'
               control={control}
               name={'pricePerTraveler'}
-              label={'Price per traveler'}
+              label={t('pages.tourManagement.pricePerTraveler')}
               prefix='$'
             />
           </div>
@@ -125,14 +127,14 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
               type='number'
               control={control}
               name={'limitTraveler'}
-              label={'Limit traveler'}
+              label={t('pages.tourManagement.limitTraveler')}
             />
             <ControlledTextField
               required
               className='min-h-[80px] grow lg:w-1/2'
               control={control}
               name={'estimatedLocalCashNeeded'}
-              label={'Estimated local cash needed'}
+              label={t('pages.tourManagement.estimatedLocalCashNeeded')}
             />
           </div>
           <div className='tour-form__field-group mb-4 flex flex-col gap-6 lg:flex-row lg:justify-between'>
@@ -184,7 +186,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
                         <TextField
                           {...params}
                           variant='outlined'
-                          label='Categories'
+                          label={t('pages.tourManagement.categories')}
                           error={!!errors.categories?.message}
                           InputLabelProps={{
                             shrink: true
@@ -201,7 +203,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
               className='min-h-[80px] w-full grow lg:w-1/2'
               control={control}
               name={'transportation'}
-              label={'Transportation'}
+              label={t('pages.tourManagement.transportation')}
             />
           </div>
           <div className='tour-form__field-group flex flex-col gap-6 lg:flex-row lg:justify-between'>
@@ -213,7 +215,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
                   select
                   label={
                     <Typography sx={{ fontWeight: 600 }}>
-                      Unit{' '}
+                      {t('pages.tourManagement.unit')}{' '}
                       <Typography component='span' sx={{ color: 'red' }}>
                         *
                       </Typography>
@@ -247,7 +249,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
               type='number'
               control={control}
               name={'duration'}
-              label={'Duration'}
+              label={t('pages.tourManagement.duration')}
             />
           </div>
           <StartTimePickers
@@ -262,7 +264,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
             rows={3}
             control={control}
             name={'itinerary'}
-            label={'Itinerary'}
+            label={t('pages.tourManagement.itinerary')}
             className='min-h-32'
           />
           <ControlledTextField
@@ -271,7 +273,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
             rows={3}
             control={control}
             name={'includeService'}
-            label={'Include Service'}
+            label={t('pages.tourManagement.includeService')}
             className='mb-6'
           />
           <ControlledTextField
@@ -280,7 +282,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
             rows={3}
             control={control}
             name={'description'}
-            label={'Description'}
+            label={t('pages.tourManagement.description')}
           />
           <Box sx={{ marginTop: 2 }}>
             <MapTourForm
@@ -291,7 +293,7 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
           </Box>
           <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ fontWeight: 600, fontSize: '13px' }} color={(theme) => theme.palette.primary.main}>
-              Select images
+              {t('pages.tourManagement.selectImages')}
             </Typography>
             <ImagesUploader images={images} setImages={setImages}></ImagesUploader>
           </Box>
@@ -305,10 +307,10 @@ export default function TourForm({ onCancel, onSubmit, defaultValue, isMutation,
           }}
         >
           <Button variant='outlined' className='w-fit' size='large' onClick={onCancel}>
-            Cancel
+            {t('pages.tourManagement.cancel')}
           </Button>
           <LoadingButton loading={isMutation} variant='contained' size='large' type='submit'>
-            <span>Submit</span>
+            {t('pages.tourManagement.submit')}
           </LoadingButton>
         </Box>
       </form>

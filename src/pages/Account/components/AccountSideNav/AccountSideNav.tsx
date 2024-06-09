@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Paper from '@mui/material/Paper'
+import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import AvatarSideNav from 'src/components/AvatarSideNav/AvatarSideNav'
 import PATH from 'src/constants/path.constant'
@@ -14,6 +15,7 @@ import { isActive } from 'src/utils/active.util'
 
 export default function AccountSideNav() {
   const location = useLocation()
+  const { t } = useTranslation()
 
   return (
     <div className='account__container flex-auto md:m-0'>
@@ -26,7 +28,7 @@ export default function AccountSideNav() {
                 <ListItemIcon>
                   <PersonIcon fontSize='small' />
                 </ListItemIcon>
-                <ListItemText primary='Profile' />
+                <ListItemText primary={t('components.accountSideNav.profile')} />
               </ListItemButton>
             </ListItem>
             <Divider />
@@ -35,7 +37,7 @@ export default function AccountSideNav() {
                 <ListItemIcon>
                   <LockOutlinedIcon fontSize='small' />
                 </ListItemIcon>
-                <ListItemText primary='Password' />
+                <ListItemText primary={t('components.accountSideNav.password')} />
               </ListItemButton>
             </ListItem>
           </List>
