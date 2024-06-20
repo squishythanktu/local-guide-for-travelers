@@ -130,9 +130,11 @@ export const requestTourSchema = yup.object({
     .positive('Max price per traveler must be a positive number')
     .required('Max price per traveler is required')
     .typeError('Max price per traveler must be a positive number'),
-  numberOfTravelers: yup.number().positive().required().typeError('Number of travelers must be a positive number'),
+  numberOfTravelers: yup.number().positive("Number of traveler must be a positive number").required("Number of traveler is required").typeError('Number of travelers must be a positive number'),
   destination: yup.string().required('Destination is required'),
-  message: yup.string()
+  message: yup.string(),
+  phone: yup.string().trim().required('Phone is required').typeError('Phone is required'),
+
 })
 
 export const commentSchema = yup.object({

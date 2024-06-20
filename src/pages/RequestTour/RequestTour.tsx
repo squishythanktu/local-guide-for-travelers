@@ -48,7 +48,8 @@ const RequestTour: React.FC = () => {
       maxPricePerPerson: 0,
       numberOfTravelers: 0,
       destination: '',
-      message: ''
+      message: '',
+      phone: '',
     },
     resolver: yupResolver(requestTourSchema)
   })
@@ -63,7 +64,7 @@ const RequestTour: React.FC = () => {
 
   useEffect(() => {
     if (location.state.request) {
-      const { transportation, message, duration, unit, maxPricePerPerson, numberOfTravelers, destination } =
+      const { transportation, message, duration, unit, maxPricePerPerson, numberOfTravelers, destination, phone } =
         location.state.request
       const request: RequestTourSchema = {
         transportation,
@@ -72,7 +73,8 @@ const RequestTour: React.FC = () => {
         unit,
         maxPricePerPerson,
         numberOfTravelers,
-        destination
+        destination,
+        phone
       }
       Object.entries(request).forEach(([key, value]) => {
         setValue(key as keyof RequestTourSchema, value)
@@ -226,15 +228,22 @@ const RequestTour: React.FC = () => {
               label={t('pages.tourRequestForm.numberOfTravelers')}
             />
           </div>
+          <div className='field-group flex gap-6'>
           <ControlledTextField
-            fullWidth={true}
-            multiline={true}
-            rows={3}
+            required
+            className='min-h-20 w-1/2 grow'
+            type='number'
+            control={control}
+            name={'phone'}
+            label={t('pages.profile.phone')}
+          />
+          <ControlledTextField
             control={control}
             name={'message'}
             label={t('pages.tourRequestForm.message')}
-            className='min-h-32'
+            className='min-h-32 w-1/2 grow'
           />
+          </div>
           <Box
             sx={{
               display: 'flex',
