@@ -17,4 +17,5 @@ export type Request = {
   traveler: User
   status: StatusRequest
   tour: Tour
+  phone: string
 }

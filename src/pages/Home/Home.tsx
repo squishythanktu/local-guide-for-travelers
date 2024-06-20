@@ -100,7 +100,7 @@ const Home: React.FC = () => {
     queryFn: () =>
       tourApi.getNearestTours({
         page: 0,
-        limit: 12,
+        limit: 8,
         ...(geoLocation as Location)
       }),
     placeholderData: keepPreviousData,

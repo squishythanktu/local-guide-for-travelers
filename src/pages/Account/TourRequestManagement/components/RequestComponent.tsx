@@ -183,7 +183,9 @@ const RequestComponent: React.FC<Props> = ({ request, isGuide, refetch, setReque
           {t('pages.tourRequestManagement.transportation')}:
           <div className='text-sm'>{request.transportation.join(', ')}</div>
         </div>
-
+        <div className='col-span-2 flex gap-2 text-sm font-medium'>
+          {t('pages.profile.phone')}:<div className='text-sm'>{request.phone}</div>
+        </div>
         <div className='col-span-2 flex gap-2 text-sm font-medium'>
           {t('pages.tourRequestManagement.message')}:<div className='text-sm'>{request.message}</div>
         </div>

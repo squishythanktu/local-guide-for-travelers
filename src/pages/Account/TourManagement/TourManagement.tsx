@@ -55,6 +55,7 @@ export default function TourManagement({ guideId }: Props) {
     numberOfTravelers: 0,
     destination: '',
     message: '',
+    phone: '',
     guide: {
       id: 0,
       email: '',
