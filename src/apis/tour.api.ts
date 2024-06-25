@@ -6,6 +6,7 @@ import http from 'src/utils/http'
 import { TourSchema } from 'src/utils/rules'
 import { PaginationParamWithCoordinates, PaginationParams } from './../types/pagination-params.type'
 import { Tour, TourSuccessResponse, ToursResult } from './../types/tour.type'
+import { AvailableTimeSeat } from 'src/types/available-time-seat'
 
 type TourFormData = TourSchema
 const URL_TOURS = 'tours'
@@ -36,7 +37,10 @@ const tourApi = {
     return http.get<SuccessResponse<Tour[]>>(`${URL_TOURS}/guide/${id}`)
   },
   getStartTimeOfTour(tourId: number, params: StartTimeParams) {
-    return http.get<SuccessResponse<string[]>>(`${URL_TOURS}/${tourId}/tour-start-time-available`, { params })
+    return http.get<SuccessResponse<string[] | AvailableTimeSeat[]>>(
+      `${URL_TOURS}/${tourId}/tour-start-time-available`,
+      { params }
+    )
   },
   createRequestTour(requestId: number, body: TourFormData) {
     return http.post<SuccessResponse<Tour>>(`${URL_TOURS}/${requestId}`, body)

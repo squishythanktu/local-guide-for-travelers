@@ -3,6 +3,7 @@ import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import reviewApi, { CommentFormData } from 'src/apis/review.api'
@@ -12,13 +13,13 @@ import CommentBox from 'src/components/CommentBox/CommentBox'
 import Map from 'src/components/Map/Map'
 import OverallRating from 'src/components/OverallRating/OverallRating'
 import ReviewTitle from 'src/components/ReviewTitle/ReviewTitle'
+import { AppContext } from 'src/contexts/app.context'
 import { TourStatus } from 'src/enums/tour-status.enum'
 import { UserRole } from 'src/enums/user-role.enum'
 import Loading from 'src/pages/Loading/Loading'
 import NotFound from 'src/pages/NotFound/NotFound'
 import { ReviewParams } from 'src/types/review.type'
 import { Tour } from 'src/types/tour.type'
-import { formatDate } from 'src/utils/date-time'
 import { BookingSchema } from 'src/utils/rules'
 import MainStop from '../../components/MainStop/MainStop'
 import ReviewSortFilter from '../../components/ReviewSortFilter/ReviewSortFilter'
@@ -27,8 +28,7 @@ import BookingAssistant from './components/BookingAssistant'
 import BookingConfirmation from './components/BookingConfirmation'
 import SimpleSlider from './components/SimpleSlider'
 import TourHeader from './components/TourHeader'
-import { AppContext } from 'src/contexts/app.context'
-import { useTranslation } from 'react-i18next'
+import { AvailableTimeSeat } from 'src/types/available-time-seat'
 
 export type BookingAssistantFormData = Pick<BookingSchema, 'numberTravelers' | 'startDate'>
 
@@ -57,13 +57,12 @@ const TourDetail: React.FC = () => {
     status: TourStatus.PENDING
   })
   const [checkAvailability, setCheckAvailability] = useState<boolean>(false)
-  const [formData, setFormData] = useState<BookingAssistantFormData>({
-    startDate: new Date(),
-    numberTravelers: 0
-  })
   const [reviewParams, setReviewParams] = useState<ReviewParams>({})
   const [editReviewId, setEditReviewId] = useState<number | null>(null)
+  const [formData, setFormData] = useState<BookingAssistantFormData | object>({})
+  const [availableTimeSeats, setAvailableTimeSeats] = useState<AvailableTimeSeat[]>([])
   const { id } = useParams()
+
   const {
     isPending: isLoadingTour,
     error: errorTour,
@@ -78,11 +77,6 @@ const TourDetail: React.FC = () => {
     queryFn: () => reviewApi.searchReviewsOfTour(Number(id), reviewParams),
     placeholderData: keepPreviousData,
     enabled: id !== undefined
-  })
-  const { data: startTimeData } = useQuery({
-    queryKey: [`Start time of id ${id} in ${formData.startDate}`, formData],
-    queryFn: () => tourApi.getStartTimeOfTour(Number(id), { localDate: formatDate(formData.startDate, 'YYYY-MM-DD') }),
-    enabled: checkAvailability
   })
   const { data: isCanReview } = useQuery({
     queryKey: [`Check user can review for tour of ${id}`, id, profile],
@@ -157,7 +151,13 @@ const TourDetail: React.FC = () => {
     [deleteReviewOfTourMutation, refetchReviewsData]
   )
 
+  const handleSubmitAvailableTimeSeats = (availableTimeSeats: AvailableTimeSeat[]) => {
+    setAvailableTimeSeats(availableTimeSeats)
+  }
+
   const handleSubmitBookingAssistant = useCallback((body: BookingAssistantFormData) => {
+    console.log('body: ', body)
+
     setFormData(body)
     setCheckAvailability(true)
     window.scrollTo({
@@ -165,6 +165,14 @@ const TourDetail: React.FC = () => {
       behavior: 'smooth'
     })
   }, [])
+
+  const getStartTimesByNumberTravelers = () => {
+    return (
+      availableTimeSeats.find(
+        (startTime) => startTime.numberTravelers === (formData as BookingAssistantFormData).numberTravelers
+      )?.startTimes || []
+    )
+  }
 
   const getRatingReviewsAverage = useCallback(
     () =>
@@ -216,7 +224,7 @@ const TourDetail: React.FC = () => {
                 <BookingAssistant
                   id={tour.id}
                   onSubmit={handleSubmitBookingAssistant}
-                  limitTraveler={tour.limitTraveler}
+                  onSubmitAvailableTimeSeats={handleSubmitAvailableTimeSeats}
                 />
               </Box>
             </div>
@@ -225,7 +233,11 @@ const TourDetail: React.FC = () => {
         {checkAvailability && (
           <div className='pt-5'>
             <div className='col-span-1 gap-6 md:col-span-2 lg:col-span-3'>
-              <BookingConfirmation tour={tour} formData={formData} timeOptions={startTimeData?.data.data} />
+              <BookingConfirmation
+                tour={tour}
+                formData={formData as BookingAssistantFormData}
+                timeOptions={getStartTimesByNumberTravelers()}
+              />
             </div>
           </div>
         )}
