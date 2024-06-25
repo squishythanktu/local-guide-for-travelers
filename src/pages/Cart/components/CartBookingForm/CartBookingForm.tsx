@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -46,7 +45,7 @@ export default function CartBookingForm({ setEditMode, booking, onSubmit }: Prop
     },
     resolver: yupResolver(bookingFormSchema)
   })
-  const { data: __startTimeData } = useQuery({
+  const { data: startTimeData } = useQuery({
     queryKey: ['startTimeData', getValues('startDate')],
     queryFn: () =>
       tourApi.getStartTimeOfTour(booking?.tour.id as number, {
@@ -129,11 +128,11 @@ export default function CartBookingForm({ setEditMode, booking, onSubmit }: Prop
                     }}
                   >
                     {!isStartDateChange && <MenuItem value={initialStartTime}>{initialStartTime}</MenuItem>}
-                    {/* {startTimeData?.data.data.map((time, index) => (
-                      <MenuItem value={time} key={index}>
-                        {formatTime(time, 'HH:mm:ss', 'HH:mm')}
+                    {startTimeData?.data.data.map((time, index) => (
+                      <MenuItem value={time as string} key={index}>
+                        {formatTime(time as string, 'HH:mm:ss', 'HH:mm')}
                       </MenuItem>
-                    ))} */}
+                    ))}
                   </Select>
                   {!!errors.startTime && <FormHelperText error>{errors.startTime.message}</FormHelperText>}{' '}
                 </Box>
