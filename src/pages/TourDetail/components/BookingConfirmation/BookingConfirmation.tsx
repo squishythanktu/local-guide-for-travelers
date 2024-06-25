@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AlarmOnIcon from '@mui/icons-material/AlarmOn'
 import TimelapseIcon from '@mui/icons-material/Timelapse'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Divider } from '@mui/material'
@@ -8,6 +7,7 @@ import Card from '@mui/material/Card'
 import { useMutation } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import cartApi from 'src/apis/cart.api'
@@ -17,12 +17,10 @@ import LocationIcon from 'src/assets/svg/location.svg'
 import PATH from 'src/constants/path.constant'
 import { AppContext } from 'src/contexts/app.context'
 import { BookingConfirmationAction } from 'src/enums/booking-confirmation.enum'
-import { Unit } from 'src/enums/unit.enum'
 import { Booking } from 'src/types/booking.type'
 import { Tour } from 'src/types/tour.type'
-import { convertHourToUTC7, formatDate, formatTime } from 'src/utils/date-time'
+import { convertHourToUTC7, formatDate } from 'src/utils/date-time'
 import { BookingAssistantFormData } from '../../TourDetail'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   timeOptions?: string[]
@@ -109,14 +107,6 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
                 {tour.duration} {t(`pages.tourDetails.${tour.unit}`)}
               </div>
             </div>
-            {!(tour.unit === Unit.HOURS && tour.duration < 5) && (
-              <div className='flex items-center text-base font-normal'>
-                <AlarmOnIcon className='mb-[2px] mr-2 h-6 w-6' />
-                <div className='text-sm font-medium text-gray-500'>
-                  {t('pages.tourDetails.startFrom')} {formatTime(tour.startTimes[0], 'HH:mm:ss', 'HH:mm')}
-                </div>
-              </div>
-            )}
             <div className='flex items-center font-normal'>
               <GuideIcon className='mb-[2px] mr-2 h-6 w-6' />
               <div className='text-sm font-medium text-gray-500'>
@@ -146,7 +136,7 @@ export default function BookingConfirmation({ timeOptions, formData, tour }: Pro
                     className={`${option === selectedTimeOption ? 'bg-[#1a2b49] text-white' : 'border-2 border-gray-300 text-black '} `}
                     onClick={() => handleOptionClick(option)}
                   >
-                    {formatTime(option, 'HH:mm:ss', 'HH:mm')}
+                    {option}
                   </Button>
                 ))}
               </div>

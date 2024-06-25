@@ -129,8 +129,8 @@ export default function CartBookingForm({ setEditMode, booking, onSubmit }: Prop
                   >
                     {!isStartDateChange && <MenuItem value={initialStartTime}>{initialStartTime}</MenuItem>}
                     {startTimeData?.data.data.map((time, index) => (
-                      <MenuItem value={time} key={index}>
-                        {formatTime(time, 'HH:mm:ss', 'HH:mm')}
+                      <MenuItem value={time as string} key={index}>
+                        {formatTime(time as string, 'HH:mm:ss', 'HH:mm')}
                       </MenuItem>
                     ))}
                   </Select>
