@@ -527,7 +527,8 @@
       "deny": "Từ chối",
       "accept": "Chấp nhận",
       "areYouSure": "Bạn có chắc muốn {{action}} hướng dẫn viên này không?",
-      "reason": "Lý do"
+      "reason": "Lý do",
+      "images": "Ảnh bằng cấp"
     }
   },
   "enums": {
