@@ -32,6 +32,6 @@ export type GuideApplication = {
   status: GuideApplicationStatus
   reasonDeny: string
   user: User
-  licenseImages: ImageWithLink[]
+  images: ImageWithLink[]
   biography: string
 }

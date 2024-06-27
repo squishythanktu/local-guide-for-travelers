@@ -169,7 +169,7 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       </Typography>
                       <span>{guideApplicationData?.data.data.user.dateOfBirth?.slice(0, 10)}</span>
                     </Grid>
-                    <Grid item xs={4} sm={8} md={12} className='guide-details__description flex items-center gap-2'>
+                    <Grid item xs={4} sm={8} md={12} className='guide-details__transportation flex items-center gap-2'>
                       <DirectionsBusIcon />
                       <Typography variant='body1' className='font-semibold'>
                         {t('components.guideDetailsDialog.transportation')}:
@@ -183,45 +183,44 @@ const GuideDetailsDialog: React.FC<GuideDetailsDialogProps> = ({
                       </Typography>
                       <span>{guideApplicationData?.data.data.biography || 'N/A'}</span>
                     </Grid>
-                    {guideApplicationData?.data.data.licenseImages &&
-                      guideApplicationData?.data.data.licenseImages.length > 0 && (
-                        <Grid item xs={4} sm={8} md={12} className='guide-details__description flex flex-col gap-2'>
-                          <Box className='flex gap-2'>
-                            <ImageIcon />
-                            <Typography variant='body1' className='font-semibold'>
-                              {t('components.guideDetailsDialog.images')}
-                            </Typography>
-                          </Box>
-                          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
-                            {guideApplicationData.data.data.licenseImages.map((image, i) => (
-                              <Grid
-                                item
-                                xs={2}
-                                sm={2}
-                                md={2}
-                                key={i}
-                                sx={{
-                                  display: 'flex',
-                                  justifyContent: 'start',
-                                  alignItems: 'center',
-                                  position: 'relative'
+                    {guideApplicationData?.data.data.images && guideApplicationData?.data.data.images.length > 0 && (
+                      <Grid item xs={4} sm={8} md={12} className='guide-details__description flex flex-col gap-2'>
+                        <Box className='flex gap-2'>
+                          <ImageIcon />
+                          <Typography variant='body1' className='font-semibold'>
+                            {t('components.guideDetailsDialog.images')}
+                          </Typography>
+                        </Box>
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
+                          {guideApplicationData.data.data.images.map((image, i) => (
+                            <Grid
+                              item
+                              xs={2}
+                              sm={2}
+                              md={2}
+                              key={i}
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'start',
+                                alignItems: 'center',
+                                position: 'relative'
+                              }}
+                            >
+                              <img
+                                src={image.imageLink}
+                                style={{
+                                  width: '100%',
+                                  height: '100%',
+                                  objectFit: 'cover',
+                                  aspectRatio: '1 / 1'
                                 }}
-                              >
-                                <img
-                                  src={image.imageLink}
-                                  style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    aspectRatio: '1 / 1'
-                                  }}
-                                  alt=''
-                                />
-                              </Grid>
-                            ))}
-                          </Grid>
+                                alt=''
+                              />
+                            </Grid>
+                          ))}
                         </Grid>
-                      )}
+                      </Grid>
+                    )}
                   </Grid>
                 </Box>
               </Box>

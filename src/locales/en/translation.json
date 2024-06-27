@@ -528,7 +528,8 @@
       "deny": "Deny",
       "accept": "Accept",
       "areYouSure": "Are you sure want to {{action}} this guide?",
-      "reason": "Reason"
+      "reason": "Reason",
+      "images": "Image(s)"
     }
   },
   "enums": {
